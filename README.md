@@ -1,2 +1,2 @@
-# Homga
+# Hogarama
 Home and Garden Automation
