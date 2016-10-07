@@ -1,0 +1,111 @@
+#!/bin/sh
+
+echo "Starte Installation" `date`
+
+if [ -z "$ENV_CONFIG" ]; then
+	ENV_CONFIG=$1
+fi
+
+if [ ! -f "$ENV_CONFIG" ]; then
+    echo "Environment $ENV_CONFIG doesn't exist! Set ENV_CONFIG or use argument" 1>&2
+    exit 1
+fi
+
+. $ENV_CONFIG
+
+DEPLOY_CONF=08_generated_deploy.conf
+ENV_SUFF=".${TA2_ADAPTER:-"TUXEDO"}"
+
+if [ "x$USE_CLUSTER" = "xTrue" ]; then
+	ENV_SUFF="$ENV_SUFF .CLUSTER"
+	echo "adding CLUSTER suffix -> $ENV_SUFF"
+fi
+
+if [ -n "$FEATURES" ]; then
+	for feature in $FEATURES; do
+		ENV_SUFF="$ENV_SUFF .${feature}"
+	done
+fi
+
+
+###########################
+# gernerate conf-file with deployments
+###########################
+generate_deploy() {
+	echo Create File $DEPLOY_CONF
+	echo "# This file is generated" > $DEPLOY_CONF
+	for f in ./deployments/*; do
+		echo deploy $f >> $DEPLOY_CONF
+	done
+}
+
+###########################
+# Environment-Suffix zum Includieren zusaetzlicher Konfig
+###########################
+handle_env_suff() {
+	for suff in $ENV_SUFF; do
+		echo Handle Environment-Suffix $suff
+		for f in *$suff; do
+			if [ -f $f ]; then # Es existiert ein File zu dem Suffix
+				base=`basename $f $suff`
+				echo cp $f $base
+				cp $f $base
+			fi
+		done
+	done
+}
+
+###########################
+# Remove file parts defined in FEATURES
+###########################
+handle_features() {
+
+	dir=.
+    if [ -z "$ENV_SUFF" ]; then
+        echo "No features defined in FEATURES"
+        return
+    fi
+    echo "Active features: $ENV_SUFF"
+    for file in $dir/*; do
+        target_file=$file
+        for feature in $ENV_SUFF; do
+            target_file=`echo $target_file | sed -e "s/$feature//"`
+        done
+        if [ "$file" != "$target_file" ]; then
+            echo "Feature copy $file to $target_file"
+            cp $file $target_file || exit 1
+        fi
+    done
+}
+
+###########################
+# Behandeln von Spezialoptionen fuers RZ. 
+# Sollte durch allgemeinere Mechanismen abgeloest werden
+###########################
+handle_special_options() {
+
+	if [  x$JBOSS_IS_INSTALLED != x ]; then
+    	echo "INFO: JBOSS_IS_INSTALLED ist gesetzt. Ports werden nicht konfiguriert." 1>&2
+		for f in 03_set_ports.conf*; do
+				mv $f ${f}_ignore
+		done
+	fi
+}
+
+convert() {
+    dir=$1
+    echo "Configure Directory $dir"
+	for f in `find $dir -name "*.templ"`; do
+		dirname=`dirname $f`
+		basename=`basename $f .templ`
+		echo Process template $f
+		./substitute -p "$ENV_CONFIG" -t $f -o $dirname/$basename
+	done
+}
+
+handle_special_options || exit 1
+handle_features || exit 2
+
+convert `pwd`
+
+generate_deploy || exit 5

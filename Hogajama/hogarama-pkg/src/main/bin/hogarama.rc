@@ -1,0 +1,6 @@
+# Configuration for hogarama
+JBOSS_HOME=/root/jboss/wildfly-10.0.0.Final
+
+PORT_OFFSET=0
+
+export ENV_CONFIG=/root/envirnoments/development.env

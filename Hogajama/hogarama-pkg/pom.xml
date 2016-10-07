@@ -8,8 +8,116 @@
 		<groupId>com.gepardec.hogarama</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-    
-    <artifactId>hogarama-pkg</artifactId>
+
+	<artifactId>hogarama-pkg</artifactId>
 	<packaging>pom</packaging>
+
+	<dependencies>
+		<dependency>
+			<artifactId>hogarama-frontend</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<type>war</type>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 	
+	<profiles>
+		<profile>
+			<id>docker</id>
+			<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<artifactId>hogarama-frontend</artifactId>
+									<groupId>${project.groupId}</groupId>
+									<type>war</type>
+									<version>${project.version}</version>
+									<outputDirectory>${project.build.directory}/docker/deployments</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/docker/inc</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main</directory>
+									<excludes>
+										<exclude>docker/</exclude>
+									</excludes>
+								</resource>
+
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--TEMP later with dependency via nexus-->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<configuration>
+							<tasks>
+								<echo message="unzipping jboss" />
+								<unzip src="../wildfly-10.0.0.Final.zip" dest="${project.basedir}/target/docker/inc/jboss" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<executions>
+					<execution>
+						<id>docker-build</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+						<configuration>
+							<imageName>hogajama</imageName>
+							<dockerDirectory>src/main/docker</dockerDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+		</profile>
+	</profiles>
+
+	
+
 </project>
