@@ -19,8 +19,12 @@ RUN mkdir -p /root/jboss
 COPY inc /root/
 RUN chmod a+x /root/config/* && \
 	chmod a+x /root/bin/* && \ 
+	chmod a+x /root/jboss/wildfly-10.0.0.Final/bin/* && \
 	cd /root && \
 	ln -s /root/bin/jboss7 hogarama && \
 	chmod a+x hogarama && \
 	cp /root/bin/hogarama.rc .hogaramarc && \
 	/root/bin/hogarama-install.sh
+
+
+CMD /root/bin/hogarama start && bash

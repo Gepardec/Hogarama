@@ -117,7 +117,8 @@ if [ -d $JBOSS_HOME ]; then
       remove)
     	echo "Es wird geloescht."
         if [ -d $JBOSS_HOME/standalone ]; then
-			rm -rf $JBOSS_HOME
+			# rm -rf $JBOSS_HOME
+			echo ""
 		else
 			echo "Das scheint kein JBoss-Verzeichnis zu sein: $JBOSS_HOME"
 			echo "Bitte pruefen und manuell loeschen!"

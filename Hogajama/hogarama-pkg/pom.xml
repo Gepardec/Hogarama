@@ -44,7 +44,7 @@
 									<groupId>${project.groupId}</groupId>
 									<type>war</type>
 									<version>${project.version}</version>
-									<outputDirectory>${project.build.directory}/docker/deployments</outputDirectory>
+									<outputDirectory>${project.build.directory}/docker/inc/deployments</outputDirectory>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
