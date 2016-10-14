@@ -4,12 +4,12 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>hogarama</artifactId>
-		<groupId>com.gepardec.hogarama</groupId>
+		<artifactId>hogajama</artifactId>
+		<groupId>com.gepardec.hogajama</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
     
-    <artifactId>hogarama-domain</artifactId>
+    <artifactId>hogajama-services</artifactId>
 	<packaging>jar</packaging>
 	
 	<url>http://maven.apache.org</url>

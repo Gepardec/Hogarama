@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-		<artifactId>hogarama</artifactId>
-		<groupId>com.gepardec.hogarama</groupId>
+		<artifactId>hogajama</artifactId>
+		<groupId>com.gepardec.hogajama</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
     
-    <artifactId>hogarama-frontend</artifactId>
+    <artifactId>hogajama-frontend</artifactId>
     <packaging>war</packaging>
 
     <properties>

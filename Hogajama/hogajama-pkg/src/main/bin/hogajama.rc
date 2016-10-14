@@ -1,4 +1,4 @@
-# Configuration for hogarama
+# Configuration for hogajama
 JBOSS_HOME=/root/jboss/wildfly-10.0.0.Final
 
 PORT_OFFSET=0

@@ -4,17 +4,17 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>hogarama</artifactId>
-		<groupId>com.gepardec.hogarama</groupId>
+		<artifactId>hogajama</artifactId>
+		<groupId>com.gepardec.hogajama</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>hogarama-pkg</artifactId>
+	<artifactId>hogajama-pkg</artifactId>
 	<packaging>pom</packaging>
 
 	<dependencies>
 		<dependency>
-			<artifactId>hogarama-frontend</artifactId>
+			<artifactId>hogajama-frontend</artifactId>
 			<groupId>${project.groupId}</groupId>
 			<type>war</type>
 			<version>${project.version}</version>
@@ -40,7 +40,7 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-									<artifactId>hogarama-frontend</artifactId>
+									<artifactId>hogajama-frontend</artifactId>
 									<groupId>${project.groupId}</groupId>
 									<type>war</type>
 									<version>${project.version}</version>
@@ -100,7 +100,7 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.4.13</version>
 				<executions>
-					<execution>
+				 	<execution>
 						<id>docker-build</id>
 						<phase>package</phase>
 						<goals>

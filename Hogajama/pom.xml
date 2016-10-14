@@ -2,20 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>hogarama</artifactId>
-	<groupId>com.gepardec.hogarama</groupId>
+	<artifactId>hogajama</artifactId>
+	<groupId>com.gepardec.hogajama</groupId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Hogarama Project</name>
+	<name>hogajama Project</name>
 
 	<modules>
-		<module>hogarama-common</module>
-		<module>hogarama-services</module>
-		<module>hogarama-domain</module>
-		<module>hogarama-rs</module>
-		<module>hogarama-frontend</module>
-		<module>hogarama-test</module>
-		<module>hogarama-pkg</module>
+		<module>hogajama-common</module>
+		<module>hogajama-services</module>
+		<module>hogajama-domain</module>
+		<module>hogajama-rs</module>
+		<module>hogajama-frontend</module>
+		<module>hogajama-test</module>
+		<module>hogajama-pkg</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

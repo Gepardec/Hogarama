@@ -21,10 +21,10 @@ RUN chmod a+x /root/config/* && \
 	chmod a+x /root/bin/* && \ 
 	chmod a+x /root/jboss/wildfly-10.0.0.Final/bin/* && \
 	cd /root && \
-	ln -s /root/bin/jboss7 hogarama && \
-	chmod a+x hogarama && \
-	cp /root/bin/hogarama.rc .hogaramarc && \
-	/root/bin/hogarama-install.sh
+	ln -s /root/bin/jboss7 hogajama && \
+	chmod a+x hogajama && \
+	cp /root/bin/hogajama.rc .hogajamarc && \
+	/root/bin/hogajama-install.sh
 
 
-CMD /root/bin/hogarama start && bash
+CMD /root/bin/hogajama start && bash
