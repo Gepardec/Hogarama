@@ -4,10 +4,14 @@ Hogajama is the Java/Maven part of the Hogarama Project. It is a Java EE applica
 
 ## Prerequisites
 
- * wildfly-10.0.0.Final.zip near root pom.xml
+ * wildfly-10.0.0.Final.zip in the same folder as the root pom.xml
+ * Running docker daemon
 
 ## Build
-mvn clear install -p docker
+mvn clean install && cd hogarama-pkg && mvn -P docker clean package
 
 ## Run
 docker run --rm -it -p 8080:8080 -p 9990:9990 hogajama
+
+## URL
+http://localhost:8080/hogarama-frontend

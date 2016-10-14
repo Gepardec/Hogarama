@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
+	<welcome-file-list>
+		<welcome-file>/index.html</welcome-file>
+	</welcome-file-list>
+
+	<session-config>
+		<session-timeout>60</session-timeout>
+		<cookie-config>
+			<path>/</path>
+		</cookie-config>
+	</session-config>
+
+	<servlet-mapping>
+		<servlet-name>javax.ws.rs.core.Application</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Security -->
+<!-- 	<security-role> -->
+<!--         <role-name>*</role-name> -->
+<!--     </security-role> -->
+<!-- 	<security-constraint> -->
+<!-- 		<web-resource-collection> -->
+<!-- 			<web-resource-name>Authenticated</web-resource-name> -->
+<!-- 			<url-pattern>/pages/*</url-pattern> -->
+<!-- 			<url-pattern>/rest/protected/*</url-pattern> -->
+<!-- 			<http-method>POST</http-method> -->
+<!--             <http-method>GET</http-method> -->
+<!--             <http-method>PUT</http-method> -->
+<!-- 		</web-resource-collection> -->
+<!-- 		<auth-constraint> -->
+<!-- 			<role-name>*</role-name> -->
+<!-- 		</auth-constraint> -->
+<!-- 	</security-constraint> -->
+</web-app>
