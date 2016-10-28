@@ -39,8 +39,17 @@
 						</goals>
 						<configuration>
 							<artifactItems>
+								<!-- Frontend -->
 								<artifactItem>
 									<artifactId>hogajama-frontend</artifactId>
+									<groupId>${project.groupId}</groupId>
+									<type>war</type>
+									<version>${project.version}</version>
+									<outputDirectory>${project.build.directory}/docker/inc/deployments</outputDirectory>
+								</artifactItem>
+								<!-- REST-Services -->
+								<artifactItem>
+									<artifactId>hogajama-rs</artifactId>
 									<groupId>${project.groupId}</groupId>
 									<type>war</type>
 									<version>${project.version}</version>

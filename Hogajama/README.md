@@ -15,3 +15,6 @@ docker run --rm -it -p 8080:8080 -p 9990:9990 hogajama
 
 ## URL
 http://localhost:8080/hogajama-frontend
+
+## REST-Services
+http://localhost:8080/hogajama-rs/rest/helloworld
