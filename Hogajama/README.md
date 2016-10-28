@@ -8,7 +8,7 @@ Hogajama is the Java/Maven part of the Hogarama Project. It is a Java EE applica
  * Running docker daemon
 
 ## Build
-mvn clean install && cd hogajama-pkg && mvn -P docker clean package
+mvn clean install &&  mvn -f hogajama-pkg/pom.xml -P docker clean install
 
 ## Run
 docker run --rm -it -p 8080:8080 -p 9990:9990 hogajama
