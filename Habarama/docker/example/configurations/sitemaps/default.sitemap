@@ -2,6 +2,7 @@ sitemap demo label="Main Menu" {
     Frame {
         Group item=System label="System Info" icon="fire-on" {
             Frame {
+		Switch item=mySwitch label="Light" mappings=[OFF="Off", ON="On"]
                 Text item=uptime
                 Text item=cpuCombined icon="system"
             }

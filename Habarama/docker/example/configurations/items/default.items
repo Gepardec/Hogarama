@@ -1,4 +1,5 @@
 Group System
+Switch mySwitch {mqtt=">[dockerbroker:light:command:ON:1],>[dockerbroker:light:command:OFF:0]"}
 Number loadAverage1min  "Load avg. 1min [%.1f]" (System) { systeminfo="LoadAverage1Min:5000" }
 Number loadAverage5min  "Load avg. 5min [%.1f]" (System) { systeminfo="LoadAverage5Min:5000" }
 Number loadAverage15min "Load avg. 15min [%.1f]"    (System) { systeminfo="LoadAverage15Min:5000" }
