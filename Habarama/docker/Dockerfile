@@ -21,9 +21,9 @@ RUN wget https://bintray.com/artifact/download/openhab/bin/distribution-1.8.3-ru
     unzip distribution-1.8.3-addons.zip -d OpenHab/all_addons
 
 # Configure OpenHab
-RUN cp third_party/addons/org.openhab.binding.systeminfo-1.8.3.jar OpenHab/addons/
+COPY third_party/addons/org.openhab.binding.systeminfo-1.8.3.jar OpenHab/addons/
 
-RUN cp third_party/addons/org.openhab.binding.mqtt-1.8.3.jar OpenHab/addons/
+COPY third_party/addons/org.openhab.binding.mqtt-1.8.3.jar OpenHab/addons/
 
 COPY third_party/libsigar-amd64-linux.so OpenHab/lib/libsigar-amd64-linux.so
 COPY example/configurations /OpenHab/configurations
