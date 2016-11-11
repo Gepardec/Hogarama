@@ -1,4 +1,5 @@
 FROM ubuntu:16.04
+# FROM multiarch/ubuntu-debootstrap:armhf-wily
 MAINTAINER Gepardec
 
 # Install add-apt-repository, unzip
