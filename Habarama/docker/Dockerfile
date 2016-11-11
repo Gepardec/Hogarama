@@ -27,6 +27,7 @@ COPY third_party/addons/org.openhab.binding.systeminfo-1.8.3.jar OpenHab/addons/
 COPY third_party/addons/org.openhab.binding.mqtt-1.8.3.jar OpenHab/addons/
 
 COPY third_party/libsigar-amd64-linux.so OpenHab/lib/libsigar-amd64-linux.so
+# COPY third_party/libsigar-arm-linux.so OpenHab/lib/libsigar-arm-linux.so
 COPY example/configurations /OpenHab/configurations
 
 VOLUME ["/OpenHab/configurations"]
