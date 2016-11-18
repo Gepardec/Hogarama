@@ -1,0 +1,10 @@
+sitemap demo label="Main Menu" {
+    Frame {
+        Group item=System label="System Info" icon="fire-on" {
+            Frame {
+                Text item=node1_uptime
+                Text item=node2_uptime
+            }
+        }
+    }
+}
