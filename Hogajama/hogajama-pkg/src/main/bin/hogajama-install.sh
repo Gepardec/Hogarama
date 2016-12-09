@@ -1,4 +1,4 @@
-PKG_DIR=/root
+PKG_DIR=/opt/jboss
 
 mkdir $PKG_DIR/config/deployments
 cp $PKG_DIR/deployments/*.war $PKG_DIR/config/deployments

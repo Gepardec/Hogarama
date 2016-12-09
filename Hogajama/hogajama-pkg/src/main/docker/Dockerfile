@@ -1,30 +1,19 @@
-FROM ubuntu:16.04
+FROM jboss/wildfly:10.0.0.Final
 MAINTAINER Gepardec
 
-# Install add-apt-repository
-RUN apt-get update && \
-    apt-get install -y software-properties-common && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install Java.
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-    add-apt-repository -y ppa:webupd8team/java && \
-    apt-get update && \
-    apt-get install -y oracle-java8-installer && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /var/cache/oracle-jdk8-installer
-
 # Copy and configure artefacts
-RUN mkdir -p /root/jboss
-COPY inc /root/
-RUN chmod a+x /root/config/* && \
-	chmod a+x /root/bin/* && \ 
-	chmod a+x /root/jboss/wildfly-10.0.0.Final/bin/* && \
-	cd /root && \
-	ln -s /root/bin/jboss7 hogajama && \
+USER root
+ADD inc /opt/jboss
+RUN chown -R jboss:jboss /opt/jboss
+
+USER jboss
+RUN chmod a+x /opt/jboss/config/* && \
+	chmod a+x /opt/jboss/bin/* && \ 
+	cd /opt/jboss && \
+	ln -s /opt/jboss/bin/jboss7 hogajama && \
 	chmod a+x hogajama && \
-	cp /root/bin/hogajama.rc .hogajamarc && \
-	/root/bin/hogajama-install.sh
+	cp /opt/jboss/bin/hogajama.rc .hogajamarc && \
+	/opt/jboss/bin/hogajama-install.sh
 
 
-CMD /root/bin/hogajama start && bash
+CMD /opt/jboss/bin/hogajama start && /opt/jboss/bin/hogajama log

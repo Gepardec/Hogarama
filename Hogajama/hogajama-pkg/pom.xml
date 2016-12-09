@@ -85,25 +85,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--TEMP later with dependency via nexus-->
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<phase>generate-resources</phase>
-						<configuration>
-							<tasks>
-								<echo message="unzipping jboss" />
-								<unzip src="../wildfly-10.0.0.Final.zip" dest="${project.basedir}/target/docker/inc/jboss" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>

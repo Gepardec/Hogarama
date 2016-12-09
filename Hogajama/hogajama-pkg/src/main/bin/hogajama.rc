@@ -1,6 +1,6 @@
 # Configuration for hogajama
-JBOSS_HOME=/root/jboss/wildfly-10.0.0.Final
+JBOSS_HOME=/opt/jboss/wildfly
 
 PORT_OFFSET=0
 
-export ENV_CONFIG=/root/environments/development.env
+export ENV_CONFIG=/opt/jboss/environments/development.env
