@@ -16,4 +16,4 @@ RUN chmod a+x /opt/jboss/config/* && \
 	/opt/jboss/bin/hogajama-install.sh
 
 
-CMD /opt/jboss/bin/hogajama start && /opt/jboss/bin/hogajama log
+CMD rm -rf /opt/jboss/wildfly/standalone/configuration/standalone_xml_history/current && /opt/jboss/bin/hogajama start && /opt/jboss/bin/hogajama log
