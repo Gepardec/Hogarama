@@ -1,4 +1,4 @@
-FROM jenkins-dind:latest
+FROM killercentury/jenkins-dind:latest
 
 ADD ./user_config.xml /usr/share/jenkins/users/init/config.xml
 ADD ./start.sh /usr/share/jenkins/start.sh

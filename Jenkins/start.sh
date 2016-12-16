@@ -49,6 +49,8 @@ if [ ! -f /var/lib/jenkins/configured.ok ]; then
 	waitUntilInstalled "copy artifact plugin"
 	java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ install-plugin greenballs -deploy  --username=init --password=init123 > /tmp/jenkinsout 2>&1 &
 	waitUntilInstalled "green balls plugin"
+	java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ install-plugin parameterized-trigger -deploy  --username=init --password=init123 > /tmp/jenkinsout 2>&1 &
+	waitUntilInstalled "parametrized trigger plugin"
 
 	for f in `ls /usr/share/jenkins/initjobs`; do
 		echo "creating job $f"

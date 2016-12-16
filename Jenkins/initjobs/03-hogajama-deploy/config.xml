@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>environment</name>
+          <description></description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>aws</string>
+              <string>local</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>hogapid=$(docker ps -a -q --filter ancestor=hogajama --format=&quot;{{.ID}}&quot;)
+
+if [ ! -z &quot;$hogapid&quot; ]; then
+        docker rm $(docker stop $hogapid)
+fi
+
+if [ &quot;$environment&quot; = &quot;local&quot; ]; then
+	docker run -p 8280:8080 -p 10190:9990 -d hogajama
+else
+	docker run -e VIRTUAL_HOST=hogajama.hogarama.gepardec.at -e VIRTUAL_PORT=8080 hogajama
+fi</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

@@ -27,5 +27,6 @@ After starting container you can login with default user (init:init123). After l
 Jobs might be not fully configured after installing. One option is to simply copy or import jobs from another Jenkins environment (e.g local). Another possibility is to configure Jobs manually:
 - **01-hogarama-compile** : Configure SCM in the Job (for the repo https://github.com/Gepardec/Hogarama.git)
 - **02-build-image** : Configure "Copy artefacts" build step from previous job (\*\*/hogajama-pkg/\*\*)
+- **02-build-image** : Configure trigger of _03-hogajama-deploy_ using param _environment=local_ or _environment=aws_
 
 Now Jenkins is ready. Enjoy!

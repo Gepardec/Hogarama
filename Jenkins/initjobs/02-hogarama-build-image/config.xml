@@ -9,7 +9,11 @@
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <triggers/>
+  <triggers>
+    <hudson.triggers.TimerTrigger>
+      <spec>H * * * *</spec>
+    </hudson.triggers.TimerTrigger>
+  </triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact">
@@ -24,12 +28,10 @@
       </selector>
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
     </hudson.plugins.copyartifact.CopyArtifact>
-    <hudson.tasks.Shell>
-      <command>#ls -l /install
-#cp /install/wildfly-10.0.0.Final.zip ${WORKSPACE}/Hogajama</command>
-    </hudson.tasks.Shell>
     <hudson.tasks.Maven>
-      <targets>clean install -P docker</targets>
+      <targets>clean
+install
+-P docker</targets>
       <mavenName>def_mvn</mavenName>
       <pom>Hogajama/hogajama-pkg/pom.xml</pom>
       <usePrivateRepository>false</usePrivateRepository>
@@ -37,6 +39,21 @@
       <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
       <injectBuildVariables>false</injectBuildVariables>
     </hudson.tasks.Maven>
+    <hudson.plugins.parameterizedtrigger.TriggerBuilder plugin="parameterized-trigger">
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+              <properties>environment=aws</properties>
+            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          </configs>
+          <projects>03-hogajama-deploy</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+          <buildAllNodesWithLabel>false</buildAllNodesWithLabel>
+        </hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.TriggerBuilder>
   </builders>
   <publishers/>
   <buildWrappers/>
