@@ -13,18 +13,20 @@ docker run -p 8180:8080 --privileged --rm -it -v /path/to/local/jenkins/config/d
 ```
 
 While starting at first time Jenkins will be configured:
-- Installation of "Copy artefacts" plugin
-- Installion of "Green balls" plugin
-- Creating of initial Jobs (from subfolder **initjobs**)
+- Installation of plugin "Copy artefacts"
+- Installation of plugin "Green balls"
+- Installation of plugin "Parametrized trigger"
+- Creating of initial Jobs (import from subfolder **initjobs**)
 
 ## Configuring Jenkins
 After starting container you can login with default user (init:init123). After login it is necessary to perform several manual configurations steps:
-- Jenkins's Getting Start Wizard: you are free to install any additional plugins you need (like git)
+- Jenkins's Getting Start Wizard: you are free to install any additional plugins you need (like git). The simpliest way is to install all recommenden plugins.
+- **IMPORTANT!** Restart Docker container
 - Confugure JDK: *Manage Jenkins* > *Global Tool Configuration* > *Add JDK* > Select needed JDK Version (must be java 8), name it as _**def_jdk**_. Don't forget to accept the lisence!!
 - Configure Maven:*Manage Jenkins* > *Global Tool Configuration* > *Add Maven* > Select needed Maven Version (must be >3.3), name it as _**def_mvn**_
 
-## Configuring Jobs
-Jobs might be not fully configured after installing. One option is to simply copy or import jobs from another Jenkins environment (e.g local). Another possibility is to configure Jobs manually:
+## Configuring Jobs (if necessary)
+Jobs must be fully configured after installing. If it is not the case (e.g. because of outdated configuration xml of imported jobs) there is a possibility to configure Jobs manually:
 - **01-hogarama-compile** : Configure SCM in the Job (for the repo https://github.com/Gepardec/Hogarama.git)
 - **02-build-image** : Configure "Copy artefacts" build step from previous job (\*\*/hogajama-pkg/\*\*)
 - **02-build-image** : Configure trigger of _03-hogajama-deploy_ using param _environment=local_ or _environment=aws_
