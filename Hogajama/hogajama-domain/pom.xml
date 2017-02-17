@@ -11,16 +11,4 @@
     
     <artifactId>hogajama-domain</artifactId>
 	<packaging>jar</packaging>
-	
-	<url>http://maven.apache.org</url>
-	<dependencies>
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-	</dependencies>
-	<build>
-	</build>
 </project>

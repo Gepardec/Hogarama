@@ -14,16 +14,13 @@
 
 	<url>http://maven.apache.org</url>
 	<dependencies>
-
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<scope>provided</scope>
+			<groupId>com.gepardec.hogajama</groupId>
+			<artifactId>hogajama-services</artifactId>
 		</dependency>
 	</dependencies>
 
 	<properties>
-		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -49,7 +46,6 @@
 							<goal>copy</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${endorsed.dir}</outputDirectory>
 							<silent>true</silent>
 							<artifactItems>
 								<artifactItem>
