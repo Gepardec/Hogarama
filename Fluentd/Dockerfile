@@ -36,8 +36,6 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
  && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
 
-COPY config/fluent.conf /fluentd/etc/
-
 RUN useradd fluent -d /home/fluent -m -U
 
 RUN chown -R fluent:fluent /home/fluent
@@ -49,6 +47,8 @@ RUN mkdir -p /fluentd/log
 RUN mkdir -p /fluentd/etc /fluentd/plugins
 
 RUN chown -R fluent:fluent /fluentd
+
+COPY config/fluent.conf /fluentd/etc/
 
 USER fluent
 
