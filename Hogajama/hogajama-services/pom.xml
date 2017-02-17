@@ -8,19 +8,21 @@
 		<groupId>com.gepardec.hogajama</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-    
-    <artifactId>hogajama-services</artifactId>
+
+	<artifactId>hogajama-services</artifactId>
 	<packaging>jar</packaging>
-	
+
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<scope>provided</scope>
+			<artifactId>hogajama-domain</artifactId>
+			<groupId>com.gepardec.hogajama</groupId>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.4.2</version>
+		</dependency>
 	</dependencies>
-	<build>
-	</build>
 </project>
