@@ -1,15 +1,30 @@
 package com.gepardec.hogarama.service;
 
+import java.util.Arrays;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 
 @ApplicationScoped
 public class MongoDbClientProducer {
 
+	public static final String HOGAJAMA_DB = "hogajamadb";
+
 	@Produces
 	public MongoClient mongoClient() {
-		return new MongoClient("localhost", 27017);
+
+		String user = "hogajama";
+		String database = HOGAJAMA_DB;
+		char[] password = "hogajama@mongodb".toCharArray();
+
+		MongoCredential credential = MongoCredential.createCredential(user, database, password);
+		MongoClient mongoClient = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
+		
+		return mongoClient;
 	}
 }
