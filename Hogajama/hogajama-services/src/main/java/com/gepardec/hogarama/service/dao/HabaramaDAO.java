@@ -11,8 +11,6 @@ import org.bson.Document;
 import com.gepardec.hogarama.domain.Habarama;
 import com.gepardec.hogarama.service.MongoDbClientProducer;
 import com.mongodb.Block;
-import com.mongodb.DB;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -35,8 +33,6 @@ public class HabaramaDAO {
 	};
 
 	public List<Habarama> query() {
-
-		DB db = mongoClient.getDB(MongoDbClientProducer.HOGAJAMA_DB);
 
 		MongoDatabase database = mongoClient.getDatabase(MongoDbClientProducer.HOGAJAMA_DB);
 		MongoCollection<Document> collection = database.getCollection(HABARAMA_JSON);
