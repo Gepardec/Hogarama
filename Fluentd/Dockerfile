@@ -36,6 +36,8 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
  && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
 
+COPY config/fluent.conf /fluentd/etc/
+
 RUN useradd fluent -d /home/fluent -m -U
 
 RUN chown -R fluent:fluent /home/fluent
@@ -48,15 +50,14 @@ RUN mkdir -p /fluentd/etc /fluentd/plugins
 
 RUN chown -R fluent:fluent /fluentd
 
-USER fluent 
+USER fluent
+
 WORKDIR /home/fluent
 
 # Tell ruby to install packages as user RUN echo "gem: --user-install --no-document" >> ~/.gemrc
 
-ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH 
-ENV GEM_PATH /home/fluent/.gem/ruby/2.3.0:$GEM_PATH 
-
-COPY config/fluent.conf /fluentd/etc/
+ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH
+ENV GEM_PATH /home/fluent/.gem/ruby/2.3.0:$GEM_PATH
 
 ENV FLUENTD_OPT="" 
 ENV FLUENTD_CONF="fluent.conf" 
