@@ -50,7 +50,8 @@ RUN mkdir -p /fluentd/etc /fluentd/plugins
 
 RUN chown -R fluent:fluent /fluentd
 
-USER fluent 
+USER fluent
+
 WORKDIR /home/fluent
 
 # Tell ruby to install packages as user RUN echo "gem: --user-install --no-document" >> ~/.gemrc
