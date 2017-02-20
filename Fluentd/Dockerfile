@@ -65,4 +65,4 @@ ENV LD_PRELOAD="/usr/lib/libjemalloc.so.2"
 
 EXPOSE 24224 5140 
 
-CMD exec fluentd -c /fluentd/etc/$FLUENTD_CONF -p /fluentd/plugins $FLUENTD_OPT
+CMD exec fluentd -v -c /fluentd/etc/$FLUENTD_CONF -p /fluentd/plugins $FLUENTD_OPT
