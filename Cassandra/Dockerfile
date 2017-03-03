@@ -1,13 +1,19 @@
 # vim:set ft=dockerfile:
+#FROM centos:latest
+#FROM debian:stretch-slim
+#FROM ubuntu:16.04
+
 FROM debian:jessie-backports
+#FROM registry.access.redhat.com/rhel7.3
+
 
 # explicitly set user/group IDs
-RUN groupadd -r cassandra --gid=999 && useradd -r -g cassandra -d /home/cassandra -m --uid=999 cassandra
+RUN groupadd -r  cassandra --gid=699 && useradd -r -g cassandra --uid=699 cassandra
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
 RUN set -x \
-	&& apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
+	&& yum update && yum install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
 	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
 	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
 	&& export GNUPGHOME="$(mktemp -d)" \
@@ -16,10 +22,13 @@ RUN set -x \
 	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
 	&& gosu nobody true \
-	&& apt-get purge -y --auto-remove ca-certificates wget
+	&& yum purge -y --auto-remove ca-certificates wget
+
+USER cassandra
+WORKDIR /home/cassandra
 
 # solves warning: "jemalloc shared library could not be preloaded to speed up memory allocations"
-RUN apt-get update && apt-get install -y --no-install-recommends libjemalloc1 && rm -rf /var/lib/apt/lists/*
+RUN yum update && yum install -y --no-install-recommends libjemalloc1 && rm -rf /var/lib/apt/lists/*
 
 # https://github.com/docker-library/cassandra/pull/98#issuecomment-280761137
 RUN { \
@@ -47,8 +56,8 @@ RUN echo 'deb http://www.apache.org/dist/cassandra/debian 310x main' >> /etc/apt
 
 ENV CASSANDRA_VERSION 3.10
 
-RUN apt-get update \
-	&& apt-get install -y cassandra="$CASSANDRA_VERSION" \
+RUN yum update \
+	&& yum install -y cassandra="$CASSANDRA_VERSION" \
 	&& rm -rf /var/lib/apt/lists/*
 
 # https://issues.apache.org/jira/browse/CASSANDRA-11661
@@ -58,12 +67,6 @@ ENV CASSANDRA_CONFIG /etc/cassandra
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
-
-RUN chown -R cassandra:cassandra /home/cassandra
-
-USER cassandra
-
-WORKDIR /home/cassandra
 
 RUN mkdir -p /var/lib/cassandra "$CASSANDRA_CONFIG" \
 	&& chown -R cassandra:cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" \
