@@ -3,6 +3,16 @@
  */
 
 $(document).ready(function (e) { 
+	
+	
+	var habarama_system_uptime = 0;
+	$.get("/hogajama-rs/rest/helloworld/mongodb/1", function(response){
+    	//console.log(response.system_uptime);
+		if(response.system_uptime > 0) {
+			habarama_system_uptime = response.system_uptime;
+		}
+    });
+	
     var uptimeChart = Highcharts.chart('uptime-chart', {
         chart: {
             type: 'bar'
@@ -26,7 +36,7 @@ $(document).ready(function (e) {
             data: [3]
         }, {
             name: 'Node 3 (Live Data)',
-            data: [5]
+            data: [ habarama_system_uptime ]
         }]
     });
     
