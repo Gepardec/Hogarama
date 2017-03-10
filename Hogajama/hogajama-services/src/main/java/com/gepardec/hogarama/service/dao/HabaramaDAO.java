@@ -46,14 +46,12 @@ public class HabaramaDAO {
 		MongoDatabase database = mongoClient.getDatabase(MongoDbClientProducer.HOGAJAMA_DB);
 		MongoCollection<Document> collection = database.getCollection(HABARAMA_JSON);
 		collection.find().forEach(printBlock);
-		if(maxNumber == -1) {
-			maxNumber = list.size();
-		}
-		if(maxNumber > list.size()) {
-			maxNumber = list.size();
+		int lowerBound = list.size() - maxNumber;
+		if ( maxNumber == -1 || maxNumber > list.size()) {
+			lowerBound = 0;
 		}
 		
-		for ( int x = 0; x < maxNumber; x++ ) {
+		for (int x = list.size()-1; x >= lowerBound; x--) {
 			result = result + '\n' + list.get(x);
 		}
 		
