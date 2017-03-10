@@ -1,14 +1,8 @@
 # vim:set ft=dockerfile:
-#FROM centos:latest
-#FROM debian:stretch-slim
-#FROM ubuntu:16.04
-
 FROM debian:jessie-backports
-#FROM registry.access.redhat.com/rhel7.3
-
 
 # explicitly set user/group IDs
-RUN groupadd -r  cassandra --gid=699 && useradd -r -g cassandra --uid=699 cassandra
+RUN groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 cassandra
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
@@ -31,11 +25,11 @@ WORKDIR /home/cassandra
 RUN apt-get update && apt-get install -y --no-install-recommends libjemalloc1 && rm -rf /var/lib/apt/lists/*
 
 # https://github.com/docker-library/cassandra/pull/98#issuecomment-280761137
-#RUN { \
-#		echo 'Package: openjdk-* ca-certificates-java'; \
-#		echo 'Pin: release n=*-backports'; \
-#		echo 'Pin-Priority: 990'; \
-#	} > /etc/apt/preferences.d/java-backports
+RUN { \
+		echo 'Package: openjdk-* ca-certificates-java'; \
+		echo 'Pin: release n=*-backports'; \
+		echo 'Pin-Priority: 990'; \
+	} > /etc/apt/preferences.d/java-backports
 
 # https://wiki.apache.org/cassandra/DebianPackaging#Adding_Repository_Keys
 ENV GPG_KEYS \
@@ -57,7 +51,9 @@ RUN echo 'deb http://www.apache.org/dist/cassandra/debian 310x main' >> /etc/apt
 ENV CASSANDRA_VERSION 3.10
 
 RUN apt-get update \
-	&& apt-get install -y cassandra="$CASSANDRA_VERSION" \
+	&& apt-get install -y \
+		cassandra="$CASSANDRA_VERSION" \
+		cassandra-tools="$CASSANDRA_VERSION" \
 	&& rm -rf /var/lib/apt/lists/*
 
 # https://issues.apache.org/jira/browse/CASSANDRA-11661
