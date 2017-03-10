@@ -18,8 +18,7 @@ RUN set -x \
 	&& gosu nobody true \
 	&& apt-get purge -y --auto-remove ca-certificates wget
 
-USER cassandra
-WORKDIR /home/cassandra
+
 
 # solves warning: "jemalloc shared library could not be preloaded to speed up memory allocations"
 RUN apt-get update && apt-get install -y --no-install-recommends libjemalloc1 && rm -rf /var/lib/apt/lists/*
@@ -75,4 +74,8 @@ VOLUME /var/lib/cassandra
 # 9042: CQL
 # 9160: thrift service
 EXPOSE 7000 7001 7199 9042 9160
+
+USER cassandra
+WORKDIR /home/cassandra
+
 CMD ["cassandra", "-f"]
