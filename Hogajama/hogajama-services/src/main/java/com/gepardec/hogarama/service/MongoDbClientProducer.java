@@ -23,7 +23,7 @@ public class MongoDbClientProducer {
 		char[] password = "hogajama@mongodb".toCharArray();
 
 		MongoCredential credential = MongoCredential.createCredential(user, database, password);
-		MongoClient mongoClient = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
+		MongoClient mongoClient = new MongoClient(new ServerAddress("mongodb", 27017), Arrays.asList(credential));
 		
 		return mongoClient;
 	}
