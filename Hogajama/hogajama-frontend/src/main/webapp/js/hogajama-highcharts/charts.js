@@ -6,11 +6,21 @@ $(document).ready(function (e) {
 	
 	
 	var habarama_system_uptime = 0;
-	$.get("/hogajama-rs/rest/helloworld/mongodb/1", function(response){
-    	//console.log(response.system_uptime);
-		if(response.system_uptime > 0) {
-			habarama_system_uptime = response.system_uptime;
-		}
+//	$.get("/hogajama-rs/rest/helloworld/mongodb/1", function(response){
+//    	//console.log(response.system_uptime);
+//		if(response.system_uptime > 0) {
+//			habarama_system_uptime = response.system_uptime;
+//		}
+//    });
+	$.ajax({
+        url: '/hogajama-rs/rest/helloworld/mongodb/1',
+        success: function (response) {
+        	//console.log(response.system_uptime);
+        	if(response.system_uptime > 0) {
+    			habarama_system_uptime = response.system_uptime;
+    		}
+        },
+        async: false
     });
 	
     var uptimeChart = Highcharts.chart('uptime-chart', {
