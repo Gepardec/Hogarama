@@ -12,11 +12,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 import com.gepardec.hogarama.domain.Habarama;
+//import com.gepardec.hogarama.service.dao.HabaramaDAO;
 import com.gepardec.hogarama.service.dao.HabaramaDAO;
 
 /**
@@ -48,12 +50,22 @@ public class HelloWorld {
 	}
 	
 	@GET
-	@Path("mongodb")
+	@Path("mongodb/{maxNumber}")
 	@Produces("text/html")
-	public String getMongoDb() {
-		List<Habarama> habarama = habaramaDAO.query();
-		return habarama.toString();
+	public String getMongoDb( @PathParam("maxNumber") int maxNumber ) {
+		String habarama = habaramaDAO.query(maxNumber);
+		return habarama;
 	}
+	
+	@GET
+	@Path("mongodb/")
+	@Produces("text/html")
+	public String getMongoDb( ) {
+		String habarama = habaramaDAO.query();
+		return habarama;
+	}
+	
+	
 	
 	@GET
 	@Path("team-members")

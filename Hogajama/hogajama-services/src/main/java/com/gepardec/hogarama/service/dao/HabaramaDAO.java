@@ -8,8 +8,6 @@ import javax.inject.Inject;
 
 import org.bson.Document;
 
-import com.gepardec.hogarama.domain.Habarama;
-import com.gepardec.hogarama.domain.SensorData;
 import com.gepardec.hogarama.service.MongoDbClientProducer;
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
@@ -24,32 +22,43 @@ public class HabaramaDAO {
 	@Inject
 	private MongoClient mongoClient;
 
-	List<Habarama> list;
-	
-	Habarama habarama;
+	List<String> list;
 
 	Block<Document> printBlock = new Block<Document>() {
 		@Override
 		public void apply(final Document document) {
-			habarama = new Habarama();
-			habarama.setId((Integer) document.get("habarama_id"));
-			SensorData data = new SensorData();
-			Document sensorData = (Document) document.get("sensor_data");
-			data.setComment((String) sensorData.get("comment"));
-			data.setTemp((Double) sensorData.get("temp"));
-			habarama.setSensorData(data);
-			list.add(habarama);
-			System.out.println(document.toJson());
+			list.add(document.toJson());
 		}
 	};
 
-	public List<Habarama> query() {
+	public String query() {
+		return getAllEntries(-1);
+
+	}
+	
+	public String query(int maxNumber) {
+		return getAllEntries(maxNumber);
+	}
+	
+	public String getAllEntries(int maxNumber) {
 		list = new ArrayList<>();
+		String result = new String();
 		MongoDatabase database = mongoClient.getDatabase(MongoDbClientProducer.HOGAJAMA_DB);
 		MongoCollection<Document> collection = database.getCollection(HABARAMA_JSON);
 		collection.find().forEach(printBlock);
-		return list;
-
+		if(maxNumber == -1) {
+			maxNumber = list.size();
+		}
+		if(maxNumber > list.size()) {
+			maxNumber = list.size();
+		}
+		
+		for ( int x = 0; x < maxNumber; x++ ) {
+			result = result + '\n' + list.get(x);
+		}
+		
+		return result;
+		
 	}
 
 }
