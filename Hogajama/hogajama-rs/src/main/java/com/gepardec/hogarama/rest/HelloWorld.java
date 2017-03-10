@@ -51,7 +51,7 @@ public class HelloWorld {
 	
 	@GET
 	@Path("mongodb/{maxNumber}")
-	@Produces("text/html")
+	@Produces("application/json")
 	public String getMongoDb( @PathParam("maxNumber") int maxNumber ) {
 		String habarama = habaramaDAO.query(maxNumber);
 		return habarama;
