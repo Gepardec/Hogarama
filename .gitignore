@@ -1,6 +1,13 @@
+
+# Eclipse
+.metadata/
 .settings*/
-target/
 .classpath
 .project
-.tern-project
+
+# Maven
+target/
+
+# Misc
 *.zip
+.tern-project
