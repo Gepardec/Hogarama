@@ -1,0 +1,20 @@
+
+  <nav class="main-nav-outer" id="navigation"><!--main-nav-start-->
+    <div class="container">
+          <ul class="main-nav">
+              <!--<li><a routerLink="/team" routerLinkActive="active" fragment="top">Home</a></li>-->
+              <li><a pageScroll [routerLink]="['team']" href="#top">Home</a></li>
+              <!--<li><a routerLink="/team" routerLinkActive="active" fragment="team">Team</a></li>-->
+              <li><a pageScroll [routerLink]="['team']" href="#team">Team</a></li>
+              <!--<li><a href="#contact">Contact</a></li>-->
+              <li><a pageScroll [routerLink]="['team']" href="#contact">Contact</a></li>
+             <!-- <li><a routerLink="/charts" routerLinkActive="active">Habarama Charts</a></li>-->
+              <li><a pageScroll [routerLink]="['charts']" href="#top">Habarama Charts</a></li>
+          </ul>
+          <a class="res-nav_click" href="#"><i class="fa-bars"></i></a>
+      </div>
+  </nav><!--main-nav-end-->
+
+  <div id="top"></div>
+
+  <router-outlet></router-outlet>

@@ -1,0 +1,14 @@
+{
+    "angulardoc.repoId": "64f93fe9-4516-496d-8b93-863f358321db",
+    "angulardoc.lastSync": 0,
+
+    // Configure glob patterns for excluding files and folders.
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/.DS_Store": true,
+      "**/*.js": true,
+      "**/*.js.map": true
+    }
+}
