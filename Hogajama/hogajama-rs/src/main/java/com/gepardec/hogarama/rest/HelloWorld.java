@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
 
@@ -17,7 +15,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-import com.gepardec.hogarama.domain.Habarama;
+import org.apache.cassandra.thrift.InvalidRequestException;
+import org.apache.cassandra.thrift.TimedOutException;
+import org.apache.cassandra.thrift.UnavailableException;
+import org.apache.thrift.TException;
+
 //import com.gepardec.hogarama.service.dao.HabaramaDAO;
 import com.gepardec.hogarama.service.dao.HabaramaDAO;
 
@@ -65,8 +67,6 @@ public class HelloWorld {
 		return habarama;
 	}
 	
-	
-	
 	@GET
 	@Path("team-members")
 	@Produces("text/html")
@@ -99,5 +99,15 @@ public class HelloWorld {
 //		System.out.println(response.toString());
 		return response.toString();
 	}
+	
+	@GET
+	@Path("cassandra/")
+	@Produces("text/html")
+	public String getCassandra() throws InvalidRequestException, TException, UnavailableException, TimedOutException {
+		return habaramaDAO.retrieveDataFromCassandra();
+	}
+	
+	
+	
 	
 }
