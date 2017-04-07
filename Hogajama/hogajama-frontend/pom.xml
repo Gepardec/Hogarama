@@ -55,23 +55,23 @@
         </plugins>
     </build>
     
-    <profiles>
-		<profile>
-			<id>openshift</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>2.3</version>
-						<configuration>
-							<failOnMissingWebXml>false</failOnMissingWebXml>
-							<outputDirectory>deployments</outputDirectory>
-							<warName>hogajama-frontend</warName>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+<!--     <profiles> -->
+<!-- 		<profile> -->
+<!-- 			<id>openshift</id> -->
+<!-- 			<build> -->
+<!-- 				<plugins> -->
+<!-- 					<plugin> -->
+<!-- 						<artifactId>maven-war-plugin</artifactId> -->
+<!-- 						<version>2.3</version> -->
+<!-- 						<configuration> -->
+<!-- 							<failOnMissingWebXml>false</failOnMissingWebXml> -->
+<!-- 							<outputDirectory>deployments</outputDirectory> -->
+<!-- 							<warName>hogajama-frontend</warName> -->
+<!-- 						</configuration> -->
+<!-- 					</plugin> -->
+<!-- 				</plugins> -->
+<!-- 			</build> -->
+<!-- 		</profile> -->
+<!-- 	</profiles> -->
 
 </project>
