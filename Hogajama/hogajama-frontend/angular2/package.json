@@ -4,6 +4,7 @@
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
+    "build": "ng build --output-path=../src/main/webapp/ --target=production",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test",
