@@ -14,15 +14,26 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <enforcer.skip>true</enforcer.skip>
     </properties>
     
     <build>
         <plugins>
             <plugin>
+                <!-- Not yet supported by builder image
+                    -> requires Maven 3.1, but only 3.0.5 available  -->
+                <!--groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.4</version-->
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.4</version>
+                <version>0.0.22</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-utils</artifactId>
+                        <version>2.1</version>
+                    </dependency>
+                </dependencies>
                 
                 <configuration>
                     <workingDirectory>angular2</workingDirectory>
