@@ -74,6 +74,29 @@
                 </executions>
             </plugin>
             <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/webapp</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>${basedir}/angular2/WEB-INF</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>              
+                        </configuration>            
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
@@ -105,6 +128,25 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                <filesets>
+                    <fileset>
+                        <directory>src/main/webapp/</directory>
+                        <includes>
+                            <include>**/*</include>
+                        </includes>
+                        <!--excludes>
+                            <exclude>**/WEB-INF/</exclude>
+                        </excludes-->
+                        <followSymlinks>false</followSymlinks>
+                    </fileset>
+                </filesets>
+                </configuration>
             </plugin>
         </plugins>
     </build>
