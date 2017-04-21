@@ -6,10 +6,6 @@ import java.util.List;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
-import org.apache.cassandra.thrift.InvalidRequestException;
-import org.apache.cassandra.thrift.TimedOutException;
-import org.apache.cassandra.thrift.UnavailableException;
-import org.apache.thrift.TException;
 import org.bson.Document;
 
 import com.datastax.driver.core.ResultSet;
@@ -69,7 +65,7 @@ public class HabaramaDAO {
 		
 	}
 	
-	public String retrieveDataFromCassandra() throws InvalidRequestException, TException, UnavailableException, TimedOutException {
+	public String retrieveDataFromCassandra() {
 		try {
 			ResultSet results = cassandraClient.getSession().execute("select * from Hogarama.sensors;");
 			StringBuilder stringBuilder = new StringBuilder();

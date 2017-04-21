@@ -31,6 +31,8 @@
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
+
+			<!-- Interne -->
 			<dependency>
 				<groupId>com.gepardec.hogajama</groupId>
 				<artifactId>hogajama-domain</artifactId>
@@ -42,6 +44,7 @@
 				<version>${project.version}</version>
 			</dependency>
 
+			<!-- Externe -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -98,6 +101,20 @@
 				<groupId>com.mysema.querydsl</groupId>
 				<artifactId>querydsl-jpa</artifactId>
 				<version>3.6.0</version>
+			</dependency>
+
+			<!-- MongoDB Driver -->
+			<dependency>
+				<groupId>org.mongodb</groupId>
+				<artifactId>mongo-java-driver</artifactId>
+				<version>3.4.2</version>
+			</dependency>
+
+			<!-- Cassandra Driver -->
+			<dependency>
+				<groupId>com.datastax.cassandra</groupId>
+				<artifactId>cassandra-driver-core</artifactId>
+				<version>3.1.0</version>
 			</dependency>
 
 			<!-- TESTING -->
