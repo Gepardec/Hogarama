@@ -1,6 +1,5 @@
 package com.gepardec.hogarama.service.dao;
 
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +12,9 @@ import org.apache.cassandra.thrift.UnavailableException;
 import org.apache.thrift.TException;
 import org.bson.Document;
 
-import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
-import com.datastax.driver.core.Session;
+import com.gepardec.hogarama.service.CassandraClient;
 import com.gepardec.hogarama.service.MongoDbClientProducer;
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
@@ -30,6 +28,9 @@ public class HabaramaDAO {
 
 	@Inject
 	private MongoClient mongoClient;
+	
+	@Inject
+	private CassandraClient cassandraClient;
 
 	List<String> list;
 
@@ -69,16 +70,17 @@ public class HabaramaDAO {
 	}
 	
 	public String retrieveDataFromCassandra() throws InvalidRequestException, TException, UnavailableException, TimedOutException {
-		Cluster cluster = Cluster.builder().addContactPointsWithPorts(new InetSocketAddress("origin-metrics", 9042)).build();
-		Session session = cluster.connect();
-		ResultSet results = session.execute("select * from Hogarama.sensors;");
-		StringBuilder stringBuilder = new StringBuilder();
-		for(Row row : results) {
-			System.out.println(row.toString());
-			stringBuilder.append(row.toString()).append(System.getProperty("line.separator"));
+		try {
+			ResultSet results = cassandraClient.getSession().execute("select * from Hogarama.sensors;");
+			StringBuilder stringBuilder = new StringBuilder();
+			for (Row row : results) {
+				System.out.println(row.toString());
+				stringBuilder.append(row.toString()).append(System.getProperty("line.separator"));
+			}
+			return stringBuilder.toString();
+		} finally {
+			cassandraClient.closeSessionAndCluster();
 		}
-		cluster.close();
-		return stringBuilder.toString();
 	}
 
 }
