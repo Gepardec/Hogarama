@@ -15,12 +15,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.cassandra.thrift.InvalidRequestException;
-import org.apache.cassandra.thrift.TimedOutException;
-import org.apache.cassandra.thrift.UnavailableException;
-import org.apache.thrift.TException;
-
-//import com.gepardec.hogarama.service.dao.HabaramaDAO;
 import com.gepardec.hogarama.service.dao.HabaramaDAO;
 
 /**
@@ -103,7 +97,7 @@ public class HelloWorld {
 	@GET
 	@Path("cassandra/")
 	@Produces("text/html")
-	public String getCassandra() throws InvalidRequestException, TException, UnavailableException, TimedOutException {
+	public String getCassandra() {
 		return habaramaDAO.retrieveDataFromCassandra();
 	}
 	
