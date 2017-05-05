@@ -18,7 +18,7 @@ public class CassandraClient {
 	private Session session;
 
 	// TODO: im standalone.xml konfigurieren
-	private String node = "origin-metrics";
+	private String node = "cassandra";
 	private Integer port = 9042;
 
 	private void connect() {
