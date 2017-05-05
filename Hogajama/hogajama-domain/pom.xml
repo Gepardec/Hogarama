@@ -11,4 +11,11 @@
     
     <artifactId>hogajama-domain</artifactId>
 	<packaging>jar</packaging>
+	
+	<dependencies>
+		<dependency>
+		    <groupId>org.codehaus.jackson</groupId>
+		    <artifactId>jackson-mapper-asl</artifactId>
+		</dependency>
+	</dependencies>
 </project>
