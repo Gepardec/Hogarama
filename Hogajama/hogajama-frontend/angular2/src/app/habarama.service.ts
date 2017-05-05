@@ -14,14 +14,14 @@ export class HabaramaService {
   constructor(private http: Http) { }
 
   getHabaramas(): Promise<Habarama[]> {
-    return this.http.get(this.heroesUrl + '/helloworld/mongodb/')
+    return this.http.get(this.heroesUrl + '/sensor/mongodb/')
                .toPromise()
                .then(response => response.json().data as Habarama[])
                .catch(this.handleError);
   }
 
   getHabarama(id: number): Promise<Habarama> {
-    const url = `${this.heroesUrl}/helloworld/mongodb/${id}`;
+    const url = `${this.heroesUrl}/sensor/mongodb/${id}`;
     return this.http.get(url)
       .toPromise()
       .then(response => response.json().data as Habarama)

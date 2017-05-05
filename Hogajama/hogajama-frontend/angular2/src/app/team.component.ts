@@ -89,7 +89,7 @@ export class TeamComponent implements OnInit {
 
       $(document).ready(function(e) {
 
-          $.get("/hogajama-rs/rest/helloworld/team-members", function(response){
+          $.get("/hogajama-rs/rest/team", function(response){
             //console.log(response);
             var team_member_page = $.parseHTML(response);
             var $team_list = $(team_member_page).find(".teamlist");
