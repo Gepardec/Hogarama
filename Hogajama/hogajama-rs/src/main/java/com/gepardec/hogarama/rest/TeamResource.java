@@ -5,23 +5,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 import com.gepardec.hogarama.service.dao.HabaramaDAO;
 
-/**
- * Root resource (exposed at "helloworld" path)
- */
-@Path("helloworld")
-public class HelloWorld {
+@Path("sensor")
+public class TeamResource {
+	
 	@Context
 	private UriInfo context;
 	
@@ -29,37 +25,6 @@ public class HelloWorld {
 	private HabaramaDAO habaramaDAO;
 	
 	private final String USER_AGENT = "Mozilla/5.0";
-	
-	/** Creates a new instance of HelloWorld */
-	public HelloWorld() {
-	}
-
-	/**
-	 * Retrieves representation of an instance of helloWorld.HelloWorld
-	 * 
-	 * @return an instance of java.lang.String
-	 */
-	@GET
-	@Produces("text/html")
-	public String getHtml() {
-		return "<html lang=\"en\"><body><h1>Hogarama!</h1></body></html>";
-	}
-	
-	@GET
-	@Path("mongodb/{maxNumber}")
-	@Produces("application/json")
-	public String getMongoDb( @PathParam("maxNumber") int maxNumber ) {
-		String habarama = habaramaDAO.query(maxNumber);
-		return habarama;
-	}
-	
-	@GET
-	@Path("mongodb/")
-	@Produces("text/html")
-	public String getMongoDb( ) {
-		String habarama = habaramaDAO.query();
-		return habarama;
-	}
 	
 	@GET
 	@Path("team-members")
@@ -77,8 +42,6 @@ public class HelloWorld {
 		con.setRequestProperty("User-Agent", USER_AGENT);
 
 		int responseCode = con.getResponseCode();
-//		System.out.println("\nSending 'GET' request to URL : " + url);
-//		System.out.println("Response Code : " + responseCode);
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
@@ -89,19 +52,7 @@ public class HelloWorld {
 		}
 		in.close();
 
-		//print result
-//		System.out.println(response.toString());
 		return response.toString();
 	}
-	
-	@GET
-	@Path("cassandra/")
-	@Produces("text/html")
-	public String getCassandra() {
-		return habaramaDAO.retrieveDataFromCassandra();
-	}
-	
-	
-	
-	
+
 }

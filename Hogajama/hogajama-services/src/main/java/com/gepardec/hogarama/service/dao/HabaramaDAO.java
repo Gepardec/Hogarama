@@ -36,14 +36,32 @@ public class HabaramaDAO {
 			list.add(document.toJson());
 		}
 	};
-
-	public String query() {
+	
+	public String queryDataFromMongoDb() {
 		return getAllEntries(-1);
-
 	}
 	
-	public String query(int maxNumber) {
+	public String queryDataFromMongoDb(int maxNumber) {
 		return getAllEntries(maxNumber);
+	}
+	
+	public String queryDataFromCassandra() {
+		try {
+			ResultSet results = cassandraClient.getSession().execute("select * from Hogarama.sensors;");
+			StringBuilder stringBuilder = new StringBuilder();
+			for (Row row : results) {
+				System.out.println(row.toString());
+				stringBuilder.append(row.toString()).append(System.getProperty("line.separator"));
+			}
+			return stringBuilder.toString();
+		} finally {
+			cassandraClient.closeSessionAndCluster();
+		}		
+	}
+	
+	//TODO
+	public String queryDataFromCassandra(int maxNumber) {
+		return "Not implemented yet...";
 	}
 	
 	public String getAllEntries(int maxNumber) {
