@@ -1,47 +1,36 @@
 package com.gepardec.hogarama.domain;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
+@Entity("habarama")
 public class SensorData {
 	
-	private long id;
-	private LocalDate timestamp;
+	@Id
+	private String id;
+	private LocalDate time;
 	private String sensorName;
 	private String type;
 	private double value;
 	private String location;
 	private String version;
 
-	//TODO: format timestamp
-	public String toJson() {
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-
-		try {
-			json = mapper.writeValueAsString(this);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return json;
-	}
-
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
 	public LocalDate getTimestamp() {
-		return timestamp;
+		return time;
 	}
 
 	public void setTimestamp(LocalDate timestamp) {
-		this.timestamp = timestamp;
+		this.time = timestamp;
 	}
 
 	public String getSensorName() {

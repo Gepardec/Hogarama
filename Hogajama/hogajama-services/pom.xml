@@ -14,16 +14,21 @@
 
 	<url>http://maven.apache.org</url>
 	<dependencies>
+	
 		<dependency>
 			<artifactId>hogajama-domain</artifactId>
 			<groupId>com.gepardec.hogajama</groupId>
 		</dependency>
 		
-		<!-- MongoDB Driver -->
 		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
+           <groupId>org.mongodb.morphia</groupId>
+           <artifactId>morphia</artifactId>
+        </dependency>
+  
+       	<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
 		</dependency>
-
+		
 	</dependencies>
 </project>
