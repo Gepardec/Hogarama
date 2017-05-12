@@ -15,7 +15,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.gepardec.hogarama.service.dao.HabaramaDAO;
 
-@Path("sensor")
+@Path("team")
 public class TeamResource {
 	
 	@Context
@@ -27,7 +27,7 @@ public class TeamResource {
 	private final String USER_AGENT = "Mozilla/5.0";
 	
 	@GET
-	@Path("team-members")
+	@Path("/")
 	@Produces("text/html")
 	public String getTeamMembers() throws IOException {
 		String url = "http://www.gepardec.com/team/";
@@ -54,5 +54,4 @@ public class TeamResource {
 
 		return response.toString();
 	}
-
 }

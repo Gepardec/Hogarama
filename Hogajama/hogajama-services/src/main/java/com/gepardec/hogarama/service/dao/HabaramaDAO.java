@@ -8,9 +8,6 @@ import javax.inject.Inject;
 
 import org.bson.Document;
 
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
-import com.gepardec.hogarama.service.CassandraClient;
 import com.gepardec.hogarama.service.MongoDbClientProducer;
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
@@ -25,9 +22,6 @@ public class HabaramaDAO {
 	@Inject
 	private MongoClient mongoClient;
 	
-	@Inject
-	private CassandraClient cassandraClient;
-
 	List<String> list;
 
 	Block<Document> printBlock = new Block<Document>() {
@@ -45,30 +39,13 @@ public class HabaramaDAO {
 		return getAllEntries(maxNumber);
 	}
 	
-	public String queryDataFromCassandra() {
-		try {
-			ResultSet results = cassandraClient.getSession().execute("select * from Hogarama.sensors;");
-			StringBuilder stringBuilder = new StringBuilder();
-			for (Row row : results) {
-				System.out.println(row.toString());
-				stringBuilder.append(row.toString()).append(System.getProperty("line.separator"));
-			}
-			return stringBuilder.toString();
-		} finally {
-			cassandraClient.closeSessionAndCluster();
-		}		
-	}
-	
-	//TODO
-	public String queryDataFromCassandra(int maxNumber) {
-		return "Not implemented yet...";
-	}
-	
 	public String getAllEntries(int maxNumber) {
+		
 		list = new ArrayList<>();
 		String result = new String();
 		MongoDatabase database = mongoClient.getDatabase(MongoDbClientProducer.HOGAJAMA_DB);
 		MongoCollection<Document> collection = database.getCollection(HABARAMA_JSON);
+		
 		collection.find().forEach(printBlock);
 		int lowerBound = list.size() - maxNumber;
 		if ( maxNumber == -1 || maxNumber > list.size()) {
@@ -81,20 +58,6 @@ public class HabaramaDAO {
 		
 		return result;
 		
-	}
-	
-	public String retrieveDataFromCassandra() {
-		try {
-			ResultSet results = cassandraClient.getSession().execute("select * from Hogarama.sensors;");
-			StringBuilder stringBuilder = new StringBuilder();
-			for (Row row : results) {
-				System.out.println(row.toString());
-				stringBuilder.append(row.toString()).append(System.getProperty("line.separator"));
-			}
-			return stringBuilder.toString();
-		} finally {
-			cassandraClient.closeSessionAndCluster();
-		}
 	}
 
 }

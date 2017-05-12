@@ -24,12 +24,6 @@
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 		</dependency>
-		
-		<!-- Cassandra Driver -->
-		<dependency>
-		  <groupId>com.datastax.cassandra</groupId>
-		  <artifactId>cassandra-driver-core</artifactId>
-		</dependency>
 
 	</dependencies>
 </project>

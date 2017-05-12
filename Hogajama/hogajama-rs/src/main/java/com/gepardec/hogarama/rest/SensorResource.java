@@ -35,20 +35,4 @@ public class SensorResource {
 		return habarama;
 	}	
 	
-	@GET
-	@Path("cassandra/")
-	@Produces("application/json")
-	public String getCassandra() {
-		System.out.println("Cassandra.getCassandra");
-		return habaramaDAO.queryDataFromCassandra();
-	}
-	
-	@GET
-	@Path("cassandra/{maxNumber}")
-	@Produces("application/json")
-	public String getCassandra(@PathParam("maxNumber") int maxNumber ) {
-		System.out.println("Cassandra.getCassandra(parameter)");
-		return habaramaDAO.queryDataFromCassandra(maxNumber);
-	}
-
 }

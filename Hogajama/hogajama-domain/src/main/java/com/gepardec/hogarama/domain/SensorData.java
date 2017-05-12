@@ -1,17 +1,10 @@
 package com.gepardec.hogarama.domain;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-//import java.util.Date;
-import java.util.Date;
-
-import javax.persistence.Entity;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-@Entity
 public class SensorData {
 	
 	private long id;
