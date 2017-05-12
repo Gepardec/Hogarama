@@ -30,7 +30,6 @@ RUN apt-get update \
  && mv lib/libjemalloc.so.2 /usr/lib \
  && fluent-gem install fluent-plugin-mqtt-io \
  && fluent-gem install fluent-plugin-mongo \
- && fluent-gem install fluent-plugin-cassandra-driver \
  && apt-get purge -y --auto-remove \
                   -o APT::AutoRemove::RecommendsImportant=false \
                   $buildDeps \
