@@ -1,8 +1,8 @@
-FROM debian:stretch-slim 
+FROM debian:stretch-slim:8.7 
 
 MAINTAINER Matthias Kapferer <matthias.kapferer@gepardec.com>
 
-LABEL Description="Fluentd docker image" Vendor="Gepardec IT Services GmbH" Version="1.0"
+LABEL Description="Fluentd docker image" Vendor="Gepardec IT Services GmbH" Version="1.1"
 
 # Do not split this into multiple RUN! 
 # Docker creates a layer for every RUN-Statement 
