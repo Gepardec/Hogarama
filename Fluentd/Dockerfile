@@ -1,4 +1,4 @@
-FROM debian:stretch-slim 
+FROM debian:stretch-slim:8.7 
 
 MAINTAINER Matthias Kapferer <matthias.kapferer@gepardec.com>
 
