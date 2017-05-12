@@ -110,13 +110,6 @@
 				<version>3.4.2</version>
 			</dependency>
 
-			<!-- Cassandra Driver -->
-			<dependency>
-				<groupId>com.datastax.cassandra</groupId>
-				<artifactId>cassandra-driver-core</artifactId>
-				<version>3.1.0</version>
-			</dependency>
-
 			<!-- TESTING -->
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
