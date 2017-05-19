@@ -2,7 +2,7 @@ FROM debian:stretch-slim
 
 MAINTAINER Matthias Kapferer <matthias.kapferer@gepardec.com>
 
-LABEL Description="Fluentd docker image" Vendor="Gepardec IT Services GmbH" Version="1.1"
+LABEL Description="Fluentd docker image" Vendor="Gepardec IT Services GmbH" Version="1.0"
 
 # Do not split this into multiple RUN! 
 # Docker creates a layer for every RUN-Statement 
@@ -28,7 +28,7 @@ RUN apt-get update \
  && cd /tmp && tar -xjf jemalloc-4.4.0.tar.bz2 && cd jemalloc-4.4.0/ \
  && ./configure && make \
  && mv lib/libjemalloc.so.2 /usr/lib \
- && fluent-gem install fluent-plugin-mqtt-io \
+ && fluent-gem install fluent-plugin-mqtt-io -v 0.2.3 \
  && fluent-gem install fluent-plugin-mongo \
  && apt-get purge -y --auto-remove \
                   -o APT::AutoRemove::RecommendsImportant=false \

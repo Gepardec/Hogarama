@@ -20,19 +20,38 @@ public class SensorResource {
 	private HabaramaDAO habaramaDAO;
 	
 	@GET
-	@Path("mongodb/{maxNumber}")
+	@Path("allData/limit={maxNumber}")
 	@Produces("application/json")
-	public String getMongoDb( @PathParam("maxNumber") int maxNumber ) {
-		String habarama = habaramaDAO.queryDataFromMongoDb(maxNumber);
-		return habarama;
+	public String getAllData( @PathParam("maxNumber") int maxNumber ) {
+		return habaramaDAO.getAllSensorData(maxNumber);
 	}
 	
 	@GET
-	@Path("mongodb/")
-	@Produces("text/html")
-	public String getMongoDb( ) {
-		String habarama = habaramaDAO.queryDataFromMongoDb();
-		return habarama;
+	@Path("allData/")
+	@Produces("application/json")
+	public String getAllData( ) {
+		return habaramaDAO.getAllSensorData();
 	}	
+	
+	@GET
+	@Path("/")
+	@Produces("application/json")
+	public String getAllSensors( ) {
+		return habaramaDAO.getAllSensors();
+	}	
+	
+	@GET
+	@Path("allData/sensor={sensorName}")
+	@Produces("application/json")
+	public String getDataBySensorName(@PathParam("sensorName") String sensorName) {
+		return habaramaDAO.getDataBySensorName(sensorName, -1);
+	}
+	
+	@GET
+	@Path("allData/sensor={sensorName}/limit={maxNumber}")
+	@Produces("application/json")
+	public String getDataBySensorName(@PathParam("sensorName") String sensorName, @PathParam("maxNumber") int maxNumber) {
+		return habaramaDAO.getDataBySensorName(sensorName, maxNumber);
+	}
 	
 }
