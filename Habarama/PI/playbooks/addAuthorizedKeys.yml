@@ -1,4 +1,12 @@
 ---
+- name: Clean authorized keys
+  authorized_key:
+    user: pi
+    state: present
+    key: "{{ item }}"
+    exclusive: True
+  with_items:
+    - https://github.com/AdrianFarmadin.keys  
 - name: Add authorized keys
   authorized_key:
     user: pi

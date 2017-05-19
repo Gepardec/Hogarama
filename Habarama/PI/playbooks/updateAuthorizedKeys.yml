@@ -1,5 +1,5 @@
 ---
-- name: Install Habarama
+- name: Update authorized keys
   hosts: pi
   vars:
     ansible_ssh_user: pi
