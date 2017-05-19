@@ -26,7 +26,7 @@ public class HabaramaDAO {
 	List<String> list;
 	
 	public String getAllSensorData() {
-		final Query<SensorData> query = datastore.createQuery(SensorData.class).order("_id");
+		final Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id");
 		final List<SensorData> sensorData = query.asList();
 		return generateJson(sensorData);
 	}
@@ -40,6 +40,15 @@ public class HabaramaDAO {
 	public String getAllSensors() {
 		List<String> list = collection.distinct("sensorName");		
 		return generateJsonForSensorName(list);
+	}
+	
+	public String getDataBySensorName(String sensorName, int maxNumber) {
+		Query<SensorData> query = datastore.createQuery(SensorData.class).field("sensorName").equal(sensorName).order("-_id");
+		if(maxNumber > 0) {
+			query = query.limit(maxNumber);
+		}
+		final List<SensorData> sensorData = query.asList();
+		return generateJson(sensorData);
 	}
 	
 	//TODO: format timestamp
@@ -66,6 +75,9 @@ public class HabaramaDAO {
 			e.printStackTrace();
 		}
 		return json;
-	}	
+	}
+
+
+
 
 }
