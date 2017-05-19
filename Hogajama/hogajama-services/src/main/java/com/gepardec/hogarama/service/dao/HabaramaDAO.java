@@ -11,12 +11,17 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 
 import com.gepardec.hogarama.domain.SensorData;
+import com.mongodb.DBCollection;
+
 
 @Model
 public class HabaramaDAO {
 	
 	@Inject
 	private Datastore datastore;
+	
+	@Inject
+	private DBCollection collection;
 	
 	List<String> list;
 	
@@ -27,9 +32,14 @@ public class HabaramaDAO {
 	}
 	
 	public String getAllSensorData(int maxNumber) {
-		final Query<SensorData> query = datastore.createQuery(SensorData.class).order("_id").limit(maxNumber);
+		final Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id").limit(maxNumber);
 		final List<SensorData> sensorData = query.asList();
 		return generateJson(sensorData);
+	}
+	
+	public String getAllSensors() {
+		List<String> list = collection.distinct("sensorName");		
+		return generateJsonForSensorName(list);
 	}
 	
 	//TODO: format timestamp
@@ -44,5 +54,18 @@ public class HabaramaDAO {
 		}
 		return json;
 	}
+	
+	//TODO: only one generateJson-Method
+	public String generateJsonForSensorName(List<String> sensorNames) {
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+
+		try {
+			json = mapper.writeValueAsString(sensorNames);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}	
 
 }

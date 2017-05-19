@@ -20,7 +20,7 @@ public class SensorResource {
 	private HabaramaDAO habaramaDAO;
 	
 	@GET
-	@Path("mongodb/{maxNumber}")
+	@Path("allData/{maxNumber}")
 	@Produces("application/json")
 	public String getMongoDb( @PathParam("maxNumber") int maxNumber ) {
 		String habarama = habaramaDAO.getAllSensorData(maxNumber);
@@ -28,10 +28,18 @@ public class SensorResource {
 	}
 	
 	@GET
-	@Path("mongodb/")
-	@Produces("text/html")
+	@Path("allData/")
+	@Produces("application/json")
 	public String getMongoDb( ) {
 		String habarama = habaramaDAO.getAllSensorData();
+		return habarama;
+	}	
+	
+	@GET
+	@Path("/")
+	@Produces("application/json")
+	public String getAllSensors( ) {
+		String habarama = habaramaDAO.getAllSensors();
 		return habarama;
 	}	
 	
