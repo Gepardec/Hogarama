@@ -1,0 +1,31 @@
+---
+- name: Basic setup for raspberry pi
+  hosts: pi
+  vars:
+    ansible_user: pi
+    ansible_ssh_pass: raspberry
+  tasks:
+  - include: addAuthorizedKeys.yml
+  - name: Disallow root SSH access
+    become: yes
+    lineinfile: 
+      dest: /etc/ssh/sshd_config
+      regexp: ^PermitRootLogin
+      line: PermitRootLogin no
+      state: present
+    notify: Restart ssh
+  - name: Disallow password authentication
+    become: yes
+    lineinfile: 
+      dest: /etc/ssh/sshd_config
+      regexp: ^PasswordAuthentication
+      line: PasswordAuthentication no
+      state: present
+    notify: Restart ssh
+  handlers:
+    - name: Restart ssh
+      become: yes
+      service: 
+        name: ssh
+        state: restarted
+...
