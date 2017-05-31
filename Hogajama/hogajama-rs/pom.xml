@@ -81,7 +81,7 @@
 			                <goal>generate</goal>
 			            </goals>
 			            <configuration>
-			                <inputSpec>${project.basedir}/src/main/resources/hogajama.swagger.yaml</inputSpec>
+			                <inputSpec>${project.basedir}/src/main/swagger/hogajama.swagger.yaml</inputSpec>
 			                <language>jaxrs-resteasy-eap</language>
 			                
 			                <generateSupportingFiles>false</generateSupportingFiles>
