@@ -25,6 +25,12 @@
 		    <version>1.5.13</version>
 		</dependency>
 		
+		<dependency>
+		    <groupId>io.swagger</groupId>
+		    <artifactId>swagger-jaxrs</artifactId>
+		    <version>1.5.0</version>
+		</dependency>
+		
 	</dependencies>
 
 	<properties>
@@ -65,7 +71,86 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+			    <groupId>io.swagger</groupId>
+			    <artifactId>swagger-codegen-maven-plugin</artifactId>
+			    <version>2.2.2</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>generate</goal>
+			            </goals>
+			            <configuration>
+			                <inputSpec>${project.basedir}/src/main/resources/hogajama.swagger.yaml</inputSpec>
+			                <language>jaxrs-resteasy-eap</language>
+			                
+			                <generateSupportingFiles>false</generateSupportingFiles>
+			                <ignoreFileOverride>${project.basedir}/ignore.txt</ignoreFileOverride>
+			                <configOptions>
+			                    <sourceFolder>/</sourceFolder>
+			                   <packageName>com.gepardec.hogarama.rest</packageName>
+			                   <groupId>com.gepardec</groupId>
+			                   <apiPackage>com.gepardec.hogarama.rest</apiPackage>
+			                   <modelPackage>com.gepardec.hogarama.rest</modelPackage>
+			                </configOptions>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+			
+			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>build-helper-maven-plugin</artifactId>
+		        <version>3.0.0</version>
+		        <executions>
+		          <execution>
+		            <id>add-source</id>
+		            <phase>generate-sources</phase>
+		            <goals>
+		              <goal>add-source</goal>
+		            </goals>
+		            <configuration>
+		              <sources>
+		                <source>${project.basedir}/target/generated-sources/swagger</source>
+		              </sources>
+		            </configuration>
+		          </execution>
+		        </executions>
+		      </plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>io.swagger</groupId>
+										<artifactId>
+											swagger-codegen-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.2.2,)
+										</versionRange>
+										<goals>
+											<goal>generate</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<profiles>

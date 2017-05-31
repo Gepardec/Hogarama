@@ -1,0 +1,6 @@
+{
+  "packageName" : "com.gepardec.hogarama.rest",
+  "groupId":"com.gepardec",
+  "apiPackage":"com.gepardec.hogarama.rest",
+  "modelPackage":"com.gepardec.hogarama.domain"
+}

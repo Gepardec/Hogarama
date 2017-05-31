@@ -1,0 +1,4 @@
+**/*Impl.java
+**/RestApplication.java
+**/JacksonConfig.java
+**/webapp/*
