@@ -18,6 +18,13 @@
 			<groupId>com.gepardec.hogajama</groupId>
 			<artifactId>hogajama-services</artifactId>
 		</dependency>
+		
+		<dependency>
+		    <groupId>io.swagger</groupId>
+		    <artifactId>swagger-annotations</artifactId>
+		    <version>1.5.13</version>
+		</dependency>
+		
 	</dependencies>
 
 	<properties>
@@ -26,7 +33,6 @@
 
 	<build>
 		<plugins>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>

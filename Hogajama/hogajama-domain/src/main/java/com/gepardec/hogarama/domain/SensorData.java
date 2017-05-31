@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.domain;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -10,7 +10,7 @@ public class SensorData {
 	
 	@Id
 	private String id;
-	private LocalDate time;
+	private Date time;
 	private String sensorName;
 	private String type;
 	private double value;
@@ -25,12 +25,13 @@ public class SensorData {
 		this.id = id;
 	}
 
-	public LocalDate getTimestamp() {
+	public Date getTime() {
 		return time;
 	}
 
-	public void setTimestamp(LocalDate timestamp) {
-		this.time = timestamp;
+	public void setTime(Date time) {
+		this.time = time;
+		System.out.println(this.time);
 	}
 
 	public String getSensorName() {
