@@ -12,7 +12,6 @@
 		<module>hogajama-services</module>
 		<module>hogajama-domain</module>
 		<module>hogajama-rs</module>
-		<module>hogajama-frontend</module>
 		<module>hogajama-test</module>
 		<module>hogajama-pkg</module>
 	</modules>
