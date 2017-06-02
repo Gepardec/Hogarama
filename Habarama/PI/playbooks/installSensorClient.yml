@@ -11,12 +11,56 @@
       regexp: dtparam=spi=on
       line: dtparam=spi=on
       state: present
-  - name: Restart Pi to boot with SPI active
+    notify:
+      - restart
+  - meta: flush_handlers
+  - name: Update cache and upgrade
+    become: yes
+    apt:
+      update_cache: yes
+      upgrade: yes
+  - name: Install gcc
+    become: yes
+    apt:
+      name: gcc
+      state: latest
+  - name: Install oracle-java8-jdk
+    become: yes
+    apt:
+      name: oracle-java8-jdk
+      state: latest
+  - name: Install maven
+    become: yes
+    apt:
+      name: maven
+      state: present
+  - name: Install git-core
+    become: yes
+    apt:
+      name: git-core
+      state: present
+  - name: Install tree
+    become: yes
+    apt:
+      name: tree
+      state: present
+  - name: Checkout Pi4J
+    git:
+      repo: 'https://github.com/Pi4J/pi4j.git'
+      dest: "{{ ansible_env.HOME}}/Pi4J"
+      force: yes
+  - name: Build Pi4J
+    command: mvn clean install
+    args:
+      chdir: "{{ ansible_env.HOME}}/Pi4J"
+  handlers:
+  - name: Restart Pi
     become: yes
     command: /sbin/shutdown -r +1
     async: 0
     poll: 0
     ignore_errors: true
+    listen: restart
   - name: Wait for Pi to boot
     local_action: wait_for host={{ inventory_hostname }} 
       state=started 
@@ -24,8 +68,5 @@
       delay=80 
       timeout=300 
       connect_timeout=15
-  - name: Checkout Pi4J
-    git:
-      repo: 'https://github.com/Pi4J/pi4j.git'
-      dest: "{{ ansible_env.HOME}}/Pi4J"
+    listen: restart
 ...
