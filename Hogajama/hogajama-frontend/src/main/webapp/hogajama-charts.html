@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, maximum-scale=1">
+
+<title>Hogarama</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="shortcut icon" href="favicon.ico" type="img/x-icon">
+
+<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800italic,700italic,600italic,400italic,300italic,800,700,600' rel='stylesheet' type='text/css'>
+
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/font-awesome.css" rel="stylesheet" type="text/css">
+<link href="css/responsive.css" rel="stylesheet" type="text/css">
+<link href="css/animate.css" rel="stylesheet" type="text/css">
+<link href="css/highcharts.css" rel="stylesheet" type="text/css">
+
+<!--[if IE]><style type="text/css">.pie {behavior:url(PIE.htc);}</style><![endif]-->
+
+<script type="text/javascript" src="js/jquery.1.8.3.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/jquery-scrolltofixed.js"></script>
+<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="js/jquery.isotope.js"></script>
+<script type="text/javascript" src="js/wow.js"></script>
+<script type="text/javascript" src="js/classie.js"></script>
+
+
+<!--[if lt IE 9]>
+    <script src="js/respond-1.1.0.min.js"></script>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/html5element.js"></script>
+<![endif]-->
+
+
+</head>
+<body>
+
+<!-- <div style="overflow:hidden;"> -->
+
+<!-- 	<header class="header" id="header">header-start -->
+<!-- 		<div class="container"> -->
+<!-- 	    	<figure class="logo animated fadeInDown delay-07s"> -->
+<!-- 	        	<a href="#"><img src="img/logo.png" alt=""></a>	 -->
+<!-- 	        </figure>	 -->
+<!-- 	        <h1 class="animated fadeInDown delay-07s">Welcome To Hogarama</h1> -->
+<!-- 	        <ul class="we-create animated fadeInUp delay-1s"> -->
+<!-- 	        	<li>This is the home&garden automation project of Gepardec</li> -->
+<!-- 	        </ul> -->
+<!-- 	            <a class="link animated fadeInUp delay-1s" href="#">Let's go</a> -->
+<!-- 	    </div> -->
+<!-- 	</header>header-end -->
+
+<!-- </div> -->
+
+
+
+<!--nav class="main-nav-outer" id="test">
+	<div class="container">
+        <ul class="main-nav">
+        	<li><a href="#header">Home</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a class="res-nav_click" href="#"><i class="fa-bars"></i></a>
+    </div>
+</nav-->
+
+<section class="main-section charts" id="team"><!--"main-section charts"-start-->
+
+	<!--div id="uptime-chart" style="width:100%; height:400px;"></div>
+
+	<div id="fruit-chart" style="width:100%; height:400px;"></div-->
+    <div class="sk-circle" id="spinner">
+        <div class="sk-circle1 sk-child"></div>
+        <div class="sk-circle2 sk-child"></div>
+        <div class="sk-circle3 sk-child"></div>
+        <div class="sk-circle4 sk-child"></div>
+        <div class="sk-circle5 sk-child"></div>
+        <div class="sk-circle6 sk-child"></div>
+        <div class="sk-circle7 sk-child"></div>
+        <div class="sk-circle8 sk-child"></div>
+        <div class="sk-circle9 sk-child"></div>
+        <div class="sk-circle10 sk-child"></div>
+        <div class="sk-circle11 sk-child"></div>
+        <div class="sk-circle12 sk-child"></div>
+    </div>
+    <div id="moisture-chart" style="width:100%; height:400px;" class="hidden"></div>
+
+</section><!--"main-section charts"-end-->
+
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-logo"><a href="#"><img src="img/footer-logo.png" alt=""></a></div>
+        <span class="copyright">Copyright © 2016 | <a href="#">Hogarama</a> by Gepardec</span>
+    </div>
+    <!--
+        All links in the footer should remain intact.
+        Licenseing information is available at: http://bootstraptaste.com/license/
+        You can buy this theme without footer links online at: http://bootstraptaste.com/buy/?theme=Knight
+    -->
+</footer>
+
+
+<script type="text/javascript">
+    $(document).ready(function(e) {
+        $('#test').scrollToFixed();
+        $('.res-nav_click').click(function(){
+            $('.main-nav').slideToggle();
+            return false
+
+        });
+
+    });
+</script>
+
+  <script>
+    wow = new WOW(
+      {
+        animateClass: 'animated',
+        offset:       100
+      }
+    );
+    wow.init();
+
+  </script>
+
+
+<script type="text/javascript">
+	$(window).load(function(){
+
+		$('.main-nav li a').bind('click',function(event){
+			var $anchor = $(this);
+
+			$('html, body').stop().animate({
+				scrollTop: $($anchor.attr('href')).offset().top - 102
+			}, 1500,'easeInOutExpo');
+			/*
+			if you don't want to use the easing effects:
+			$('html, body').stop().animate({
+				scrollTop: $($anchor.attr('href')).offset().top
+			}, 1000);
+			*/
+			event.preventDefault();
+		});
+	})
+</script>
+
+<script type="text/javascript">
+
+$(window).load(function(){
+
+
+  var $container = $('.portfolioContainer'),
+      $body = $('body'),
+      colW = 375,
+      columns = null;
+
+
+  $container.isotope({
+    // disable window resizing
+    resizable: true,
+    masonry: {
+      columnWidth: colW
+    }
+  });
+
+  $(window).smartresize(function(){
+    // check if columns has changed
+    var currentColumns = Math.floor( ( $body.width() -30 ) / colW );
+    if ( currentColumns !== columns ) {
+      // set new column count
+      columns = currentColumns;
+      // apply width to container manually, then trigger relayout
+      $container.width( columns * colW )
+        .isotope('reLayout');
+    }
+
+  }).smartresize(); // trigger resize to set container width
+  $('.portfolioFilter a').click(function(){
+        $('.portfolioFilter .current').removeClass('current');
+        $(this).addClass('current');
+
+        var selector = $(this).attr('data-filter');
+        $container.isotope({
+
+            filter: selector,
+         });
+         return false;
+    });
+
+});
+
+</script>
+
+<script src="js/highcharts.js"></script>
+<script type="text/javascript" src="js/themes/gray.js"></script>
+
+<script type="text/javascript" src="js/hogajama-highcharts/charts.js"></script>
+
+</body>
+</html>
