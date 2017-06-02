@@ -11,3 +11,7 @@ target/
 # Misc
 *.zip
 .tern-project
+
+#IDEA
+.idea*
+*.iml

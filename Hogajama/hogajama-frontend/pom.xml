@@ -39,7 +39,7 @@
 					<workingDirectory>angular2</workingDirectory>
 				</configuration>
 
-				<executions>
+				<!--executions>
 					<execution>
 						<id>install node and npm</id>
 						<phase>validate</phase>
@@ -70,7 +70,7 @@
 							<arguments>run build-develop</arguments>
 						</configuration>
 					</execution>
-				</executions>
+				</executions-->
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
