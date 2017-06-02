@@ -131,7 +131,7 @@
 						</configuration>
 
 						<executions>
-							<execution>
+							<!--execution>
 								<id>install node and npm</id>
 								<phase>validate</phase>
 								<goals>
@@ -160,7 +160,7 @@
 								<configuration>
 									<arguments>run build-production</arguments>
 								</configuration>
-							</execution>
+							</execution-->
 						</executions>
 					</plugin>
 					<plugin>

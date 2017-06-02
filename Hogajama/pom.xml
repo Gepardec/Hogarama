@@ -14,6 +14,7 @@
 		<module>hogajama-rs</module>
 		<module>hogajama-test</module>
 		<module>hogajama-pkg</module>
+		<module>hogajama-frontend</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
