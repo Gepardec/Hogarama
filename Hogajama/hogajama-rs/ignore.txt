@@ -1,4 +1,5 @@
-**/*Impl.java
-**/RestApplication.java
-**/JacksonConfig.java
-**/webapp/*
+**/src/**
+**/README.md
+**/build.gradle
+**/pom.xml
+**/settings.gradle
