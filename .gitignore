@@ -1,7 +1,7 @@
 
 # Eclipse
 .metadata/
-.settings*/
+.settings/
 .classpath
 .project
 
@@ -13,5 +13,5 @@ target/
 .tern-project
 
 #IDEA
-.idea*
+.idea/
 *.iml
