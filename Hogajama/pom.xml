@@ -12,9 +12,9 @@
 		<module>hogajama-services</module>
 		<module>hogajama-domain</module>
 		<module>hogajama-rs</module>
-		<module>hogajama-frontend</module>
 		<module>hogajama-test</module>
 		<module>hogajama-pkg</module>
+		<module>hogajama-frontend</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,6 +31,8 @@
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
+
+			<!-- Interne -->
 			<dependency>
 				<groupId>com.gepardec.hogajama</groupId>
 				<artifactId>hogajama-domain</artifactId>
@@ -42,6 +44,7 @@
 				<version>${project.version}</version>
 			</dependency>
 
+			<!-- Externe -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -99,6 +102,13 @@
 				<artifactId>querydsl-jpa</artifactId>
 				<version>3.6.0</version>
 			</dependency>
+
+			<!-- MongoDB Driver -->
+			 <dependency>
+	       		    <groupId>org.mongodb.morphia</groupId>
+	        	    <artifactId>morphia</artifactId>
+		            <version>1.3.2</version>
+		        </dependency>
 
 			<!-- TESTING -->
 			<dependency>

@@ -1,77 +1,219 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
+	<parent>
 		<artifactId>hogajama</artifactId>
 		<groupId>com.gepardec.hogajama</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-    
-    <artifactId>hogajama-frontend</artifactId>
-    <packaging>war</packaging>
 
-    <properties>
-        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-    
-    <build>
-        <plugins>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${endorsed.dir}</outputDirectory>
-                            <silent>true</silent>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>javax</groupId>
-                                    <artifactId>javaee-endorsed-api</artifactId>
-                                    <version>7.0</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-    
-    <profiles>
+	<artifactId>hogajama-frontend</artifactId>
+	<packaging>war</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<generated.webapp.merge.webinf.with.angular2>${project.build.directory}/webapp-copied</generated.webapp.merge.webinf.with.angular2>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<!-- Not yet supported by builder image -> requires Maven 3.1, but only 
+					3.0.5 available -->
+				<!--groupId>com.github.eirslett</groupId> <artifactId>frontend-maven-plugin</artifactId> 
+					<version>1.4</version -->
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>0.0.22</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.plexus</groupId>
+						<artifactId>plexus-utils</artifactId>
+						<version>2.1</version>
+					</dependency>
+				</dependencies>
+
+				<configuration>
+					<workingDirectory>angular2</workingDirectory>
+				</configuration>
+
+				<!--executions>
+					<execution>
+						<id>install node and npm</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>v7.7.3</nodeVersion>
+							<npmVersion>4.5.0</npmVersion>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>npm install</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>npm run build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<arguments>run build-develop</arguments>
+						</configuration>
+					</execution>
+				</executions-->
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${generated.webapp.merge.webinf.with.angular2}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/src/main/webapp</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<warSourceDirectory>${generated.webapp.merge.webinf.with.angular2}</warSourceDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
 		<profile>
 			<id>openshift</id>
 			<build>
 				<plugins>
+					<plugin>
+						<!-- Not yet supported by builder image -> requires Maven 3.1, but 
+							only 3.0.5 available -->
+						<!--groupId>com.github.eirslett</groupId> <artifactId>frontend-maven-plugin</artifactId> 
+							<version>1.4</version -->
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<version>0.0.22</version>
+						<dependencies>
+							<dependency>
+								<groupId>org.codehaus.plexus</groupId>
+								<artifactId>plexus-utils</artifactId>
+								<version>2.1</version>
+							</dependency>
+						</dependencies>
+
+						<configuration>
+							<workingDirectory>angular2</workingDirectory>
+						</configuration>
+
+						<executions>
+							<!--execution>
+								<id>install node and npm</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>install-node-and-npm</goal>
+								</goals>
+								<configuration>
+									<nodeVersion>v7.7.3</nodeVersion>
+									<npmVersion>4.5.0</npmVersion>
+								</configuration>
+							</execution>
+
+							<execution>
+								<id>npm install</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+							</execution>
+
+							<execution>
+								<id>npm run build</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<arguments>run build-production</arguments>
+								</configuration>
+							</execution-->
+						</executions>
+					</plugin>
 					<plugin>
 						<artifactId>maven-war-plugin</artifactId>
 						<version>2.3</version>
 						<configuration>
 							<failOnMissingWebXml>false</failOnMissingWebXml>
 							<outputDirectory>deployments</outputDirectory>
-							<warName>hogajama-frontend</warName>
+							<warSourceDirectory>${generated.webapp.merge.webinf.with.angular2}</warSourceDirectory>
 						</configuration>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
-	</profiles>
+		<profile>
+			<id>watch</id>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- Not yet supported by builder image -> requires Maven 3.1, but 
+							only 3.0.5 available -->
+						<!--groupId>com.github.eirslett</groupId> <artifactId>frontend-maven-plugin</artifactId> 
+							<version>1.4</version -->
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<version>0.0.22</version>
+						<dependencies>
+							<dependency>
+								<groupId>org.codehaus.plexus</groupId>
+								<artifactId>plexus-utils</artifactId>
+								<version>2.1</version>
+							</dependency>
+						</dependencies>
 
+						<configuration>
+							<workingDirectory>angular2</workingDirectory>
+						</configuration>
+
+						<executions>
+							<execution>
+								<id>npm run build</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<arguments>run build-watch</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

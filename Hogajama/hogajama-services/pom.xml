@@ -14,15 +14,21 @@
 
 	<url>http://maven.apache.org</url>
 	<dependencies>
+	
 		<dependency>
 			<artifactId>hogajama-domain</artifactId>
 			<groupId>com.gepardec.hogajama</groupId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+		
 		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-			<version>3.4.2</version>
+           <groupId>org.mongodb.morphia</groupId>
+           <artifactId>morphia</artifactId>
+        </dependency>
+  
+       	<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
 		</dependency>
+		
 	</dependencies>
 </project>

@@ -4,6 +4,9 @@
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
+    "build-production": "ng build --output-path=../target/webapp-copied --prod",
+    "build-develop": "ng build --output-path=../target/webapp-copied --dev",
+    "build-watch": "ng build --watch --output-path=../target/webapp-copied --dev",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test",
