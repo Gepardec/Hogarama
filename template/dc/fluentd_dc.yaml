@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: fluentd_dc
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: hogarama
+    name: fluentd
+  spec:
+    replicas: 1
+    selector:
+      app: fluentd
+      deploymentconfig: fluentd
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/container.fluentd.image.entrypoint: '["/bin/bash"]'
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: fluentd
+          deploymentconfig: fluentd
+      spec:
+        containers:
+        - image: 172.30.194.147:5000/57-hogarama/fluentd@sha256:1ca7231a264da9ec7a7d7149fa227be1206699072ed16b635178053bb39cd003
+          imagePullPolicy: Always
+          name: fluentd
+          ports:
+          - containerPort: 24224
+            protocol: TCP
+          - containerPort: 5140
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /fluentd/log
+            name: fluentd-log-volume
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: fluentd-log-volume
+          persistentVolumeClaim:
+            claimName: fluentd-log-claim
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        containerNames:
+        - fluentd
+        from:
+          kind: ImageStreamTag
+          name: fluentd:latest
+          namespace: 57-hogarama
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0

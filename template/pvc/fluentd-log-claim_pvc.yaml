@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: fluentd-log-claim_pvc
+objects:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: hogarama
+    name: fluentd-log-claim
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+  status: {}

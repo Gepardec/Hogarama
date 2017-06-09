@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: fluentd_svc
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: hogarama
+    name: fluentd
+  spec:
+    ports:
+    - name: 5140-tcp
+      port: 5140
+      protocol: TCP
+      targetPort: 5140
+    - name: 24224-tcp
+      port: 24224
+      protocol: TCP
+      targetPort: 24224
+    selector:
+      app: fluentd
+      deploymentconfig: fluentd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
