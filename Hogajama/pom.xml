@@ -18,6 +18,7 @@
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<org.mapstruct.version>1.1.0.Final</org.mapstruct.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -138,6 +139,12 @@
 				<version>4.5</version>
 				<scope>test</scope>
 			</dependency>
+			
+			<dependency>
+		        <groupId>org.mapstruct</groupId>
+		        <artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
+		        <version>${org.mapstruct.version}</version>
+		    </dependency>
 
 		</dependencies>
 	</dependencyManagement>
@@ -150,6 +157,13 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<annotationProcessorPaths>
+	                    <path>
+	                        <groupId>org.mapstruct</groupId>
+	                        <artifactId>mapstruct-processor</artifactId>
+	                        <version>${org.mapstruct.version}</version>
+	                    </path>
+	                </annotationProcessorPaths>
 				</configuration>
 			</plugin>
 		</plugins>
