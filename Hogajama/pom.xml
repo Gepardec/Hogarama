@@ -15,6 +15,7 @@
 		<module>hogajama-test</module>
 		<module>hogajama-pkg</module>
 		<module>hogajama-frontend</module>
+		<module>hogajama-interfaces</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,6 +43,16 @@
 			<dependency>
 				<groupId>com.gepardec.hogajama</groupId>
 				<artifactId>hogajama-services</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gepardec.hogajama</groupId>
+				<artifactId>hogajama-interfaces-rs</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gepardec.hogajama</groupId>
+				<artifactId>hogajama-interfaces-frontend</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

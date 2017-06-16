@@ -35,6 +35,11 @@
 	        <groupId>org.mapstruct</groupId>
 	        <artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
 	    </dependency>
+	    
+	    <dependency>
+	    	<groupId>com.gepardec.hogajama</groupId>
+	    	<artifactId>hogajama-interfaces-rs</artifactId>
+	    </dependency>
 	
 	</dependencies>
 
@@ -76,52 +81,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-			    <groupId>io.swagger</groupId>
-			    <artifactId>swagger-codegen-maven-plugin</artifactId>
-			    <version>2.2.2</version>
-			    <executions>
-			        <execution>
-			            <goals>
-			                <goal>generate</goal>
-			            </goals>
-			            <configuration>
-			                <inputSpec>${project.basedir}/src/main/swagger/hogajama.swagger.yaml</inputSpec>
-			                <language>jaxrs-resteasy-eap</language>
-			                
-			                <generateSupportingFiles>false</generateSupportingFiles>
-			                <ignoreFileOverride>${project.basedir}/ignore.txt</ignoreFileOverride>
-			                <configOptions>
-			                    <sourceFolder>/</sourceFolder>
-			                   <packageName>com.gepardec.hogarama.rest</packageName>
-			                   <groupId>com.gepardec</groupId>
-			                   <apiPackage>com.gepardec.hogarama.rest</apiPackage>
-			                   <modelPackage>com.gepardec.hogarama.rest</modelPackage>
-			                </configOptions>
-			            </configuration>
-			        </execution>
-			    </executions>
-			</plugin>
-			
-			<plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>build-helper-maven-plugin</artifactId>
-		        <version>3.0.0</version>
-		        <executions>
-		          <execution>
-		            <id>add-source</id>
-		            <phase>generate-sources</phase>
-		            <goals>
-		              <goal>add-source</goal>
-		            </goals>
-		            <configuration>
-		              <sources>
-		                <source>${project.basedir}/target/generated-sources/swagger</source>
-		              </sources>
-		            </configuration>
-		          </execution>
-		        </executions>
-		      </plugin>
 		      
 		      <plugin>
 	            <groupId>org.apache.maven.plugins</groupId>
@@ -152,18 +111,6 @@
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
 								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>io.swagger</groupId>
-										<artifactId>
-											swagger-codegen-maven-plugin
-										</artifactId>
-										<versionRange>
-											[2.2.2,)
-										</versionRange>
-										<goals>
-											<goal>generate</goal>
-										</goals>
-									</pluginExecutionFilter>
 									<action>
 										<ignore></ignore>
 									</action>
