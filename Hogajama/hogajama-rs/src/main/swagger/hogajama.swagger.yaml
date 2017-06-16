@@ -52,6 +52,18 @@ paths:
           type: string
           required: false
           description: Sensorname for which data should be shown
+        - in: query
+          name: from
+          type: string
+          format: date-time
+          required: false
+          description: Start (date, time) from where data entries should be shown
+        - in: query
+          name: to
+          type: string
+          format: date-time
+          required: false
+          description: End (date, time) from where data entries should be shown 
       produces:
         - application/json
       responses:

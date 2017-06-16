@@ -1,6 +1,8 @@
 package com.gepardec.hogarama.rest;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,14 +25,15 @@ public class SensorApiImpl implements SensorApi {
 	private HabaramaDAO habaramaDAO;
 
 	@Override
-	public Response getAllDataMaxNumber(Integer maxNumber, String sensor, SecurityContext securityContext) {
-		List<SensorData> sensorData = SensorMapper.INSTANCE.mapSensors(habaramaDAO.getAllData(maxNumber, sensor));
-		return Response.ok(sensorData).build();
+	public Response getAllSensors(SecurityContext securityContext) {
+		return Response.ok(habaramaDAO.getAllSensors()).build();
 	}
 
 	@Override
-	public Response getAllSensors(SecurityContext securityContext) {
-		return Response.ok(habaramaDAO.getAllSensors()).build();
+	public Response getAllDataMaxNumber(Integer maxNumber, String sensor, Date from, Date to,
+			SecurityContext securityContext) {
+		List<SensorData> sensorData = SensorMapper.INSTANCE.mapSensors(habaramaDAO.getAllData(maxNumber, sensor, from, to));
+		return Response.ok(sensorData).build();
 	}
 	
 }
