@@ -29,6 +29,11 @@
     apt:
       name: oracle-java8-jdk
       state: latest
+  - name: correct java version selected
+    become: yes
+    alternatives:
+      name: java
+      path: /usr/lib/jvm/jdk-8-oracle-arm32-vfp-hflt/jre/bin/java
   - name: Install maven
     become: yes
     apt:
