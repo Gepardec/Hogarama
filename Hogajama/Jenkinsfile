@@ -14,6 +14,10 @@ pipeline {
         jdk 'openjdk 1.8.0'
     }
    
+     environment {
+        JAVA_HOME = '/usr/lib/jvm/jre-1.8.0-openjdk/'
+    }
+   
     stages {
        
         stage('Checkout und Validierung') {
@@ -29,7 +33,6 @@ pipeline {
         stage('Build Hogarama') {
             steps {
 				sh "java -version"
-				sh "which java"
                 sh "mvn clean test"
             }//end steps
             post {
