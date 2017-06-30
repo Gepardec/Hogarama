@@ -25,6 +25,7 @@ pipeline {
                
                 echo "PATH = ${PATH}"
                 echo "M2_HOME = ${M2_HOME}"
+                echo "JAVA_HOME = ${JAVA_HOME}"
                 checkout scm
             }
         }
@@ -34,6 +35,7 @@ pipeline {
             steps {
 				sh "java -version"
                 sh "mvn clean test"
+                
             }//end steps
             post {
                 always {
