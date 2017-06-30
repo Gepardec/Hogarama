@@ -28,7 +28,8 @@ pipeline {
         
         stage('Build Hogarama') {
             steps {
-
+				sh "java -version"
+				sh "which java"
                 sh "mvn clean test"
             }//end steps
             post {
