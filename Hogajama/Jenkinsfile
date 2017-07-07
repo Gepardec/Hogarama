@@ -1,0 +1,47 @@
+#!groovy​
+
+pipeline {
+   
+    agent any
+   
+    triggers {
+        pollSCM 'H/1 * * * *'
+        //funktioniert nicht???
+    }
+   
+    tools {
+        maven 'Maven 3.3.9'
+        jdk 'openjdk 1.8.0'
+    }
+   
+     environment {
+        JAVA_HOME = '/usr/lib/jvm/jre-1.8.0-openjdk/'
+    }
+   
+    stages {
+       
+        stage('Checkout und Validierung') {
+            steps {
+               
+                echo "PATH = ${PATH}"
+                echo "M2_HOME = ${M2_HOME}"
+                echo "JAVA_HOME = ${JAVA_HOME}"
+                checkout scm
+            }
+        }
+       
+        
+        stage('Build Hogarama') {
+            steps {
+				sh "java -version"
+                sh "mvn clean test"
+                
+            }//end steps
+            post {
+                always {
+                    junit "**/surefire-reports/*.xml"
+                }
+            }//end post
+        }//end stage Build Hogarama
+    }//end stages
+}//end Pipeline
