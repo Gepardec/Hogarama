@@ -32,7 +32,7 @@ public class OpenshiftEnvResource {
         if(ret.split("-").length != 3){
             return ret;
         } else {
-            return ret.split("-")[1];
+            return "" + ret.split("-")[2].hashCode();
         }
 
         //return "Not found";
