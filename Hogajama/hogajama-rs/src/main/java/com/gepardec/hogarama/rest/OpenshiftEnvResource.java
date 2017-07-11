@@ -19,4 +19,14 @@ public class OpenshiftEnvResource {
 		return ret != null ? ret : "Not found";
 	}
 
+    @GET
+    @Path("hostname")
+    @Produces("text/html")
+    public String getHostname() throws IOException {
+
+        String ret = System.getenv("HOSTNAME");
+
+        return ret != null ? ret : "Not found";
+    }
+
 }
