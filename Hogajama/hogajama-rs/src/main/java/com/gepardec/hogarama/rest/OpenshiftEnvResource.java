@@ -10,9 +10,9 @@ import javax.ws.rs.Produces;
 public class OpenshiftEnvResource {
 
 	@GET
-	@Path("build-namespace")
+	@Path("stage")
 	@Produces("text/html")
-	public String getBuildNamespace() throws IOException {
+	public String getStage() throws IOException {
 
 	    String ret = System.getenv("STAGE");
 
