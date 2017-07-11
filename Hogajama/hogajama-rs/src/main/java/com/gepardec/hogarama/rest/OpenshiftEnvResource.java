@@ -25,8 +25,17 @@ public class OpenshiftEnvResource {
     public String getHostname() throws IOException {
 
         String ret = System.getenv("HOSTNAME");
+        if(ret == null){
+            return "Not found";
+        }
 
-        return ret != null ? ret : "Not found";
+        if(ret.split("-").length != 3){
+            return ret;
+        } else {
+            return ret.split("-")[1];
+        }
+
+        //return "Not found";
     }
 
 }
