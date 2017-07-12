@@ -82,7 +82,24 @@ $(document).ready(function (e) {
             yAxis: {
                 title: {
                     text: 'Feuchtigkeit'
-                }
+                },
+                plotBands: [
+                    {
+                        color: 'red',
+                        from: 0,
+                        to: 865
+                    },
+                    {
+                        color: 'green',
+                        from: 865,
+                        to: 867
+                    },
+                    {
+                        color: 'blue',
+                        from: 867,
+                        to: 900
+                    }
+                ],
             },
             plotOptions: {
                 line: {
