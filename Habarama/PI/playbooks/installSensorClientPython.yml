@@ -57,6 +57,16 @@
     args:
       chdir: "{{ ansible_env.HOME}}/Adafruit_Python_MCP3008"
     run_once: true
+  - name: Checkout eclipse/paho.mqtt.python
+    git:
+      repo: 'https://github.com/eclipse/paho.mqtt.python.git'
+      dest: "{{ ansible_env.HOME}}/paho.mqtt.python"
+  - name: Build eclipse/paho.mqtt.python
+    become: yes
+    command: python setup.py install
+    args:
+      chdir: "{{ ansible_env.HOME}}/paho.mqtt.python"
+    run_once: true
   handlers:
   - name: Restart Pi
     become: yes
