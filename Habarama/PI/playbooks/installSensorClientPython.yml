@@ -19,6 +19,14 @@
     apt:
       update_cache: yes
       upgrade: yes
+  - name: Install python dependencies
+    become: yes
+    apt: name={{item}} state=installed
+    with_items:
+        - build-essential
+        - python-pip
+        - python-dev
+        - python-smbus
   - name: Install git-core
     become: yes
     apt:
@@ -29,6 +37,26 @@
       repo: 'https://github.com/Gepardec/Hogarama.git'
       dest: "{{ ansible_env.HOME}}/Hogarama"
       force: yes
+  - name: Checkout Adafruit_Python_GPIO
+    git:
+      repo: 'https://github.com/adafruit/Adafruit_Python_GPIO.git'
+      dest: "{{ ansible_env.HOME}}/Adafruit_Python_GPIO"
+  - name: Build Adafruit_Python_GPIO
+    become: yes
+    command: python setup.py install
+    args:
+      chdir: "{{ ansible_env.HOME}}/Adafruit_Python_GPIO"
+    run_once: true
+  - name: Checkout Adafruit_Python_MCP3008
+    git:
+      repo: 'https://github.com/adafruit/Adafruit_Python_MCP3008.git'
+      dest: "{{ ansible_env.HOME}}/Adafruit_Python_MCP3008"
+  - name: Build Adafruit_Python_MCP3008
+    become: yes
+    command: python setup.py install
+    args:
+      chdir: "{{ ansible_env.HOME}}/Adafruit_Python_MCP3008"
+    run_once: true
   handlers:
   - name: Restart Pi
     become: yes
