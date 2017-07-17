@@ -522,7 +522,10 @@ objects:
           deploymentconfig: hogajama
       spec:
         containers:
-        - image: 172.30.194.147:5000/57-hogarama/hogajama@sha256:81d82a80b15b771e18a182d9b452499236d099a9c873953fd29f2c606d7903f5
+        - env:
+          - name: STAGE
+            value: ${STAGE}
+          image: 172.30.194.147:5000/57-hogarama/hogajama@sha256:81d82a80b15b771e18a182d9b452499236d099a9c873953fd29f2c606d7903f5
           imagePullPolicy: Always
           name: hogajama
           ports:
@@ -709,6 +712,10 @@ objects:
     name: amq-app-secret
   type: Opaque
 parameters:
+    - description: Stage of this project
+      from: '[A-Z0-9]{8}'
+      value: test
+      name: STAGE
     - description: Password used for MQ authentication
       from: '[A-Z0-9]{8}'
       generate: expression
