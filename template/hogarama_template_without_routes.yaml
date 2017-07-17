@@ -1,0 +1,730 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: hogarama
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's AMQP port.
+      service.alpha.openshift.io/dependencies: '[{"name":"broker-amq-amqp-ssl","namespace":"","kind":"Service"}]'
+    creationTimestamp: null
+    labels:
+      app: amq62-persistent-ssl
+      application: broker
+      template: amq62-persistent-ssl
+      xpaas: 1.3.1
+    name: broker-amq-amqp
+  spec:
+    ports:
+    - port: 5672
+      protocol: TCP
+      targetPort: 5672
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's AMQP SSL port.
+    creationTimestamp: null
+    labels:
+      app: amq62-persistent-ssl
+      application: broker
+      template: amq62-persistent-ssl
+      xpaas: 1.3.1
+    name: broker-amq-amqp-ssl
+  spec:
+    ports:
+    - port: 5671
+      protocol: TCP
+      targetPort: 5671
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's MQTT port.
+      service.alpha.openshift.io/dependencies: '[{"name":"broker-amq-mqtt-ssl","namespace":"","kind":"Service"}]'
+    creationTimestamp: null
+    labels:
+      app: amq62-persistent-ssl
+      application: broker
+      template: amq62-persistent-ssl
+      xpaas: 1.3.1
+    name: broker-amq-mqtt
+  spec:
+    ports:
+    - port: 1883
+      protocol: TCP
+      targetPort: 1883
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's MQTT SSL port.
+    creationTimestamp: null
+    labels:
+      app: amq62-persistent-ssl
+      application: broker
+      template: amq62-persistent-ssl
+      xpaas: 1.3.1
+    name: broker-amq-mqtt-ssl
+  spec:
+    ports:
+    - port: 8883
+      protocol: TCP
+      targetPort: 8883
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's STOMP port.
+      service.alpha.openshift.io/dependencies: '[{"name":"broker-amq-stomp-ssl","namespace":"","kind":"Service"}]'
+    creationTimestamp: null
+    labels:
+      app: amq62-persistent-ssl
+      application: broker
+      template: amq62-persistent-ssl
+      xpaas: 1.3.1
+    name: broker-amq-stomp
+  spec:
+    ports:
+    - port: 61613
+      protocol: TCP
+      targetPort: 61613
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's STOMP SSL port.
+    creationTimestamp: null
+    labels:
+      app: amq62-persistent-ssl
+      application: broker
+      template: amq62-persistent-ssl
+      xpaas: 1.3.1
+    name: broker-amq-stomp-ssl
+  spec:
+    ports:
+    - port: 61612
+      protocol: TCP
+      targetPort: 61612
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's OpenWire port.
+      service.alpha.openshift.io/dependencies: '[{"name":"broker-amq-tcp-ssl","namespace":"","kind":"Service"}]'
+    creationTimestamp: null
+    labels:
+      app: amq62-persistent-ssl
+      application: broker
+      template: amq62-persistent-ssl
+      xpaas: 1.3.1
+    name: broker-amq-tcp
+  spec:
+    ports:
+    - port: 61616
+      protocol: TCP
+      targetPort: 61616
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's OpenWire (SSL) port.
+    creationTimestamp: null
+    labels:
+      app: amq62-persistent-ssl
+      application: broker
+      template: amq62-persistent-ssl
+      xpaas: 1.3.1
+    name: broker-amq-tcp-ssl
+  spec:
+    ports:
+    - port: 61617
+      protocol: TCP
+      targetPort: 61617
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: fluentd
+    name: fluentd
+  spec:
+    ports:
+    - name: 5140-tcp
+      port: 5140
+      protocol: TCP
+      targetPort: 5140
+    - name: 24224-tcp
+      port: 24224
+      protocol: TCP
+      targetPort: 24224
+    selector:
+      app: fluentd
+      deploymentconfig: fluentd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: null
+    labels:
+      app: hogajama
+    name: hogajama
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+    - name: 8778-tcp
+      port: 8778
+      protocol: TCP
+      targetPort: 8778
+    selector:
+      deploymentconfig: hogajama
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: mongodb-persistent
+      template: mongodb-persistent-template
+    name: mongodb
+  spec:
+    ports:
+    - name: mongo
+      port: 27017
+      protocol: TCP
+      targetPort: 27017
+    selector:
+      name: mongodb
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: amq62-persistent-ssl
+      application: broker
+      template: amq62-persistent-ssl
+      xpaas: 1.3.1
+    name: broker-amq
+  spec:
+    replicas: 1
+    selector:
+      deploymentConfig: broker-amq
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 0
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          application: broker
+          deploymentConfig: broker-amq
+        name: broker-amq
+      spec:
+        containers:
+        - env:
+          - name: AMQ_USER
+            value: mq_habarama
+          - name: AMQ_PASSWORD
+            value: ${MQ_HABARAMA_PASS} 
+          - name: AMQ_TRANSPORTS
+            value: mqtt
+          - name: AMQ_QUEUES
+          - name: AMQ_TOPICS
+            value: habarama
+          - name: MQ_SERIALIZABLE_PACKAGES
+          - name: AMQ_SPLIT
+            value: "false"
+          - name: AMQ_MESH_DISCOVERY_TYPE
+            value: kube
+          - name: AMQ_MESH_SERVICE_NAME
+            value: broker-amq-tcp
+          - name: AMQ_MESH_SERVICE_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: AMQ_KEYSTORE_TRUSTSTORE_DIR
+            value: /etc/amq-secret-volume
+          - name: AMQ_TRUSTSTORE
+            value: broker.ks
+          - name: AMQ_TRUSTSTORE_PASSWORD
+            value: L(o?cqGPtJ}7YiHu
+          - name: AMQ_KEYSTORE
+            value: broker.ks
+          - name: AMQ_KEYSTORE_PASSWORD
+            value: L(o?cqGPtJ}7YiHu
+          - name: AMQ_STORAGE_USAGE_LIMIT
+            value: 1 gb
+          image: registry.access.redhat.com/jboss-amq-6/amq62-openshift@sha256:acadeae82790e144cc8631db9a78344cad2b359bc46d463a556c77caf08b11be
+          imagePullPolicy: Always
+          name: broker-amq
+          ports:
+          - containerPort: 8778
+            name: jolokia
+            protocol: TCP
+          - containerPort: 5672
+            name: amqp
+            protocol: TCP
+          - containerPort: 5671
+            name: amqp-ssl
+            protocol: TCP
+          - containerPort: 1883
+            name: mqtt
+            protocol: TCP
+          - containerPort: 8883
+            name: mqtt-ssl
+            protocol: TCP
+          - containerPort: 61613
+            name: stomp
+            protocol: TCP
+          - containerPort: 61612
+            name: stomp-ssl
+            protocol: TCP
+          - containerPort: 61616
+            name: tcp
+            protocol: TCP
+          - containerPort: 61617
+            name: tcp-ssl
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - /opt/amq/bin/readinessProbe.sh
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /etc/amq-secret-volume
+            name: broker-secret-volume
+            readOnly: true
+          - mountPath: /opt/amq/data
+            name: broker-amq-pvol
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 60
+        volumes:
+        - name: broker-secret-volume
+          secret:
+            defaultMode: 420
+            secretName: amq-app-secret
+        - name: broker-amq-pvol
+          persistentVolumeClaim:
+            claimName: broker-amq-claim
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - broker-amq
+        from:
+          kind: ImageStreamTag
+          name: jboss-amq-62:1.3
+          namespace: openshift
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: fluentd
+    name: fluentd
+  spec:
+    replicas: 1
+    selector:
+      app: fluentd
+      deploymentconfig: fluentd
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/container.fluentd.image.entrypoint: '["/bin/bash"]'
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: fluentd
+          deploymentconfig: fluentd
+      spec:
+        containers:
+        - image: 172.30.194.147:5000/57-hogarama/fluentd@sha256:abd0c95a794ce94217998c3e8efadf2417d423fa673925c93fa499c9c53814a8
+          imagePullPolicy: Always
+          name: fluentd
+          ports:
+          - containerPort: 24224
+            protocol: TCP
+          - containerPort: 5140
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /fluentd/log
+            name: fluentd-log-volume
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: fluentd-log-volume
+          persistentVolumeClaim:
+            claimName: fluentd-log-claim
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        containerNames:
+        - fluentd
+        from:
+          kind: ImageStreamTag
+          name: fluentd:latest
+          namespace: 57-hogarama
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: hogajama
+    name: hogajama
+  spec:
+    replicas: 1
+    selector:
+      deploymentconfig: hogajama
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: hogajama
+          deploymentconfig: hogajama
+      spec:
+        containers:
+        - env:
+          - name: STAGE
+            value: ${STAGE}
+          image: 172.30.194.147:5000/57-hogarama/hogajama@sha256:81d82a80b15b771e18a182d9b452499236d099a9c873953fd29f2c606d7903f5
+          imagePullPolicy: Always
+          name: hogajama
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
+            protocol: TCP
+          - containerPort: 8778
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - hogajama
+        from:
+          kind: ImageStreamTag
+          name: hogajama:latest
+          namespace: 57-hogarama
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: mongodb-persistent
+      template: mongodb-persistent-template
+    name: mongodb
+  spec:
+    replicas: 1
+    selector:
+      name: mongodb
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name: mongodb
+      spec:
+        containers:
+        - env:
+          - name: MONGODB_USER
+            value: hogajama
+          - name: MONGODB_PASSWORD
+            value: ${MONGODB_PASSWORD} 
+          - name: MONGODB_DATABASE
+            value: hogajamadb
+          - name: MONGODB_ADMIN_PASSWORD
+            value: ${MONGODB_ADMIN_PASSWORD}
+          image: registry.access.redhat.com/rhscl/mongodb-32-rhel7@sha256:4143584de718ef477fe03e3ae15985c68e0ce9dca8ba089dfa5927e800e59e69
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 27017
+            timeoutSeconds: 1
+          name: mongodb
+          ports:
+          - containerPort: 27017
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -i
+              - -c
+              - mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USER -p $MONGODB_PASSWORD
+                --eval="quit()"
+            failureThreshold: 3
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 512Mi
+          securityContext:
+            capabilities: {}
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /var/lib/mongodb/data
+            name: mongodb-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - mongodb
+        from:
+          kind: ImageStreamTag
+          name: mongodb:3.2
+          namespace: openshift
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: amq62-persistent-ssl
+      application: broker
+      template: amq62-persistent-ssl
+      xpaas: 1.3.1
+    name: broker-amq-claim
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 512Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    name: fluentd-log-claim
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: mongodb-persistent
+      template: mongodb-persistent-template
+    name: mongodb
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+  status: {}
+- apiVersion: v1
+  data:
+    broker.ks: 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
+  kind: Secret
+  metadata:
+    creationTimestamp: null
+    name: amq-app-secret
+  type: Opaque
+parameters:
+    - description: Stage of this project
+      from: '[A-Z0-9]{8}'
+      value: test
+      name: STAGE
+    - description: Password used for MQ authentication
+      from: '[A-Z0-9]{8}'
+      generate: expression
+      name: MQ_HABARAMA_PASS
+    - description: Password used for MongoDB User authentication
+      from: '[A-Z0-9]{8}'
+      generate: expression
+      name: MONGODB_PASSWORD
+    - description: Password used for MongoDB Admin authentication
+      from: '[A-Z0-9]{8}'
+      generate: expression
+      name: MONGODB_ADMIN_PASSWORD
