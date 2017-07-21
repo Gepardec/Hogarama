@@ -5,7 +5,7 @@
 $(document).ready(function (e) { 
 	
 
-    function loadChartData(max){
+    function loadChartData(moistureChart, async, max){
 
         if (typeof max == 'undefined'){
             max = 30;
@@ -13,51 +13,108 @@ $(document).ready(function (e) {
 
         var sensors = [];
         var sensorData = [];
-        $.ajax({
-            url: '/hogajama-rs/rest/sensor',
-            success: function (response) {
-                sensors = response;
-            },
-            async: false
-        });
 
-        for(var i = 0; i < sensors.length; i++){
+        if (typeof async == 'undefined'){
             $.ajax({
-                url: 'hogajama-rs/rest/sensor/allData?maxNumber=' + max + '&sensor=' + sensors[i],
+                async: false,
+                url: '/hogajama-rs/rest/sensor',
                 success: function (response) {
-                    sensorData.push(response);
-                },
-                async: false
+                    sensors = response;
+                }
             });
-        }
-        var times = [];
-        var series = [];
-        for(var i = 0; i < sensorData[0].length; i++){
-            times.push(sensorData[0][i]['time'].match(/T(\d\d:\d\d)/)[1]);
-        }
 
-        for(var i = 0; i < sensorData.length; i++){
-
-            var values = [];
-
-            for(var j = 0; j < sensorData[i].length; j++){
-                values.push(sensorData[i][j]['value']);
+            for(var i = 0; i < sensors.length; i++){
+                $.ajax({
+                    url: 'hogajama-rs/rest/sensor/allData?maxNumber=' + max + '&sensor=' + sensors[i],
+                    success: function (response) {
+                        sensorData.push(response);
+                    },
+                    async: false,
+                });
             }
 
-            var serie = {
-                name: sensors[i] + " " + sensorData[i][0].location,
-                data: values.reverse()
-            };
-            series.push(serie);
+            var times = [];
+            var series = [];
+            for(var i = 0; i < sensorData[0].length; i++){
+                times.push(sensorData[0][i]['time'].match(/T(\d\d:\d\d)/)[1]);
+            }
+
+            for(var i = 0; i < sensorData.length; i++){
+
+                var values = [];
+
+                for(var j = 0; j < sensorData[i].length; j++){
+                    values.push(sensorData[i][j]['value']);
+                }
+
+                var serie = {
+                    name: sensors[i] + " " + sensorData[i][0].location,
+                    data: values.reverse()
+                };
+                series.push(serie);
+            }
+
+            return [sensors, sensorData, times, series];
         }
 
-        return [sensors, sensorData, times, series];
+        $.ajax({
+            async: true,
+            url: '/hogajama-rs/rest/sensor',
+            success: function (response) {
+
+                sensors = response;
+
+                for(var i = 0; i < sensors.length; i++){
+                    $.ajax({
+                        url: 'hogajama-rs/rest/sensor/allData?maxNumber=' + max + '&sensor=' + sensors[i],
+                        success: function (response) {
+                            sensorData.push(response);
+                        },
+                        async: false,
+                    });
+                }
+
+                var newTimes = [];
+                var newSeries = [];
+                for(var i = 0; i < sensorData[0].length; i++){
+                    newTimes.push(sensorData[0][i]['time'].match(/T(\d\d:\d\d)/)[1]);
+                }
+
+                for(var i = 0; i < sensorData.length; i++){
+
+                    var values = [];
+
+                    for(var j = 0; j < sensorData[i].length; j++){
+                        values.push(sensorData[i][j]['value']);
+                    }
+
+                    var serie = {
+                        name: sensors[i] + " " + sensorData[i][0].location,
+                        data: values.reverse()
+                    };
+                    newSeries.push(serie);
+                }
+
+
+                // Update time
+                moistureChart.xAxis[0].setCategories(newTimes.reverse(), true);
+                // Update data
+                moistureChart.update({
+                    series: newSeries
+                }, true);
+
+                //moistureChart.redraw();
+
+            }
+        });
+
+
 
     }
 
 	// load data for the first time here
     console.log("Load chart data first time");
-    var [sensors, sensorData, times, series] = loadChartData();
+    var [sensors, sensorData, times, series] = loadChartData(null);
 
     $("#spinner").addClass('hidden');
     $("#moisture-chart").removeClass('hidden');
@@ -83,22 +140,19 @@ $(document).ready(function (e) {
                 title: {
                     text: 'Feuchtigkeit'
                 },
-                plotBands: [
-                    {
-                        color: 'red',
-                        from: 0,
-                        to: 865
-                    },
-                    {
-                        color: 'green',
-                        from: 865,
-                        to: 867
-                    },
-                    {
-                        color: 'blue',
-                        from: 867,
-                        to: 900
-                    }
+                plotBands: [{
+                       color: 'red',
+                       from: 1,
+                       to: 864
+                   },{
+                       color: 'green',
+                       from: 865,
+                       to: 867
+                   },{
+                       color: 'blue',
+                       from: 868,
+                       to: 900
+                   }
                 ],
             },
             plotOptions: {
@@ -115,17 +169,8 @@ $(document).ready(function (e) {
     setInterval(function(){
         // Udate chart with the current data
         console.log("Update chart data");
-        var [newSensors, newSensorData, newTimes, newSeries] = loadChartData();
+        loadChartData(moistureChart, true);
 
-        // Update time
-        moistureChart.xAxis[0].setCategories(newTimes.reverse(), true);
-        // Update data
-        moistureChart.update({
-            series: newSeries
-        }, true);
-
-        //moistureChart.redraw();
-
-    }, 2500);
+    }, 5000);
     
 });
