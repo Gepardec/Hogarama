@@ -15,15 +15,15 @@ mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
 
 
 # Setup pins
-inPin = 22 # power for moisture sensor
-sensorChannel = 5 # channel to listen on ADC  
+inPin = 21 # power for moisture sensor
+sensorChannel = 0 # channel to listen on ADC  
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(inPin, GPIO.OUT)
 
 # Setup measuring
 subjectName = "PflanzeWien"
-waitInterval = 10
-sampleInterval = 1
+waitInterval = 5
+sampleInterval = 3
 
 # Setup Hogarama connection
 client = paho.Client(clean_session=True)
@@ -41,8 +41,9 @@ while True:
    time.sleep(sampleInterval)
    watterLevel = mcp.read_adc(sensorChannel)
    print watterLevel
+   percent = int(round(watterLevel/10.24))
    payload = '{{"sensorName": "{}", "type": "water", "value": {}, "location": "Wien", "version": 1 }}'
-   payload = payload.format(subjectName,watterLevel)
+   payload = payload.format(subjectName,percent)
    client.publish("habarama", payload=payload, qos=0, retain=False)
    GPIO.output(inPin, 0)
    time.sleep(waitInterval)
