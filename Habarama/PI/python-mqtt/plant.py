@@ -40,8 +40,8 @@ while True:
    GPIO.output(inPin, 1)
    time.sleep(sampleInterval)
    watterLevel = mcp.read_adc(sensorChannel)
-   print watterLevel
-   percent = int(round(watterLevel/10.24))
+   percent = 100 - int(round(watterLevel/10.24))
+   print "ADC Output: {0:4d} Percentage: {1:3}%".format (watterLevel,percent)
    payload = '{{"sensorName": "{}", "type": "water", "value": {}, "location": "Wien", "version": 1 }}'
    payload = payload.format(subjectName,percent)
    client.publish("habarama", payload=payload, qos=0, retain=False)
