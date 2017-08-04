@@ -1,6 +1,6 @@
 ---
 - name: Install sensor client for raspberry pi
-  hosts: pi
+  hosts: all
   vars:
     ansible_ssh_user: pi
   tasks:

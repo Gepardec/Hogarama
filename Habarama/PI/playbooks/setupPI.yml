@@ -1,6 +1,6 @@
 ---
 - name: Basic setup for raspberry pi
-  hosts: pi
+  hosts: all
   vars:
     ansible_user: pi
     ansible_ssh_pass: raspberry
