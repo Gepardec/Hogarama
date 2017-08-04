@@ -476,6 +476,7 @@ objects:
     triggers:
     - type: ConfigChange
     - imageChangeParams:
+        automatic: true
         containerNames:
         - fluentd
         from:
