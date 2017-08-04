@@ -130,6 +130,10 @@ $(document).ready(function (e) {
     console.log("Load chart data first time");
     var [sensors, sensorData, times, series] = loadChartData(null);
 
+    if(sensors == null){
+        return;
+    }
+
     $("#spinner").addClass('hidden');
     $("#moisture-chart").removeClass('hidden');
 
