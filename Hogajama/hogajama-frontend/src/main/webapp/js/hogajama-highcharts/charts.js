@@ -20,6 +20,14 @@ $(document).ready(function (e) {
                 url: '/hogajama-rs/rest/sensor',
                 success: function (response) {
                     sensors = response;
+                },
+                error: function() {
+                    $("#spinner").addClass('hidden');
+                    $("#moisture-chart").removeClass('hidden');
+
+                    $("#moisture-chart").append( $("<h1 />").css( "text-align", "center" ).text("Could not load data. Please try again later."));
+
+                    return;
                 }
             });
 
@@ -107,8 +115,6 @@ $(document).ready(function (e) {
 
             }
         });
-
-
 
     }
 
