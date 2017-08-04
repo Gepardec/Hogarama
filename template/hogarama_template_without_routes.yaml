@@ -719,11 +719,11 @@ parameters:
       name: STAGE
     - description: Password used for MQ authentication
       from: '[A-Z0-9]{8}'
-      generate: expression
+      value: mq_habarama_pass
       name: MQ_HABARAMA_PASS
     - description: Password used for MongoDB User authentication
       from: '[A-Z0-9]{8}'
-      generate: expression
+      value: hogajama@mongodb
       name: MONGODB_PASSWORD
     - description: Password used for MongoDB Admin authentication
       from: '[A-Z0-9]{8}'
