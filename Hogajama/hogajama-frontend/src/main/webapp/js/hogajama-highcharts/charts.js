@@ -31,6 +31,14 @@ $(document).ready(function (e) {
                 }
             });
 
+            if(sensors.length == 0){
+                $("#spinner").addClass('hidden');
+                $("#moisture-chart").removeClass('hidden');
+                $("#moisture-chart").append( $("<h1 />").css( "text-align", "center" ).text("Could not find any data. Please try again later."));
+
+                return [null, null, null, null];
+            }
+
             for(var i = 0; i < sensors.length; i++){
                 $.ajax({
                     url: 'hogajama-rs/rest/sensor/allData?maxNumber=' + max + '&sensor=' + sensors[i],
