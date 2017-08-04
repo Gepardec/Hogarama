@@ -41,7 +41,7 @@ while True:
    time.sleep(sampleInterval)
    watterLevel = mcp.read_adc(sensorChannel)
    print watterLevel
-   payload = '{{"sensorName": {}, "type": "water", "value": {}, "location": "Wien", "version": 1 }}'
+   payload = '{{"sensorName": "{}", "type": "water", "value": {}, "location": "Wien", "version": 1 }}'
    payload = payload.format(subjectName,watterLevel)
    client.publish("habarama", payload=payload, qos=0, retain=False)
    GPIO.output(inPin, 0)
