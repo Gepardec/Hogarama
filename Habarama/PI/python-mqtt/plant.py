@@ -1,6 +1,7 @@
 import paho.mqtt.client as paho
 import time
 import os
+import json
 import socket, ssl
 import RPi.GPIO as GPIO
 import Adafruit_GPIO.SPI as SPI
@@ -22,9 +23,12 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(inPin, GPIO.OUT)
 
 # Setup measuring
-sensorName = os.environ.get('SENSOR_NAME')
-sensorType = os.environ.get('SENSOR_TYPE')
-sensorLocation = os.environ.get('SENSOR_LOCATION')
+with open('~/.habarama.json') as data_file:    
+    data = json.load(data_file)
+brokerUrl = data['BROKER_URL']
+sensorName = data['SENSOR_NAME']
+sensorType = data['SENSOR_TYPE']
+sensorLocation = data['SENSOR_LOCATION']
 waitInterval = 5
 sampleInterval = 3
 
@@ -39,7 +43,7 @@ client.username_pw_set("mq_habarama", "mq_habarama_pass")
 # Main program loop.
 while True:
     try:
-        client.connect("broker-amq-mqtt-ssl-57-hogarama.cloud.itandtel.at", 443, 60)
+        client.connect(brokerUrl, 443, 60)
         GPIO.output(inPin, 1)
         time.sleep(sampleInterval)
         watterLevel = mcp.read_adc(sensorChannel)

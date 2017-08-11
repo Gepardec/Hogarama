@@ -4,6 +4,10 @@
   vars:
     ansible_ssh_user: pi
   tasks:
+  - name: Copy template
+    template:
+      src: .habarama.json.j2
+      dest: "{{ ansible_env.HOME}}/.habarama.json"
   - name: Run client on background
     shell: nohup python plant.py &
     args:
