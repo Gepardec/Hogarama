@@ -23,7 +23,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(inPin, GPIO.OUT)
 
 # Setup measuring
-with open('~/.habarama.json') as data_file:    
+with open(os.path.expanduser('~')+'/.habarama.json') as data_file:    
     data = json.load(data_file)
 brokerUrl = data['BROKER_URL']
 sensorName = data['SENSOR_NAME']
