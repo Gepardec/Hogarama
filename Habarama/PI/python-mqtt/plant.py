@@ -1,5 +1,6 @@
 import paho.mqtt.client as paho
 import time
+import os
 import socket, ssl
 import RPi.GPIO as GPIO
 import Adafruit_GPIO.SPI as SPI
@@ -21,7 +22,9 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(inPin, GPIO.OUT)
 
 # Setup measuring
-subjectName = "PflanzeWien"
+sensorName = os.environ.get('SENSOR_NAME')
+sensorType = os.environ.get('SENSOR_TYPE')
+sensorLocation = os.environ.get('SENSOR_LOCATION')
 waitInterval = 5
 sampleInterval = 3
 
@@ -42,8 +45,8 @@ while True:
         watterLevel = mcp.read_adc(sensorChannel)
         percent = 100 - int(round(watterLevel/10.24))
         print "ADC Output: {0:4d} Percentage: {1:3}%".format (watterLevel,percent)
-        payload = '{{"sensorName": "{}", "type": "water", "value": {}, "location": "Wien", "version": 1 }}'
-        payload = payload.format(subjectName,percent)
+        payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
+        payload = payload.format(sensorName,sensorType,percent,sensorLocation)
         client.publish("habarama", payload=payload, qos=0, retain=False)
         GPIO.output(inPin, 0)
         client.disconnect()

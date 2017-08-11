@@ -8,4 +8,8 @@
     shell: nohup python plant.py &
     args:
       chdir: "{{ ansible_env.HOME}}/Hogarama/Habarama/PI/python-mqtt"
+    environment:
+      SENSOR_NAME: "{{SENSOR_NAME}}"
+      SENSOR_TYPE: "{{SENSOR_TYPE}}"
+      SENSOR_LOCATION: "{{SENSOR_LOCATION}}"
 ...
