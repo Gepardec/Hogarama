@@ -25,10 +25,8 @@ GPIO.setup(inPin, GPIO.OUT)
 # Setup measuring
 with open(os.path.expanduser('~')+'/.habarama.json') as data_file:    
     data = json.load(data_file)
-brokerUrl = data['BROKER_URL']
-sensorName = data['SENSOR_NAME']
-sensorType = data['SENSOR_TYPE']
-sensorLocation = data['SENSOR_LOCATION']
+brokerUrls = data['brokerUrls']
+sensors = data['sensors']
 waitInterval = 5
 sampleInterval = 3
 
@@ -42,18 +40,20 @@ client.username_pw_set("mq_habarama", "mq_habarama_pass")
 
 # Main program loop.
 while True:
-    try:
-        client.connect(brokerUrl, 443, 60)
-        GPIO.output(inPin, 1)
-        time.sleep(sampleInterval)
-        watterLevel = mcp.read_adc(sensorChannel)
-        percent = 100 - int(round(watterLevel/10.24))
-        print "ADC Output: {0:4d} Percentage: {1:3}%".format (watterLevel,percent)
-        payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
-        payload = payload.format(sensorName,sensorType,percent,sensorLocation)
-        client.publish("habarama", payload=payload, qos=0, retain=False)
-        GPIO.output(inPin, 0)
-        client.disconnect()
-    except:
-        print "Oops! Something wrong. Trying luck in next iteration."
+    for brokerUrl in brokerUrls: 
+        try:
+            client.connect(brokerUrl, 443, 60)
+            for sensor in sensors:
+                GPIO.output(inPin, sensor['pin'])
+                time.sleep(sampleInterval)
+                watterLevel = mcp.read_adc(sensor['channel'])
+                percent = 100 - int(round(watterLevel/10.24))
+                print "ADC Output: {0:4d} Percentage: {1:3}%".format (watterLevel,percent)
+                payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
+                payload = payload.format(sensor['name'],sensor['type'],percent,sensor['location'])
+                client.publish("habarama", payload=payload, qos=0, retain=False)
+                GPIO.output(inPin, sensor['pin'])
+            client.disconnect()
+        except:
+            print "Oops! Something wrong. Trying luck in next iteration."
     time.sleep(waitInterval)

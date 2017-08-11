@@ -1,0 +1,11 @@
+---
+- name: Run sensor client on raspberry pi
+  hosts: all
+  vars:
+    ansible_ssh_user: pi
+  tasks:
+  - name: Copy template
+    template:
+      src: .habarama.json.j2
+      dest: "{{ ansible_env.HOME}}/.habarama.json"
+...
