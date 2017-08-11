@@ -74,7 +74,7 @@ objects:
         from:
           kind: ImageStreamTag
           namespace: openshift
-          name: jboss-eap70-openshift:1.4
+          name: jboss-eap70-openshift:latest
       type: Source
     triggers:
     - github:
@@ -448,16 +448,6 @@ objects:
           - containerPort: 61617
             name: tcp-ssl
             protocol: TCP
-          readinessProbe:
-            exec:
-              command:
-              - /bin/bash
-              - -c
-              - /opt/amq/bin/readinessProbe.sh
-            failureThreshold: 3
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
@@ -486,7 +476,8 @@ objects:
         - broker-amq
         from:
           kind: ImageStreamTag
-          name: jboss-amq-62:1.3
+          name: jboss-amq-62:latest
+          namespace: openshift
       type: ImageChange
     - type: ConfigChange
   status:
@@ -557,6 +548,7 @@ objects:
     triggers:
     - type: ConfigChange
     - imageChangeParams:
+        automatic: true
         containerNames:
         - fluentd
         from:
