@@ -594,7 +594,12 @@ objects:
           deploymentconfig: hogajama
       spec:
         containers:
-        - image: hogarama/hogajama
+        - env:
+          - name: STAGE
+            value: ${STAGE}
+          - name: MONGODB_PW
+            value: ${MONGODB_PASSWORD}
+          image: hogarama/hogajama
           imagePullPolicy: Always
           name: hogajama
           ports:
@@ -1004,3 +1009,20 @@ objects:
       host: hogajama-ssl-57-hogarama.cloud.itandtel.at
       routerName: router-poi-4
       wildcardPolicy: None
+parameters:
+    - description: Stage of this project
+      from: '[A-Z0-9]{8}'
+      value: test
+      name: STAGE
+    - description: Password used for MQ authentication
+      from: '[A-Z0-9]{8}'
+      value: mq_habarama_pass
+      name: MQ_HABARAMA_PASS
+    - description: Password used for MongoDB User authentication
+      from: '[A-Z0-9]{8}'
+      value: hogajama@mongodb
+      name: MONGODB_PASSWORD
+    - description: Password used for MongoDB Admin authentication
+      from: '[A-Z0-9]{8}'
+      generate: expression
+      name: MONGODB_ADMIN_PASSWORD
