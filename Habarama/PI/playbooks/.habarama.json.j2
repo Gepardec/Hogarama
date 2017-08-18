@@ -1,0 +1,14 @@
+{
+  "brokerUrls": {{BROKER_URLS}},
+  "sensors": [
+  {% for sensor in sensors %}
+    {
+      "name": "{{sensor.name}}",
+      "type": "{{sensor.type}}",
+      "location": "{{SENSOR_LOCATION}}",
+      "channel": {{sensor.channel}},
+      "pin": {{sensor.pin}}
+    }
+  {% endfor %}
+  ]
+}

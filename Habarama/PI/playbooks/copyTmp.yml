@@ -1,0 +1,23 @@
+---
+- name: Run sensor client on raspberry pi
+  hosts: all
+  vars:
+    ansible_ssh_user: pi
+  tasks:
+  - name: Copy template
+    template:
+      src: .habarama.json.j2
+      dest: "{{ ansible_env.HOME}}/.habarama.json"
+  - name: Copy service template
+    become: yes
+    template:
+      src: habarama.service.j2
+      dest: "/etc/systemd/system/habarama.service"
+  - name: Enable habarama service
+    become: yes
+    systemd:
+      state: started
+      enabled: yes
+      daemon_reload: yes
+      name: habarama
+...

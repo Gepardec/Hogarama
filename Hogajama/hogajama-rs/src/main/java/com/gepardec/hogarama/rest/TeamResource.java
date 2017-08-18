@@ -40,10 +40,11 @@ public class TeamResource {
 
 		//add request header
 		con.setRequestProperty("User-Agent", USER_AGENT);
-
+		con.setRequestProperty("Accept-Charset", "UTF-8"); 
+		
 		int responseCode = con.getResponseCode();
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 

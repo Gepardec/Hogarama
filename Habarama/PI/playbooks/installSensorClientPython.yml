@@ -1,6 +1,6 @@
 ---
 - name: Install sensor client for raspberry pi
-  hosts: pi
+  hosts: all
   vars:
     ansible_ssh_user: pi
   tasks:
@@ -67,6 +67,22 @@
     args:
       chdir: "{{ ansible_env.HOME}}/paho.mqtt.python"
     run_once: true
+  - name: Copy config template
+    template:
+      src: .habarama.json.j2
+      dest: "{{ ansible_env.HOME}}/.habarama.json"
+  - name: Copy service template
+    become: yes
+    template:
+      src: habarama.service.j2
+      dest: "/etc/systemd/system/habarama.service"
+  - name: Enable habarama service
+    become: yes
+    systemd:
+      state: started
+      enabled: yes
+      daemon_reload: yes
+      name: habarama
   handlers:
   - name: Restart Pi
     become: yes
