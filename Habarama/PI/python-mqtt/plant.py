@@ -33,7 +33,7 @@ sampleInterval = 3
 # Setup Hogarama connection
 client = paho.Client(clean_session=True)
 client.on_publish = on_publish
-ssl_ctx = ssl.create_default_context(cafile='./broker.pem')
+ssl_ctx = ssl.create_default_context(cafile=os.path.expanduser('~')+'/Hogarama/Habarama/PI/python-mqtt/broker.pem')
 ssl_ctx.check_hostname = False
 client.tls_set_context(ssl_ctx)
 client.username_pw_set("mq_habarama", "mq_habarama_pass")
