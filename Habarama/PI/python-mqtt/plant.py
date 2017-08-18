@@ -15,12 +15,6 @@ SPI_PORT   = 0
 SPI_DEVICE = 0
 mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
 
-
-# Setup pins
-GPIO.setmode(GPIO.BCM)
-for sensor in sensors:
-    GPIO.setup(sensor['pin'], GPIO.OUT)
-
 # Setup measuring
 with open(os.path.expanduser('~')+'/.habarama.json') as data_file:    
     data = json.load(data_file)
@@ -28,6 +22,11 @@ brokerUrls = data['brokerUrls']
 sensors = data['sensors']
 waitInterval = 5
 sampleInterval = 3
+
+# Setup pins
+GPIO.setmode(GPIO.BCM)
+for sensor in sensors:
+    GPIO.setup(sensor['pin'], GPIO.OUT)
 
 # Setup Hogarama connection
 client = paho.Client(clean_session=True)
