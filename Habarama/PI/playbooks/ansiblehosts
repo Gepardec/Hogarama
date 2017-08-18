@@ -1,0 +1,9 @@
+[wien]
+192.168.100.111
+
+[linz]
+192.168.100.175
+
+[wien:vars]
+BROKER_URLS=["broker-amq-mqtt-ssl-57-templatetest.cloud.itandtel.at"]
+SENSOR_LOCATION=Wien
