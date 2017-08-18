@@ -17,10 +17,9 @@ mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
 
 
 # Setup pins
-inPin = 21 # power for moisture sensor
-sensorChannel = 0 # channel to listen on ADC  
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(inPin, GPIO.OUT)
+for sensor in sensors:
+    GPIO.setup(sensor['pin'], GPIO.OUT)
 
 # Setup measuring
 with open(os.path.expanduser('~')+'/.habarama.json') as data_file:    
@@ -44,7 +43,7 @@ while True:
         try:
             client.connect(brokerUrl, 443, 60)
             for sensor in sensors:
-                GPIO.output(inPin, sensor['pin'])
+                GPIO.output(sensor['pin'], 1)
                 time.sleep(sampleInterval)
                 watterLevel = mcp.read_adc(sensor['channel'])
                 percent = 100 - int(round(watterLevel/10.24))
@@ -52,7 +51,7 @@ while True:
                 payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
                 payload = payload.format(sensor['name'],sensor['type'],percent,sensor['location'])
                 client.publish("habarama", payload=payload, qos=0, retain=False)
-                GPIO.output(inPin, sensor['pin'])
+                GPIO.output(sensor['pin'], 0)
             client.disconnect()
         except:
             print "Oops! Something wrong. Trying luck in next iteration."
