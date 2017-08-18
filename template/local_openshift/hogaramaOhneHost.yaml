@@ -28,10 +28,6 @@ objects:
         uri: https://github.com/Gepardec/Hogarama/
       type: Git
     strategy:
-      dockerStrategy:
-        from:
-          kind: ImageStreamTag
-          name: debian:stretch-slim
       type: Docker
     triggers:
     - github:
