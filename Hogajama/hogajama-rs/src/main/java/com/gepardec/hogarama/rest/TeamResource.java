@@ -6,23 +6,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-import com.gepardec.hogarama.service.dao.HabaramaDAO;
-
 @Path("team")
 public class TeamResource {
 	
 	@Context
 	private UriInfo context;
-	
-	@Inject
-	private HabaramaDAO habaramaDAO;
 	
 	private final String USER_AGENT = "Mozilla/5.0";
 	
@@ -42,8 +36,6 @@ public class TeamResource {
 		con.setRequestProperty("User-Agent", USER_AGENT);
 		con.setRequestProperty("Accept-Charset", "UTF-8"); 
 		
-		int responseCode = con.getResponseCode();
-
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
 		String inputLine;
 		StringBuffer response = new StringBuffer();

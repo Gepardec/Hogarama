@@ -1,7 +1,5 @@
 package com.gepardec.hogarama.rest;
 
-import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

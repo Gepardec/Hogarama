@@ -12,40 +12,24 @@
 	<artifactId>hogajama-rs</artifactId>
 	<packaging>war</packaging>
 
-	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<dependencies>
+		<dependency>
+			<groupId>com.gepardec.hogajama</groupId>
+			<artifactId>hogajama-interfaces-rs</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.gepardec.hogajama</groupId>
 			<artifactId>hogajama-services</artifactId>
 		</dependency>
-		
 		<dependency>
-		    <groupId>io.swagger</groupId>
-		    <artifactId>swagger-annotations</artifactId>
-		    <version>1.5.13</version>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
 		</dependency>
-		
-		<dependency>
-		    <groupId>io.swagger</groupId>
-		    <artifactId>swagger-jaxrs</artifactId>
-		    <version>1.5.0</version>
-		</dependency>
-		
-		<dependency>
-	        <groupId>org.mapstruct</groupId>
-	        <artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
-	    </dependency>
-	    
-	    <dependency>
-	    	<groupId>com.gepardec.hogajama</groupId>
-	    	<artifactId>hogajama-interfaces-rs</artifactId>
-	    </dependency>
-	
 	</dependencies>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 	<build>
 		<plugins>
@@ -59,70 +43,22 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.6</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<silent>true</silent>
-							<artifactItems>
-								<artifactItem>
-									<groupId>javax</groupId>
-									<artifactId>javaee-endorsed-api</artifactId>
-									<version>7.0</version>
-									<type>jar</type>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
 			</plugin>
-		      
-		      <plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-compiler-plugin</artifactId>
-	            <version>3.5.1</version>
-	            <configuration>
-	                <source>1.8</source>
-	                <target>1.8</target>
-	                <annotationProcessorPaths>
-	                    <path>
-	                        <groupId>org.mapstruct</groupId>
-	                        <artifactId>mapstruct-processor</artifactId>
-	                        <version>${org.mapstruct.version}</version>
-	                    </path>
-	                </annotationProcessorPaths>
-	            </configuration>
-	        </plugin>
-			
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
-
 	<profiles>
 		<profile>
 			<!-- When built in OpenShift the 'openshift' profile will be used when 
@@ -141,7 +77,6 @@
 						<configuration>
 							<failOnMissingWebXml>false</failOnMissingWebXml>
 							<outputDirectory>deployments</outputDirectory>
-<!-- 							<warName>hogajama-rs</warName> -->
 						</configuration>
 					</plugin>
 				</plugins>
