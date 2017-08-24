@@ -1,6 +1,5 @@
 package com.gepardec.hogarama.service.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

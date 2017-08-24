@@ -12,23 +12,18 @@
 	<artifactId>hogajama-services</artifactId>
 	<packaging>jar</packaging>
 
-	<url>http://maven.apache.org</url>
 	<dependencies>
-	
 		<dependency>
 			<artifactId>hogajama-domain</artifactId>
 			<groupId>com.gepardec.hogajama</groupId>
 		</dependency>
-		
 		<dependency>
-           <groupId>org.mongodb.morphia</groupId>
-           <artifactId>morphia</artifactId>
-        </dependency>
-  
-       	<dependency>
+			<groupId>org.mongodb.morphia</groupId>
+			<artifactId>morphia</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 		</dependency>
-		
 	</dependencies>
 </project>
