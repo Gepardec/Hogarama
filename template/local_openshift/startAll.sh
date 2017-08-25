@@ -10,4 +10,5 @@ oc login -u developer
 oc new-project hogarama
 oc create is hogajama
 oc create is fluentd
-oc process -f hogaramaOhneHost.yaml | oc create -f -
+OPENSHIFT_TOKEN=$(oc whoami -t)
+oc process -f hogaramaOhneHost.yaml OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN | oc create -f -
