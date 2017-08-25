@@ -14,7 +14,7 @@ for instance in "${arguments[@]}"
 do
   #TODO: create new project
   #TODO: check if project creation has been successfull
-  # oc process -f hogarama_template_with_routes.yaml STAGE=$instance | oc create -f -   #TODO: activate
-  echo $instance
+  OPENSHIFT_TOKEN=$(oc whoami -t)
+  #oc process -f hogarama_template_with_routes.yaml STAGE=$instance OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN | oc create -f -   #TODO: activate
 done
 
