@@ -97,8 +97,7 @@ public class ScalingScheduler {
 		}
 		
 		// TODO DeploymentConfig should be retrieved dynamically
-		dcConfig = System.getenv("hogajama");
-		System.out.println("dcConfig: " + dcConfig);
+		dcConfig = "hogajama";
 
 		IDeploymentConfig depconfig = (IDeploymentConfig) client.get(ResourceKind.DEPLOYMENT_CONFIG, dcConfig, namespace);
 		
