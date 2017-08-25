@@ -25,5 +25,10 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.openshift</groupId>
+			<artifactId>openshift-restclient-java</artifactId>
+			<version>5.9.0.Final</version>
+		</dependency>
 	</dependencies>
 </project>

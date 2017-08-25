@@ -16,10 +16,16 @@ import javax.management.ObjectName;
 import javax.management.ReflectionException;
 
 import org.slf4j.Logger;
+import com.openshift.restclient.ClientBuilder;
+import com.openshift.restclient.IClient;
+import com.openshift.restclient.ResourceKind;
+import com.openshift.restclient.model.IDeploymentConfig;
 
 @Startup
 @Singleton
 public class ScalingScheduler {
+
+	private Boolean scaledUp = false;
 
 	private MBeanServer mBeanServer = null;
 
@@ -28,11 +34,19 @@ public class ScalingScheduler {
 	
 	@Schedule(hour = "*", minute = "*", second = "*", info = "Every second")
 	public void checkSessions() {
-		log.info("Current Acitve Sessions: {}", getActiveSession());
-		//TODO: tell openshift to start another pod 
+		log.info("Current Acitve Sessions: {}", getActiveSessions());
+		
+		// Tell openshift to start another pod 
+		if(! scaledUp) {
+			if(getActiveSessions() > 7){
+				IClient client = getOpenshiftClient();
+				scaleUp(client);
+				scaledUp = true;
+			}
+		}
 	}
 
-	private int getActiveSession() {
+	private int getActiveSessions() {
 
 		if (mBeanServer == null) {
 			mBeanServer = ManagementFactory.getPlatformMBeanServer();
@@ -51,5 +65,42 @@ public class ScalingScheduler {
 		}
 		
 		return activeSessions;
+	}
+
+	private IClient getOpenshiftClient(){
+
+		IClient client = new ClientBuilder("https://manage.cloud.itandtel.at")
+			// .withUserName("openshiftdev")
+			// .withPassword("wouldntUlik3T0kn0w")
+		.build();
+
+		// Retreive auth token from ENV
+		String authToken = System.getenv("OPENSHIFT_AUTH_TOKEN");
+		if(authToken == null || authToken.isEmpty()){
+			throw new RuntimeException("Cannot auth to openshift: OPENSHIFT_AUTH_TOKEN not found");
+		}
+		client.getAuthorizationContext().setToken(authToken);
+		
+		return client;
+	}
+
+	private void scaleUp(IClient client){
+
+		String namespace;
+		String dcConfig;
+
+		// TODO namespace should be retreived dynamically
+		namespace = "57-hogarama";
+		// TODO DeploymentConfig should be retreived dynamically
+		dcConfig = "hogajama";
+
+		IDeploymentConfig depconfig = (IDeploymentConfig) client.get(ResourceKind.DEPLOYMENT_CONFIG, dcConfig, namespace);
+		
+		int replicas = depconfig.getDesiredReplicaCount();
+		depconfig.setDesiredReplicaCount(replicas + 1);
+
+		client.update(depconfig);
+		
+		log.info("Scale up to replica count of: {}", replicas + 1);
 	}
 }
