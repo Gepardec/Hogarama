@@ -530,6 +530,10 @@ objects:
             value: ${MONGODB_PASSWORD}
           - name: OPENSHIFT_AUTH_TOKEN
             value: ${OPENSHIFT_AUTH_TOKEN}
+          - name: CURRENT_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
           image: 172.30.194.147:5000/57-hogarama/hogajama@sha256:81d82a80b15b771e18a182d9b452499236d099a9c873953fd29f2c606d7903f5
           imagePullPolicy: Always
           name: hogajama
