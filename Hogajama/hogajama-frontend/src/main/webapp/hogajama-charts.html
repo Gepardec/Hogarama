@@ -35,6 +35,18 @@
     <script src="js/html5element.js"></script>
 <![endif]-->
 
+<!-- TODO: This is a  workaround - highcharts plotband instruction does not set color properly -->
+<style>
+    .highcharts-plot-bands-0 > :nth-child(1) {
+        fill: red;
+    }
+    .highcharts-plot-bands-0 > :nth-child(2) {
+        fill: green;
+    }
+    .highcharts-plot-bands-0 > :nth-child(3) {
+        fill: blue;
+    }
+</style>
 
 </head>
 <body>
