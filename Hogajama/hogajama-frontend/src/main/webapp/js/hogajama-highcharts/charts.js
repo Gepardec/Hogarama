@@ -155,21 +155,23 @@ $(document).ready(function (e) {
                 categories: times.reverse()
             },
             yAxis: {
+                min: 0,
+                max: 100,
                 title: {
                     text: 'Feuchtigkeit'
                 },
                 plotBands: [{
                        color: 'red',
                        from: 1,
-                       to: 864
+                       to: 10
                    },{
                        color: 'green',
-                       from: 865,
-                       to: 867
+                       from: 10,
+                       to: 75
                    },{
                        color: 'blue',
-                       from: 868,
-                       to: 900
+                       from: 75,
+                       to: 100
                    }
                 ],
             },
