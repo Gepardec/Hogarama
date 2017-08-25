@@ -1,10 +1,6 @@
 package com.gepardec.hogarama.service.schedulers;
 
-import java.io.StringReader;
 import java.lang.management.ManagementFactory;
-import java.util.Collection;
-
-import com.openshift.restclient.model.IEnvironmentVariable;
 
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
@@ -20,41 +16,11 @@ import javax.management.ObjectName;
 import javax.management.ReflectionException;
 
 import org.slf4j.Logger;
+
 import com.openshift.restclient.ClientBuilder;
 import com.openshift.restclient.IClient;
 import com.openshift.restclient.ResourceKind;
 import com.openshift.restclient.model.IDeploymentConfig;
-import com.openshift.restclient.model.IReplicationController;
-import com.openshift.internal.restclient.model.ReplicationController;
-import com.openshift.restclient.model.kubeclient.ICluster;
-import com.openshift.restclient.model.kubeclient.IContext;
-import com.openshift.restclient.model.kubeclient.IKubeClientConfig;
-import com.openshift.restclient.model.kubeclient.IUser;
-import com.openshift.restclient.model.kubeclient.KubeClientConfigSerializer;
-import com.openshift.restclient.utils.*;
-import com.openshift.internal.restclient.model.ModelNodeBuilder;
-import com.openshift.internal.restclient.model.ReplicationController;
-import com.openshift.internal.restclient.model.properties.ResourcePropertiesRegistry;
-import com.openshift.internal.restclient.model.volume.EmptyDirVolumeSource;
-import com.openshift.internal.restclient.model.volume.SecretVolumeSource;
-import com.openshift.restclient.IClient;
-import com.openshift.restclient.ResourceKind;
-import com.openshift.restclient.images.DockerImageURI;
-import com.openshift.restclient.model.IConfigMapKeySelector;
-import com.openshift.restclient.model.IContainer;
-import com.openshift.restclient.model.IEnvironmentVariable;
-import com.openshift.restclient.model.IEnvironmentVariable.IEnvVarSource;
-import com.openshift.restclient.model.IObjectFieldSelector;
-import com.openshift.restclient.model.IPort;
-import com.openshift.restclient.model.IReplicationController;
-import com.openshift.restclient.model.ISecretKeySelector;
-import com.openshift.restclient.model.volume.IVolume;
-import com.openshift.restclient.model.volume.IVolumeMount;
-import com.openshift.restclient.model.volume.IVolumeSource;
-import com.openshift.restclient.utils.Samples;
-
-
-import org.jboss.dmr.ModelNode;
 
 @Startup
 @Singleton
