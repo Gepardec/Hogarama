@@ -32,14 +32,14 @@ public class ScalingScheduler {
 
 	@Inject
 	private Logger log;
-	
+
 	@Schedule(hour = "*", minute = "*", second = "*", info = "Every second")
 	public void checkSessions() {
 		log.info("Current Acitve Sessions: {}", getActiveSessions());
-		
-		// Tell openshift to start another pod 
-		if(! scaledUp) {
-			if(getActiveSessions() > 7){
+
+		// Tell openshift to start another pod
+		if (!scaledUp) {
+			if (getActiveSessions() > 3) {
 				IClient client = getOpenshiftClient();
 				scaleUp(client);
 				scaledUp = true;
@@ -47,12 +47,18 @@ public class ScalingScheduler {
 		}
 	}
 
+	@Schedule(hour = "*", minute = "*/1", second = "*", info = "Every second")
+	public void resetScaleUp() {
+		log.info("Reset scaledUp.");
+		scaledUp = false;
+	}
+
 	private int getActiveSessions() {
 
 		if (mBeanServer == null) {
 			mBeanServer = ManagementFactory.getPlatformMBeanServer();
 		}
-		
+
 		int activeSessions = 0;
 
 		try {
@@ -64,48 +70,53 @@ public class ScalingScheduler {
 				| ReflectionException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		return activeSessions;
 	}
 
-	private IClient getOpenshiftClient(){
+	private IClient getOpenshiftClient() {
 
 		IClient client = new ClientBuilder("https://manage.cloud.itandtel.at")
-			// .withUserName("openshiftdev")
-			// .withPassword("wouldntUlik3T0kn0w")
-		.build();
+				// .withUserName("openshiftdev")
+				// .withPassword("wouldntUlik3T0kn0w")
+				.build();
 
 		// Retreive auth token from ENV
 		String authToken = System.getenv("OPENSHIFT_AUTH_TOKEN");
-		if(authToken == null || authToken.isEmpty()){
+		if (authToken == null || authToken.isEmpty()) {
 			throw new RuntimeException("Cannot auth to openshift: OPENSHIFT_AUTH_TOKEN not found");
 		}
 		client.getAuthorizationContext().setToken(authToken);
-		
+
 		return client;
 	}
 
-	private void scaleUp(IClient client){
+	private void scaleUp(IClient client) {
 
 		String namespace;
 		String dcConfig;
 
-		
 		namespace = System.getenv("CURRENT_NAMESPACE");
-		if(namespace == null || namespace.isEmpty()){
+		if (namespace == null || namespace.isEmpty()) {
 			throw new RuntimeException("Cannot retrieve current namespace: CURRENT_NAMESPACE not found");
 		}
-		
+
 		// TODO DeploymentConfig should be retrieved dynamically
 		dcConfig = "hogajama";
 
-		IDeploymentConfig depconfig = (IDeploymentConfig) client.get(ResourceKind.DEPLOYMENT_CONFIG, dcConfig, namespace);
-		
+		IDeploymentConfig depconfig = (IDeploymentConfig) client.get(ResourceKind.DEPLOYMENT_CONFIG, dcConfig,
+				namespace);
+
 		int replicas = depconfig.getDesiredReplicaCount();
+
+		if (replicas >= 3) {
+			return;
+		}
+
 		depconfig.setDesiredReplicaCount(replicas + 1);
 
 		client.update(depconfig);
-		
+
 		log.info("Scale up to replica count of: {}", replicas + 1);
 	}
 }
