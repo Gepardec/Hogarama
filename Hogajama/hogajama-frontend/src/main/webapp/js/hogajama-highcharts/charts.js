@@ -191,6 +191,6 @@ $(document).ready(function (e) {
         console.log("Update chart data");
         loadChartData(moistureChart, true);
 
-    }, 5000);
+    }, 3000);
     
 });

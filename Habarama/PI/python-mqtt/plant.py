@@ -20,7 +20,7 @@ with open(os.path.expanduser('~')+'/.habarama.json') as data_file:
     data = json.load(data_file)
 brokerUrls = data['brokerUrls']
 sensors = data['sensors']
-waitInterval = 5
+waitInterval = 0
 sampleInterval = 3
 
 # Setup pins
