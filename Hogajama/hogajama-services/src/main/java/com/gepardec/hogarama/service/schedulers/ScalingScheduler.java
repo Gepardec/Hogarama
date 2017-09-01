@@ -47,7 +47,7 @@ public class ScalingScheduler {
 		}
 	}
 
-	@Schedule(hour = "*", minute = "*/1", info = "Every Minute")
+	@Schedule(hour = "*", minute = "*/10", info = "Every Minute")
 	public void resetScaleUp() {
 		log.info("Reset scaledUp.");
 		scaledUp = false;
