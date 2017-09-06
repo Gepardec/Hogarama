@@ -453,6 +453,9 @@ objects:
         from:
           kind: ImageStreamTag
           name: 'debian:stretch-slim'
+        env:
+          - name: "APPLICATION_NAME"
+            value: ${APPLICATION_NAME}
     triggers:
     - github:
         secret: ${GITHUB_WEBHOOK_SECRET}
