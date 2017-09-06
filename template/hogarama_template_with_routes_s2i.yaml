@@ -616,6 +616,8 @@ objects:
         - env:
           - name: STAGE
             value: ${STAGE}
+          - name: MONGODB_URL
+            value: ${APPLICATION_NAME}-mongodb
           - name: MONGODB_PW
             value: ${MONGODB_PASSWORD}
           - name: OPENSHIFT_AUTH_TOKEN
