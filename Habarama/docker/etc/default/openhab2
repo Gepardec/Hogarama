@@ -1,1 +1,0 @@
-EXTRA_JAVA_OPTS="-Dorg.openhab.io.transport.mqtt.ClientTruststorePath=/etc/ssl/private/client.ts -Dorg.openhab.io.transport.mqtt.ClientTruststorePasswd=L(o?cqGPtJ}7YiHu"

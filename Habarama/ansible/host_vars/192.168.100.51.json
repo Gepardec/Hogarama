@@ -1,0 +1,8 @@
+"sensors": [
+    {
+      "name": "Pflanze",
+      "type": "wasser",
+      "channel": 0,
+      "pin": 21
+    }
+  ]

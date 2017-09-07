@@ -1,3 +1,0 @@
-Group System
-Number node1_uptime   "Uptime [%.1f]" (System) { systeminfo="Uptime:5000", mqtt=">[dockerbroker:habarama:state:*:EXEC(/OpenHab/transform.sh %s)]" }
-

@@ -1,8 +1,0 @@
----
-- name: Update authorized keys
-  hosts: all
-  vars:
-    ansible_ssh_user: pi
-  tasks:
-  - include: addAuthorizedKeys.yml
-...

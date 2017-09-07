@@ -1,3 +1,0 @@
-Group System
-Number node1_uptime   "Uptime [%.1f]" (System) { systeminfo="Uptime:5000", mqtt=">[dockerbroker:node1_uptime:state:*:default]" }
-Number node2_uptime   "Uptime [%.1f]" {mqtt="<[dockerbroker:node2_uptime:state:default]"}

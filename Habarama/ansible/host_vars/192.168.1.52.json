@@ -1,0 +1,8 @@
+"sensors": [
+    {
+      "name": "PflanzeBackup",
+      "type": "wasser",
+      "channel": 0,
+      "pin": 21
+    }
+  ]
