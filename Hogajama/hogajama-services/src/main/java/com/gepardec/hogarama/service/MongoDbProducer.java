@@ -26,6 +26,7 @@ public class MongoDbProducer {
 	private static final int PORT = 27017;
 	private static final String COLLECTION = "habarama";
 	private static final String HOST = System.getProperty("mongo.host", "mongodb");
+	private static MongoClient client;
 
 	
 	@Produces 
@@ -48,7 +49,10 @@ public class MongoDbProducer {
 	
 	
 	private MongoClient getClient() {
-		MongoCredential credential = MongoCredential.createCredential(USER, HOGAJAMA_DB, PASSWORD);
-		return new MongoClient(new ServerAddress(HOST, PORT), Arrays.asList(credential));
+		if(client == null) {
+			MongoCredential credential = MongoCredential.createCredential(USER, HOGAJAMA_DB, PASSWORD);
+			client = new MongoClient(new ServerAddress(HOST, PORT), Arrays.asList(credential));
+		}
+		return client;
 	}
 }
