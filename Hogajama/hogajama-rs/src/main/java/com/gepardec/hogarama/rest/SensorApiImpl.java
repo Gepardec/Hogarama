@@ -14,6 +14,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.gepardec.hogarama.rest.mapper.SensorMapper;
 import com.gepardec.hogarama.service.dao.HabaramaDAO;
+import com.gepardec.hogarama.service.schedulers.SensorsScheduler;
 
 @Path("sensor")
 @SessionScoped
@@ -26,10 +27,14 @@ public class SensorApiImpl implements SensorApi, Serializable {
 	
 	@Inject
 	private HabaramaDAO habaramaDAO;
+	
+	@Inject
+	private SensorsScheduler sensorsScheduler;
 
 	@Override
 	public Response getAllSensors(SecurityContext securityContext) {
-		return Response.ok(habaramaDAO.getAllSensors()).build();
+//		return Response.ok(habaramaDAO.getAllSensors()).build();
+		return Response.ok(sensorsScheduler.getSensorNames()).build();
 	}
 
 	@Override
