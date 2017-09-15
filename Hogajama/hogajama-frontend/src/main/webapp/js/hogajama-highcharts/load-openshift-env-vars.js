@@ -24,4 +24,14 @@ $(document).ready(function (e) {
     });
     $('#openshift-pod-id').text(podId);
 
+    var tinyurl;
+    $.ajax({
+        url: '/hogajama-rs/rest/openshift/tinyurl',
+        success: function (response) {
+            tinyurl = response;
+        },
+        async: false
+    });
+    $('#tinyurl').text(tinyurl);
+
 });
