@@ -17,6 +17,16 @@ public class OpenshiftEnvResource {
 	    String ret = System.getenv("STAGE");
 
 		return ret != null ? ret : "Not found";
+    }
+    
+    @GET
+	@Path("tinyurl")
+	@Produces("text/html")
+	public String getTinyUrl() throws IOException {
+
+	    String ret = System.getenv("TINYURL");
+
+		return ret != null ? ret : "Not found";
 	}
 
     @GET
