@@ -39,18 +39,24 @@
 
 <!-- TODO: This is a  workaround - highcharts plotband instruction does not set color properly -->
 <style>
+
+    body {
+        background: url(../img/hogajama-charts-bg-trans-1.jpg) no-repeat left top;
+    }
+
     .highcharts-plot-bands-0 > :nth-child(1) {
         fill: #ff0000;
+        fill-opacity: 0.3;
     }
     .highcharts-plot-bands-0 > :nth-child(2) {
         fill: #008000;
+        fill-opacity: 0.3;
     }
     .highcharts-plot-bands-0 > :nth-child(3) {
         fill: #15a9ff;
-    }
-    .highcharts-plot-bands-0 {
         fill-opacity: 0.3;
     }
+
 </style>
 
 </head>
@@ -86,16 +92,18 @@
     </div>
 </nav>
 
-<div class="container-fluid" style="margin-top: 10px; text-align: center;">
-  <div class="row">
-    <div class="col-md-3"><b>Openshift Stage:</b> <span id="openshift-stage"></span></div>
-    <div class="col-md-3"><b>Openshift Pod-ID:</b> <span id="openshift-pod-id"></span></div>
-    <div class="col-md-3"><b>URL:</b> <span id="tinyurl"></span></div>
-    <div class="col-md-3"><a href="javascript:;" id="open-qrcode">Show QR Code</a></div>
-  </div>
-</div>
+<section class="main-section charts" id="team" 
+            style="padding: 50px 10px 100px;"
+        ><!--"main-section charts"-start-->
 
-<section class="main-section charts" id="team" style="padding: 50px 10px 100px;"><!--"main-section charts"-start-->
+    <div class="container-fluid" style="margin-top: -40px; text-align: center;">
+        <div class="row">
+          <div class="col-md-3"><b>Openshift Stage:</b> <span id="openshift-stage"></span></div>
+          <div class="col-md-3"><b>Openshift Pod-ID:</b> <span id="openshift-pod-id"></span></div>
+          <div class="col-md-3"><b>URL:</b> <span id="tinyurl"></span></div>
+          <div class="col-md-3"><a href="javascript:;" id="open-qrcode">Show QR Code</a></div>
+        </div>
+      </div>
 
 	<!--div id="uptime-chart" style="width:100%; height:400px;"></div>
 
