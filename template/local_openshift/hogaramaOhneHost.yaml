@@ -597,6 +597,8 @@ objects:
             value: ${MONGODB_PASSWORD}
           - name: OPENSHIFT_AUTH_TOKEN
             value: ${OPENSHIFT_AUTH_TOKEN}
+          - name: TINYURL
+            value: ${TINYURL}
           - name: CURRENT_NAMESPACE
             valueFrom:
               fieldRef:
@@ -1031,3 +1033,6 @@ parameters:
     - description: Session token
       from: '[A-Z0-9]{8}'
       name: OPENSHIFT_AUTH_TOKEN
+    - description: Tiny URL
+      from: '[A-Z0-9]{8}'
+      name: TINYURL
