@@ -4,6 +4,10 @@ MAINTAINER Matthias Kapferer <matthias.kapferer@gepardec.com>
 
 LABEL Description="Fluentd docker image" Vendor="Gepardec IT Services GmbH" Version="1.0"
 
+# Set Timezone
+ENV TZ=Europe/Vienna
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Do not split this into multiple RUN! 
 # Docker creates a layer for every RUN-Statement 
 # therefore an 'apt-get purge' has no effect 
@@ -62,10 +66,6 @@ ENV GEM_PATH /home/fluent/.gem/ruby/2.3.0:$GEM_PATH
 ENV FLUENTD_OPT="" 
 ENV FLUENTD_CONF="fluent.conf" 
 ENV LD_PRELOAD="/usr/lib/libjemalloc.so.2"
-
-# Set Timezone
-ENV TZ=Europe/Vienna
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 EXPOSE 24224 5140 
 
