@@ -260,7 +260,12 @@ $(window).load(function(){
 
     function showQRCode() {
         var w = window.open();
+        $("#qrcode").find("img").css("margin-bottom", "25px");
         var html = $("#qrcode").html();
+        
+        html += $("<div><div/>").html($("<span><span/>").css("font-size", "x-large").html($("#tinyurl").html())).html();
+
+        html = $("<center><center/>").html(html);
 
         $(w.document.body).css("padding", "25px");
         $(w.document.body).html(html);
