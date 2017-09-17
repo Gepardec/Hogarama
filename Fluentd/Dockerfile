@@ -63,6 +63,10 @@ ENV FLUENTD_OPT=""
 ENV FLUENTD_CONF="fluent.conf" 
 ENV LD_PRELOAD="/usr/lib/libjemalloc.so.2"
 
+# Set Timezone
+ENV TZ=Europe/Vienna
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 EXPOSE 24224 5140 
 
 CMD exec fluentd -v -c /fluentd/etc/$FLUENTD_CONF -p /fluentd/plugins $FLUENTD_OPT
