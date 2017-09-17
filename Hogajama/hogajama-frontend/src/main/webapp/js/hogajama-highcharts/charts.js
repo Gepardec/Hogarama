@@ -52,7 +52,7 @@ $(document).ready(function (e) {
             var times = [];
             var series = [];
             for(var i = 0; i < sensorData[0].length; i++){
-                times.push(sensorData[0][i]['time'].match(/T(\d\d:\d\d)/)[1]);
+                times.push(sensorData[0][i]['time'].match(/T(\d\d:\d\d:\d\d)/)[1]);
             }
 
             for(var i = 0; i < sensorData.length; i++){
@@ -93,7 +93,7 @@ $(document).ready(function (e) {
                 var newTimes = [];
                 var newSeries = [];
                 for(var i = 0; i < sensorData[0].length; i++){
-                    newTimes.push(sensorData[0][i]['time'].match(/T(\d\d:\d\d)/)[1]);
+                    newTimes.push(sensorData[0][i]['time'].match(/T(\d\d:\d\d:\d\d)/)[1]);
                 }
 
                 for(var i = 0; i < sensorData.length; i++){
