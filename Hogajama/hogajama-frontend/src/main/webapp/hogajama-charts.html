@@ -8,10 +8,11 @@
 <!--link rel="icon" href="favicon.png" type="image/png">
 <link rel="shortcut icon" href="favicon.ico" type="img/x-icon"-->
 <link rel="icon" href="img/gepardec-favicon.png">
-<link rel="shortcut icon" href="img/gepardec-favicon.png" type="img/x-icon"
+<link rel="shortcut icon" href="img/gepardec-favicon.png" type="img/x-icon">
 
-<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Montserrat:300,400,600,700' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800italic,700italic,600italic,400italic,300italic,800,700,600' rel='stylesheet' type='text/css'>
+
 
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="css/style.css" rel="stylesheet" type="text/css">
@@ -19,6 +20,8 @@
 <link href="css/responsive.css" rel="stylesheet" type="text/css">
 <link href="css/animate.css" rel="stylesheet" type="text/css">
 <link href="css/highcharts.css" rel="stylesheet" type="text/css">
+<link href="css/hogajama-charts.css" rel="stylesheet" type="text/css">
+
 
 <!--[if IE]><style type="text/css">.pie {behavior:url(PIE.htc);}</style><![endif]-->
 
@@ -93,13 +96,12 @@
 </nav>
 
 <section class="main-section charts" id="team" 
-            style="padding: 50px 10px 100px; color: #3c3c3c; background: url('img/background_gradient.png') no-repeat fixed center;"
         ><!--"main-section charts"-start-->
 
-    <div class="container-fluid" style="margin-top: -40px; text-align: center; margin-bottom: 20px;">
+    <div class="container-fluid charts-info" style="margin-top: -40px; text-align: center; margin-bottom: 20px;">
         <div class="row">
           <div class="col-md-4" style="text-align: left; padding: 25px; font-size: 1.5em;">
-              <a href="javascript:;" id="open-qrcode" style="color: #3c3c3c; text-decoration: underline; font-size: 15px; font-weight: bold;">Show QR Code</a><br />
+              <a href="javascript:;" id="open-qrcode">Show QR Code</a><br />
               <b>Openshift Stage:</b> <span id="openshift-stage"></span><br />
               <b>Openshift Pod-ID:</b> <span id="openshift-pod-id"></span><br />
               <b>URL:</b> <span id="tinyurl"></span>

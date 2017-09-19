@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.charts-info b {
+	font-weight:600;
+}
+
+.charts-info span {
+	font-weight:300;
+}
+
+.charts-info a {
+	font-weight:600;
+	color: #3c3c3c; 
+	text-decoration: underline; 
+	font-size: 15px;
+}
+
+section.charts {
+	padding: 50px 10px 100px; 
+	color: #3c3c3c; 
+	background: url('../img/background_gradient.png') no-repeat fixed center; 
+	background-size: cover;
+}
