@@ -15,7 +15,7 @@
 
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="css/style.css" rel="stylesheet" type="text/css">
-<link href="css/font-awesome.css" rel="stylesheet" type="text/css">
+<!--<link href="css/font-awesome.css" rel="stylesheet" type="text/css">-->
 <link href="css/responsive.css" rel="stylesheet" type="text/css">
 <link href="css/animate.css" rel="stylesheet" type="text/css">
 <link href="css/highcharts.css" rel="stylesheet" type="text/css">
@@ -93,15 +93,24 @@
 </nav>
 
 <section class="main-section charts" id="team" 
-            style="padding: 50px 10px 100px;"
+            style="padding: 50px 10px 100px; color: #3c3c3c; background: url('img/background_gradient.png') no-repeat fixed center;"
         ><!--"main-section charts"-start-->
 
-    <div class="container-fluid" style="margin-top: -40px; text-align: center;">
+    <div class="container-fluid" style="margin-top: -40px; text-align: center; margin-bottom: 20px;">
         <div class="row">
-          <div class="col-md-3"><b>Openshift Stage:</b> <span id="openshift-stage"></span></div>
-          <div class="col-md-3"><b>Openshift Pod-ID:</b> <span id="openshift-pod-id"></span></div>
-          <div class="col-md-3"><b>URL:</b> <span id="tinyurl"></span></div>
-          <div class="col-md-3"><a href="javascript:;" id="open-qrcode">Show QR Code</a></div>
+          <div class="col-md-4" style="text-align: left; padding: 25px; font-size: 1.5em;">
+              <a href="javascript:;" id="open-qrcode" style="color: #3c3c3c; text-decoration: underline; font-size: 15px; font-weight: bold;">Show QR Code</a><br />
+              <b>Openshift Stage:</b> <span id="openshift-stage"></span><br />
+              <b>Openshift Pod-ID:</b> <span id="openshift-pod-id"></span><br />
+              <b>URL:</b> <span id="tinyurl"></span>
+          </div>
+          <div class="col-md-4">
+              <h1 id="chart-title" style="font-weight: bold; margin-top: 45px;">FEUCHTIGKEIT</h1>
+              <h3 id="chart-subtitle" style="font-weight: bold; color: #3c3c3c;"></h3>
+          </div>
+          <div class="col-md-4">
+              <img src="img/logo-hogarama-gepardec.png" width="250px" height="141px"/>
+          </div>
         </div>
       </div>
 
@@ -122,7 +131,7 @@
         <div class="sk-circle11 sk-child"></div>
         <div class="sk-circle12 sk-child"></div>
     </div>
-    <div id="moisture-chart" style="width:100%; height:400px;" class="hidden"></div>
+    <div id="moisture-chart" style="width:100%; height:75%; min-height: 400px;" class="hidden"></div>
 
 </section><!--"main-section charts"-end-->
 

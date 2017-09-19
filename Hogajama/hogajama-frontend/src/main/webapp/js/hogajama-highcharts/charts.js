@@ -140,17 +140,20 @@ $(document).ready(function (e) {
     var datum = sensorData[0][0]['time'].match(/\d\d\d\d-\d\d-\d\d/)[0].split("-");
     datum = datum[2] + "." + datum[1] + "." + datum[0];
 
+    $("#chart-subtitle").text("MESSWERTE AM " + datum);
+
     console.log("Create chart");
     var moistureChart = Highcharts.chart('moisture-chart', {
             chart: {
-                type: 'line'
+                type: 'line',
+                height: '40%'
             },
             title: {
-                text: 'Feuchtigkeit Messwerte am ' + datum
+                text: null
             },
-            subtitle: {
-                text: 'Source: gepardec.com'
-            },
+        /*subtitle: {
+            text: 'Source: gepardec.com'
+        },*/
             xAxis: {
                 categories: times.reverse()
             },
@@ -183,7 +186,14 @@ $(document).ready(function (e) {
                     enableMouseTracking: false
                 }
             },
-            series: series
+            series: series,
+            responsive: {
+                rules: [{
+                    condition: {
+                        minHeight: 400
+                    }
+                }]
+            }
         });
 
     setInterval(function(){
