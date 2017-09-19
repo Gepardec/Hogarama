@@ -146,8 +146,8 @@ $(document).ready(function (e) {
     var moistureChart = Highcharts.chart('moisture-chart', {
             chart: {
                 type: 'line',
-                height: '800',
-//                height: '40%'
+//                height: '800',
+                height: '40%'
             },
             title: {
                 text: null
