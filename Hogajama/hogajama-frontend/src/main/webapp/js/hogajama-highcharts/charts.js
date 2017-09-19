@@ -187,14 +187,14 @@ $(document).ready(function (e) {
                     enableMouseTracking: false
                 }
             },
-            series: series,
-            responsive: {
-                rules: [{
-                    condition: {
-                        minHeight: 400
-                    }
-                }]
-            }
+            series: series
+//            responsive: {
+//                rules: [{
+//                    condition: {
+//                        minHeight: 400
+//                    }
+//                }]
+//            }
         });
 
     setInterval(function(){
