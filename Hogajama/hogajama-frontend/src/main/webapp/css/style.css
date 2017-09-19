@@ -978,3 +978,9 @@ border: 2px solid #fff;
 .hidden{
 	display: none;
 }
+
+@media only screen and (max-width: 991px) {
+	.hide-on-mobile {
+		display: none;
+	}
+}

@@ -188,13 +188,16 @@ $(document).ready(function (e) {
                 }
             },
             series: series
-//            responsive: {
-//                rules: [{
-//                    condition: {
-//                        minHeight: 400
-//                    }
-//                }]
-//            }
+            /*responsive: {
+                rules: [{
+                    condition: {
+                        maxHeight: 991,
+                        callback: function(){
+                        	this.setSize(undefined, 400);
+                        }
+                    }
+                }]
+            }*/
         });
 
     setInterval(function(){
