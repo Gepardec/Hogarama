@@ -44,13 +44,13 @@ img{ max-width:100%;}
 
 a, a:hover, a:active{ outline:0px !important}
 
-/*@font-face {
+@font-face {
   font-family: 'FontAwesome';
   src: url('../fonts/fontawesome-webfont.eot?v=4.1.0');
   src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.1.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff?v=4.1.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.1.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
-}*/
+}
 
 /* Primary Styles
 ---------------------------------*/
@@ -237,8 +237,8 @@ color: #fff;
 	font-size:38px;
 	display:block;
 	color:#222;
-	/*font-family: 'FontAwesome';*/
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'FontAwesome';
+	/*font-family: 'Montserrat', sans-serif;*/
 	line-height:38px;
 }
 .service-list-col2{
@@ -277,8 +277,8 @@ color: #fff;
 .featured-box-col1 i{
 	display:block;
 	line-height:38px;
-	/*font-family: 'FontAwesome';*/
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'FontAwesome';
+	/*font-family: 'Montserrat', sans-serif;*/
 	font-size:38px;
 	color:#777777;
 	font-style:normal;
@@ -570,8 +570,8 @@ border: 2px solid #fff;
 	margin:0 11px;
 }
 .team-leader ul li a{
-	/*font-family: 'FontAwesome';*/
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'FontAwesome';
+	/*font-family: 'Montserrat', sans-serif;*/
 	display:inline-block;
 	font-size:28px;
 	color:#fff;	
@@ -640,8 +640,8 @@ border: 2px solid #fff;
 	font-style:normal;
 	font-size:18px;
 	color:#222222;
-	/*font-family: 'FontAwesome';*/
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'FontAwesome';
+	/*font-family: 'Montserrat', sans-serif;*/
 	font-weight:normal;
 	margin-right:7px;
 }
@@ -781,8 +781,8 @@ border: 2px solid #fff;
 
 .res-nav_click {
 	line-height:38px;
-	/*font-family: 'FontAwesome';*/
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'FontAwesome';
+	/*font-family: 'Montserrat', sans-serif;*/
 	font-size:38px;
 	text-decoration: none !important;
 	color:#777777;
