@@ -147,7 +147,7 @@ $(document).ready(function (e) {
             chart: {
                 type: 'line',
 //                height: '800',
-                height: '600px'
+                height: '400px'
             },
             title: {
                 text: null
