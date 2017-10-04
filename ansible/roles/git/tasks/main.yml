@@ -1,0 +1,15 @@
+- name: "Install git package"
+  package:
+    name: git
+    state: present
+
+- name: "Create git repository directories"
+  action: file
+    path="{{ item.dest }}"
+    owner="{{ username }}"
+    group="{{ username }}"
+    mode=0700
+    state=directory
+  with_items: "{{ repositories }}"
+  
+- import_tasks: install.yml

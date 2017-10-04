@@ -1,0 +1,17 @@
+# project directories
+dir_project_home: "/home/{{ username }}"
+dir_bin: "{{ dir_project_home }}/.local/bin"
+dir_opt: "{{ dir_project_home }}/opt"
+dir_repo: "{{ dir_project_home }}/repository"
+project_dirs:
+  - "{{ dir_project_home }}"
+  - "{{ dir_bin }}"
+  - "{{ dir_opt }}"
+  - "{{ dir_repo }}"
+
+cleanup: false
+username: hogarama
+openshift_username: ""
+openshift_password: ""
+virt_type: "{{ virt_kvm }}"
+virt_kvm: "libvirt"

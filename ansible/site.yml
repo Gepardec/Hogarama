@@ -1,0 +1,25 @@
+- hosts:
+  - local
+  become: yes
+  become_user: root
+  pre_tasks:
+    - name: Cleanup project home if necessary
+      file:
+        path: "{{ dir_project_home }}"
+        state: absent
+      when: cleanup == "true"
+
+    - name: "Checking file '{{ file_cdk }}' available"
+      stat:
+        path: "{{ file_cdk }}"
+      register: file_cdk_result
+
+    - name: "Failing file '{{ file_cdk }}' not available"
+      fail:
+        msg: "CDK not available '{{ file_cdk_result }}'"
+      when: not file_cdk_result.stat.exists
+  roles:
+    - virtualization
+    - user
+    - git
+    - openshift

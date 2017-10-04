@@ -1,0 +1,5 @@
+- name: "Delete openshift directories"
+  action: file
+    path="{{ item }}"
+    state=absent
+  with_items: "{{ openshift_dirs }}"

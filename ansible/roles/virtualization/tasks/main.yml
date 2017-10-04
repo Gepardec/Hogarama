@@ -1,0 +1,2 @@
+- name: "Preparing virtualization for '{{ virt_type }}'"
+  include_tasks: "{{ virt_type }}.yml"

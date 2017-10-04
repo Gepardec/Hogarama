@@ -1,0 +1,29 @@
+- name: "User setup '{{ username }}'"
+  user:
+     name: "{{ username }}"
+     shell: /bin/bash
+     groups: docker,libvirt
+     append: yes
+     comment: "The user for the Hogarama application"
+     createhome: no
+     force: no
+     system: no
+     remove: no
+
+- name: Create project directories
+  action: file
+    path="{{ item }}"
+    state=directory
+    owner="{{ username }}"
+    group="{{ username }}"
+    mode=0700
+  with_items: "{{ project_dirs }}"
+
+- name: "Create .bashrc from template"
+  template:
+    src: "../templates/bashrc.j2"
+    dest: "{{ dir_project_home }}/.bashrc"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0600
+    force: yes

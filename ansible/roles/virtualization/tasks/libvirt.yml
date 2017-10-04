@@ -1,0 +1,13 @@
+- name: "Ensure virtualization packages to be installed"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libvirt
+    - libvirt-python
+    - virt-manager
+
+- name: "Check if virtualization service is started"
+  service:
+    name: libvirtd
+    state: started

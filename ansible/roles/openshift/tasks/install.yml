@@ -1,0 +1,65 @@
+# Download and install
+- name: "Downloading and unarchiving depending binaries..."
+  unarchive:
+    src: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ username }}"
+    mode: 0700
+    remote_src: "{{ item.remote }}"
+    extra_opts: "{{ item.opts }}"
+  with_items: "{{ openshift_unarchives }}"
+
+- name: "Downloading depending binaries..."
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}/{{ item.name }}"
+    owner: "{{ username }}"
+    mode: 0700
+  with_items: "{{ openshift_get_urls }}"
+
+- name: "Copying '{{ file_cdk }}' to '{{ dir_opt_openshift }}/minishift'"
+  copy:
+    src: "{{ file_cdk }}"
+    dest: "{{ dir_opt_openshift }}/minishift"
+    owner: "{{ username }}"
+    mode: 0700
+
+# Link binaries
+- name: "Linking downloaded and unarchived binaries..."
+  file:
+    src: "{{ item.dest }}/{{ item.name }}"
+    dest: "{{ dir_bin_openshift }}/{{ item.name }}"
+    owner: "{{ username }}"
+    mode: 0700
+    state: link
+  with_items: "{{ openshift_unarchives }}"
+
+- name: "Linking downloaded binaries..."
+  file:
+    src: "{{ item.dest }}/{{ item.name }}"
+    dest: "{{ dir_bin_openshift }}/{{ item.name }}"
+    owner: "{{ username }}"
+    mode: 0700
+    state: link
+  with_items: "{{ openshift_get_urls }}"
+
+- name: "Linking cdk binary..."
+  file:
+    src: "{{ dir_opt_openshift }}/minishift"
+    dest: "{{ dir_bin_openshift }}/minishift"
+    owner: "{{ username }}"
+    mode: 0700
+    state: link
+
+- name: "Add openshift binaries to .bashrc"
+  blockinfile:
+    path: "{{ dir_project_home }}/.bashrc"
+    marker: "# {mark} OPENSHIFT PATH"
+    backup: no
+    content: >
+      "
+      export MINISHIFT_HOME={{ dir_minishift_home }}
+      export MINISHIFT_USERNAME={{ minishift_username }}
+      export MINISHIFT_PASSWORD={{ minishift_password }}
+      export PATH=$PATH:{{ dir_bin_openshift }}
+      "

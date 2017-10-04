@@ -1,0 +1,11 @@
+- name: "Checkout github repositories"
+  become: true
+  become_user: "{{ username }}"
+  action: git
+    repo="{{ item.url }}"
+    dest="{{ item.dest }}"
+    version=master
+    clone=yes
+    update=yes
+    accept_hostkey=yes
+  with_items: "{{ repositories }}"

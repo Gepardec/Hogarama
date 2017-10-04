@@ -1,0 +1,35 @@
+# openshift directories
+dir_opt_openshift: "{{ dir_opt }}/openshift"
+dir_bin_openshift: "{{ dir_bin }}/openshift"
+dir_minishift_home: "{{ dir_project_home }}/.minishift"
+# app versions
+version_s2i: 1.1.7
+version_hash_s2i: 226afa1
+version_docker_kvm: 0.10.0
+version_oc: 3.6.0
+version_hash_oc: c4dd4cf
+# login data
+minishift_username: ""
+minishift_password: ""
+# url lists for unarchive task
+openshift_unarchives:
+  - url: "https://github.com/openshift/source-to-image/releases/download/v{{ version_s2i }}/source-to-image-v{{ version_s2i }}-{{ version_hash_s2i }}-linux-amd64.tar.gz"
+    dest: "{{ dir_opt_openshift }}"
+    name: s2i
+    remote: true
+    opts:
+  - url: "https://github.com/openshift/origin/releases/download/v{{ version_oc }}/openshift-origin-client-tools-v{{ version_oc }}-{{ version_hash_oc }}-linux-64bit.tar.gz"
+    dest: "{{ dir_opt_openshift }}"
+    name: oc
+    remote: true
+    opts: "--strip-components=1"
+# url list for get_url task
+openshift_get_urls:
+  - url: "https://github.com/dhiltgen/docker-machine-kvm/releases/download/v{{ version_docker_kvm }}/docker-machine-driver-kvm-centos7"
+    dest: "{{ dir_opt_openshift }}"
+    name: docker-machine-driver-kvm
+# the list of directories
+openshift_dirs:
+  - "{{ dir_opt_openshift }}"
+  - "{{ dir_bin_openshift }}"
+  - "{{ dir_minishift_home }}"

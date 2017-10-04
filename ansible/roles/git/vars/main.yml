@@ -1,0 +1,4 @@
+# the list of Hogarama involved repositories
+repositories:
+  - url: https://github.com/cchet-gepardec/Hogarama.git
+    dest: "{{ dir_repo }}/Hogarama"

@@ -1,0 +1,8 @@
+- name: "Delete repository directories"
+  action: file
+    path="{{ item.dest }}"
+    owner="{{ username }}"
+    group="{{ username }}"
+    mode=0700
+    state=absent
+  with_items: "{{ repositories }}"

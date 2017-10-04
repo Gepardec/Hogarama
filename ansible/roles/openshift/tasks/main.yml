@@ -1,0 +1,11 @@
+- name: Create openshift directories
+  action: file
+    path="{{ item }}"
+    state=directory
+    owner="{{ username }}"
+    group="{{ username }}"
+    mode=0700
+  with_items: "{{ openshift_dirs }}"
+
+- import_tasks: install.yml
+- import_tasks: setup.yml

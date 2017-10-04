@@ -1,0 +1,11 @@
+- name: Setup cdk
+  command: "{{ dir_bin_openshift }}/minishift setup-cdk --force"
+  become: yes
+  become_user: "{{ username }}"
+  environment:
+    PATH: "{{ dir_bin_openshift }}"
+  register: minishift_setup_cdk_result
+
+- name: "output: '{{ dir_bin_openshift }}/minishift setup-cdk'"
+  debug:
+    msg: "{{ minishift_setup_cdk_result.stdout }}"
