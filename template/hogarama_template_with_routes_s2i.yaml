@@ -327,7 +327,7 @@ objects:
             value: L(o?cqGPtJ}7YiHu
           - name: AMQ_STORAGE_USAGE_LIMIT
             value: 1 gb
-          image: registry.access.redhat.com/jboss-amq-6/amq62-openshift@sha256:acadeae82790e144cc8631db9a78344cad2b359bc46d463a556c77caf08b11be
+          image: amq62-openshift
           imagePullPolicy: Always
           name: ${APPLICATION_NAME}-broker-amq
           ports:
@@ -361,8 +361,6 @@ objects:
           readinessProbe:
             exec:
               command:
-              - /bin/bash
-              - -c
               - /opt/amq/bin/readinessProbe.sh
             failureThreshold: 3
             periodSeconds: 10
@@ -396,7 +394,7 @@ objects:
         - ${APPLICATION_NAME}-broker-amq
         from:
           kind: ImageStreamTag
-          name: jboss-amq-62:1.3
+          name: amq62-openshift:1.5
           namespace: ${IMAGE_STREAM_NAMESPACE}
       type: ImageChange
     - type: ConfigChange
@@ -407,23 +405,6 @@ objects:
     replicas: 0
     unavailableReplicas: 0
     updatedReplicas: 0
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: debian
-    namespace: ${IMAGE_STREAM_NAMESPACE}
-    labels:
-      app: ${APPLICATION_NAME}
-  spec:
-    tags:
-      - name: stretch-slim
-        annotations:
-          openshift.io/imported-from: 'debian:stretch-slim'
-        from:
-          kind: DockerImage
-          name: 'debian:stretch-slim'
-        generation: 2
-        importPolicy: {}
 - apiVersion: v1
   kind: ImageStream
   metadata:
@@ -453,6 +434,7 @@ objects:
         from:
           kind: ImageStreamTag
           name: 'debian:stretch-slim'
+          namespace: ${IMAGE_STREAM_NAMESPACE}
         env:
           - name: "APPLICATION_NAME"
             value: ${APPLICATION_NAME}
@@ -568,10 +550,6 @@ objects:
           kind: ImageStreamTag
           name: jboss-eap70-openshift:1.4
           namespace: ${IMAGE_STREAM_NAMESPACE}
-        env:
-        - name: MAVEN_MIRROR_URL
-          value: >-
-            https://nexus3-57-dev-tools.cloud.itandtel.at/repository/maven-public/
       type: Source
     triggers:
     - github:
@@ -693,7 +671,7 @@ objects:
             value: hogajamadb
           - name: MONGODB_ADMIN_PASSWORD
             value: ${MONGODB_ADMIN_PASSWORD} 
-          image: registry.access.redhat.com/rhscl/mongodb-32-rhel7@sha256:4143584de718ef477fe03e3ae15985c68e0ce9dca8ba089dfa5927e800e59e69
+          image: registry.access.redhat.com/rhscl/mongodb-32-rhel7
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
