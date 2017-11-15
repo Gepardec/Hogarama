@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: ghost-blog-persistent
+  annotations:
+    description: Ghost is a fully open source, hackable platform for building and running a modern online publication. We power blogs, magazines and journalists from Zappos to Sky News.
+    tags: nodejs,quickstart,instant-app
+    iconClass: icon-nodejs
+objects:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: ghost-blog-persistent
+      template: ghost-blog-persistent-template
+    name: ${VOLUME_CLAIM_NAME}
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: ${VOLUME_CAPACITY}
+  status: {}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    generation: 1
+    labels:
+      app: ghost-blog-persistent
+      template: ghost-blog-persistent-template
+    name: ghost-blog-persistent
+  spec:
+    replicas: 1
+    selector:
+      name: ghost-blog-persistent
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      type: Recreate
+      resources: {}
+    triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - ghost-blog-persistent
+        from:
+          kind: ImageStreamTag
+          name: ghost:latest
+          namespace: openshift
+    - type: ConfigChange
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name: ghost-blog-persistent
+      spec:
+        containers:
+        - name: ghost-blog-persistent
+          image: 172.30.194.147:5000/57-dev-tools/ghost-blog:latest
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 2368
+            timeoutSeconds: 1
+          
+          ports:
+          - containerPort: 2368
+            protocol: TCP
+          resources:
+            limits:
+              memory: 512Mi
+          securityContext:
+            capabilities: {}
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /var/lib/ghost/content
+            name: ghost-blog-persistent-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: ghost-blog-persistent-data
+          persistentVolumeClaim:
+            claimName: ${VOLUME_CLAIM_NAME}
+    test: false
+  status: {}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ghost-blog
+  spec:
+    dockerImageRepository: docker.io/ghost
+    tags:
+    - name: latest
+      annotations:
+        description: Ghost is a free and open source blogging platform written in JavaScript
+        iconClass: icon-nodejs
+        tags: ghost-blog
+      from:
+        kind: ImageStreamTag
+        name: latest
+      generation: 1
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Ghosts tcp port.
+    creationTimestamp: null
+    labels:
+      app: ghost-blog-persistent
+    name: ghost-blog-persistent
+  spec:
+    ports:
+    - port: 2368
+      protocol: TCP
+      targetPort: 2368
+    selector:
+      name: ghost-blog-persistent
+      deploymentConfig: ghost-blog-persistent
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    creationTimestamp: null
+    labels:
+      app: ghost-blog-persistent
+    name: ghost-blog-persistent
+  spec:
+    port:
+      targetPort: 2368-tcp
+    tls:
+      termination: edge
+    to:
+      kind: Service
+      name: ghost-blog-persistent
+      weight: 100
+    wildcardPolicy: None
+parameters:
+    - name: VOLUME_CLAIM_NAME
+      displayName: Volume Claim Name
+      description: The name of the OpenShift Volume Claim for the database.
+      from: '[A-Z0-9]{8}'
+      value: ghost-blog-persistent-volume
+    - name: VOLUME_CAPACITY
+      displayName: Volume Capacity
+      description: Volume space available for data, e.g. 512Mi, 2Gi
+      from: '[A-Z0-9]{8}'
+      value: 1Gi
+      required: true
