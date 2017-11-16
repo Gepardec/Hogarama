@@ -1,0 +1,462 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "owncloud-persistent",
+    "annotations": {
+      "openshift.io/display-name": "ownCloud (Persistent)",
+      "description": "A deployment for ownCloud with MariaDB, including persistent storage.",
+      "iconClass": "icon-owncloud",
+      "tags": "instant-app,php,owncloud,mariadb"
+    }
+  },
+  "message": "An ownCloud service including persistent storage has been created in your project.",
+  "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "owncloud"
+      },
+      "spec": {
+        "dockerImageRepository" : "docker.io/owncloud",
+        "tags":[
+          {
+            "name": "latest",
+            "annotations": {
+                "tags": "owncloud"
+            },
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "latest"
+            },
+            "generation": "1",
+            "importPolicy": {}
+          }
+        ] 
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "mariadb"
+      },
+      "spec": {
+        "dockerImageRepository" : "docker.io/mariadb",
+        "tags":[
+          {
+            "name": "latest",
+            "annotations": {
+                "tags": "mariadb"
+            },
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "latest"
+            },
+            "generation": "1",
+            "importPolicy": {}
+          }
+        ] 
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "owncloud"
+      },
+      "spec": {
+        "to": {
+          "kind": "Service",
+          "name": "${OWNCLOUD_SERVICE_NAME}"
+        },
+        "tls": {
+          "termination": "edge",
+          "insecureEdgeTerminationPolicy": "Redirect"
+        }
+      }
+    },
+    {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${OWNCLOUD_SERVICE_NAME}"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "${OWNCLOUD_VOLUME_CAPACITY}"
+          }
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${OWNCLOUD_SERVICE_NAME}",
+        "annotations": {
+          "service.alpha.openshift.io/dependencies": "[{\"name\": \"${MARIADB_SERVICE_NAME}\", \"namespace\": \"\", \"kind\": \"Service\"}]"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "http",
+            "protocol": "TCP",
+            "port": 8080,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "name": "${OWNCLOUD_SERVICE_NAME}"
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${OWNCLOUD_SERVICE_NAME}"
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling"
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "owncloud"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${OWNCLOUD_IMAGE_NAME}"
+              },
+              "lastTriggeredImage": ""
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${OWNCLOUD_SERVICE_NAME}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${OWNCLOUD_SERVICE_NAME}",
+            "labels": {
+              "name": "${OWNCLOUD_SERVICE_NAME}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "owncloud",
+                "image": "${OWNCLOUD_IMAGE_NAME}",
+                "readinessProbe": {
+                  "timeoutSeconds": 5,
+                  "initialDelaySeconds": 3,
+                  "httpGet": {
+                    "path": "/",
+                    "port": 8080
+                  }
+                },
+                "livenessProbe": {
+                  "timeoutSeconds": 5,
+                  "initialDelaySeconds": 600,
+                  "failureThreshold" : 30,
+                  "httpGet": {
+                    "path": "/",
+                    "port": 8080
+                  }
+                },
+                "ports": [
+                  {
+                    "containerPort": 8080
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "OWNCLOUD_DOMAIN",
+                    "value": "${OWNCLOUD_PUBLIC_DOMAIN}"
+                  },
+                  {
+                    "name": "OWNCLOUD_DB_TYPE",
+                    "value": "mysql"
+                  },
+                  {
+                    "name": "OWNCLOUD_DB_NAME",
+                    "value": "owncloud"
+                  },
+                  {
+                    "name": "OWNCLOUD_DB_USERNAME",
+                    "value": "owncloud"
+                  },
+                  {
+                    "name": "OWNCLOUD_DB_PASSWORD",
+                    "value": "${MARIADB_USER_PASSWORD}"
+                  },
+                  {
+                    "name": "OWNCLOUD_DB_HOST",
+                    "value": "${MARIADB_SERVICE_NAME}"
+                  },
+                  {
+                    "name": "OWNCLOUD_ADMIN_USERNAME",
+                    "value": "${OWNCLOUD_ADMIN_USERNAME}"
+                  },
+                  {
+                    "name": "OWNCLOUD_ADMIN_PASSWORD",
+                    "value": "${OWNCLOUD_ADMIN_PASSWORD}"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "${OWNCLOUD_SERVICE_NAME}-data",
+                    "mountPath": "/var/www/html"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "${OWNCLOUD_SERVICE_NAME}-data",
+                "persistentVolumeClaim": {
+                  "claimName": "${OWNCLOUD_SERVICE_NAME}"
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst"
+          }
+        }
+      }
+    },
+    {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${MARIADB_SERVICE_NAME}"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "${MARIADB_VOLUME_CAPACITY}"
+          }
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${MARIADB_SERVICE_NAME}"
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "mariadb",
+            "protocol": "TCP",
+            "port": 3306,
+            "targetPort": 3306
+          }
+        ],
+        "selector": {
+          "name": "${MARIADB_SERVICE_NAME}"
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${MARIADB_SERVICE_NAME}"
+      },
+      "spec": {
+        "strategy": {
+          "type": "Recreate"
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "mariadb"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${MARIADB_IMAGE_NAME}"
+              },
+              "lastTriggeredImage": ""
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${MARIADB_SERVICE_NAME}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${MARIADB_SERVICE_NAME}",
+            "labels": {
+              "name": "${MARIADB_SERVICE_NAME}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "mariadb",
+                "image": "${MARIADB_IMAGE_NAME}",
+                "readinessProbe": {
+                  "timeoutSeconds": 3,
+                  "initialDelaySeconds": 3,
+                  "tcpSocket": {
+                    "port": 3306
+                  }
+                },
+                "livenessProbe": {
+                  "timeoutSeconds": 3,
+                  "initialDelaySeconds": 600,
+                  "failureThreshold" : 30,
+                  "tcpSocket": {
+                    "port": 3306
+                  }
+                },
+                "ports": [
+                  {
+                    "containerPort": 3306
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "MARIADB_ROOT_PASSWORD",
+                    "value": "${MARIADB_ROOT_PASSWORD}"
+                  },
+                  {
+                    "name": "MARIADB_USERNAME",
+                    "value": "owncloud"
+                  },
+                  {
+                    "name": "MARIADB_PASSWORD",
+                    "value": "${MARIADB_USER_PASSWORD}"
+                  },
+                  {
+                    "name": "MARIADB_DATABASE",
+                    "value": "owncloud"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "${MARIADB_SERVICE_NAME}-data",
+                    "mountPath": "/var/lib/mysql"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "${MARIADB_SERVICE_NAME}-data",
+                "persistentVolumeClaim": {
+                  "claimName": "${MARIADB_SERVICE_NAME}"
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst"
+          }
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "OWNCLOUD_PUBLIC_DOMAIN",
+      "displayName": "ownCloud Public Domain",
+      "description": "The public domain where you want to reach ownCloud after the deployment.",
+      "value": "rocketchat-57-dev-tools.cloud.itandtel.at",
+      "required": true
+    },
+    {
+      "name": "OWNCLOUD_ADMIN_USERNAME",
+      "displayName": "ownCloud Admin Username",
+      "description": "The username for the initial admin user, can be changed later within ownCloud.",
+      "value": "admin"
+    },
+    {
+      "name": "OWNCLOUD_ADMIN_PASSWORD",
+      "displayName": "ownCloud Admin Password",
+      "description": "The password for the initial admin user, can be changed later within ownCloud.",
+      "value": "admin"
+    },
+    {
+      "name": "OWNCLOUD_VOLUME_CAPACITY",
+      "displayName": "ownCloud Volume Capacity",
+      "description": "Volume space available for data to store ownCloud assets, e.g. 512Mi, 2Gi.",
+      "value": "1Gi",
+      "required": true
+    },
+    {
+      "name": "OWNCLOUD_SERVICE_NAME",
+      "displayName": "ownCloud Service Name",
+      "description": "The name of the OpenShift Service exposed for the ownCloud container.",
+      "value": "owncloud-server"
+    },
+    {
+      "name": "OWNCLOUD_IMAGE_NAME",
+      "displayName": "ownCloud Image Name",
+      "description": "The name of the ownCloud image used within the OpenShift deployment.",
+      "value": "172.30.194.147:5000/57-dev-tools/owncloud:latest"
+    },
+    {
+      "name": "MARIADB_VOLUME_CAPACITY",
+      "displayName": "MariaDB Volume Capacity",
+      "description": "Volume space available for data to store MariaDB assets, e.g. 512Mi, 2Gi.",
+      "value": "1Gi",
+      "required": true
+    },
+    {
+      "name": "MARIADB_SERVICE_NAME",
+      "displayName": "MariaDB Service Name",
+      "description": "The name of the OpenShift Service exposed for the MariaDB container.",
+      "value": "owncloud-mariadb"
+    },
+    {
+      "name": "MARIADB_IMAGE_NAME",
+      "displayName": "MariaDB Image Name",
+      "description": "The name of the MariaDB image used within the OpenShift deployment.",
+      "value": "172.30.194.147:5000/57-dev-tools/mariadb:latest"
+    },
+    {
+      "name": "MARIADB_ROOT_PASSWORD",
+      "displayName": "MariaDB Root Password",
+      "description": "The password for the root user to access the MariaDB.",
+      "generate": "expression",
+      "from": "[a-zA-Z0-9]{16}"
+    },
+    {
+      "name": "MARIADB_USER_PASSWORD",
+      "displayName": "MariaDB User Password",
+      "description": "The password for the regular user to access the MariaDB.",
+      "generate": "expression",
+      "from": "[a-zA-Z0-9]{16}"
+    }
+  ],
+  "labels": {
+    "template": "owncloud-persistent-template"
+  }
+}
