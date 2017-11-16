@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Gepardec/Hogarama.svg?branch=master)](https://travis-ci.org/Gepardec/Hogarama)
+
 # Hogarama
 Home and Garden Automation
 
