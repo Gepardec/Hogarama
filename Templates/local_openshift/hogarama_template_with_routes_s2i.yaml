@@ -491,6 +491,9 @@ objects:
           kind: ImageStreamTag
           name: jboss-eap70-openshift:1.4
           namespace: ${IMAGE_STREAM_NAMESPACE}
+        env:
+          - name: MAVEN_MIRROR_URL
+            value: ${MAVEN_REPOSITORY}
       type: Source
     triggers:
     - type: GitHub
@@ -766,6 +769,9 @@ parameters:
       from: '[A-Z0-9]{8}'
       value: test
       name: STAGE
+    - description: Maven repository url
+      value: https://repo1.maven.org/maven2/
+      name: MAVEN_REPOSITORY
     - description: Password used for MQ authentication
       from: '[A-Z0-9]{8}'
       value: mq_habarama_pass
