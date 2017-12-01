@@ -14,17 +14,17 @@ objects:
     annotations:
       description: The broker's AMQP port.
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
-      application: ${APPLICATION_NAME}-broker
+      app: amq62-persistent-ssl
+      application: broker
       template: hogarama-template
-    name: ${APPLICATION_NAME}-broker-amq-amqp
+    name: broker-amq-amqp
   spec:
     ports:
     - port: 5672
       protocol: TCP
       targetPort: 5672
     selector:
-      deploymentConfig: ${APPLICATION_NAME}-broker-amq
+      deploymentConfig: broker-amq
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -33,17 +33,17 @@ objects:
     annotations:
       description: The broker's AMQP SSL port.
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
-      application: ${APPLICATION_NAME}-broker
+      app: amq62-persistent-ssl
+      application: broker
       template: hogarama-template
-    name: ${APPLICATION_NAME}-broker-amq-amqp-ssl
+    name: broker-amq-amqp-ssl
   spec:
     ports:
     - port: 5671
       protocol: TCP
       targetPort: 5671
     selector:
-      deploymentConfig: ${APPLICATION_NAME}-broker-amq
+      deploymentConfig: broker-amq
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -52,17 +52,17 @@ objects:
     annotations:
       description: The broker's MQTT port.
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
-      application: ${APPLICATION_NAME}-broker
+      app: amq62-persistent-ssl
+      application: broker
       template: hogarama-template
-    name: ${APPLICATION_NAME}-broker-amq-mqtt
+    name: broker-amq-mqtt
   spec:
     ports:
     - port: 1883
       protocol: TCP
       targetPort: 1883
     selector:
-      deploymentConfig: ${APPLICATION_NAME}-broker-amq
+      deploymentConfig: broker-amq
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -71,17 +71,17 @@ objects:
     annotations:
       description: The broker's MQTT SSL port.
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
-      application: ${APPLICATION_NAME}-broker
+      app: amq62-persistent-ssl
+      application: broker
       template: hogarama-template
-    name: ${APPLICATION_NAME}-broker-amq-mqtt-ssl
+    name: broker-amq-mqtt-ssl
   spec:
     ports:
     - port: 8883
       protocol: TCP
       targetPort: 8883
     selector:
-      deploymentConfig: ${APPLICATION_NAME}-broker-amq
+      deploymentConfig: broker-amq
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -90,17 +90,17 @@ objects:
     annotations:
       description: The broker's STOMP port.
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
-      application: ${APPLICATION_NAME}-broker
+      app: amq62-persistent-ssl
+      application: broker
       template: hogarama-template
-    name: ${APPLICATION_NAME}-broker-amq-stomp
+    name: broker-amq-stomp
   spec:
     ports:
     - port: 61613
       protocol: TCP
       targetPort: 61613
     selector:
-      deploymentConfig: ${APPLICATION_NAME}-broker-amq
+      deploymentConfig: broker-amq
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -109,17 +109,17 @@ objects:
     annotations:
       description: The broker's STOMP SSL port.
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
-      application: ${APPLICATION_NAME}-broker
+      app: amq62-persistent-ssl
+      application: broker
       template: hogarama-template
-    name: ${APPLICATION_NAME}-broker-amq-stomp-ssl
+    name: broker-amq-stomp-ssl
   spec:
     ports:
     - port: 61612
       protocol: TCP
       targetPort: 61612
     selector:
-      deploymentConfig: ${APPLICATION_NAME}-broker-amq
+      deploymentConfig: broker-amq
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -128,17 +128,17 @@ objects:
     annotations:
       description: The broker's OpenWire port.
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
-      application: ${APPLICATION_NAME}-broker
+      app: amq62-persistent-ssl
+      application: broker
       template: hogarama-template
-    name: ${APPLICATION_NAME}-broker-amq-tcp
+    name: broker-amq-tcp
   spec:
     ports:
     - port: 61616
       protocol: TCP
       targetPort: 61616
     selector:
-      deploymentConfig: ${APPLICATION_NAME}-broker-amq
+      deploymentConfig: broker-amq
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -147,18 +147,18 @@ objects:
     annotations:
       description: The broker's OpenWire (SSL) port.
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
-      application: ${APPLICATION_NAME}-broker
+      app: amq62-persistent-ssl
+      application: broker
       template: amq62-persistent-ssl
       xpaas: 1.3.1
-    name: ${APPLICATION_NAME}-broker-amq-tcp-ssl
+    name: broker-amq-tcp-ssl
   spec:
     ports:
     - port: 61617
       protocol: TCP
       targetPort: 61617
     selector:
-      deploymentConfig: ${APPLICATION_NAME}-broker-amq
+      deploymentConfig: broker-amq
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -167,8 +167,8 @@ objects:
     annotations:
       description: The Fluend to handle data flow.
     labels:
-      app: ${APPLICATION_NAME}-fluentd
-    name: ${APPLICATION_NAME}-fluentd
+      app: fluentd
+    name: fluentd
   spec:
     ports:
     - name: 5140-tcp
@@ -180,8 +180,8 @@ objects:
       protocol: TCP
       targetPort: 24224
     selector:
-      app: ${APPLICATION_NAME}-fluentd
-      deploymentconfig: ${APPLICATION_NAME}-fluentd
+      app: fluentd
+      deploymentconfig: fluentd
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -215,9 +215,9 @@ objects:
   kind: Service
   metadata:
     labels:
-      app: ${APPLICATION_NAME}-mongodb-persistent
+      app: mongodb-persistent
       template: hogarama-template
-    name: ${APPLICATION_NAME}-mongodb
+    name: mongodb
   spec:
     ports:
     - name: mongo
@@ -225,21 +225,21 @@ objects:
       protocol: TCP
       targetPort: 27017
     selector:
-      name: ${APPLICATION_NAME}-mongodb
+      name: mongodb
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
-      application: ${APPLICATION_NAME}-broker
+      app: amq62-persistent-ssl
+      application: broker
       template: hogarama-template
-    name: ${APPLICATION_NAME}-broker-amq
+    name: broker-amq
   spec:
     replicas: 1
     selector:
-      deploymentConfig: ${APPLICATION_NAME}-broker-amq
+      deploymentConfig: broker-amq
     strategy:
       activeDeadlineSeconds: 21600
       rollingParams:
@@ -252,9 +252,9 @@ objects:
     template:
       metadata:
         labels:
-          application: ${APPLICATION_NAME}-broker
-          deploymentConfig: ${APPLICATION_NAME}-broker-amq
-        name: ${APPLICATION_NAME}-broker-amq
+          application: broker
+          deploymentConfig: broker-amq
+        name: broker-amq
       spec:
         containers:
         - env:
@@ -273,7 +273,7 @@ objects:
           - name: AMQ_MESH_DISCOVERY_TYPE
             value: kube
           - name: AMQ_MESH_SERVICE_NAME
-            value: ${APPLICATION_NAME}-broker-amq-tcp
+            value: broker-amq-tcp
           - name: AMQ_MESH_SERVICE_NAMESPACE
             valueFrom:
               fieldRef:
@@ -293,7 +293,7 @@ objects:
             value: 1 gb
           image: amq62-openshift
           imagePullPolicy: Always
-          name: ${APPLICATION_NAME}-broker-amq
+          name: broker-amq
           ports:
           - containerPort: 8778
             name: jolokia
@@ -333,27 +333,27 @@ objects:
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /etc/amq-secret-volume
-            name: ${APPLICATION_NAME}-broker-secret-volume
+            name: broker-secret-volume
             readOnly: true
           - mountPath: /opt/amq/data
-            name: ${APPLICATION_NAME}-broker-amq-pvol
+            name: broker-amq-pvol
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         terminationGracePeriodSeconds: 60
         volumes:
-        - name: ${APPLICATION_NAME}-broker-secret-volume
+        - name: broker-secret-volume
           secret:
             defaultMode: 420
-            secretName: ${APPLICATION_NAME}-amq-app-secret
-        - name: ${APPLICATION_NAME}-broker-amq-pvol
+            secretName: amq-app-secret
+        - name: broker-amq-pvol
           persistentVolumeClaim:
-            claimName: ${APPLICATION_NAME}-broker-amq-claim
+            claimName: broker-amq-claim
     test: false
     triggers:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - ${APPLICATION_NAME}-broker-amq
+        - broker-amq
         from:
           kind: ImageStreamTag
           name: amq62-openshift:1.5
@@ -364,19 +364,19 @@ objects:
   kind: ImageStream
   metadata:
     labels:
-      application: ${APPLICATION_NAME}-fluentd
-    name: ${APPLICATION_NAME}-fluentd
+      application: fluentd
+    name: fluentd
 - apiVersion: v1
   kind: BuildConfig
   metadata:
     labels:
-      application: ${APPLICATION_NAME}-fluentd
-    name: ${APPLICATION_NAME}-fluentd
+      application: fluentd
+    name: fluentd
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: ${APPLICATION_NAME}-fluentd:latest
+        name: fluentd:latest
     source:
       contextDir: Fluentd
       git:
@@ -406,13 +406,13 @@ objects:
   kind: DeploymentConfig
   metadata:
     labels:
-      app: ${APPLICATION_NAME}-fluentd
-    name: ${APPLICATION_NAME}-fluentd
+      app: fluentd
+    name: fluentd
   spec:
     replicas: 1
     selector:
-      app: ${APPLICATION_NAME}-fluentd
-      deploymentconfig: ${APPLICATION_NAME}-fluentd
+      app: fluentd
+      deploymentconfig: fluentd
     strategy:
       activeDeadlineSeconds: 21600
       rollingParams:
@@ -428,13 +428,13 @@ objects:
           openshift.io/container.fluentd.image.entrypoint: '["/bin/bash"]'
           openshift.io/generated-by: OpenShiftNewApp
         labels:
-          app: ${APPLICATION_NAME}-fluentd
-          deploymentconfig: ${APPLICATION_NAME}-fluentd
+          app: fluentd
+          deploymentconfig: fluentd
       spec:
         containers:
-        - image: ${APPLICATION_NAME}-fluentd
+        - image: fluentd
           imagePullPolicy: Always
-          name: ${APPLICATION_NAME}-fluentd
+          name: fluentd
           ports:
           - containerPort: 24224
             protocol: TCP
@@ -443,14 +443,14 @@ objects:
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /fluentd/log
-            name: ${APPLICATION_NAME}-fluentd-log-volume
+            name: fluentd-log-volume
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
         volumes:
-        - name: ${APPLICATION_NAME}-fluentd-log-volume
+        - name: fluentd-log-volume
           persistentVolumeClaim:
-            claimName: ${APPLICATION_NAME}-fluentd-log-claim
+            claimName: fluentd-log-claim
     test: false
     triggers:
     - type: ConfigChange
@@ -458,10 +458,10 @@ objects:
       imageChangeParams:
         automatic: true
         containerNames:
-        - ${APPLICATION_NAME}-fluentd
+        - fluentd
         from:
           kind: ImageStreamTag
-          name: ${APPLICATION_NAME}-fluentd:latest
+          name: fluentd:latest
 - apiVersion: v1
   kind: ImageStream
   metadata:
@@ -534,7 +534,7 @@ objects:
           - name: STAGE
             value: ${STAGE}
           - name: MONGODB_URL
-            value: ${APPLICATION_NAME}-mongodb
+            value: mongodb
           - name: MONGODB_PW
             value: ${MONGODB_PASSWORD}
           - name: OPENSHIFT_AUTH_TOKEN
@@ -572,13 +572,13 @@ objects:
   kind: DeploymentConfig
   metadata:
     labels:
-      app: ${APPLICATION_NAME}-mongodb-persistent
+      app: mongodb-persistent
       template: mongodb-persistent-template
-    name: ${APPLICATION_NAME}-mongodb
+    name: mongodb
   spec:
     replicas: 1
     selector:
-      name: ${APPLICATION_NAME}-mongodb
+      name: mongodb
     strategy:
       activeDeadlineSeconds: 21600
       recreateParams:
@@ -587,7 +587,7 @@ objects:
     template:
       metadata:
         labels:
-          name: ${APPLICATION_NAME}-mongodb
+          name: mongodb
       spec:
         containers:
         - env:
@@ -609,7 +609,7 @@ objects:
             tcpSocket:
               port: 27017
             timeoutSeconds: 1
-          name: ${APPLICATION_NAME}-mongodb
+          name: mongodb
           ports:
           - containerPort: 27017
             protocol: TCP
@@ -634,21 +634,21 @@ objects:
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /var/lib/mongodb/data
-            name: ${APPLICATION_NAME}-mongodb-data
+            name: mongodb-data
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
         volumes:
-        - name: ${APPLICATION_NAME}-mongodb-data
+        - name: mongodb-data
           persistentVolumeClaim:
-            claimName: ${APPLICATION_NAME}-mongodb
+            claimName: mongodb
     test: false
     triggers:
     - type: ImageChange
       imageChangeParams:
         automatic: true
         containerNames:
-        - ${APPLICATION_NAME}-mongodb
+        - mongodb
         from:
           kind: ImageStreamTag
           name: mongodb:3.2
@@ -658,9 +658,9 @@ objects:
   kind: PersistentVolumeClaim
   metadata:
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
+      app: amq62-persistent-ssl
       application: broker
-    name: ${APPLICATION_NAME}-broker-amq-claim
+    name: broker-amq-claim
   spec:
     accessModes:
     - ReadWriteMany
@@ -670,7 +670,7 @@ objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: ${APPLICATION_NAME}-fluentd-log-claim
+    name: fluentd-log-claim
   spec:
     accessModes:
     - ReadWriteMany
@@ -681,8 +681,8 @@ objects:
   kind: PersistentVolumeClaim
   metadata:
     labels:
-      app: ${APPLICATION_NAME}-mongodb-persistent
-    name: ${APPLICATION_NAME}-mongodb
+      app: mongodb-persistent
+    name: mongodb
   spec:
     accessModes:
     - ReadWriteOnce
@@ -693,15 +693,15 @@ objects:
   kind: Route
   metadata:
     labels:
-      app: ${APPLICATION_NAME}-amq62-persistent-ssl
-      application: ${APPLICATION_NAME}-broker
-    name: ${APPLICATION_NAME}-broker-amq-mqtt-ssl
+      app: amq62-persistent-ssl
+      application: broker
+    name: broker-amq-mqtt-ssl
   spec:
     tls:
       termination: passthrough
     to:
       kind: Service
-      name: ${APPLICATION_NAME}-broker-amq-mqtt-ssl
+      name: broker-amq-mqtt-ssl
       weight: 100
     wildcardPolicy: None
 - apiVersion: v1
@@ -741,7 +741,7 @@ objects:
     broker.ks: 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
   kind: Secret
   metadata:
-    name: ${APPLICATION_NAME}-amq-app-secret
+    name: amq-app-secret
   type: Opaque
 parameters:
     - description: The name for the application.

@@ -12,9 +12,10 @@ You need:
  * oc client / docker (optional)
  
 ### Environment variables
-You have to set environment variables MONGODB_PW and MONGODB_URL.
+You have to set environment variable MONGODB_PW (set it an log in to your computer again.)
 
 ### Configure EAP7:
+/system-property=mongo.host:add(value=<MONGODB_URL>)
 /subsystem=undertow/server=default-server/host=default-host/location=\/:remove()
 
 ### MongoDB

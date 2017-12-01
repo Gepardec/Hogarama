@@ -22,7 +22,7 @@ public class MongoDbProducer {
 	private static final String USER = "hogajama";
 	// You need to define Environment Variable BEFORE Eclipse Start / Login Computer. 
 	// You should define it in .bashrc: export MONGODB_PW=xxx
-	private static final char[] PASSWORD = System.getenv("MONGODB_PW").toCharArray();
+	private static final String HOST = System.getProperty("mongo.host", "mongodb");
 	private static final int PORT = 27017;
 	private static final String COLLECTION = "habarama";
 	private static final String HOST = System.getenv("MONGODB_URL");
