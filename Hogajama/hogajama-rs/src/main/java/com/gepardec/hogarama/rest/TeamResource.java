@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.rest;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -20,6 +21,8 @@ public class TeamResource {
 	public String getTeamMembers() throws IOException {
 		URL url = new URL(TEAM_URL);
 		URLConnection connection = url.openConnection();
-		return IOUtils.toString(connection.getInputStream(), StandardCharsets.UTF_8.name());
+		try(InputStream is =  connection.getInputStream()){
+			return IOUtils.toString(connection.getInputStream(), StandardCharsets.UTF_8.name());
+		}
 	}
 }
