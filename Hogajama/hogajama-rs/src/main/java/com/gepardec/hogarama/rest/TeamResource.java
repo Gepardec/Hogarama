@@ -22,7 +22,7 @@ public class TeamResource {
 		URL url = new URL(TEAM_URL);
 		URLConnection connection = url.openConnection();
 		try(InputStream is =  connection.getInputStream()){
-			return IOUtils.toString(connection.getInputStream(), StandardCharsets.UTF_8.name());
+			return IOUtils.toString(is, StandardCharsets.UTF_8.name());
 		}
 	}
 }
