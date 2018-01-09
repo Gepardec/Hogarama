@@ -14,38 +14,37 @@ public class OpenshiftEnvResource {
 	@Produces("text/html")
 	public String getStage() throws IOException {
 
-	    String ret = System.getenv("STAGE");
-
-		return ret != null ? ret : "Not found";
-    }
-    
-    @GET
-	@Path("tinyurl")
-	@Produces("text/html")
-	public String getTinyUrl() throws IOException {
-
-	    String ret = System.getenv("TINYURL");
+		String ret = System.getenv("STAGE");
 
 		return ret != null ? ret : "Not found";
 	}
 
-    @GET
-    @Path("hostname")
-    @Produces("text/html")
-    public String getHostname() throws IOException {
+	@GET
+	@Path("tinyurl")
+	@Produces("text/html")
+	public String getTinyUrl() throws IOException {
 
-        String ret = System.getenv("HOSTNAME");
-        if(ret == null){
-            return "Not found";
-        }
+		String ret = System.getenv("TINYURL");
 
-        if(ret.split("-").length != 3){
-            return ret;
-        } else {
-            return "" + ret.split("-")[2].hashCode();
-        }
+		return ret != null ? ret : "Not found";
+	}
 
-        //return "Not found";
-    }
+	@GET
+	@Path("hostname")
+	@Produces("text/html")
+	public String getHostname() throws IOException {
+
+		String ret = System.getenv("HOSTNAME");
+		if (ret == null) {
+			return "Not found";
+		}
+
+		if (ret.split("-").length != 3) {
+			return ret;
+		} else {
+			return "" + ret.split("-")[2].hashCode();
+		}
+
+	}
 
 }

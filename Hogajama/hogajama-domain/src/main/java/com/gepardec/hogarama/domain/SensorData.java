@@ -31,7 +31,6 @@ public class SensorData {
 
 	public void setTime(Date time) {
 		this.time = time;
-		System.out.println(this.time);
 	}
 
 	public String getSensorName() {

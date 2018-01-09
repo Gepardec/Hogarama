@@ -7,10 +7,8 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
 
 import com.gepardec.hogarama.rest.mapper.SensorMapper;
 import com.gepardec.hogarama.service.dao.HabaramaDAO;
@@ -22,9 +20,6 @@ public class SensorApiImpl implements SensorApi, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Context
-	private UriInfo context;
-	
 	@Inject
 	private HabaramaDAO habaramaDAO;
 	
@@ -33,7 +28,6 @@ public class SensorApiImpl implements SensorApi, Serializable {
 
 	@Override
 	public Response getAllSensors(SecurityContext securityContext) {
-//		return Response.ok(habaramaDAO.getAllSensors()).build();
 		return Response.ok(sensorsScheduler.getSensorNames()).build();
 	}
 
