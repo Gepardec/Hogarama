@@ -1,7 +1,5 @@
 package com.gepardec.hogarama.rest;
 
-import java.io.IOException;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -12,21 +10,21 @@ public class OpenshiftEnvResource {
 	@GET
 	@Path("stage")
 	@Produces("text/html")
-	public String getStage() throws IOException {
+	public String getStage() {
 		return getReturnValue(System.getenv("STAGE"));
 	}
 
 	@GET
 	@Path("tinyurl")
 	@Produces("text/html")
-	public String getTinyUrl() throws IOException {
+	public String getTinyUrl() {
 		return getReturnValue(System.getenv("TINYURL"));
 	}
 
 	@GET
 	@Path("hostname")
 	@Produces("text/html")
-	public String getHostname() throws IOException {
+	public String getHostname() {
 		String ret = System.getenv("HOSTNAME");
 		if (ret == null) {
 			return "Not found";

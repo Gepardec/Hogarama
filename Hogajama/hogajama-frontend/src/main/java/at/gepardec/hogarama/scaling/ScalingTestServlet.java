@@ -31,7 +31,7 @@ public class ScalingTestServlet extends HttpServlet {
 		if (request.getSession().getAttribute("test") == null) {
 			out.println("New session. Current session is empty.");
 
-			request.getSession().setAttribute("test", new Integer(1));
+			request.getSession().setAttribute("test", Integer.valueOf(1));
 			System.out.println("Here we start with a new session");
 
 		} else {
@@ -39,7 +39,7 @@ public class ScalingTestServlet extends HttpServlet {
 			out.println("Existing session: Value is " + value);
 
 			request.getSession().setAttribute("test",
-					new Integer(value.intValue() + 1));
+					Integer.valueOf(value.intValue() + 1));
 		}
 
 		out.println("Active Sessions: " + getActiveSession());

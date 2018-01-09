@@ -33,9 +33,9 @@ public class SensorsScheduler {
 	}
 
 	public void loadSensorsFromDB() {
-		DistinctIterable<String> sensorNames = collection.distinct("sensorName", String.class);
-		this.sensorNames.clear();
-		sensorNames.into(this.sensorNames);
+		DistinctIterable<String> sensorNameEntities = collection.distinct("sensorName", String.class);
+		sensorNames.clear();
+		sensorNameEntities.into(sensorNames);
 	}
 	
 	public List<String> getSensorNames() {

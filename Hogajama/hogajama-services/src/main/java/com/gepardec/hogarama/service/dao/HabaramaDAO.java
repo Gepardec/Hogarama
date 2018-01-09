@@ -42,7 +42,7 @@ public class HabaramaDAO {
 		limitQueryBySensor(sensorName, query);
 		limitQueryByDate(from, to, query);
 
-		FindOptions numberLimitOption = getFindOptionsWithMaxNumber(maxNumber, query);
+		FindOptions numberLimitOption = getFindOptionsWithMaxNumber(maxNumber);
 		return query.asList(numberLimitOption);
 	}
 
@@ -62,7 +62,7 @@ public class HabaramaDAO {
 		}
 	}
 
-	private FindOptions getFindOptionsWithMaxNumber(Integer maxNumber, Query<SensorData> query) {
+	private FindOptions getFindOptionsWithMaxNumber(Integer maxNumber) {
 		FindOptions findOptions = new FindOptions();
 		if (maxNumber != null) {
 			findOptions.limit(maxNumber);

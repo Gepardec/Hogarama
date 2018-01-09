@@ -104,7 +104,7 @@ public class ScalingScheduler {
 		// TODO DeploymentConfig should be retrieved dynamically
 		dcConfig = "hogajama";
 
-		IDeploymentConfig depconfig = (IDeploymentConfig) client.get(ResourceKind.DEPLOYMENT_CONFIG, dcConfig,
+		IDeploymentConfig depconfig = client.get(ResourceKind.DEPLOYMENT_CONFIG, dcConfig,
 				namespace);
 
 		int replicas = depconfig.getDesiredReplicaCount();
