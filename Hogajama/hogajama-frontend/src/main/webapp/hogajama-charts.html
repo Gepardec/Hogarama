@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, maximum-scale=1">
 
 <title>Hogarama</title>
-<!--link rel="icon" href="favicon.png" type="image/png">
-<link rel="shortcut icon" href="favicon.ico" type="img/x-icon"-->
 <link rel="icon" href="img/gepardec-favicon.png">
 <link rel="shortcut icon" href="img/gepardec-favicon.png" type="img/x-icon">
 
@@ -16,7 +14,6 @@
 
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="css/style.css" rel="stylesheet" type="text/css">
-<!--<link href="css/font-awesome.css" rel="stylesheet" type="text/css">-->
 <link href="css/responsive.css" rel="stylesheet" type="text/css">
 <link href="css/animate.css" rel="stylesheet" type="text/css">
 <link href="css/highcharts.css" rel="stylesheet" type="text/css">
@@ -43,10 +40,6 @@
 <!-- TODO: This is a  workaround - highcharts plotband instruction does not set color properly -->
 <style>
 
-    /*body {
-        background: url(../img/hogajama-charts-bg-trans-1.jpg) no-repeat left top;
-    }*/
-
     .highcharts-plot-bands-0 > :nth-child(1) {
         fill: #ff0000;
         fill-opacity: 0.3;
@@ -65,25 +58,6 @@
 </head>
 <body>
 
-<!-- <div style="overflow:hidden;"> -->
-
-<!-- 	<header class="header" id="header">header-start -->
-<!-- 		<div class="container"> -->
-<!-- 	    	<figure class="logo animated fadeInDown delay-07s"> -->
-<!-- 	        	<a href="#"><img src="img/logo.png" alt=""></a>	 -->
-<!-- 	        </figure>	 -->
-<!-- 	        <h1 class="animated fadeInDown delay-07s">Welcome To Hogarama</h1> -->
-<!-- 	        <ul class="we-create animated fadeInUp delay-1s"> -->
-<!-- 	        	<li>This is the home&garden automation project of Gepardec</li> -->
-<!-- 	        </ul> -->
-<!-- 	            <a class="link animated fadeInUp delay-1s" href="#">Let's go</a> -->
-<!-- 	    </div> -->
-<!-- 	</header>header-end -->
-
-<!-- </div> -->
-
-
-
 <nav class="main-nav-outer" id="test">
 	<div class="container">
         <ul class="main-nav">
@@ -95,8 +69,8 @@
     </div>
 </nav>
 
-<section class="main-section charts" id="team" 
-        ><!--"main-section charts"-start-->
+<!--"main-section charts"-start-->
+<section class="main-section charts" id="team">
 
     <div class="container-fluid charts-info" style="margin-top: -40px; text-align: center; margin-bottom: 20px;">
         <div class="row">
@@ -116,9 +90,6 @@
         </div>
       </div>
 
-	<!--div id="uptime-chart" style="width:100%; height:400px;"></div>
-
-	<div id="fruit-chart" style="width:100%; height:400px;"></div-->
     <div class="sk-circle" id="spinner">
         <div class="sk-circle1 sk-child"></div>
         <div class="sk-circle2 sk-child"></div>
@@ -185,12 +156,6 @@
 			$('html, body').stop().animate({
 				scrollTop: $($anchor.attr('href')).offset().top - 102
 			}, 1500,'easeInOutExpo');
-			/*
-			if you don't want to use the easing effects:
-			$('html, body').stop().animate({
-				scrollTop: $($anchor.attr('href')).offset().top
-			}, 1000);
-			*/
 			event.preventDefault();
 		});
 	})
@@ -245,7 +210,6 @@ $(window).load(function(){
 
 <script src="js/highcharts.js"></script>
 <script type="text/javascript" src="js/qrcode/qrcode.js"></script>
-<!--<script type="text/javascript" src="http://github.highcharts.com/master/highcharts.src.js"></script>-->
 <script type="text/javascript" src="js/themes/gray.js"></script>
 
 <script type="text/javascript" src="js/hogajama-highcharts/charts.js"></script>

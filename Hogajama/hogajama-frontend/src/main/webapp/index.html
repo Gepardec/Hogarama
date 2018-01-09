@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, maximum-scale=1">
 
 <title>Hogarama</title>
-<!--link rel="icon" href="favicon.png" type="image/png">
-<link rel="shortcut icon" href="favicon.ico" type="img/x-icon"-->
 <link rel="icon" href="img/gepardec-favicon.png">
 <link rel="shortcut icon" href="img/gepardec-favicon.png" type="img/x-icon">
 
@@ -292,12 +290,6 @@
 			$('html, body').stop().animate({
 				scrollTop: $($anchor.attr('href')).offset().top - 102
 			}, 1500,'easeInOutExpo');
-			/*
-			if you don't want to use the easing effects:
-			$('html, body').stop().animate({
-				scrollTop: $($anchor.attr('href')).offset().top
-			}, 1000);
-			*/
 			event.preventDefault();
 		});
 	})
