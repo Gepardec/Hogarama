@@ -37,7 +37,6 @@ public class ScalingScheduler {
 	public void checkSessions() {
 		log.info("Current Acitve Sessions: {}", getActiveSessions());
 
-		// Tell openshift to start another pod
 		if (shouldStartNewPod()) {
 			IClient client = getOpenshiftClient();
 			scaleUp(client);
