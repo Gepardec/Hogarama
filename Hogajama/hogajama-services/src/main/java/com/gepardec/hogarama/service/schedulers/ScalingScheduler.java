@@ -46,10 +46,7 @@ public class ScalingScheduler {
 	}
 
 	private boolean shouldStartNewPod() {
-		if (!scaledUp && getActiveSessions() > 3) {
-			return true;
-		}
-		return false;
+		return !scaledUp && getActiveSessions() > 3;
 	}
 	
 	@Schedule(hour = "*", minute = "*/10", info = "Every Minute")
