@@ -43,7 +43,7 @@ public class MongoDbProducer {
 		return dataBase.getCollection(COLLECTION);
 	}
 
-	private MongoClient getClient() {
+	private static MongoClient getClient() {
 		if (client == null) {
 			MongoCredential credential = MongoCredential.createCredential(USER, HOGAJAMA_DB, PASSWORD);
 			client = new MongoClient(new ServerAddress(HOST, PORT), Arrays.asList(credential));

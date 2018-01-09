@@ -38,15 +38,21 @@ public class ScalingScheduler {
 		log.info("Current Acitve Sessions: {}", getActiveSessions());
 
 		// Tell openshift to start another pod
-		if (!scaledUp) {
-			if (getActiveSessions() > 3) {
-				IClient client = getOpenshiftClient();
-				scaleUp(client);
-				scaledUp = true;
-			}
+		if (shouldStartNewPod()) {
+			IClient client = getOpenshiftClient();
+			scaleUp(client);
+			scaledUp = true;
 		}
+
 	}
 
+	private boolean shouldStartNewPod() {
+		if (!scaledUp && getActiveSessions() > 3) {
+			return true;
+		}
+		return false;
+	}
+	
 	@Schedule(hour = "*", minute = "*/10", info = "Every Minute")
 	public void resetScaleUp() {
 		log.info("Reset scaledUp.");
