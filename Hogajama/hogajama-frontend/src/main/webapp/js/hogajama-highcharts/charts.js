@@ -104,7 +104,7 @@ function loadChartData(moistureChart, async, max){
 
             sensors = response;
             
-            var [series, dateOfTheLastRecord] = getDatasForChart(sensors, max);
+            var [series] = getDatasForChart(sensors, max);
             // Update data
             moistureChart.update({
                 series: series
