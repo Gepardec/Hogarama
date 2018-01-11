@@ -232,7 +232,7 @@ function getSeries(sensors, sensorDatas){
        var values = [];
        for(var j = 0; j < sensorDatas[i].length; j++){
     	   var value = [];
-    	   value[0] = new Date(sensorDatas[i][j]['time']).getTime(),
+    	   value[0] = new Date(sensorDatas[i][j]['time']).getTime();
     	   value[1] = sensorDatas[i][j]['value'];
            values.push(value);
        }
