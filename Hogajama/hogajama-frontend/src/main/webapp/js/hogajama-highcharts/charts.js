@@ -48,12 +48,15 @@ $(document).ready(function (e) {
                }
             ],
         },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b><br>',
+            pointFormat: '{point.y:.2f}'
+        },
         plotOptions: {
             line: {
                 dataLabels: {
                     enabled: true
-                },
-                enableMouseTracking: false
+                }
             }
         },
         series: series
