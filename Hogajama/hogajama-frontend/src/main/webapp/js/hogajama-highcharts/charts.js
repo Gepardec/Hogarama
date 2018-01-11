@@ -50,7 +50,7 @@ $(document).ready(function (e) {
         },
         tooltip: {
             headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.y:.2f}'
+            pointFormat: '<b>Time</b> :{point.x:%H:%M:%S}<br><b>Value:</b> {point.y:.2f}'
         },
         plotOptions: {
             line: {
