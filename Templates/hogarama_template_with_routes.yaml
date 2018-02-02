@@ -309,8 +309,8 @@ objects:
           app: fluentd
           deploymentconfig: fluentd
       spec:
-        containers:
-        - image: 172.30.194.147:5000/57-hogarama/fluentd@sha256:abd0c95a794ce94217998c3e8efadf2417d423fa673925c93fa499c9c53814a8
+        containers: 
+        - image: 172.30.194.147:5000/57-hogarama/fluentd@sha256:3ea0a5801d024d5ac19904c390b28f0c3baf45be263554668a9a4318d7cacda0
           imagePullPolicy: Always
           name: fluentd
           ports:
