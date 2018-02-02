@@ -27,7 +27,7 @@ RUN apt-get update \
  && echo 'gem: --no-document' >> /etc/gemrc \
  && gem install oj \
  && gem install json \
- && gem install fluentd -v 0.14.28 \
+ && gem install fluentd -v 0.14.25 \
  && wget -O /tmp/jemalloc-4.4.0.tar.bz2 https://github.com/jemalloc/jemalloc/releases/download/4.4.0/jemalloc-4.4.0.tar.bz2 \
  && cd /tmp && tar -xjf jemalloc-4.4.0.tar.bz2 && cd jemalloc-4.4.0/ \
  && ./configure && make \
