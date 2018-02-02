@@ -1,0 +1,17 @@
+[all:vars]
+BROKER_URLS="[\"brokerUrl\"]"
+
+[group1]
+x.x.x.x sensors='[{"name": "sensorName","type": "sensorType","channel": 0,"pin": 21}]'
+x.x.x.x sensors='[{"name": "sensorName","type": "sensorType","channel": 0,"pin": 21}]'
+
+[group1:vars]
+SENSOR_LOCATION="location1"
+
+[group2]
+x.x.x.x sensors='[{"name": "sensorName","type": "sensorType","channel": 0,"pin": 21}]'
+x.x.x.x sensors='[{"name": "sensorName","type": "sensorType","channel": 0,"pin": 21}]'
+
+[group2:vars]
+SENSOR_LOCATION="location2"
+

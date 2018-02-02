@@ -27,12 +27,12 @@ RUN apt-get update \
  && echo 'gem: --no-document' >> /etc/gemrc \
  && gem install oj \
  && gem install json \
- && gem install fluentd -v 0.12.32 \
+ && gem install fluentd -v 0.14.25 \
  && wget -O /tmp/jemalloc-4.4.0.tar.bz2 https://github.com/jemalloc/jemalloc/releases/download/4.4.0/jemalloc-4.4.0.tar.bz2 \
  && cd /tmp && tar -xjf jemalloc-4.4.0.tar.bz2 && cd jemalloc-4.4.0/ \
  && ./configure && make \
  && mv lib/libjemalloc.so.2 /usr/lib \
- && fluent-gem install fluent-plugin-mqtt-io -v 0.2.3 \
+ && fluent-gem install fluent-plugin-mqtt-io -v 0.4.0 \
  && fluent-gem install fluent-plugin-mongo \
  && apt-get purge -y --auto-remove \
                   -o APT::AutoRemove::RecommendsImportant=false \
