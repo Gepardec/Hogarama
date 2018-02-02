@@ -1,220 +1,221 @@
 <!doctype html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, maximum-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1">
 
-<title>Hogarama</title>
-<link rel="icon" href="img/gepardec-favicon.png">
-<link rel="shortcut icon" href="img/gepardec-favicon.png" type="img/x-icon">
+    <title>Hogarama</title>
+    <link rel="icon" href="img/gepardec-favicon.png">
+    <link rel="shortcut icon" href="img/gepardec-favicon.png" type="img/x-icon">
 
-<link href='http://fonts.googleapis.com/css?family=Montserrat:300,400,600,700' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800italic,700italic,600italic,400italic,300italic,800,700,600' rel='stylesheet' type='text/css'>
-
-
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="css/style.css" rel="stylesheet" type="text/css">
-<link href="css/responsive.css" rel="stylesheet" type="text/css">
-<link href="css/animate.css" rel="stylesheet" type="text/css">
-<link href="css/highcharts.css" rel="stylesheet" type="text/css">
-<link href="css/hogajama-charts.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,800italic,700italic,600italic,400italic,300italic,800,700,600' rel='stylesheet' type='text/css'>
 
 
-<!--[if IE]><style type="text/css">.pie {behavior:url(PIE.htc);}</style><![endif]-->
-
-<script type="text/javascript" src="js/jquery.2.2.4.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/jquery-scrolltofixed.js"></script>
-<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
-<script type="text/javascript" src="js/jquery.isotope.js"></script>
-<script type="text/javascript" src="js/wow.js"></script>
-<script type="text/javascript" src="js/classie.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/responsive.css" rel="stylesheet" type="text/css">
+    <link href="css/animate.css" rel="stylesheet" type="text/css">
+    <link href="css/highcharts.css" rel="stylesheet" type="text/css">
+    <link href="css/hogajama-charts.css" rel="stylesheet" type="text/css">
 
 
-<!--[if lt IE 9]>
+    <!--[if IE]><style type="text/css">.pie {behavior:url(PIE.htc);}</style><![endif]-->
+
+    <script type="text/javascript" src="js/jquery.2.2.4.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/jquery-scrolltofixed.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/jquery.isotope.js"></script>
+    <script type="text/javascript" src="js/wow.js"></script>
+    <script type="text/javascript" src="js/classie.js"></script>
+
+
+    <!--[if lt IE 9]>
     <script src="js/respond-1.1.0.min.js"></script>
     <script src="js/html5shiv.js"></script>
     <script src="js/html5element.js"></script>
 <![endif]-->
 
-<!-- TODO: This is a  workaround - highcharts plotband instruction does not set color properly -->
-<style>
-
-    .highcharts-plot-bands-0 > :nth-child(1) {
-        fill: #ff0000;
-        fill-opacity: 0.3;
-    }
-    .highcharts-plot-bands-0 > :nth-child(2) {
-        fill: #008000;
-        fill-opacity: 0.3;
-    }
-    .highcharts-plot-bands-0 > :nth-child(3) {
-        fill: #15a9ff;
-        fill-opacity: 0.3;
-    }
-
-</style>
+    <!-- TODO: This is a  workaround - highcharts plotband instruction does not set color properly -->
+    <style>
+        .highcharts-plot-bands-0> :nth-child(1) {
+            fill: #ff0000;
+            fill-opacity: 0.3;
+        }
+        
+        .highcharts-plot-bands-0> :nth-child(2) {
+            fill: #008000;
+            fill-opacity: 0.3;
+        }
+        
+        .highcharts-plot-bands-0> :nth-child(3) {
+            fill: #15a9ff;
+            fill-opacity: 0.3;
+        }
+    </style>
 
 </head>
+
 <body>
 
-<nav class="main-nav-outer" id="test">
-	<div class="container">
-        <ul class="main-nav">
-        	<li><a href="/#header">Home</a></li>
-            <li><a href="/#team">Team</a></li>
-            <li><a href="/#contact">Contact</a></li>
-        </ul>
-        <a class="res-nav_click" href="#"><em class="fa-bars"></em>&#9776;</a>
-    </div>
-</nav>
-
-<!--"main-section charts"-start-->
-<section class="main-section charts" id="team">
-
-    <div class="container-fluid charts-info" style="margin-top: -40px; text-align: center; margin-bottom: 20px;">
-        <div class="row">
-          <div class="col-md-4" style="text-align: left; padding: 25px; font-size: 1.5em;">
-              <a href="javascript:;" id="open-qrcode">Show QR Code</a><br />
-             <strong>Openshift Stage:</strong> <span id="openshift-stage"></span><br />
-             <strong>Openshift Pod-ID:</strong> <span id="openshift-pod-id"></span><br />
-             <strong>URL:</strong> <span id="tinyurl"></span>
-          </div>
-          <div class="col-md-4">
-              <h1 id="chart-title" style="font-weight: bold; margin-top: 45px;">FEUCHTIGKEIT</h1>
-              <h3 id="chart-subtitle" style="font-weight: bold; color: #3c3c3c;"></h3>
-          </div>
-          <div class="col-md-4">
-              <img class="hide-on-mobile" src="img/logo-hogarama-gepardec.png" alt="Gepardec Hogarama Logo" width="250px" height="141px"/>
-          </div>
+    <nav class="main-nav-outer" id="test">
+        <div class="container">
+            <ul class="main-nav">
+                <li><a href="/#header">Home</a></li>
+                <li><a href="/#team">Team</a></li>
+                <li><a href="/#contact">Contact</a></li>
+            </ul>
+            <a class="res-nav_click" href="#"><em class="fa-bars"></em>&#9776;</a>
         </div>
-      </div>
+    </nav>
 
-    <div class="sk-circle" id="spinner">
-        <div class="sk-circle1 sk-child"></div>
-        <div class="sk-circle2 sk-child"></div>
-        <div class="sk-circle3 sk-child"></div>
-        <div class="sk-circle4 sk-child"></div>
-        <div class="sk-circle5 sk-child"></div>
-        <div class="sk-circle6 sk-child"></div>
-        <div class="sk-circle7 sk-child"></div>
-        <div class="sk-circle8 sk-child"></div>
-        <div class="sk-circle9 sk-child"></div>
-        <div class="sk-circle10 sk-child"></div>
-        <div class="sk-circle11 sk-child"></div>
-        <div class="sk-circle12 sk-child"></div>
-    </div>
-    <div id="moisture-chart" style="width:100%; height:75%; min-height: 400px;" class="hidden"></div>
+    <!--"main-section charts"-start-->
+    <section class="main-section charts" id="team">
 
-</section><!--"main-section charts"-end-->
+        <div class="container-fluid charts-info" style="margin-top: -40px; text-align: center; margin-bottom: 20px;">
+            <div class="row">
+                <div class="col-md-4" style="text-align: left; padding: 25px; font-size: 1.5em;">
+                    <a href="javascript:;" id="open-qrcode">Show QR Code</a><br />
+                    <strong>Openshift Stage:</strong> <span id="openshift-stage"></span><br />
+                    <strong>Openshift Pod-ID:</strong> <span id="openshift-pod-id"></span><br />
+                    <strong>URL:</strong> <span id="tinyurl"></span>
+                </div>
+                <div class="col-md-4">
+                    <h1 id="chart-title" style="font-weight: bold; margin-top: 45px;">FEUCHTIGKEIT</h1>
+                    <h3 id="chart-subtitle" style="font-weight: bold; color: #3c3c3c;"></h3>
+                </div>
+                <div class="col-md-4">
+                    <img class="hide-on-mobile" src="img/logo-hogarama-gepardec.png" alt="Gepardec Hogarama Logo" width="250px" height="141px" />
+                </div>
+            </div>
+        </div>
+
+        <div class="sk-circle" id="spinner">
+            <div class="sk-circle1 sk-child"></div>
+            <div class="sk-circle2 sk-child"></div>
+            <div class="sk-circle3 sk-child"></div>
+            <div class="sk-circle4 sk-child"></div>
+            <div class="sk-circle5 sk-child"></div>
+            <div class="sk-circle6 sk-child"></div>
+            <div class="sk-circle7 sk-child"></div>
+            <div class="sk-circle8 sk-child"></div>
+            <div class="sk-circle9 sk-child"></div>
+            <div class="sk-circle10 sk-child"></div>
+            <div class="sk-circle11 sk-child"></div>
+            <div class="sk-circle12 sk-child"></div>
+        </div>
+        <div id="moisture-chart" style="width:100%; height:75%; min-height: 400px;" class="hidden"></div>
+
+    </section>
+    <!--"main-section charts"-end-->
 
 
-<footer class="footer">
-    <div class="container">
-        <div class="footer-logo"><a href="#"><img src="img/logo.png" alt=""></a></div>
-        <span class="copyright">Copyright © 2016 | <a href="#">Hogarama</a> by Gepardec</span>       
-    </div>
-    <!--
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">
+                <a href="#"><img src="img/logo.png" alt=""></a>
+            </div>
+            <span class="copyright">Copyright © 2016 | <a href="#">Hogarama</a> by Gepardec</span>
+        </div>
+        <!--
         All links in the footer should remain intact.
         Licenseing information is available at: http://bootstraptaste.com/license/
         You can buy this theme without footer links online at: http://bootstraptaste.com/buy/?theme=Knight
     -->
-</footer>
+    </footer>
 
-<div id="qrcode" style="display:none"></div>
+    <div id="qrcode" style="display:none"></div>
 
-<script type="text/javascript">
-    $(document).ready(function(e) {
-        $('#test').scrollToFixed();
-        $('.res-nav_click').click(function(){
-            $('.main-nav').slideToggle();
-            return false
+    <script type="text/javascript">
+        $(document).ready(function(e) {
+            $('#test').scrollToFixed();
+            $('.res-nav_click').click(function() {
+                $('.main-nav').slideToggle();
+                return false
+
+            });
 
         });
+    </script>
 
-    });
-</script>
-
-  <script>
-    wow = new WOW(
-      {
-        animateClass: 'animated',
-        offset:       100
-      }
-    );
-    wow.init();
-
-  </script>
+    <script>
+        wow = new WOW({
+            animateClass: 'animated',
+            offset: 100
+        });
+        wow.init();
+    </script>
 
 
-<script type="text/javascript">
-	$(window).load(function(){
+    <script type="text/javascript">
+        $(window).load(function() {
 
-		$('.main-nav li a').bind('click',function(event){
-			var $anchor = $(this);
+            $('.main-nav li a').bind('click', function(event) {
+                var $anchor = $(this);
 
-			$('html, body').stop().animate({
-				scrollTop: $($anchor.attr('href')).offset().top - 102
-			}, 1500,'easeInOutExpo');
-			event.preventDefault();
-		});
-	})
-</script>
+                $('html, body').stop().animate({
+                    scrollTop: $($anchor.attr('href')).offset().top - 102
+                }, 1500, 'easeInOutExpo');
+                event.preventDefault();
+            });
+        })
+    </script>
 
-<script type="text/javascript">
-
-$(window).load(function(){
-
-
-  var $container = $('.portfolioContainer'),
-      $body = $('body'),
-      colW = 375,
-      columns = null;
+    <script type="text/javascript">
+        $(window).load(function() {
 
 
-  $container.isotope({
-    // disable window resizing
-    resizable: true,
-    masonry: {
-      columnWidth: colW
-    }
-  });
+            var $container = $('.portfolioContainer'),
+                $body = $('body'),
+                colW = 375,
+                columns = null;
 
-  $(window).smartresize(function(){
-    // check if columns has changed
-    var currentColumns = Math.floor( ( $body.width() -30 ) / colW );
-    if ( currentColumns !== columns ) {
-      // set new column count
-      columns = currentColumns;
-      // apply width to container manually, then trigger relayout
-      $container.width( columns * colW )
-        .isotope('reLayout');
-    }
 
-  }).smartresize(); // trigger resize to set container width
-  $('.portfolioFilter a').click(function(){
-        $('.portfolioFilter .current').removeClass('current');
-        $(this).addClass('current');
+            $container.isotope({
+                // disable window resizing
+                resizable: true,
+                masonry: {
+                    columnWidth: colW
+                }
+            });
 
-        var selector = $(this).attr('data-filter');
-        $container.isotope({
+            $(window).smartresize(function() {
+                // check if columns has changed
+                var currentColumns = Math.floor(($body.width() - 30) / colW);
+                if (currentColumns !== columns) {
+                    // set new column count
+                    columns = currentColumns;
+                    // apply width to container manually, then trigger relayout
+                    $container.width(columns * colW)
+                        .isotope('reLayout');
+                }
 
-            filter: selector,
-         });
-         return false;
-    });
+            }).smartresize(); // trigger resize to set container width
+            $('.portfolioFilter a').click(function() {
+                $('.portfolioFilter .current').removeClass('current');
+                $(this).addClass('current');
 
-});
+                var selector = $(this).attr('data-filter');
+                $container.isotope({
 
-</script>
+                    filter: selector,
+                });
+                return false;
+            });
 
-<script src="js/highcharts.js"></script>
-<script type="text/javascript" src="js/qrcode/qrcode.js"></script>
-<script type="text/javascript" src="js/themes/gray.js"></script>
+        });
+    </script>
 
-<script type="text/javascript" src="js/hogajama-highcharts/charts.js"></script>
-<script type="text/javascript" src="js/hogajama-highcharts/load-openshift-env-vars.js"></script>
-<script type="text/javascript" src="js/hogajama-highcharts/load-qr-code.js"></script>
+    <script src="js/highcharts.js"></script>
+    <script type="text/javascript" src="js/qrcode/qrcode.js"></script>
+    <script type="text/javascript" src="js/themes/gray.js"></script>
+
+    <script type="text/javascript" src="js/hogajama-highcharts/charts.js"></script>
+    <script type="text/javascript" src="js/hogajama-highcharts/load-openshift-env-vars.js"></script>
+    <script type="text/javascript" src="js/hogajama-highcharts/load-qr-code.js"></script>
 
 </body>
+
 </html>
