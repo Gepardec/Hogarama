@@ -234,9 +234,11 @@ function getSeries(sensors, sensorDatas){
    for(var i = 0; i < sensorDatas.length; i++){
        var values = [];
        for(var j = 0; j < sensorDatas[i].length; j++){
-    	   var value = [];
-    	   value[0] = Date.parse(sensorDatas[i][j]['time']);
-    	   value[1] = sensorDatas[i][j]['value'];
+           var value = [];
+           var date = sensorDatas[i][j]['time'].match(/\d\d\d\d-\d\d-\d\d/)[0].split("-");
+           var time = sensorDatas[i][j]['time'].match(/\d\d:\d\d:\d\d/)[0].split(":");
+           value[0] = Date.UTC(date[0], date[1], date[2], time[0], time[1], time[2]);
+           value[1] = sensorDatas[i][j]['value'];
            values.push(value);
        }
 
