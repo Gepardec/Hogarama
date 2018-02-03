@@ -7,10 +7,6 @@ LABEL Description="Fluentd docker image with mqtt and mongodb plugins" Vendor="G
 ENV TZ=Europe/Vienna
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Tell ruby to install packages as user RUN echo "gem: --user-install --no-document" >> ~/.gemrc
-ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH
-ENV GEM_PATH /home/fluent/.gem/ruby/2.3.0:$GEM_PATH
-
 # Do not split this into multiple RUN! 
 # Docker creates a layer for every RUN-Statement 
 # therefore an 'apt-get purge' has no effect 
@@ -48,6 +44,10 @@ RUN chown -R fluent:fluent /fluentd
 
 USER fluent
 WORKDIR /home/fluent
+
+# Tell ruby to install packages as user RUN echo "gem: --user-install --no-document" >> ~/.gemrc
+ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH
+ENV GEM_PATH /home/fluent/.gem/ruby/2.3.0:$GEM_PATH
 
 ENV FLUENTD_OPT="" 
 ENV FLUENTD_CONF="fluent.conf" 
