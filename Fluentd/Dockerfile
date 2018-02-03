@@ -1,4 +1,4 @@
-FROM fluent/fluentd:v1.1.0-debian 
+FROM fluentd:v1.1.0-debian-onbuild
 
 LABEL maintainer Matthias Kapferer <matthias.kapferer@gepardec.com>
 LABEL Description="Fluentd docker image with mqtt and mongodb plugins" Vendor="Gepardec IT Services GmbH" Version="1.0"
@@ -8,28 +8,28 @@ ENV TZ=Europe/Vienna
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Tell ruby to install packages as user RUN echo "gem: --user-install --no-document" >> ~/.gemrc
-ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH
-ENV GEM_PATH /home/fluent/.gem/ruby/2.3.0:$GEM_PATH
+#ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH
+#ENV GEM_PATH /home/fluent/.gem/ruby/2.3.0:$GEM_PATH
 
 # Do not split this into multiple RUN! 
 # Docker creates a layer for every RUN-Statement 
 # therefore an 'apt-get purge' has no effect 
 
-RUN apt-get update \
- && apt-get upgrade -y \
- && buildDeps=" \
-      make gcc g++ libc-dev \
-      ruby-dev \
-      wget bzip2 gnupg dirmngr \
-    " \
+
+RUN buildDeps="sudo make gcc g++ libc-dev ruby-dev" \
+ && apt-get update \
  && apt-get install -y --no-install-recommends $buildDeps \
- && /usr/local/bin/fluent-gem install fluent-plugin-mqtt-io \
- && /usr/local/bin/fluent-gem install fluent-plugin-mongo \
- && apt-get purge -y --auto-remove \
+ && sudo gem install \
+        fluent-plugin-mongo \
+ && sudo gem install \
+        fluent-plugin-mqtt-io \
+ && sudo gem sources --clear-all \
+ && SUDO_FORCE_REMOVE=yes \
+    apt-get purge -y --auto-remove \
                   -o APT::AutoRemove::RecommendsImportant=false \
                   $buildDeps \
  && rm -rf /var/lib/apt/lists/* \
- && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
+           /home/fluent/.gem/ruby/2.3.0/cache/*.gem
 
 RUN useradd fluent -d /home/fluent -m -U
 RUN chown -R fluent:fluent /home/fluent
@@ -40,8 +40,8 @@ RUN chown -R fluent:fluent /home/fluent
 # configuration/plugins path (default: copied from .) 
 #RUN mkdir -p /fluentd/etc /fluentd/plugins
 
-COPY config/fluent.conf /fluentd/etc/
-COPY config/entrypoint.sh /bin/
+#COPY config/fluent.conf /fluentd/etc/
+COPY entrypoint.sh /bin/
 RUN chmod +x /bin/entrypoint.sh
 
 RUN chown -R fluent:fluent /fluentd
