@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import com.gepardec.hogarama.domain.SensorData;
@@ -18,6 +19,11 @@ public class DummyDataUtil {
 	public static final String SENSOR_VERSION = "1";
 	public static final String SENSOR_LOCATION = "dummyLocation";
 	private static final List<SensorData> sensorDatas = new ArrayList<>();
+	private static final Random RANDOM = new Random();
+
+	private DummyDataUtil() {
+		//static
+	}
 
 	public static List<SensorData> getDummySensorData(int numberOfSensor, int numberOfData, boolean newData) {
 		if (sensorDatas.isEmpty() || newData) {
@@ -83,6 +89,6 @@ public class DummyDataUtil {
 	}
 
 	public static int getRandomIntBetween(int start, int end) {
-		return start + (int) Math.round(Math.random() * (end - start));
+		return start + RANDOM.nextInt(end-start);
 	}
 }

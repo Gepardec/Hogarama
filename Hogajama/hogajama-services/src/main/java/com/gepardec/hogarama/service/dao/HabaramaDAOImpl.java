@@ -85,7 +85,7 @@ public class HabaramaDAOImpl implements HabaramaDAO {
 
 		FindOptions numberLimitOption = getFindOptionsWithMaxNumber(1);
 		List<SensorData> sensors = query.asList(numberLimitOption);
-		if(sensors.size() > 0) {
+		if(!sensors.isEmpty()) {
 			return sensors.get(0).getLocation();
 		} else {
 			throw new NoResultException("Could not find location by sensorName");

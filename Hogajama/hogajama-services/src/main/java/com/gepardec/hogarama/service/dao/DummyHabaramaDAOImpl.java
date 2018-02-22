@@ -27,7 +27,7 @@ public class DummyHabaramaDAOImpl implements HabaramaDAO {
 	public List<String> getAllSensors() {
 		return CollectionUtils.emptyIfNull(sensorDatas)
 							  .stream()
-							  .map(e -> e.getSensorName()).distinct()
+							  .map(SensorData::getSensorName).distinct()
 							  .collect(Collectors.toList());
 	}
 
@@ -45,7 +45,8 @@ public class DummyHabaramaDAOImpl implements HabaramaDAO {
 		return CollectionUtils.emptyIfNull(sensorDatas)
 				  			  .stream()
 				  			  .filter(s -> sensorName.equals(s.getSensorName()))
-				  			  .findFirst().get()
+				  			  .findFirst()
+				  			  .orElse(null)
 				  			  .getLocation();
 	}
 	

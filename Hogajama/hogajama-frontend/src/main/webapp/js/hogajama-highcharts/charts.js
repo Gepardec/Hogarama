@@ -229,7 +229,7 @@ function getSeries(sensors){
            values.push(value);
        }
        
-       values = values.sort(Comparator);
+       values.sort(Comparator);
        let serie = {
            name: sensors[i].name + " " + sensors[i].location,
            data: values

@@ -1,7 +1,9 @@
 package com.gepardec.hogarama.rest.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -15,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 public class DateUtil {
 	
 	private static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(PATTERN);
+	private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(PATTERN);
 	
 	private DateUtil() {
 		//static
@@ -27,8 +29,9 @@ public class DateUtil {
 		}
 
 		try {
-			return simpleDateFormat.parse(date);
-		} catch (ParseException e) {
+			LocalDate localDate = LocalDate.parse(date, dateTimeFormatter);
+			return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		} catch (DateTimeParseException e) {
 			throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
 					.entity("Couldn't parse date string: " + e.getMessage()).build());
 		}
