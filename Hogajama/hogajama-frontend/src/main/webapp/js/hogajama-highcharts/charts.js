@@ -1,25 +1,33 @@
-/**
- * 
- */
+var maxNumberOfRecords=-1;
+var chart;
 
 $(document).ready(function (e) { 
-	
+	if(isNormalGraph){
+		maxNumberOfRecords = 30;
+	}
 	// load data for the first time here
-    console.log("Load chart data first time");
-    var [series, dateOfTheLastRecord] = loadChartData(null);
-    
-    if(series == null){
-    	return;
-    }
+	console.log("Create chart");
+	chart = createChart();
+});
 
-    $("#spinner").addClass('hidden');
-    $("#moisture-chart").removeClass('hidden');
-    $("#chart-subtitle").text("MESSWERTE AM " + dateOfTheLastRecord);
-
-    console.log("Create chart");
-    var moistureChart = Highcharts.chart('moisture-chart', {
+function createChart(){
+	//Hide chart until data
+	hideChart();
+	
+	return Highcharts.chart('moisture-chart', {
         chart: {
-            type: 'line'
+            type: 'line',
+			events : {
+				load : function () {
+					showChart();
+					if(isNormalGraph){
+						setInterval(() => {
+							console.log("Update chart data");
+							updateChart();
+						}, 3000);
+					}
+				}
+			}
         },
         title: {
             text: null
@@ -50,7 +58,7 @@ $(document).ready(function (e) {
         },
         tooltip: {
             headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '<b>Time</b> :{point.x:%H:%M:%S}<br><b>Value:</b> {point.y:.2f}'
+            pointFormat: '<b>Time</b> :{point.x:%Y-%m-%d %H:%M:%S}<br><b>Value:</b> {point.y:.2f}'
         },
         plotOptions: {
             line: {
@@ -59,194 +67,205 @@ $(document).ready(function (e) {
                 }
             }
         },
-        series: series
+        series: loadSeries()
     });
-    
-    setInterval(function(){
-        // Udate chart with the current data
-        console.log("Update chart data");
-        loadChartData(moistureChart, true);
-
-    }, 3000);
-    
-});
-
-
-/**
- * AWA: I know, that I ve changed the scope, but it is better to read the main functionality
- */
-
-
-function loadChartData(moistureChart, async, max){
-
-    if (typeof max == 'undefined'){
-        max = 30;
-    }
-
-	var sensors = [];
-    if (typeof async == 'undefined'){
-
-    	sensors = getSensors();
-    	
-    	if(sensors == null){
-	     	showDataError("Could not load data. Please try again later.");
-	     	return [null, null, null, null];
-    	}
-
-        if(sensors.length == 0){
-        	showDataError("Could not find any data. Please try again later.");
-            return [null, null, null, null];
-        }
-        return getDatasForChart(sensors, max);
-    } 
-
-    $.ajax({
-        async: true,
-        url: '/hogajama-rs/rest/sensor',
-        success: function (response) {
-
-            sensors = response;
-            
-            var [series] = getDatasForChart(sensors, max);
-            // Update data
-            moistureChart.update({
-                series: series
-            }, true);
-
-
-        }
-    });
-
 }
 
-function getDatasForChart(sensors, max){
-	
-	var sensorDatas = getSensorDatas(sensors, max);
-	
-    sensors = addLocationToSensor(sensors, sensorDatas);
-    
-    var dateOfTheLastRecord = getDateOfLastRecord(sensorDatas);
-    
-    sensorDatas = filteredRecordsForLastDay(sensorDatas, dateOfTheLastRecord);
-    
-    var series = getSeries(sensors, sensorDatas);
-    
-    return [series, dateOfTheLastRecord];
+function hideChart(){
+	$("#spinner").removeClass('hidden');
+	$("#moisture-chart").addClass('hidden');
 }
 
-function getSensors(){
-	var sensors = [];
+function showChart(){
+	$("#spinner").addClass('hidden');
+	$("#moisture-chart").removeClass('hidden');
+}
+
+function loadSeries(){
+	var sensors = getSensorsWithData();
+    var series = getSeries(sensors);
+    return series;
+}
+
+function getSensorsWithData(){
+	let sensors = [];
+	let sensorNames = [];
+		
+	let sensorName = getTextFromElementIfExist("sensornames option:selected");
+	
+	if(sensorName === ''){
+		sensorNames = getSensorNames();
+		if(sensorNames == null){
+	     	showErrorMessage("Could not load data. Please try again later.");
+		} else if(sensorNames.length == 0){
+	    	showErrorMessage("Could not find any data. Please try again later.");
+	    }
+	} else {
+		sensorNames.push(sensorName);
+	}
+	
+	setMesswertIfNeeded();
+	
+	sensors = getSensorDataBySensorName(sensorNames);
+	return sensors;
+}
+
+function setMesswertIfNeeded(){
+	if(isNormalGraph){
+		$("#chart-subtitle").text("MESSWERTE AM " + getDatePritty(new Date(), "."));
+	}
+}
+
+function getSensorDataBySensorName(sensorNames){
+	let sensors = [];
+	for(let i = 0; i < sensorNames.length; i++){
+		let from = getFrom();
+		let to = getTo();
+		let sensorDatas = getDataForSensor(sensorNames[i], from, to);
+		let sensor = [];
+		sensor.name = sensorNames[i];
+		if(sensorDatas.length == 0){
+			sensor.location = getLocationBySensorName(sensorNames[i]);
+		} else {
+			sensor.location = sensorDatas[0]['location'];
+		}
+		sensor.sensorData = sensorDatas;
+		sensors.push(sensor);
+	}
+	return sensors;
+}
+
+function getLocationBySensorName(sensorName){
+	let location = '';
+	$.ajax({
+	    async: false,
+	    url: '/hogajama-rs/rest/sensor/location?sensorName=' + sensorName,
+	    success: function (response) {
+	    	location = response;
+	    },
+	    error: function(jqXHR, textStatus, errorThrown) {
+	    	console.error("Error: " + jqXHR.statusText);
+	    	location = null;
+	    }
+	});
+	return location;
+}
+
+function getFrom(){
+	return getDateISOFromElement("fromdatetimepicker");}
+
+function getTo(){
+	return getDateISOFromElement("todatetimepicker");
+}
+
+function getDateISOFromElement(id){
+	let val = getTextFromElementIfExist(id);
+	if(val === ""){
+		return val;
+	}
+	
+	let utcDate = getDateFromString(val);
+	let date = new Date(utcDate);
+	return date.toISOString();
+}
+
+function getTextFromElementIfExist(id){
+	let value = "";
+	if ( isElementExist(id) ) {
+		value = $("#" + id ).val();
+	}
+	return value;
+}
+
+function isElementExist(id){
+	return $("#" + id ).length;
+}
+
+function getSensorNames(){
+	let sensorNames = [];
 	$.ajax({
 	    async: false,
 	    url: '/hogajama-rs/rest/sensor',
 	    success: function (response) {
-	   	 sensors = response;
+	    	sensorNames = response;
 	    },
 	    error: function(jqXHR, textStatus, errorThrown) {
-		 console.error("Error: " + jqXHR.statusText);
-	   	 sensors = null;
+	    	console.error("Error: " + jqXHR.statusText);
+	    	sensorNames = null;
 	    }
 	});
-	return sensors;
+	return sensorNames;
 }
 
-function addLocationToSensor(sensors, sensorDatas){
-	var sensorsWithLocation = [];
-	for(var j = 0; j < sensorDatas.length; j++){
-		
-		var sensorName = sensorDatas[j][0]['sensorName'];
-		var sensorLocation = sensorDatas[j][0]['location'];
-		for(var i = 0; i < sensors.length; i++){
-			if(sensorName == sensors[i]){
-				  var sensor = {
-		           name: sensors[i],
-		           location: sensorLocation
-				  };
-				  sensorsWithLocation.push(sensor);
-				  break;
-			}
-		}
-	}
-	return sensorsWithLocation;
+function getDataForSensor(sensor, from, to){
+	let sensorDatas = [];
+	let onlyDataFromToday = isNormalGraph;
+	$.ajax({
+       url: '/hogajama-rs/rest/sensor/allData?maxNumber=' + maxNumberOfRecords + '&sensor=' + sensor + '&from=' + from + "&to=" + to + "&onlyDataFromToday=" + onlyDataFromToday,
+       success: function (response) {
+           sensorDatas = response;
+       },
+       async: false,
+	});
+	return sensorDatas;
 }
 
-function showDataError(message){
+function showErrorMessage(message){
 	$("#spinner").addClass('hidden');
+	$("#moisture-chart").empty();
 	$("#moisture-chart").removeClass('hidden');
 	$("#moisture-chart").append( $("<h1 />").css( "text-align", "center" ).text(message));
 }
 
-
-function getSensorDatas(sensors, max){
-	var sensorDatas = [];
-	for(var i = 0; i < sensors.length; i++){
-      $.ajax({
-          url: '/hogajama-rs/rest/sensor/allData?maxNumber=' + max + '&sensor=' + sensors[i],
-          success: function (response) {
-
-              sensorDatas.push(response);
-          },
-          async: false,
-      });
-    }
-	return sensorDatas;
-}
-
-
-function getDateOfLastRecord(sensorDatas){
-	var dateOfTheLastRecord;
-	for(var j = 0; j < sensorDatas.length; j++){
-		for(var i = 0; i < sensorDatas[j].length; i++){  
-			var date = getDatomFromRecord(sensorDatas[j][i]);
-	        if(typeof dateOfTheLastRecord != 'undefined' && date >= dateOfTheLastRecord){
-	        	dateOfTheLastRecord = date;
-	        } else if(typeof dateOfTheLastRecord == 'undefined'){
-	        	dateOfTheLastRecord = date;
-	        }
-		}
-	}
-	return dateOfTheLastRecord;
-}
-
-function getDatomFromRecord(sensorData){
-	var date = sensorData['time'].match(/\d\d\d\d-\d\d-\d\d/)[0].split("-");
-	return (date[2] + "." + date[1] + "." + date[0]);
-}
-
-function filteredRecordsForLastDay(sensorDatas, dateOfTheLastRecord){
-   var filteredSensorDatas = [];
-   	for(var j = 0; j < sensorDatas.length; j++){
-   		var filteredSensorData = [];
-        for(var i = 0; i < sensorDatas[j].length; i++){
-        	var sensorData = sensorDatas[j][i];
-        	var datum = getDatomFromRecord(sensorData);
-        	if(datum == dateOfTheLastRecord){
-        		filteredSensorData.push(sensorData);
-        	}
-        }
-        filteredSensorDatas.push(filteredSensorData);
-   	}
-   return filteredSensorDatas;
-}
-
-function getSeries(sensors, sensorDatas){
-   var series = [];
-   for(var i = 0; i < sensorDatas.length; i++){
-       var values = [];
-       for(var j = 0; j < sensorDatas[i].length; j++){
-           var value = [];
-           var date = sensorDatas[i][j]['time'].match(/\d\d\d\d-\d\d-\d\d/)[0].split("-");
-           var time = sensorDatas[i][j]['time'].match(/\d\d:\d\d:\d\d/)[0].split(":");
-           value[0] = Date.UTC(date[0], date[1], date[2], time[0], time[1], time[2]);
-           value[1] = sensorDatas[i][j]['value'];
+function getSeries(sensors){
+   let series = [];
+   for(let i = 0; i < sensors.length; i++){
+       let values = [];
+       for(let j = 0; j < sensors[i].sensorData.length; j++){
+    	   let value = [];
+    	   let dateStr = sensors[i].sensorData[j]['time'];
+           value[0] = getDateFromString(dateStr);
+           value[1] = sensors[i].sensorData[j]['value'];
            values.push(value);
        }
-
-       var serie = {
+       
+       values = values.sort(Comparator);
+       let serie = {
            name: sensors[i].name + " " + sensors[i].location,
-           data: values.reverse()
+           data: values
        };
+       
        series.push(serie);
    }
    return series;
+}
+
+function updateChart(){
+	let newSeries = loadSeries();
+	if(isNormalGraph){
+		chart.update({series: newSeries}, true);
+	} else {
+		chart.update({series: newSeries}, false);
+		chart.redraw();
+	}
+}
+
+function getDatePritty(date, separator){
+	let dd = date.getDate();
+	let mm = date.getMonth() + 1; 
+	let yyyy = date.getFullYear();
+	return dd + separator + mm + separator + yyyy;
+}
+
+function Comparator(a, b) {
+   if (a[0] < b[0]) return -1;
+   if (a[0] > b[0]) return 1;
+   return 0;
+}
+
+function getDateFromString(dateStr){
+    let date = dateStr.match(/\d\d\d\d-\d\d-\d\d/)[0].split("-");
+    let time = dateStr.match(/\d\d:\d\d:\d\d/)[0].split(":");
+    //Javascript Date months 0-11
+    return Date.UTC(date[0], (date[1] - 1), date[2], time[0], time[1], time[2]);
 }

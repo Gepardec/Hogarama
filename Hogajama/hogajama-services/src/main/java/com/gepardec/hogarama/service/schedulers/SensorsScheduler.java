@@ -7,12 +7,11 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import javax.inject.Named;
 
-import org.bson.Document;
 import org.slf4j.Logger;
 
-import com.mongodb.client.DistinctIterable;
-import com.mongodb.client.MongoCollection;
+import com.gepardec.hogarama.service.dao.HabaramaDAO;
 
 @Startup
 @Singleton
@@ -22,20 +21,20 @@ public class SensorsScheduler {
 	private Logger log;
 	
 	@Inject
-	private MongoCollection<Document> collection;
+	@Named("habaramaDao")
+	private HabaramaDAO habaramaDao;
 	
 	private List<String> sensorNames = new ArrayList<>();
 	
-	@Schedule(hour = "*", minute = "*", second = "*/5", info = "Every 5 second")
+	@Schedule(hour = "*", minute = "*", second = "*/5", info = "Every 5 second", persistent = false)
 	public void getSensors() {
 		log.info("Load the sensorNames from the database");
 		loadSensorsFromDB();
 	}
 
-	public void loadSensorsFromDB() {
-		DistinctIterable<String> sensorNameEntities = collection.distinct("sensorName", String.class);
+	public synchronized void loadSensorsFromDB() {
 		sensorNames.clear();
-		sensorNameEntities.into(sensorNames);
+		sensorNames = habaramaDao.getAllSensors();
 	}
 	
 	public List<String> getSensorNames() {

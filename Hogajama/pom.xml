@@ -20,6 +20,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.mapstruct.version>1.1.0.Final</org.mapstruct.version>
+		<org.apache.commons.version>4.1</org.apache.commons.version>
 	</properties>
 
 	<dependencies>
@@ -98,6 +99,11 @@
 				<artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
 				<version>${org.mapstruct.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-collections4</artifactId>
+				<version>${org.apache.commons.version}</version>
+			</dependency>
 			<!-- MongoDB Driver -->
 			<dependency>
 				<groupId>org.mongodb.morphia</groupId>
@@ -115,6 +121,12 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.11</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-bundle-jaxrs</artifactId>
+				<version>2.7.14</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>

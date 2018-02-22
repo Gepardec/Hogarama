@@ -13,7 +13,7 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,800italic,700italic,600italic,400italic,300italic,800,700,600' rel='stylesheet' type='text/css'>
 
 
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.3.3.7.min.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet" type="text/css">
     <link href="css/responsive.css" rel="stylesheet" type="text/css">
     <link href="css/animate.css" rel="stylesheet" type="text/css">
@@ -23,13 +23,10 @@
 
     <!--[if IE]><style type="text/css">.pie {behavior:url(PIE.htc);}</style><![endif]-->
 
-    <script type="text/javascript" src="js/jquery.2.2.4.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
-    <script type="text/javascript" src="js/jquery-scrolltofixed.js"></script>
-    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
-    <script type="text/javascript" src="js/jquery.isotope.js"></script>
-    <script type="text/javascript" src="js/wow.js"></script>
-    <script type="text/javascript" src="js/classie.js"></script>
+    <script type="text/javascript" src="js/jquery.3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/moment.2.20.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.3.3.7.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.4.17.47.js"></script>
 
 
     <!--[if lt IE 9]>
@@ -55,9 +52,10 @@
             fill-opacity: 0.3;
         }
     </style>
-    <script type="text/javascript">
-    // See: chart.js events: load
-    	var isNormalGraph = true;
+    
+     <script type="text/javascript">
+   		 // See: chart.js events: load
+    	var isNormalGraph = false;
     </script>
 
 </head>
@@ -70,7 +68,7 @@
                 <li><a href="/#header">Home</a></li>
                 <li><a href="/#team">Team</a></li>
                 <li><a href="/#contact">Contact</a></li>
-                <li><a href="/hogajama-charts-history.html">Hogajama Charts Historical</a>
+                <li><a href="/hogajama-charts.html">Hogajama Charts</a>
             </ul>
             <a class="res-nav_click" href="#"><em class="fa-bars"></em>&#9776;</a>
         </div>
@@ -89,12 +87,27 @@
                 </div>
                 <div class="col-md-4">
                     <h1 id="chart-title" style="font-weight: bold; margin-top: 45px;">FEUCHTIGKEIT</h1>
-                    <h3 id="chart-subtitle" style="font-weight: bold; color: #3c3c3c;"></h3>
                 </div>
                 <div class="col-md-4">
                     <img class="hide-on-mobile" src="img/logo-hogarama-gepardec.png" alt="Gepardec Hogarama Logo" width="250px" height="141px" />
                 </div>
             </div>
+			<div class="row">
+				 <div class="col-md-4"></div>
+            	 <div class="col-md-4" style="text-align: center;">
+						<div class="col-sm-12">
+		           			Sensor:
+	                    	<select id="sensornames" class="form-control" onchange="updateChart()"></select>
+		           		</div>
+						<div class='col-sm-12'>
+				            From: <input type="text" class="form-control" id="fromdatetimepicker"/>
+				        </div>
+				        <div class='col-sm-12'>
+				            To:<input type="text" class="form-control" id="todatetimepicker"/>
+				        </div>
+				</div>
+				<div class="col-md-4"></div>
+           </div>
         </div>
 
         <div class="sk-circle" id="spinner">
@@ -132,26 +145,6 @@
     </footer>
 
     <div id="qrcode" style="display:none"></div>
-
-    <script type="text/javascript">
-        $(document).ready(function(e) {
-            $('#test').scrollToFixed();
-            $('.res-nav_click').click(function() {
-                $('.main-nav').slideToggle();
-                return false
-
-            });
-
-        });
-    </script>
-
-    <script>
-        wow = new WOW({
-            animateClass: 'animated',
-            offset: 100
-        });
-        wow.init();
-    </script>
 
 
     <script type="text/javascript">
@@ -212,6 +205,44 @@
 
         });
     </script>
+    
+    <script type="text/javascript">
+   
+    
+	    $(function () {
+	    	$("#fromdatetimepicker").datetimepicker({
+    			format: 'YYYY-MM-DD HH:mm:ss',
+    			defaultDate: new Date()
+    		});
+	    	
+	    	$("#todatetimepicker").datetimepicker({
+				format: 'YYYY-MM-DD HH:mm:ss',
+				defaultDate: new Date()
+			});
+	    });
+		
+		$(document).ready(function (e) { 
+			$("#fromdatetimepicker").on("dp.change", function(e) {
+				updateChart();
+			});
+			$("#todatetimepicker").on("dp.change", function(e) {
+				updateChart();
+			});
+		});
+	</script>
+	
+	<script type="text/javascript">
+		$(document).ready(function (e) { 
+		   var sensorNames = getSensorNames();
+		   $.each(sensorNames, function (i, sensorName) {
+			    $("#sensornames").append($("<option>", { 
+			        value: sensorName,
+			        text : sensorName,
+			        selected : i === 0
+			    }));
+			});
+	   });
+	</script>
 
     <script src="js/highcharts.js"></script>
     <script type="text/javascript" src="js/qrcode/qrcode.js"></script>
