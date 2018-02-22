@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.rest.util;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -29,8 +29,8 @@ public class DateUtil {
 		}
 
 		try {
-			LocalDate localDate = LocalDate.parse(date, dateTimeFormatter);
-			return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+			LocalDateTime localDateTime = LocalDateTime.parse(date, dateTimeFormatter);
+			return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 		} catch (DateTimeParseException e) {
 			throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
 					.entity("Couldn't parse date string: " + e.getMessage()).build());
