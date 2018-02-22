@@ -12,6 +12,7 @@ import com.gepardec.hogarama.domain.SensorData;
 
 public class DummyDataUtil {
 
+	public static final String UNKNOW_LOCATION = "unknown location";
 	public static final int MIN_VAL = 0;
 	public static final int MAX_VAL = 100;
 	public static final String SENSOR_TYPE = "wasser";

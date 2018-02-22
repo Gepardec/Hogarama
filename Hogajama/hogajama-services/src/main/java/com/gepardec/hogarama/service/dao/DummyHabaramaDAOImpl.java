@@ -22,7 +22,7 @@ public class DummyHabaramaDAOImpl implements HabaramaDAO {
 	private static final int MAX_NUMBER_OF_SENSORS = 10;
 	private static final int MAX_NUMBER_OF_DATA = 10000;
 	private List<SensorData> sensorDatas = DummyDataUtil.getDummySensorData(MAX_NUMBER_OF_SENSORS, MAX_NUMBER_OF_DATA, false);
-
+	
 	@Override
 	public List<String> getAllSensors() {
 		return CollectionUtils.emptyIfNull(sensorDatas)
@@ -45,9 +45,9 @@ public class DummyHabaramaDAOImpl implements HabaramaDAO {
 		return CollectionUtils.emptyIfNull(sensorDatas)
 				  			  .stream()
 				  			  .filter(s -> sensorName.equals(s.getSensorName()))
+				  			  .map(SensorData::getSensorName)
 				  			  .findFirst()
-				  			  .orElse(null)
-				  			  .getLocation();
+				  			  .orElse(DummyDataUtil.UNKNOW_LOCATION);
 	}
 	
 }
