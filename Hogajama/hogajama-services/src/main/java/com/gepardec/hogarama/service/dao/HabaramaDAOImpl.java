@@ -43,7 +43,7 @@ public class HabaramaDAOImpl implements HabaramaDAO {
 
 	@Override
 	public List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to) {
-		Query<SensorData> query = datastore.createQuery(SensorData.class).order("-time");
+		Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id");
 		limitQueryBySensor(sensorName, query);
 		limitQueryByDate(from, to, query);
 
@@ -80,7 +80,7 @@ public class HabaramaDAOImpl implements HabaramaDAO {
 	 * TODO: rewrite query and logic with single result
 	 */
 	public String getLocationBySensorName(String sensorName) {
-		Query<SensorData> query = datastore.createQuery(SensorData.class).order("-time");
+		Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id");
 		limitQueryBySensor(sensorName, query);
 
 		FindOptions numberLimitOption = getFindOptionsWithMaxNumber(1);
