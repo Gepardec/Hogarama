@@ -13,7 +13,7 @@ def on_publish(client, userdata, mid):
     print("Publish returned result: {} {} {}".format(client, userdata, mid))
     
 def on_message(client, userdata, message):
-    print("Message received\r\nTopic: {}\r\nPayload: {}".format(message.topic, message.payload))
+    print("Message received\r\n  Topic: {}\r\n  Payload: {}".format(message.topic, message.payload))
     
     payload = json.loads(message.payload)
     
@@ -21,20 +21,26 @@ def on_message(client, userdata, message):
     #
     # {
     #   "name": "MathiasJ",
-    #   "type": "pump",
     #   "location": "vorarlberg",
     #   "duration": 5
     # }
     
     for actor in actors:
-        if message.topic == "{0}.{1}.{2}".format (actor['type'], actor['location'], actor['name']):
+        if message.topic == "actor.{}.{}".format (actor['location'], actor['name']):
             
-            # set actor in different thread to not block the main thread
-            thread = Thread(target = set_actor, args =(actor, payload['duration']))
-            thread.start()  
+            if actor['type'] == "gpio":
+                # set actor in different thread to not block the main thread
+                thread = Thread(target = set_gpio_actor, args =(actor, payload['duration']))
+                thread.start()
+            elif actor['type'] == "console":
+                print "Turning console actor {} on for {}s".format(actor['name'], payload['duration'])
+            else:
+                print "Actor type {} of {} is not supported".format(actor['type'], actor['name'])
+            
             break
+        
     
-def set_actor(actor, duration):
+def set_gpio_actor(actor, duration):
     try:
         print "Turning {} on".format(actor['name'])
         GPIO.output(actor['pin'], 0)
@@ -65,8 +71,14 @@ for sensor in sensors:
     GPIO.setup(sensor['pin'], GPIO.OUT)
     
 for actor in actors:
-    GPIO.setup(actor['pin'], GPIO.OUT)
-    GPIO.output(actor['pin'], 1)
+    if actor['type'] == "gpio":
+        GPIO.setup(actor['pin'], GPIO.OUT)
+        GPIO.output(actor['pin'], 1)
+    elif actor['type'] == "console":
+        print "Setting up actor {} as console actor".format(actor['name'])
+    else:
+        print "Actor type {} of {} is not supported!".format(actor['type'], actor['name'])
+        
 
 # Setup Hogarama connection
 clients = []
@@ -82,7 +94,7 @@ for index,brokerUrl in enumerate(brokerUrls):
     client.connect(brokerUrl, 443, 60)
     
     for actor in actors:
-        topicName = "{0}.{1}.{2}".format (actor['type'], actor['location'], actor['name'])
+        topicName = "actor.{}.{}".format (actor['location'], actor['name'])
         print "{0} subscribe to {1}".format (brokerUrl, topicName)
         (result, mid) = client.subscribe(topicName, 0)
     
