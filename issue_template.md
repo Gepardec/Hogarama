@@ -1,4 +1,4 @@
-As a <who wants it?> i want <what do you want?> so that I <why do you want it?>.
+As a <who wants it?> I want <what do you want?> so that I <why do you want it?>.
 
 **Acceptance Criteria**
 - [ ] give me a list of things which should be implemented/working/etc.
