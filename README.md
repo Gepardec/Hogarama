@@ -16,33 +16,49 @@ This project can help you learn basics of Openshift application development and 
 * [oc](https://www.openshift.org/download.html#oc-platforms)
 
 ### Prerequisites
+
+You can use Docker or VirtualBox to run local OpenShift. 
+
+#### Docker
 * [Docker with IPv6](https://docs.docker.com/engine/userguide/networking/default_network/ipv6/)
  > Start docker daemon with `--ipv6` flag.
+* [oc Client Tools](https://www.openshift.org/download.html) 
+
+#### VirtualBox
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* [Minishift](https://docs.openshift.org/latest/minishift/getting-started/installing.html)
 
 ### Run it
 
-Open command line and run:
+Start OpenShift in Docker
 
 ```
-git clone -b playground https://github.com/Gepardec/Hogarama.git
-cd Hogarama
-oc cluster up
-cd Templates/local_openshift
-oc login -u system:admin
-oc create -n openshift -f red_hat_middleware_imagestreams.yml
-oc login -u developer
-oc create serviceaccount eap-service-account
-oc policy add-role-to-user view system:serviceaccount:$(oc project -q):eap-service-account
-oc create -f hogarama_template_with_routes_s2i.yaml
-oc process hogarama-s2i | oc create -f -
-oc patch dc/hogajama-broker-amq --type=json \
--p '[{"op": "add", "path": "/spec/template/spec/serviceAccountName", "value": "eap-service-account"}]'
+oc cluster up --version=v3.6.1
+```
+
+or in VirtualBox
+
+```
+minishift start --vm-driver=virtualbox --profile minishift
+```
+
+then and run:
+
+```
+git clone https://github.com/Gepardec/Hogarama.git
+cd Hogarama/Templates/local_openshift
+./startAll.sh
+```
+
+### Redeploy everything
+```
+./recreate.sh
 ```
 
 ### Reimport template
 ```
 oc delete template hogarama-s2i
-oc create -f template/hogarama_template_with_routes_s2i.yaml
+oc create -f hogarama_template_with_routes_s2i.yaml
 ```
 
 ### Clean all

@@ -2,13 +2,12 @@
 
 set -x
 
-oc cluster up
 oc login -u system:admin
-oc policy add-role-to-user system:image-pusher developer
-oc create -f alltemplates.yaml -n openshift
+oc create -n openshift -f red_hat_middleware_imagestreams.yml
 oc login -u developer
-oc new-project hogarama
-oc create is hogajama
-oc create is fluentd
-OPENSHIFT_TOKEN=$(oc whoami -t)
-oc process -f hogaramaOhneHost.yaml OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN | oc create -f -
+oc create serviceaccount eap-service-account
+oc policy add-role-to-user view system:serviceaccount:$(oc project -q):eap-service-account
+oc create -f hogarama_template_with_routes_s2i.yaml
+oc process hogarama-s2i | oc create -f -
+oc patch dc/broker-amq --type=json \
+-p '[{"op": "add", "path": "/spec/template/spec/serviceAccountName", "value": "eap-service-account"}]'
