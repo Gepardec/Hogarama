@@ -1,0 +1,7 @@
+x.x.x.x ip_address=y.y.y.y ID_STR="identificator"
+
+[all:vars]
+SSID="Network SSID"
+PSK="Wifi password"
+ip_router=z.z.z.z
+

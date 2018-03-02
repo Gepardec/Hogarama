@@ -28,7 +28,20 @@
 		<dependency>
 			<groupId>com.openshift</groupId>
 			<artifactId>openshift-restclient-java</artifactId>
-			<version>5.9.0.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+		</dependency>
+		<!-- Test Start -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<!-- Test End -->
 	</dependencies>
 </project>

@@ -29,17 +29,28 @@
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
 		</dependency>
+		<!-- Test Start -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-bundle-jaxrs</artifactId>
+		</dependency>
+		<!-- Test End -->
 	</dependencies>
 
 	<build>
-		<plugins>		
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>
@@ -52,14 +63,8 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.0.0</version>
 				<executions>
 					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
 						<configuration>
 							<sources>
 								<source>${project.build.directory}/generated-sources/annotations</source>
@@ -71,10 +76,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -92,9 +93,7 @@
 				<plugins>
 					<plugin>
 						<artifactId>maven-war-plugin</artifactId>
-						<version>2.3</version>
 						<configuration>
-							<failOnMissingWebXml>false</failOnMissingWebXml>
 							<outputDirectory>deployments</outputDirectory>
 						</configuration>
 					</plugin>

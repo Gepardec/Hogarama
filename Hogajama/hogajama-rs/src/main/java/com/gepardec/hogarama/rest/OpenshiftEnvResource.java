@@ -1,7 +1,5 @@
 package com.gepardec.hogarama.rest;
 
-import java.io.IOException;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -12,40 +10,35 @@ public class OpenshiftEnvResource {
 	@GET
 	@Path("stage")
 	@Produces("text/html")
-	public String getStage() throws IOException {
-
-	    String ret = System.getenv("STAGE");
-
-		return ret != null ? ret : "Not found";
-    }
-    
-    @GET
-	@Path("tinyurl")
-	@Produces("text/html")
-	public String getTinyUrl() throws IOException {
-
-	    String ret = System.getenv("TINYURL");
-
-		return ret != null ? ret : "Not found";
+	public String getStage() {
+		return getReturnValue(System.getenv("STAGE"));
 	}
 
-    @GET
-    @Path("hostname")
-    @Produces("text/html")
-    public String getHostname() throws IOException {
+	@GET
+	@Path("tinyurl")
+	@Produces("text/html")
+	public String getTinyUrl() {
+		return getReturnValue(System.getenv("TINYURL"));
+	}
 
-        String ret = System.getenv("HOSTNAME");
-        if(ret == null){
-            return "Not found";
-        }
+	@GET
+	@Path("hostname")
+	@Produces("text/html")
+	public String getHostname() {
+		String ret = System.getenv("HOSTNAME");
+		if (ret == null) {
+			return "Not found";
+		}
 
-        if(ret.split("-").length != 3){
-            return ret;
-        } else {
-            return "" + ret.split("-")[2].hashCode();
-        }
+		if (ret.split("-").length != 3) {
+			return ret;
+		} else {
+			return "" + ret.split("-")[2].hashCode();
+		}
 
-        //return "Not found";
-    }
-
+	}
+	
+	private String getReturnValue(String ret) {
+		return ret != null ? ret : "Not found";
+	}
 }

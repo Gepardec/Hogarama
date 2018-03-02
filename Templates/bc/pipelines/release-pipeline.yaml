@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: release-pipeline
+  namespace: 57-hogarama
+  labels:
+    name: release-pipeline
+spec:
+  triggers: []
+  runPolicy: Serial
+  source:
+    type: None
+  strategy:
+    type: JenkinsPipeline
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        node() {
+            stage('accept-by-PO') {
+                input message: "Test deployment: https://tinyurl.com/hogarama-dev. Approve?", id: "approval"
+            }
+            stage('tag-containers') {
+                openshiftTag srcStream: 'hogajama', srcTag: 'latest', destinationStream: 'hogajama', destinationTag: 'production', verbose: 'verbose'
+                openshiftTag srcStream: 'fluentd', srcTag: 'latest', destinationStream: 'fluentd', destinationTag: 'production', verbose: 'verbose'
+            }
+        }
+  output: {}
+  resources: {}
+  postCommit: {}
+  nodeSelector: null

@@ -55,15 +55,21 @@ paths:
         - in: query
           name: from
           type: string
-          format: date-time
+          format: string
           required: false
           description: Start (date, time) from where data entries should be shown
         - in: query
           name: to
           type: string
-          format: date-time
+          format: string
           required: false
-          description: End (date, time) from where data entries should be shown 
+          description: End (date, time) from where data entries should be shown
+        - in: query
+          name: onlyDataFromToday
+          type: boolean
+          format: boolean
+          required: true
+          description: True, we show only the data from today.
       produces:
         - application/json
       responses:
@@ -77,6 +83,23 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/errorModel'
+  /sensor/location:
+    get:
+      description: Return the location by sensorName
+      operationId: getLocationBySensorName
+      parameters:
+        - in: query
+          name: sensorName
+          type: String
+          required: true
+          description: Name of the sensor
+      produces:
+        - text/plain
+      responses:
+        '200':
+          description: Location of the sensor
+          schema:
+            type: string
 definitions:
   sensorData:
     type: object

@@ -6,13 +6,13 @@ import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
 
 import com.gepardec.hogarama.rest.mapper.SensorMapper;
+import com.gepardec.hogarama.rest.util.DateUtil;
 import com.gepardec.hogarama.service.dao.HabaramaDAO;
 import com.gepardec.hogarama.service.schedulers.SensorsScheduler;
 
@@ -22,25 +22,48 @@ public class SensorApiImpl implements SensorApi, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Context
-	private UriInfo context;
-	
 	@Inject
+	@Named("habaramaDao")
 	private HabaramaDAO habaramaDAO;
-	
+
 	@Inject
 	private SensorsScheduler sensorsScheduler;
 
 	@Override
 	public Response getAllSensors(SecurityContext securityContext) {
-//		return Response.ok(habaramaDAO.getAllSensors()).build();
 		return Response.ok(sensorsScheduler.getSensorNames()).build();
+	}
+	
+
+	@Override
+	public Response getAllDataMaxNumber(Boolean onlyDataFromToday, Integer maxNumber, String sensor, String from, String to,
+			SecurityContext securityContext) {
+		/*
+		 * TODO: From and To as Date. See in swagger conf. @DateTimeParam refactor Date
+		 * format swagger: 2018-02-19T13:46:01.149Z yyyy-MM-ddTHH:mm:ss.SSSZ
+		 */
+		Date fromDate = DateUtil.getDateTimeFromString(from);
+		Date toDate = DateUtil.getDateTimeFromString(to);
+
+		if (onlyDataFromToday) {
+			fromDate = getTodayStartTime();
+			toDate = getTodayEndTime();
+		}
+		List<SensorData> sensorData = SensorMapper.INSTANCE.mapSensors(habaramaDAO.getAllData(maxNumber, sensor, fromDate, toDate));
+		return Response.ok(sensorData).build();
 	}
 
 	@Override
-	public Response getAllDataMaxNumber(Integer maxNumber, String sensor, Date from, Date to,
-			SecurityContext securityContext) {
-		List<SensorData> sensorData = SensorMapper.INSTANCE.mapSensors(habaramaDAO.getAllData(maxNumber, sensor, from, to));
-		return Response.ok(sensorData).build();
+	public Response getLocationBySensorName(String sensorName, SecurityContext securityContext) {
+		return Response.ok(habaramaDAO.getLocationBySensorName(sensorName)).build();
 	}
+
+	private Date getTodayStartTime() {
+		return DateUtil.getTime(0, 0, 0);
+	}
+
+	private Date getTodayEndTime() {
+		return DateUtil.getTime(23, 59, 59);
+	}
+
 }

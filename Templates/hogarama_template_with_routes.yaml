@@ -309,8 +309,8 @@ objects:
           app: fluentd
           deploymentconfig: fluentd
       spec:
-        containers:
-        - image: 172.30.194.147:5000/57-hogarama/fluentd@sha256:abd0c95a794ce94217998c3e8efadf2417d423fa673925c93fa499c9c53814a8
+        containers: 
+        - image: 172.30.194.147:5000/57-hogarama/fluentd:production
           imagePullPolicy: Always
           name: fluentd
           ports:
@@ -395,7 +395,7 @@ objects:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          image: 172.30.194.147:5000/57-hogarama/hogajama@sha256:81d82a80b15b771e18a182d9b452499236d099a9c873953fd29f2c606d7903f5
+          image: 172.30.194.147:5000/57-hogarama/hogajama:production
           imagePullPolicy: Always
           name: hogajama
           ports:

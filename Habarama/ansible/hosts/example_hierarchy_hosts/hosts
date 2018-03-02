@@ -1,0 +1,8 @@
+[wien_gepardec]
+habarama1 ansible_host=192.168.100.51 ansible_user=pi
+habarama2 ansible_host=192.168.100.52 ansible_user=pi
+
+[wien_huwaicube]
+192.168.1.51
+192.168.1.52
+

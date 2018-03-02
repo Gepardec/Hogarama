@@ -37,16 +37,18 @@ public class ScalingScheduler {
 	public void checkSessions() {
 		log.info("Current Acitve Sessions: {}", getActiveSessions());
 
-		// Tell openshift to start another pod
-		if (!scaledUp) {
-			if (getActiveSessions() > 3) {
-				IClient client = getOpenshiftClient();
-				scaleUp(client);
-				scaledUp = true;
-			}
+		if (shouldStartNewPod()) {
+			IClient client = getOpenshiftClient();
+			scaleUp(client);
+			scaledUp = true;
 		}
+
 	}
 
+	private boolean shouldStartNewPod() {
+		return !scaledUp && getActiveSessions() > 3;
+	}
+	
 	@Schedule(hour = "*", minute = "*/10", info = "Every Minute")
 	public void resetScaleUp() {
 		log.info("Reset scaledUp.");
@@ -104,7 +106,7 @@ public class ScalingScheduler {
 		// TODO DeploymentConfig should be retrieved dynamically
 		dcConfig = "hogajama";
 
-		IDeploymentConfig depconfig = (IDeploymentConfig) client.get(ResourceKind.DEPLOYMENT_CONFIG, dcConfig,
+		IDeploymentConfig depconfig = client.get(ResourceKind.DEPLOYMENT_CONFIG, dcConfig,
 				namespace);
 
 		int replicas = depconfig.getDesiredReplicaCount();

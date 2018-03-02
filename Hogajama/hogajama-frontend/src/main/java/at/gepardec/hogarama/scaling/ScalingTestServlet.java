@@ -18,10 +18,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @WebServlet("/ScalingTest")
 public class ScalingTestServlet extends HttpServlet {
+	
 	private static final long serialVersionUID = -4257270508512265869L;
+	private static final Logger logger = LoggerFactory.getLogger(ScalingTestServlet.class);
 
+	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
@@ -31,15 +37,15 @@ public class ScalingTestServlet extends HttpServlet {
 		if (request.getSession().getAttribute("test") == null) {
 			out.println("New session. Current session is empty.");
 
-			request.getSession().setAttribute("test", new Integer(1));
-			System.out.println("Here we start with a new session");
+			request.getSession().setAttribute("test", Integer.valueOf(1));
+			logger.info("Here we start with a new session");
 
 		} else {
 			Integer value = (Integer) request.getSession().getAttribute("test");
 			out.println("Existing session: Value is " + value);
 
 			request.getSession().setAttribute("test",
-					new Integer(value.intValue() + 1));
+					Integer.valueOf(value.intValue() + 1));
 		}
 
 		out.println("Active Sessions: " + getActiveSession());

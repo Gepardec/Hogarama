@@ -3,53 +3,45 @@ package com.gepardec.hogarama.service.schedulers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.slf4j.Logger;
 
-import com.mongodb.DBCollection;
+import com.gepardec.hogarama.service.dao.HabaramaDAO;
 
 @Startup
 @Singleton
 public class SensorsScheduler {
 
-	
 	@Inject
 	private Logger log;
 	
 	@Inject
-	private DBCollection collection;
+	@Named("habaramaDao")
+	private HabaramaDAO habaramaDao;
 	
-	private List<String> sensorNames;
+	private List<String> sensorNames = new ArrayList<>();
 	
-	@PostConstruct
-	public void init() {
-		sensorNames = new ArrayList<>();
-	}
-
-	@Schedule(hour = "*", minute = "*", second = "*/5", info = "Every 5 second")
+	@Schedule(hour = "*", minute = "*", second = "*/5", info = "Every 5 second", persistent = false)
 	public void getSensors() {
-		log.info("Load the sensorNames");
-		getAllSensors();
+		log.info("Load the sensorNames from the database");
+		loadSensorsFromDB();
 	}
 
-	public void getAllSensors() {
-		sensorNames = collection.distinct("sensorName");		
+	public synchronized void loadSensorsFromDB() {
+		sensorNames.clear();
+		sensorNames = habaramaDao.getAllSensors();
 	}
 	
 	public List<String> getSensorNames() {
 		if(sensorNames.isEmpty()) {
-			getAllSensors();
+			loadSensorsFromDB();
 		}
 		return sensorNames;
 	}
 
-	public void setSensorNames(List<String> sensorNames) {
-		this.sensorNames = sensorNames;
-	}
-	
 }
