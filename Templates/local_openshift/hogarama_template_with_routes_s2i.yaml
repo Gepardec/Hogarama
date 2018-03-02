@@ -385,14 +385,6 @@ objects:
       type: Git
     strategy:
       type: Docker
-      dockerStrategy:
-        from:
-          kind: ImageStreamTag
-          name: 'debian:stretch-slim'
-          namespace: ${IMAGE_STREAM_NAMESPACE}
-        env:
-          - name: "APPLICATION_NAME"
-            value: ${APPLICATION_NAME}
     triggers:
     - type: GitHub
       github:
