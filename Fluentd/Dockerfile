@@ -1,4 +1,4 @@
-FROM fluentd/fluentd:v1.1.0-debian-onbuild
+FROM fluent/fluentd:v1.1.0-debian-onbuild
 
 LABEL maintainer Matthias Kapferer <matthias.kapferer@gepardec.com>
 LABEL Description="Fluentd docker image with mqtt and mongodb plugins" Vendor="Gepardec IT Services GmbH" Version="1.0"
