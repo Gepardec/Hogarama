@@ -42,6 +42,8 @@ or in VirtualBox
 minishift start --vm-driver=virtualbox --profile minishift
 ```
 
+> Default Openshifht accounts are `developer` and `admin`. You can log into both accounts with non empty password.
+
 then and run:
 
 ```
