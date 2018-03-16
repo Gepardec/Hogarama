@@ -65,8 +65,13 @@ oc create -f hogarama_template_with_routes_s2i.yaml
 
 ### Clean all
 ```
-oc delete all --all
 oc cluster down
+```
+
+or
+
+```
+minishift delete --profile minishift
 ```
 
 ## Where can I get more help, if I need it?
