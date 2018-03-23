@@ -29,6 +29,10 @@ objects:
       type: Git
     strategy:
       type: Docker
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: 'fluentd-onbuild:v1.1.0-debian-onbuild'
     triggers:
     - github:
         secret: 4m9EY9lErQRrs8LJjudP
@@ -882,6 +886,34 @@ objects:
       host: hogajama-ssl-57-hogarama.cloud.itandtel.at
       routerName: router-poi-4
       wildcardPolicy: None
+      apiVersion: v1
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/image.dockerRepositoryCheck: 2018-02-03T11:11:05Z
+    creationTimestamp: null
+    generation: 2
+    labels:
+      app: fluentd-onbuild
+    name: fluentd-onbuild
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+        openshift.io/imported-from: fluent/fluentd:v1.1.0-debian-onbuild
+      from:
+        kind: DockerImage
+        name: fluent/fluentd:v1.1.0-debian-onbuild
+      generation: 2
+      importPolicy: {}
+      name: v1.1.0-debian-onbuild
+      referencePolicy:
+        type: Source
+  status:
+    dockerImageRepository: ""
 parameters:
     - description: Stage of this project
       from: '[A-Z0-9]{8}'
