@@ -71,10 +71,13 @@ objects:
       type: Git
     strategy:
       sourceStrategy:
+        env:
+        - name: MAVEN_ARGS
+          value: -e -Popenshift -Dcom.redhat.xpaas.repo.redhatga package -Djava.net.preferIPv4Stack=true
         from:
           kind: ImageStreamTag
-          namespace: openshift
           name: jboss-eap70-openshift:latest
+          namespace: openshift
       type: Source
     triggers:
     - github:
