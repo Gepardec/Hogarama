@@ -20,8 +20,8 @@ with open('habarama.json') as data_file:
     data = json.load(data_file)
 brokerUrls = data['brokerUrls']
 sensors = data['sensors']
-waitInterval = 0
-sampleInterval = 3
+waitInterval = 15
+sampleInterval = 2
 
 # Setup pins
 GPIO.setmode(GPIO.BCM)
@@ -44,9 +44,9 @@ while True:
             for sensor in sensors:
                 GPIO.output(sensor['pin'], 1)
                 time.sleep(sampleInterval)
-                watterLevel = mcp.read_adc(sensor['channel'])
-                percent = 100 - int(round(watterLevel/10.24))
-                print "ADC Output: {0:4d} Percentage: {1:3}%".format (watterLevel,percent)
+                waterLevel = mcp.read_adc(sensor['channel'])
+                percent = int(round(waterLevel/10.24))
+                print "ADC Output: {0:4d} Percentage: {1:3}%".format (waterLevel,percent)
                 payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
                 payload = payload.format(sensor['name'],sensor['type'],percent,sensor['location'])
                 client.publish("habarama", payload=payload, qos=0, retain=False)
