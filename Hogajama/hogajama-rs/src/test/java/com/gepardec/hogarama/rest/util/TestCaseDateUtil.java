@@ -13,12 +13,6 @@ import javax.ws.rs.WebApplicationException;
 import org.junit.Test;
 
 public class TestCaseDateUtil {
-	
-	@Test
-	public void testS2iBuildWithTestsFail() {
-		// Assert on Openshift that Build fails and no Image is tagged with 'tested
-		fail();
-	}
 
 	@Test
 	public void testDateUtilNullInput() {
