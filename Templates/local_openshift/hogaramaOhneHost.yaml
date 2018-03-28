@@ -59,7 +59,7 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: hogajama:latest
+        name: hogajama:tested
     postCommit: {}
     resources: {}
     runPolicy: Serial
@@ -503,7 +503,7 @@ objects:
         - hogajama
         from:
           kind: ImageStreamTag
-          name: hogajama:latest
+          name: hogajama:tested
       type: ImageChange
     - type: ConfigChange
   status:

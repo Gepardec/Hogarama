@@ -430,7 +430,7 @@ objects:
         - hogajama
         from:
           kind: ImageStreamTag
-          name: hogajama:latest
+          name: hogajama:tested
           namespace: 57-hogarama
       type: ImageChange
     - type: ConfigChange
