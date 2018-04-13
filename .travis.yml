@@ -11,7 +11,8 @@ addons:
 script:
 #- sonar-scanner
   # JaCoCo is used to have code coverage, the agent has to be activated
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then mvn clean package; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar; fi'
 cache:
   directories:
     - '$HOME/.m2/repository'
