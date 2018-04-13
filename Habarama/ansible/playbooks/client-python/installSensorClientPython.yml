@@ -22,7 +22,7 @@
       upgrade: yes
   - name: Install python dependencies
     become: yes
-    apt: name={{item}} state=installed
+    apt: name={{item}} state=present
     with_items:
         - build-essential
         - python-pip
@@ -108,7 +108,7 @@
       state=started 
       port=22 
       delay=80 
-      timeout=300 
+      timeout=450
       connect_timeout=15
     listen: restart
 ...
