@@ -94,7 +94,7 @@ public class MqttClient {
 	}
 	
 	public void connectAndPublish(String ... messages) {
-		connectAndPublish(Arrays.asList(messages), 3000L);
+		connectAndPublish(Arrays.asList(messages), 1000L);
 	}
 
 	private SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyStoreException, IOException,

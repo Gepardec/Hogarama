@@ -28,46 +28,57 @@ public class MockCli {
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger(MockCli.class);
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) 	{
 		
-		CommandLine cliArguments = parseCliArguments(args);
-		List<String> testMessages = getTestMessages(cliArguments);
-		Properties properties = loadProperties(cliArguments.getOptionValue(Configuration.PATH_TO_CONFIG));
-		long delayMs = Long.parseLong(getConfigParam(Configuration.DELAY_MS, "3000", cliArguments, properties));
-		String host = getConfigParam(Configuration.BROKER_HOST, "https://broker-amq-mqtt-ssl-hogarama.10.0.75.2.nip.io", cliArguments, properties);
-		String user = getConfigParam(Configuration.BROKER_USERNAME, "mq_habarama", cliArguments, properties);
-		String password = getConfigParam(Configuration.BROKER_PASSWORD, "mq_habarama_pass", cliArguments, properties);
-		String topic = getConfigParam(Configuration.BROKER_TOPIC, "habarama", cliArguments, properties);
-		
-		printConfig(host, user, password, topic, delayMs);
+		RunConfiguration runConfiguration = createRunConfigurationFromArguments(args);
+		printRunConfiguration(runConfiguration);
 		
 		MqttClient mqttClient = new MqttClient().
-				withHost(host).
-				withUser(user).
-				withPassword(password).
-				withTopic(topic).
-				build();
+				withHost(runConfiguration.getHost()).
+				withUser(runConfiguration.getUser()).
+				withPassword(runConfiguration.getPassword()).
+				withTopic(runConfiguration.getTopic()).
+				build(); 
 		
-		mqttClient.connectAndPublish(testMessages, delayMs);
+		mqttClient.connectAndPublish(runConfiguration.getMockMessages(), runConfiguration.getDelayMs());
 		
 		
 		LOGGER.info(System.lineSeparator() + "=================== Hogarama Mock Cli Finished =================");
 	}
 	
 
-	
+	protected static RunConfiguration createRunConfigurationFromArguments(String[] args) {
+		CommandLine cliArguments = parseCliArguments(args);
+		List<String> testMessages = getTestMessages(cliArguments);
+		Properties properties = loadProperties(cliArguments.getOptionValue(RunConfiguration.PATH_TO_CONFIG));
+		long delayMs = Long.parseLong(getConfigParam(RunConfiguration.DELAY_MS, "3000", cliArguments, properties));
+		String host = getConfigParam(RunConfiguration.BROKER_HOST, "https://broker-amq-mqtt-ssl-hogarama.10.0.75.2.nip.io", cliArguments, properties);
+		String user = getConfigParam(RunConfiguration.BROKER_USERNAME, "mq_habarama", cliArguments, properties);
+		String password = getConfigParam(RunConfiguration.BROKER_PASSWORD, "mq_habarama_pass", cliArguments, properties);
+		String topic = getConfigParam(RunConfiguration.BROKER_TOPIC, "habarama", cliArguments, properties);
+		
+		RunConfiguration configuration = new RunConfiguration();
+		configuration.setDelayMs(delayMs);
+		configuration.setHost(host);
+		configuration.setPassword(password);
+		configuration.setTopic(topic);
+		configuration.setUser(user);
+		configuration.setMockMessages(testMessages);
+		
+		return configuration;
+	}
 
 
 	private static Options createOptions() {
 		Options options = new Options();
 		options.addOption(new Option( "h", "help", false, "print this message" ));
-		options.addRequiredOption("t", Configuration.PATH_TO_TEST_DATA, true, "Absolute path to file with test data");
-		options.addOption("c", Configuration.PATH_TO_CONFIG, true, "Absolute path to configuration file. Shoud contains key, value pairs in form key=value");
-		options.addOption(new Option( "d", Configuration.DELAY_MS, true, "Delay between publishings in ms. It overrides the parameter delay in configuration file. Default value is 3000." ));
-		options.addOption(new Option( "host", Configuration.BROKER_HOST, true, "Url to AMQ Broker. Overrides the parameter in configuration file." ));
-		options.addOption(new Option( "u", Configuration.BROKER_USERNAME, true, "Username. Overrides the parameter in configuration file." ));
-		options.addOption(new Option( "p", Configuration.BROKER_PASSWORD, true, "Password. Overrides the parameter in configuration file." ));
-		options.addOption(new Option( "topic", Configuration.BROKER_TOPIC, true, "Topic name. Overrides the parameter in configuration file." ));
+		options.addRequiredOption("t", RunConfiguration.PATH_TO_TEST_DATA, true, "Absolute path to file with test data");
+		options.addOption("c", RunConfiguration.PATH_TO_CONFIG, true, "Absolute path to configuration file. Shoud contains key, value pairs in form key=value");
+		options.addOption(new Option( "d", RunConfiguration.DELAY_MS, true, "Delay between publishings in ms. It overrides the parameter delay in configuration file. Default value is 3000." ));
+		options.addOption(new Option( "host", RunConfiguration.BROKER_HOST, true, "Url to AMQ Broker. Overrides the parameter in configuration file." ));
+		options.addOption(new Option( "u", RunConfiguration.BROKER_USERNAME, true, "Username. Overrides the parameter in configuration file." ));
+		options.addOption(new Option( "p", RunConfiguration.BROKER_PASSWORD, true, "Password. Overrides the parameter in configuration file." ));
+		options.addOption(new Option( "topic", RunConfiguration.BROKER_TOPIC, true, "Topic name. Overrides the parameter in configuration file." ));
 		return options;
 	}
 
@@ -93,7 +104,7 @@ public class MockCli {
 
 	private static List<String> getTestMessages(CommandLine cliArguments) {
 		try {
-			String pathToTestData = cliArguments.getOptionValue(Configuration.PATH_TO_TEST_DATA);
+			String pathToTestData = cliArguments.getOptionValue(RunConfiguration.PATH_TO_TEST_DATA);
 			String content = new String(Files.readAllBytes(Paths.get(pathToTestData)));
 			List<String> messages = new ArrayList<>();
 			Matcher m = Pattern.compile("\\{[^\\{\\}]*\\}").matcher(content);
@@ -146,13 +157,13 @@ public class MockCli {
 		}
 	}
 	
-	private static void printConfig(String host, String user, String password, String topic, long delayMs) {
+	private static void printRunConfiguration(RunConfiguration configuration) {
 		LOGGER.info("=================== Hogarama Mock Cli Config =================");
-		LOGGER.info("Host: " + host);
-		LOGGER.info("User: " + user);
-		LOGGER.info("Password: " + password);
-		LOGGER.info("Topic: " + topic);
-		LOGGER.info("Delay ms: " + delayMs + System.lineSeparator());
+		LOGGER.info("Host: " + configuration.getHost());
+		LOGGER.info("User: " + configuration.getUser());
+		LOGGER.info("Password: " + configuration.getPassword());
+		LOGGER.info("Topic: " + configuration.getTopic());
+		LOGGER.info("Delay ms: " + configuration.getDelayMs() + System.lineSeparator());
 	}
 	
 	private static void printHelp(Options options) {
