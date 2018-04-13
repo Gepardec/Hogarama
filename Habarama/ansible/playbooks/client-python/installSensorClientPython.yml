@@ -20,9 +20,7 @@
     apt:
       update_cache: yes
       upgrade: yes
-  - name: mandatory wait to prevent certain erros
-    pause:
-      seconds: 15
+      notify: restart
   - name: Install python dependencies
     become: yes
     apt: name={{item}} state=present
