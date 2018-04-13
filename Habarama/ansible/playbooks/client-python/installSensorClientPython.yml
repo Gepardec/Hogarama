@@ -15,12 +15,12 @@
     notify:
       - restart
   - meta: flush_handlers
-  - name: Update cache and upgrade
+  - name: Update cache and upgrade (this can take several minutes, dont worry ;-) )
     become: yes
     apt:
       update_cache: yes
       upgrade: yes
-      notify: restart
+    notify: restart
   - name: Install python dependencies
     become: yes
     apt: name={{item}} state=present
