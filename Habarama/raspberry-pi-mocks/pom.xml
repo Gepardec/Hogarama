@@ -11,6 +11,7 @@
 
 	<modules>
 		<module>raspberry-pi-mocks-cli</module>
+		<module>raspberry-pi-mocks-gui</module>
 	</modules>
 
 	<properties>
