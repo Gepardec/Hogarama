@@ -15,7 +15,6 @@
 		<module>hogajama-interfaces</module>
 		<module>hogajama-services</module>
 		<module>hogajama-rs</module>
-		<module>raspberry-pi-mocks-cli</module>
 	</modules>
 
 	<properties>
