@@ -23,7 +23,7 @@ public class Endpoint {
 	@PostConstruct
 	public void init() {
 		mqttClient = new MqttClient().
-				withHost(System.getProperty("amq-mqtt", "https://broker-amq-mqtt-ssl-hogarama.10.0.75.2.nip.io")).
+				withHost(Optional.ofNullable(System.getenv("AMQ_HOST")).orElse("https://broker-amq-mqtt-ssl-hogarama.10.0.75.2.nip.io")).
 				withUser(Optional.ofNullable(System.getenv("AMQ_USER")).orElse("mq_habarama")).
 				withPassword(Optional.ofNullable(System.getenv("AMQ_PASSWDORD")).orElse("mq_habarama_pass")).
 				withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("habarama")).
