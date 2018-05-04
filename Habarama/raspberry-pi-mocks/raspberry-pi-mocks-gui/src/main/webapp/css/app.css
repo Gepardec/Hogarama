@@ -1,0 +1,22 @@
+.gepardec-logo{
+	width: 10%;
+	min-width: 200px;
+	margin-left:auto;
+	margin-right: auto;
+	display:block;
+	
+}
+
+.spinner{
+	
+	width: 50px;
+	margin-left:auto;
+	margin-right: auto;
+	display:block;
+	
+}
+
+.gepardec-value-span{
+	padding-left: 10px;
+	padding-right: 10px;
+}
