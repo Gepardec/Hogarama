@@ -1,5 +1,4 @@
 192.168.100.123 ip_address=192.168.100.51 ID_STR="raspberry1"
-192.168.100.107 ip_address=192.168.100.52 ID_STR="raspberry2"
 
 [all:vars]
 SSID="My wifi"
