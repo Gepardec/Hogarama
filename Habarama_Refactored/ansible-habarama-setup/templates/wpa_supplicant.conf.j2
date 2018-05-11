@@ -1,0 +1,14 @@
+country=GB
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+        ssid="{{SSID}}"
+        scan_ssid=1
+        psk="{{PSK}}"
+        id_str="{{ID_STR}}"
+        priority=1
+}
+
+
+
