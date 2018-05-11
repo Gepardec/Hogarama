@@ -78,12 +78,13 @@ public class MqttClient {
 	
 	public void connectAndPublish(List<String> messages, long delayMs) {
 		try {
+			LOGGER.info("Publising to " + this.host);
 			BlockingConnection connection = mqtt.blockingConnection();
 			connection.connect();
 			int counter = 0;
 			for(String message : messages) {
 				counter++;
-				LOGGER.info("Publising " + counter + " of " + messages.size() + " to " + this.host);
+				
 				connection.publish(this.topic, message.getBytes(), QoS.AT_LEAST_ONCE, false);
 				LOGGER.info("Published " + counter + " of " + messages.size());
 				Thread.sleep(delayMs);
