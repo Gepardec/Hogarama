@@ -1,90 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
 		<artifactId>raspberry-pi-mocks</artifactId>
 		<groupId>com.gepardec.hogarama</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-  <artifactId>raspberry-pi-mocks-gui</artifactId>
-  <packaging>war</packaging>
+	<artifactId>raspberry-pi-mocks-gui</artifactId>
+	<packaging>war</packaging>
 
-  <properties>
-    <version.wildfly.swarm>2018.4.1</version.wildfly.swarm>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <failOnMissingWebXml>false</failOnMissingWebXml>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<properties>
+		<version.wildfly.swarm>2018.4.1</version.wildfly.swarm>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.wildfly.swarm</groupId>
-        <artifactId>bom-all</artifactId>
-        <version>${version.wildfly.swarm}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.wildfly.swarm</groupId>
+				<artifactId>bom-all</artifactId>
+				<version>${version.wildfly.swarm}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-  <build>
-    <finalName>raspberry-pi-mocks-gui</finalName>
-  </build>
-  
-  <profiles>
-  	<profile>
-  		<id>openshift</id>
-  		<build>
-  			<plugins>
-  				<plugin>
-			        <groupId>org.wildfly.swarm</groupId>
-			        <artifactId>wildfly-swarm-plugin</artifactId>
-			        <version>${version.wildfly.swarm}</version>
-			        
-			        <executions>
-			          <execution>
-			            <goals>
-			              <goal>package</goal>
-			            </goals>
-			          </execution>
-			        </executions>
-			      </plugin>
-  			</plugins>
-  		</build>
-  	</profile>
-  </profiles>
+	<build>
+		<finalName>raspberry-pi-mocks-gui</finalName>
+	</build>
 
-  <dependencies>
-    <!-- Java EE 7 dependency -->
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>7.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <!-- WildFly Swarm Fractions -->
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>cdi</artifactId>
-    </dependency><dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>web</artifactId>
-    </dependency><dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>undertow</artifactId>
-    </dependency>
-    <dependency>
-		<artifactId>raspberry-pi-mocks-cli</artifactId>
-		<groupId>com.gepardec.hogarama</groupId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
-  </dependencies>
+	<profiles>
+		<profile>
+			<id>openshift</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.wildfly.swarm</groupId>
+						<artifactId>wildfly-swarm-plugin</artifactId>
+						<version>${version.wildfly.swarm}</version>
+
+						<executions>
+							<execution>
+								<goals>
+									<goal>package</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-resources</id>
+								<!-- here the phase you need -->
+								<phase>verify</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.basedir}/../target</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${project.basedir}/target</directory>
+											<includes>
+												<include>raspberry-pi-mocks-gui-swarm.jar</include>
+											</includes>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<dependencies>
+		<!-- Java EE 7 dependency -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- WildFly Swarm Fractions -->
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>cdi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>jaxrs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>undertow</artifactId>
+		</dependency>
+		<dependency>
+			<artifactId>raspberry-pi-mocks-cli</artifactId>
+			<groupId>com.gepardec.hogarama</groupId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 </project>
