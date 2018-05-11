@@ -82,8 +82,9 @@ public class MqttClient {
 			connection.connect();
 			int counter = 0;
 			for(String message : messages) {
-				connection.publish(this.topic, message.getBytes(), QoS.AT_LEAST_ONCE, false);
 				counter++;
+				LOGGER.info("Publising " + counter + " of " + messages.size() + " to " + this.host);
+				connection.publish(this.topic, message.getBytes(), QoS.AT_LEAST_ONCE, false);
 				LOGGER.info("Published " + counter + " of " + messages.size());
 				Thread.sleep(delayMs);
 			};
