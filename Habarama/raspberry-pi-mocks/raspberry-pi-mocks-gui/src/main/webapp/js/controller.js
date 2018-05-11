@@ -1,6 +1,14 @@
 angular.module('MockApp', [])
    .controller('MockController', function($scope) {
-       $scope.ws = new WebSocket("ws://localhost:8080/mock");
+	   let loc = window.location, new_uri;
+	   if (loc.protocol === "https:") {
+	       new_uri = "wss:";
+	   } else {
+	       new_uri = "ws:";
+	   }
+	   new_uri += "//" + loc.host;
+	   new_uri += loc.pathname + "/mock";
+       $scope.ws = new WebSocket(new_uri);
        $scope.ws.onmessage = function (event){
     	   let data = event.data;
     	   $scope.$apply(function(){
