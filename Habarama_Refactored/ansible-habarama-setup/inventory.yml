@@ -14,9 +14,6 @@ ssh_keys:
   - https://github.com/github_user2.keys
   - https://github.com/github_user3.keys
   - https://github.com/github_user4.keys
-update_raspberry: false
-configure_network: true
-setup_ssh: true
 
 [wien]
 x.x.x.x sensors='[{"name": "Pflanze","type": "wasser","channel": 0,"pin": 21}]' actors='[{"name": "Pflanze","type": "GPIO","pin":21}]'
