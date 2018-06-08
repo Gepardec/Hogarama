@@ -1,8 +1,30 @@
 ---
+- name: Habarama Setup Script
+  hosts: all
+
+  tasks:
+    - import_tasks: tasks/configure_network.yml
+      when: setup_network
 
 
-
-
-handlers:
-  - include: handlers/main.yml
+  handlers:
+  - import_tasks: handlers/main.yml
 ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
