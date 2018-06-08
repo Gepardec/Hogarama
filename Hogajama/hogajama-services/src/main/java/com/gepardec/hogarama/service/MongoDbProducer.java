@@ -9,6 +9,8 @@ import org.bson.Document;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -25,7 +27,7 @@ public class MongoDbProducer {
 	private static final char[] PASSWORD = System.getenv("MONGODB_PW").toCharArray();
 	private static final int PORT = 27017;
 	private static final String COLLECTION = "habarama";
-	private static final String HOST = System.getProperty("mongo.host", "mongodb");
+	private static final String HOST = System.getenv("MONGODB_URL");
 	private static MongoClient client;
 
 	@Produces
