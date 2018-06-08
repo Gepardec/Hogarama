@@ -16,14 +16,14 @@
       ansible_ssh_pass: raspberry
 
     # Network vars:
-      SSID: "Gepardec"
-      PSK: "AnsoMenOrkSmulUE"
+      SSID: "SSID"
+      PSK: "Wifi Password"
       ip_router: 192.168.100.1
 
     # SETUP FLAGS
-      update_raspberry: false
-      setup_ssh: false
-      setup_network: false
+      update_raspberry|bool: false
+      setup_ssh|bool: false
+      setup_network|bool: false
 
     # SSH Vars:
       ssh_keys:
