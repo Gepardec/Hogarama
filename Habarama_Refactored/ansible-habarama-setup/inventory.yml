@@ -5,6 +5,7 @@
     vars:
       sensors: '[{"name": "Pflanze","type": "sparkfun","channel": 0,"pin": 21}]'
       actors: '[{"name": "Pflanze","type": "GPIO","pin":21}]'
+      ID_STR: "identificator"
 
   all:
     vars:
