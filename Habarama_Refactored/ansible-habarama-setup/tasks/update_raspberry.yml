@@ -1,5 +1,4 @@
 ---
-- name: Update Raspberry Pi
   - name: Update cache and upgrade (this can take several minutes, dont worry ;-) )
     become: yes
     apt:

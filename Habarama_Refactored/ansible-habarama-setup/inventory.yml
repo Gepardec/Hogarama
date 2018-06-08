@@ -6,6 +6,8 @@
       sensors: '[{"name": "Pflanze","type": "wasser","channel": 0,"pin": 21}]'
       actors: '[{"name": "Pflanze","type": "GPIO","pin":21}]'
       ID_STR: "raspi-flexl"
+      ip_address: 192.168.100.141
+      SENSOR_LOCATION: "Wiener Wildtierpark"
 
   all:
     vars:
@@ -21,9 +23,9 @@
       ip_router: 192.168.100.1
 
     # SETUP FLAGS
-      update_raspberry|bool: false
-      setup_ssh|bool: false
-      setup_network|bool: false
+      update_raspberry: false
+      setup_ssh: true
+      setup_network: true
 
     # SSH Vars:
       ssh_keys:
