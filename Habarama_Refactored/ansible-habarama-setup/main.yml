@@ -2,20 +2,18 @@
 - name: Setup Raspberry Pi to act as Habarama Node
   hosts: all
 
-  tasks:
-  - name: configure network
   - include: tasks/configure_network.yml
     when: setup_network == true
 
-  - name: configure ssh
   - include: tasks/setup_ssh.yml
     when: setup_ssh == true
 
-  - name: install Sensor on Habarama
   - include: tasks/installClientPython.yml
 
-  - name: update raspberry pi
   - include: tasks/update_raspberry.yml
     when: update_raspberry == true
+
+handler:
+  - include: handlers/main.yml
 ...
 
