@@ -20,3 +20,13 @@
 	padding-left: 10px;
 	padding-right: 10px;
 }
+
+#currentValue {
+	padding: 2px;
+	width: 100px;
+}
+
+#sensorType, #sensorName{
+	padding: 2px;
+	width: 150px;
+}

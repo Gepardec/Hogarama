@@ -27,12 +27,25 @@
 				<div class="row">
 					<div class="col-md-12 text-center">
 						<form role="form">
+							<table>
 							<div class="form-group">
 								<label for="brokerUrl">Current value</label><br/>
 								<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
 									<button type="button" class="btn btn-secondary" ng-click="changeCurrentValue(-10)">-</button>
-									<span class="gepardec-value-span">{{currentValue}}</span>
+									<input id="currentValue" type="text" ng-model="currentValue" />
 									<button type="button" class="btn btn-secondary" ng-click="changeCurrentValue(10)">+</button>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="brokerUrl">Sensor type</label><br/>
+								<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+									<input id="sensorType" type="text" ng-model="sensorType" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="brokerUrl">Sensor name</label><br/>
+								<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+									<input id="sensorName" type="text" ng-model="sensorName" />
 								</div>
 							</div>
 							<button class="btn btn-success" ng-hide="running" ng-click="start()">Run</button>

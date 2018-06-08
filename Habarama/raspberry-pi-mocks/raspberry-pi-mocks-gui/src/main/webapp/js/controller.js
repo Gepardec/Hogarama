@@ -26,11 +26,11 @@ angular.module('MockApp', [])
 	   };
 	   
 	   $scope.currentValue = 50;
+	   $scope.sensorType = "wasser";
+	   $scope.sensorName = "Mock Sensor";
 	   $scope.changeCurrentValue = function(value){
+		   $scope.currentValue = parseInt($scope.currentValue);
 		   $scope.currentValue += value;
-		   if($scope.currentValue > 100){
-			   $scope.currentValue = 100;
-		   }
 		   
 		   if($scope.currentValue < 0){
 			   $scope.currentValue = 0;
@@ -43,9 +43,8 @@ angular.module('MockApp', [])
 	   $scope.start = function(){
 		   $scope.running = true;
 		   $scope.intervalHandler = setInterval(function() {
-			   $scope.ws.send("" + $scope.currentValue);  
-			  
-			   
+			   //message: "<sensor name>,<sensor type>,<value>
+			   $scope.ws.send($scope.sensorName + "," + $scope.sensorType + "," + $scope.currentValue);  	  
 		   }, 3000);
 	   }
 	   
