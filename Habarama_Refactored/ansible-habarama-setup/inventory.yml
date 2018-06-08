@@ -1,11 +1,11 @@
 ---
   raspberries:
     hosts:
-      x.x.x.x
+      192.168.100.141
     vars:
-      sensors: '[{"name": "Pflanze","type": "sparkfun","channel": 0,"pin": 21}]'
+      sensors: '[{"name": "Pflanze","type": "wasser","channel": 0,"pin": 21}]'
       actors: '[{"name": "Pflanze","type": "GPIO","pin":21}]'
-      ID_STR: "identificator"
+      ID_STR: "raspi-flexl"
 
   all:
     vars:
@@ -16,9 +16,9 @@
       ansible_ssh_pass: raspberry
 
     # Network vars:
-      SSID: "Super_Secret_ID"
-      PSK: "Super_Secret_WiFi_Password"
-      ip_router: x.x.x.x
+      SSID: "Gepardec"
+      PSK: "AnsoMenOrkSmulUE"
+      ip_router: 192.168.100.1
 
     # SETUP FLAGS
       update_raspberry: false
@@ -27,6 +27,6 @@
 
     # SSH Vars:
       ssh_keys:
-        https://github.com/Pinky.keys
-        https://github.com/Brain.keys
+        https://github.com/fhochleitner.keys
+        https://github.com/ludwigsteindl.keys
 ...
