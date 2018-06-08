@@ -12,6 +12,7 @@
   all:
     vars:
       BROKER_URLS: "[\"broker-amq-mqtt-ssl-57-hogarama.cloud.itandtel.at\"]"
+      client_python_dir: "{{ansible_env.HOME}}/client_python/"
 
     # Global vars:
       ansible_ssh_user: pi
