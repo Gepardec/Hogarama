@@ -15,7 +15,7 @@
         timeout=300
         state=started
     listen: restart
-  - name: Restart SSH
+  - name: Restart ssh
     become: yes
     service:
       name: ssh
