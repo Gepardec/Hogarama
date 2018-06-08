@@ -1,26 +1,31 @@
-x.x.x.x:
-  ip_address=y.y.y.y
-  ID_STR="identificator"
+---
+  raspberries:
+    hosts:
+      x.x.x.x
+    vars:
+      sensors: '[{"name": "Pflanze","type": "sparkfun","channel": 0,"pin": 21}]'
+      actors: '[{"name": "Pflanze","type": "GPIO","pin":21}]'
 
-[all:vars]
-BROKER_URLS="[\"broker-amq-mqtt-ssl-57-hogarama.cloud.itandtel.at\"]"
-SSID="Network SSID"
-PSK="Wifi Password"
-ip_router=z.z.z.z
-ansible_ssh_user: pi
-ansible_ssh_pass: raspberry
-ssh_keys:
-  - https://github.com/github_user1.keys
-  - https://github.com/github_user2.keys
-  - https://github.com/github_user3.keys
-  - https://github.com/github_user4.keys
+  all:
+    vars:
+      BROKER_URLS: "[\"broker-amq-mqtt-ssl-57-hogarama.cloud.itandtel.at\"]"
 
-[wien]
-x.x.x.x sensors='[{"name": "Pflanze","type": "wasser","channel": 0,"pin": 21}]' actors='[{"name": "Pflanze","type": "GPIO","pin":21}]'
+    # Global vars:
+      ansible_ssh_user: pi
+      ansible_ssh_pass: raspberry
 
-[wien:vars]
-SENSOR_LOCATION="wien"
+    # Network vars:
+      SSID: "Super_Secret_ID"
+      PSK: "Super_Secret_WiFi_Password"
+      ip_router: x.x.x.x
 
+    # SETUP FLAGS
+      update_raspberry: false
+      setup_ssh: false
+      setup_network: false
 
-
-
+    # SSH Vars:
+      ssh_keys:
+        https://github.com/Pinky.keys
+        https://github.com/Brain.keys
+...
