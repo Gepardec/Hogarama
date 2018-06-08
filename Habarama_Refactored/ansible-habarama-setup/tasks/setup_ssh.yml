@@ -1,10 +1,4 @@
 ---
-- name: Basic setup for raspberry pi
-  hosts: all
-  vars:
-    ansible_user: "{{ ansible_ssh_user }}"
-    ansible_ssh_pass: "{{ ansible_ssh_pass }}"
-  tasks:
   - name: Update authorized keys
     authorized_key:
       user: pi

@@ -13,5 +13,9 @@
 
   - name: install Sensor on Habarama
   - include: tasks/installClientPython.yml
+
+  - name: update raspberry pi
+  - include: tasks/update_raspberry.yml
+    when: update_raspberry == true
 ...
 
