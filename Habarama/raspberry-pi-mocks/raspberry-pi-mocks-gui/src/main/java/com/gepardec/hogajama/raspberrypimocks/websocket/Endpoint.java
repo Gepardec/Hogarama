@@ -16,7 +16,7 @@ import com.gepardec.hogarama.mocks.cli.MqttClient;
 @ServerEndpoint("/mock")
 public class Endpoint {
 	
-	private static final String TEST_MESSAGE = "{\"sensorName\" : \"Pflanze\", \"type\" : \"wasser\", \"value\" : $value, \"location\" : \"Wien\", \"version\" : 0}";
+	private static final String TEST_MESSAGE = "{\"sensorName\" : \"$name\", \"type\" : \"$type\", \"value\" : $value, \"location\" : \"Wien\", \"version\" : 0}";
 	
 	private MqttClient mqttClient;
 	
@@ -45,7 +45,8 @@ public class Endpoint {
 			if("ping".equals(messageString)) {
 				session.getBasicRemote().sendText("pong");
 			} else {
-				String messageToSend = TEST_MESSAGE.replace("$value", messageString);
+				String[] values = messageString.split(",");
+				String messageToSend = TEST_MESSAGE.replace("$name", values[0]).replace("$type", values[1]).replace("$value", values[2]);
 				mqttClient.connectAndPublish(messageToSend);
 				session.getBasicRemote().sendText("ok");
 			}
