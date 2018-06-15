@@ -1,9 +1,0 @@
-[all:vars]
-BROKER_URLS="[\"broker-amq-mqtt-ssl-57-hogarama.cloud.itandtel.at\"]"
-
-[wien]
-192.168.100.51 sensors='[{"name": "Pflanze","type": "wasser","channel": 0,"pin": 21}]' actors='[{"name": "Pflanze","type": "GPIO","pin":21}]'
-
-[wien:vars]
-SENSOR_LOCATION="wien"
-
