@@ -13,8 +13,8 @@
             type: "GPIO"
             pin: 4
       ID_STR: "raspi-ID"
-      ip_address: 192.168.100.141
-      SENSOR_LOCATION: "Wiener Wildtierpark"
+      ip_address: X.X.X.X
+      SENSOR_LOCATION: "LOCATION"
 
   all:
     vars:
