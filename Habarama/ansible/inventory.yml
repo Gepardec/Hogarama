@@ -12,7 +12,7 @@
           - name: "Pumpe"
             type: "GPIO"
             pin: 4
-      ID_STR: "raspi-id"
+      ID_STR: "raspi-flexl"
       ip_address: 192.168.100.141
       SENSOR_LOCATION: "Wiener Wildtierpark"
 
@@ -27,7 +27,7 @@
 
     # Network vars:
       SSID: "SSID"
-      PSK: "Wifi Password"
+      PSK: "Wifi-Password"
       ip_router: 192.168.100.1
 
     # SETUP FLAGS
@@ -37,6 +37,6 @@
 
     # SSH Vars:
       ssh_keys:
-        https://github.com/GitHub.keys
-        https://github.com/GitHub.keys
+        https://github.com/DUMMY.keys
+        https://github.com/DUMMY_2.keys
 ...
