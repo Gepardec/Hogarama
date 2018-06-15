@@ -3,9 +3,16 @@
     hosts:
       192.168.100.141
     vars:
-      sensors: '[{"name": "Pflanze","type": "wasser","channel": 0,"pin": 21}]'
-      actors: '[{"name": "Pflanze","type": "GPIO","pin":21}]'
-      ID_STR: "raspi-flexl"
+      sensors:
+          - name: "Pflanze"
+            type: "sparkfun"
+            channel: 0
+            pin: 21
+      actors:
+          - name: "Pumpe"
+            type: "GPIO"
+            pin: 4
+      ID_STR: "raspi-id"
       ip_address: 192.168.100.141
       SENSOR_LOCATION: "Wiener Wildtierpark"
 
@@ -25,11 +32,11 @@
 
     # SETUP FLAGS
       update_raspberry: false
-      setup_ssh: true
-      setup_network: true
+      setup_ssh: false
+      setup_network: false
 
     # SSH Vars:
       ssh_keys:
-        https://github.com/fhochleitner.keys
-        https://github.com/ludwigsteindl.keys
+        https://github.com/GitHub.keys
+        https://github.com/GitHub.keys
 ...
