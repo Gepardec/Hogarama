@@ -1,7 +1,7 @@
 ---
   raspberries:
     hosts:
-      192.168.100.141
+      X.X.X.X
     vars:
       sensors:
           - name: "Pflanze"
@@ -12,7 +12,7 @@
           - name: "Pumpe"
             type: "GPIO"
             pin: 4
-      ID_STR: "raspi-flexl"
+      ID_STR: "raspi-ID"
       ip_address: 192.168.100.141
       SENSOR_LOCATION: "Wiener Wildtierpark"
 
@@ -28,7 +28,7 @@
     # Network vars:
       SSID: "SSID"
       PSK: "Wifi-Password"
-      ip_router: 192.168.100.1
+      ip_router: Y.Y.Y.Y
 
     # SETUP FLAGS
       update_raspberry: false
@@ -37,6 +37,6 @@
 
     # SSH Vars:
       ssh_keys:
-        https://github.com/DUMMY.keys
-        https://github.com/DUMMY_2.keys
+        - https://github.com/DUMMY.keys
+        - https://github.com/DUMMY_2.keys
 ...
