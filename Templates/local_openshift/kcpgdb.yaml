@@ -1,0 +1,134 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    template.alpha.openshift.io/wait-for-ready: 'true'
+  creationTimestamp: '2018-06-15T12:10:38Z'
+  generation: 2
+  labels:
+    app: postgresql-persistent
+    template: postgresql-persistent-template
+  name: kcpgdb
+  namespace: hogarama
+  selfLink: /apis/apps.openshift.io/v1/namespaces/hogarama/deploymentconfigs/kcpgdb
+  uid: 1d9065cf-7095-11e8-a516-00155d648611
+spec:
+  replicas: 1
+  selector:
+    name: kcpgdb
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: kcpgdb
+    spec:
+      containers:
+        - env:
+            - name: POSTGRESQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: database-user
+                  name: kcpgdb
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: kcpgdb
+            - name: POSTGRESQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: database-name
+                  name: kcpgdb
+          image: >-
+            centos/postgresql-95-centos7@sha256:e2fe6f720f34bef95923fa0a94cf6d314fa25bb6b2ef9dd4da6dd61705adaf5f
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 5432
+            timeoutSeconds: 1
+          name: postgresql
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - '-i'
+                - '-c'
+                - >-
+                  psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d
+                  $POSTGRESQL_DATABASE -c 'SELECT 1'
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 512Mi
+          securityContext:
+            capabilities: {}
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/lib/pgsql/data
+              name: kcpgdb-data
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: kcpgdb-data
+          persistentVolumeClaim:
+            claimName: kcpgdb
+  test: false
+  triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - postgresql
+        from:
+          kind: ImageStreamTag
+          name: 'postgresql:9.5'
+          namespace: openshift
+        lastTriggeredImage: >-
+          centos/postgresql-95-centos7@sha256:e2fe6f720f34bef95923fa0a94cf6d314fa25bb6b2ef9dd4da6dd61705adaf5f
+      type: ImageChange
+    - type: ConfigChange
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: '2018-06-15T12:10:50Z'
+      lastUpdateTime: '2018-06-15T12:10:50Z'
+      message: Deployment config has minimum availability.
+      status: 'True'
+      type: Available
+    - lastTransitionTime: '2018-06-15T12:10:51Z'
+      lastUpdateTime: '2018-06-15T12:10:51Z'
+      message: replication controller "kcpgdb-1" successfully rolled out
+      reason: NewReplicationControllerAvailable
+      status: 'True'
+      type: Progressing
+  details:
+    causes:
+      - type: ConfigChange
+    message: config change
+  latestVersion: 1
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  unavailableReplicas: 0
+  updatedReplicas: 1
