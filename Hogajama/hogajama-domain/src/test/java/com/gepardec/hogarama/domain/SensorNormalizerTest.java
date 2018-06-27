@@ -2,9 +2,11 @@ package com.gepardec.hogarama.domain;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +62,24 @@ public class SensorNormalizerTest {
 		return sn.normalize(createSensorData(type, value)).getValue();
 	}
 
-	private SensorData createSensorData(String type, Double value) {
+	static public SensorData createSensorData(String type, Double value) {
 		return new SensorData("1", new Date(), "My Plant", type, value, "Vienna", "1.0");
 	}
+	
+	static public void checkNormalised(List<SensorData> sensorData) {
+		int index = 0;
+		for (Object[] objects : data()) {
+			assertEquals("Index " + index, objects[0], sensorData.get(index).getValue());
+			index++;
+		}
+	}
+
+	static public List<SensorData> getDataList() {
+		List<SensorData> sensorData = new ArrayList<SensorData>();
+		for (Object[] objects : data()) {
+			sensorData.add(SensorNormalizerTest.createSensorData((String)objects[1], (double)objects[2]));
+		}
+		return sensorData;
+	}
+
 }
