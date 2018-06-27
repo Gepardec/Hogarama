@@ -1,0 +1,90 @@
+---
+  - name: Enable hardware SPI
+    become: yes
+    lineinfile:
+      dest: /boot/config.txt
+      regexp: dtparam=spi=on
+      line: dtparam=spi=on
+      state: present
+    notify:
+      - restart
+  - meta: flush_handlers
+  - name: Install python dependencies
+    become: yes
+    apt: name={{item}} state=present
+    with_items:
+        - build-essential
+        - python-pip
+        - python-dev
+        - python-smbus
+  - name: Install git-core
+    become: yes
+    apt:
+      name: git-core
+      state: present
+  - name: Remove client_python_dir
+    file:
+      state: absent
+      path: "{{client_python_dir}}"
+  - name: Create client_python_dir
+    file:
+      state: directory
+      path: "{{client_python_dir}}"
+  - name: Copy client-python
+    copy:
+      src: "{{item}}"
+      dest: "{{client_python_dir}}"
+    with_items:
+      - files/broker.pem
+      - files/client.pem
+      - files/plant.py
+#      - ../../../client/python/broker.pem
+#      - ../../../client/python/client.pem
+#      - ../../../client/python/plant.py
+  - name: Checkout Adafruit_Python_GPIO
+    git:
+      repo: 'https://github.com/adafruit/Adafruit_Python_GPIO.git'
+      dest: "{{ ansible_env.HOME}}/Adafruit_Python_GPIO"
+  - name: Build Adafruit_Python_GPIO
+    become: yes
+    command: python setup.py install
+    args:
+      chdir: "{{ansible_env.HOME}}/Adafruit_Python_GPIO"
+    run_once: true
+  - name: Checkout Adafruit_Python_MCP3008
+    git:
+      repo: 'https://github.com/adafruit/Adafruit_Python_MCP3008.git'
+      dest: "{{ansible_env.HOME}}/Adafruit_Python_MCP3008"
+  - name: Build Adafruit_Python_MCP3008
+    become: yes
+    command: python setup.py install
+    args:
+      chdir: "{{ansible_env.HOME}}/Adafruit_Python_MCP3008"
+    run_once: true
+  - name: Checkout eclipse/paho.mqtt.python
+    git:
+      repo: 'https://github.com/eclipse/paho.mqtt.python.git'
+      dest: "{{ansible_env.HOME}}/paho.mqtt.python"
+  - name: Build eclipse/paho.mqtt.python
+    become: yes
+    command: python setup.py install
+    args:
+      chdir: "{{ansible_env.HOME}}/paho.mqtt.python"
+    run_once: true
+  - name: Copy config template
+    template:
+      src: templates/habarama.json.j2
+      dest: "{{client_python_dir}}/habarama.json"
+  - name: Copy service template
+    become: yes
+    template:
+      src: templates/habarama.service.j2
+      dest: /etc/systemd/system/habarama.service
+  - name: Enable habarama service
+    become: yes
+    systemd:
+      state: restarted
+      enabled: yes
+      daemon_reload: yes
+      name: habarama
+...

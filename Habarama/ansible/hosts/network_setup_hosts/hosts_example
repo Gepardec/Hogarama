@@ -1,7 +1,0 @@
-192.168.100.123 ip_address=192.168.100.51 ID_STR="raspberry1"
-
-[all:vars]
-SSID="My wifi"
-PSK="Super secret password"
-ip_router=192.168.100.1
-
