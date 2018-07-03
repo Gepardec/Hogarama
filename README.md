@@ -18,3 +18,7 @@ Hogajama is the Java/Maven part of the Hogarama Project. It is a Java EE applica
 Jenkins docker image project. This docker image containing Jenkins for building and deployment of Hogarama project. The image provides Docker inside itself, which allows to run any Docker container in your Jenkins build script.
 
 [More...](Jenkins/README.md)
+
+For this project, the following RedHat products are used which require at least a RedHat developer subscription:
+* JBoss EAP
+* JBoss A-MQ
