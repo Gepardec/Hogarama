@@ -8,6 +8,8 @@ public enum MappingType {
 	
 	 /** The values are not mapped, just returned as received */
 	IDENTITY(),          
+	/** The interval [0..100] is mapped linear to [0..1] */
+	LINEAR100(100.0),  
 	/** The interval [0..1024] is mapped linear to [0..1] */
 	LINEAR1024(1024.0),  
 	/** The interval [0..1024] is mapped linear to [1..0] */

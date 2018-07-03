@@ -29,7 +29,7 @@ public class SensorNormalizerTest {
 	public static Collection<Object[]> data() {
 		Object[][] data = new Object[][] {
 
-				{ 56.0, "UnknownSensorType", 56.0 },
+				{ 0.56, "UnknownSensorType", 56.0 },
 				{ 0.0, LINEAR1024, 0.0 },
 				{ 1.0, LINEAR1024, 1024.0 },
 				{ 0.5, LINEAR1024, 512.0 },

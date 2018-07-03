@@ -19,6 +19,6 @@ public class SensorType {
 	}};
 
 	public static MappingType getMappingType(String type) {
-		return SENSORS.getOrDefault(type, MappingType.IDENTITY);
+		return SENSORS.getOrDefault(type, MappingType.LINEAR100);
 	}
 }
