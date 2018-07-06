@@ -12,3 +12,5 @@ oc create is hogajama
 oc create is fluentd
 OPENSHIFT_TOKEN=$(oc whoami -t)
 oc process -f hogaramaOhneHost.yaml OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN | oc create -f -
+#oc process -f ../sso/sso-app-secret.yaml OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN | oc create -f -
+#oc process -f ../sso/sso.yaml OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN | oc create -f -
