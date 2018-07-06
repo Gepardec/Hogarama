@@ -16,6 +16,7 @@ import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
 import com.gepardec.hogarama.domain.SensorData;
+import com.gepardec.hogarama.domain.SensorNormalizer;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoIterable;
@@ -29,6 +30,9 @@ public class HabaramaDAOImpl implements HabaramaDAO {
 	@Inject
 	private MongoCollection<Document> collection;
 
+	@Inject
+	SensorNormalizer sensorNormalizer;
+	
 	@Override
 	public List<String> getAllSensors() {
 		DistinctIterable<String> sensors = collection.distinct("sensorName", String.class);
@@ -48,7 +52,7 @@ public class HabaramaDAOImpl implements HabaramaDAO {
 		limitQueryByDate(from, to, query);
 
 		FindOptions numberLimitOption = getFindOptionsWithMaxNumber(maxNumber);
-		return query.asList(numberLimitOption);
+		return sensorNormalizer.normalize(query.asList(numberLimitOption));
 	}
 
 	private void limitQueryBySensor(String sensorName, Query<SensorData> query) {

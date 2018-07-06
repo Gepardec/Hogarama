@@ -37,22 +37,22 @@ function createChart(){
         },
         yAxis: {
             min: 0,
-            max: 100,
+            max: 1,
             title: {
                 text: 'Feuchtigkeit'
             },
             plotBands: [{
                    color: 'red',
-                   from: 1,
-                   to: 10
+                   from: 0,
+                   to: 0.10
                },{
                    color: 'green',
-                   from: 10,
-                   to: 75
+                   from: 0.10,
+                   to: 0.75
                },{
                    color: 'blue',
-                   from: 75,
-                   to: 100
+                   from: 0.75,
+                   to: 1
                }
             ],
         },
@@ -63,7 +63,8 @@ function createChart(){
         plotOptions: {
             line: {
                 dataLabels: {
-                    enabled: true
+                    enabled: true,
+                    format: '{y:.2f}'
                 }
             }
         },
