@@ -4,8 +4,7 @@ Sensors are connected to the RaspberryPi and a client reads the sensor data whic
 
 ## Ansible
 Ansible is used to configure the RaspberryPi and install the client.
-So for example to install the python client do the following:
-ansible-playbook -i ansible/hosts ansible/playbooks/client-python/installSensorClientPython.yml
+For more information on how to setup your RaspberryPi as Habarama client with ansible please refer to [this link](https://github.com/Gepardec/Hogarama/wiki/Habarama-Setup-Guide).
 
 ## Clients
 Currently there is a working python client.
