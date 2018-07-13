@@ -582,7 +582,7 @@
 		<socket-binding name="jgroups-mping" interface="private"
 			port="0" multicast-address="${jboss.default.multicast.address:230.0.0.4}"
 			multicast-port="45700" />
-		<socket-binding name="jgroups-tcp" interface="private"
+		<socket-binding name="jgroups-tcp" interface="bprivate"
 			port="7600" />
 		<socket-binding name="jgroups-tcp-fd" interface="private"
 			port="57600" />
