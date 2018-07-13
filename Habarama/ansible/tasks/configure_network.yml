@@ -1,0 +1,19 @@
+---
+  - name: Define wifi
+    become: yes
+    template:
+      src: templates/wpa_supplicant.conf.j2
+      dest: /etc/wpa_supplicant/wpa_supplicant.conf
+  - name: Define ip
+    become: yes
+    template:
+      src: templates/dhcpcd.conf.j2
+      dest: /etc/dhcpcd.conf
+  - name: unblock wlan0 interface (not always needed)
+    become: yes
+    command: rfkill unblock all
+  - name: activate wlan0 interface
+    become: yes
+    command: ifconfig wlan0 up
+    notify: restart
+...

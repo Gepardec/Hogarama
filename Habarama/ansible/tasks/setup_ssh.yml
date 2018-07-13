@@ -1,0 +1,25 @@
+---
+  - name: Update authorized keys
+    authorized_key:
+      user: pi
+      state: present
+      key: "{{ item }}"
+    with_items:
+      "{{ ssh_keys }}"
+  - name: Disallow root SSH access
+    become: yes
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: ^PermitRootLogin
+      line: PermitRootLogin no
+      state: present
+    notify: Restart ssh
+  - name: Disallow password authentication
+    become: yes
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: ^PasswordAuthentication
+      line: PasswordAuthentication no
+      state: present
+    notify: Restart ssh
+...

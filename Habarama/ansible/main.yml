@@ -1,0 +1,16 @@
+---
+- name: Habarama Setup Script
+  hosts: all
+
+  tasks:
+  - import_tasks: tasks/configure_network.yml
+    when: setup_network == true
+  - import_tasks: tasks/setup_ssh.yml
+    when: setup_ssh == true
+  - import_tasks: tasks/installSensorClientPython.yml
+  - import_tasks: tasks/update_raspberry.yml
+    when: update_raspberry == true
+  - import_tasks: tasks/configure_logrotate.yml
+  handlers:
+  - import_tasks: handlers/main.yml
+...

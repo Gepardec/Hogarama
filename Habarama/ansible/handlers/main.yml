@@ -1,0 +1,23 @@
+---
+  - name: Restart Pi
+    become: yes
+    shell: sleep 2 && /sbin/shutdown -r 0
+    async: 1
+    poll: 0
+    ignore_errors: true
+    listen: restart
+  - name: Wait for Pi to boot
+    local_action:
+      module: wait_for
+        host={{ inventory_hostname }}
+        port=22
+        delay=20
+        timeout=300
+        state=started
+    listen: restart
+  - name: Restart ssh
+    become: yes
+    service:
+      name: ssh
+      state: restarted
+...
