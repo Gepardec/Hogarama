@@ -76,7 +76,7 @@ objects:
           value: -e -Popenshift -Dcom.redhat.xpaas.repo.redhatga package -Djava.net.preferIPv4Stack=true
         from:
           kind: ImageStreamTag
-          name: jboss-eap70-openshift:latest
+          name: jboss-eap71-openshift:latest
           namespace: openshift
       type: Source
     triggers:
