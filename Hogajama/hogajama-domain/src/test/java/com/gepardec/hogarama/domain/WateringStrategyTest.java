@@ -10,6 +10,11 @@ import java.time.Month;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.gepardec.hogarama.dao.DummySensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.domain.watering.WateringStrategy;
+import com.gepardec.hogarama.testdata.TestDataProducer;
+
 public class WateringStrategyTest {
 
 	private WateringStrategy watering;
@@ -23,7 +28,7 @@ public class WateringStrategyTest {
 		data.addValueMinusMinutes( 0.1, 10);
 		data.addValueAt(0.6, LocalDateTime.of(2019, Month.JUNE, 20, 14, 00));
 
-		watering.setHabaramaDAO(new WateringTestDAO(data.getData()));
+		watering.setHabaramaDAO(new DummySensorDAO(data.getData()));
 	}
 
 	@Test

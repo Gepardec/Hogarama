@@ -15,15 +15,16 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
-import com.gepardec.hogarama.domain.SensorData;
-import com.gepardec.hogarama.domain.SensorNormalizer;
+import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoIterable;
 
 @Named("habaramaDao")
 @RequestScoped
-public class HabaramaDAOImpl implements HabaramaDAO {
+public class HabaramaDAOImpl implements SensorDAO {
 
 	@Inject
 	private Datastore datastore;

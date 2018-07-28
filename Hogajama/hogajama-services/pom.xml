@@ -29,10 +29,6 @@
 			<groupId>com.openshift</groupId>
 			<artifactId>openshift-restclient-java</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-collections4</artifactId>
-		</dependency>
 		<!-- Test Start -->
 		<dependency>
 			<groupId>org.mockito</groupId>

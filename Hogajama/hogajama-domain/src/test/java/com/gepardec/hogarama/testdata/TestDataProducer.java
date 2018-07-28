@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.domain;
+package com.gepardec.hogarama.testdata;
 
 import static com.gepardec.hogarama.domain.DateUtils.toDate;
 import static com.gepardec.hogarama.domain.DateUtils.toLocalDateTime;
@@ -7,6 +7,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.gepardec.hogarama.domain.sensor.SensorData;
 
 public class TestDataProducer {
 

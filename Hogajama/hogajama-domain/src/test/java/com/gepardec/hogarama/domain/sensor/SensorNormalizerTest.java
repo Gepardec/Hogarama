@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.domain;
+package com.gepardec.hogarama.domain.sensor;
 
 import static org.junit.Assert.*;
 
@@ -13,6 +13,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
 
 @RunWith(Parameterized.class)
 public class SensorNormalizerTest {

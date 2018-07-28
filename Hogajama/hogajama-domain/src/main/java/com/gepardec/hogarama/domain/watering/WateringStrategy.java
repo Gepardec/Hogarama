@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.domain;
+package com.gepardec.hogarama.domain.watering;
 
 import static com.gepardec.hogarama.domain.DateUtils.toDate;
 
@@ -7,13 +7,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
-import com.gepardec.hogarama.service.dao.HabaramaDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorData;
 
 public class WateringStrategy {
 
 	@Inject
-	HabaramaDAO database;
+	@Named("habaramaDao")
+	SensorDAO database;
 	
 	public boolean water(String sensorName, LocalDateTime now) {
 		
@@ -26,7 +29,7 @@ public class WateringStrategy {
 		return avg < 0.2;
 	}
 	
-	public void setHabaramaDAO(HabaramaDAO database) {
+	public void setHabaramaDAO(SensorDAO database) {
 		this.database = database;
 	}
 
