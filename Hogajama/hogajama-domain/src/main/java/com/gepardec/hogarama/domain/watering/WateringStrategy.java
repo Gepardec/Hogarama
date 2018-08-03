@@ -12,21 +12,38 @@ import javax.inject.Named;
 import com.gepardec.hogarama.domain.sensor.SensorDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 
-public class WateringStrategy {
-
+public enum WateringStrategy {
+ 
+	DEFAULT(60, 0.2, 5);
+	
 	@Inject
 	@Named("habaramaDao")
 	SensorDAO database;
 	
-	public boolean water(String sensorName, LocalDateTime now) {
+	private int measureInterval;
+	private double lowWater;
+	private int waterDuration;
+	
+
+	WateringStrategy( int measureInterval, double lowWater, int waterDuration) {
+		this.waterDuration = waterDuration;
+		this.measureInterval = measureInterval;
+		this.lowWater = lowWater;
+	}
+
+	
+	public int water(String sensorName, LocalDateTime now) {
 		
-		List<SensorData> data = database.getAllData(200, sensorName, toDate(now.minus(Duration.ofMinutes(60))), toDate(now.plus(Duration.ofSeconds(1))));
+		List<SensorData> data = database.getAllData(200, sensorName, toDate(now.minus(Duration.ofMinutes(measureInterval))), toDate(now.plus(Duration.ofSeconds(1))));
 		double sum = 0;
 		for (SensorData sensorData : data) {
 			sum += sensorData.getValue();
 		}
 		double avg = sum / data.size();
-		return avg < 0.2;
+		if ( avg < lowWater ) {
+			return waterDuration;
+		}
+		else return 0;
 	}
 	
 	public void setHabaramaDAO(SensorDAO database) {

@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.domain;
+package com.gepardec.hogarama.domain.watering;
 
 import static com.gepardec.hogarama.domain.DateUtils.toDate;
 import static org.junit.Assert.assertFalse;
@@ -21,7 +21,8 @@ public class WateringStrategyTest {
 
 	@Before
 	public void setUp() throws Exception {
-		watering = new WateringStrategy();
+		watering = WateringStrategy.DEFAULT;
+		
 		TestDataProducer data = new TestDataProducer(startSensorData());
 		
 		data.addValueMinusMinutes( 0.1, 10);
@@ -33,17 +34,17 @@ public class WateringStrategyTest {
 
 	@Test
 	public void whenEmptyListNoWatering() {
-		assertFalse(watering.water("My Plant", LocalDateTime.of(2018, Month.JUNE, 20, 17, 00)));
+		assertFalse( 0 <  watering.water("My Plant", LocalDateTime.of(2018, Month.JUNE, 20, 17, 00)));
 	}
 
 	@Test
 	public void whenLastDataHighThenNoWatering() throws Exception {		
-		assertFalse(watering.water("My Plant", LocalDateTime.of(2018, Month.JUNE, 20, 14, 00)));
+		assertFalse( 0 <  watering.water("My Plant", LocalDateTime.of(2018, Month.JUNE, 20, 14, 00)));
 	}
 
 	@Test
 	public void whenLastDataLowThenWatering() throws Exception {		
-		assertTrue(watering.water("My Plant", LocalDateTime.of(2018, Month.JUNE, 20, 15, 00)));
+		assertTrue( 0 < watering.water("My Plant", LocalDateTime.of(2018, Month.JUNE, 20, 15, 00)));
 	}
 	
 	private SensorData startSensorData() {
