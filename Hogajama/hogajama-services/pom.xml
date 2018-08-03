@@ -38,6 +38,16 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+        </dependency>
+		<dependency>
+			<groupId>com.gepardec.hogarama</groupId>
+			<artifactId>raspberry-pi-mocks-cli</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<!-- Test End -->
 	</dependencies>
 </project>
