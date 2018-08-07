@@ -17,7 +17,6 @@ public enum WateringStrategy {
 	DEFAULT(60, 0.2, 5);
 	
 	@Inject
-	@Named("habaramaDao")
 	SensorDAO database;
 	
 	private int measureInterval;
@@ -46,7 +45,7 @@ public enum WateringStrategy {
 		else return 0;
 	}
 	
-	public void setHabaramaDAO(SensorDAO database) {
+	public void setSensorDAO(SensorDAO database) {
 		this.database = database;
 	}
 

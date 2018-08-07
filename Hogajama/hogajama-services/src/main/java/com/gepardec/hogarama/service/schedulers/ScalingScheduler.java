@@ -35,7 +35,7 @@ public class ScalingScheduler {
 
 	@Schedule(hour = "*", minute = "*", second = "*", info = "Every second")
 	public void checkSessions() {
-		log.info("Current Acitve Sessions: {}", getActiveSessions());
+		log.debug("Current Active Sessions: {}", getActiveSessions());
 
 		if (shouldStartNewPod()) {
 			IClient client = getOpenshiftClient();

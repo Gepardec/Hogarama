@@ -21,7 +21,6 @@ public class SensorsScheduler {
 	private Logger log;
 	
 	@Inject
-	@Named("habaramaDao")
 	private SensorDAO habaramaDao;
 	
 	private List<String> sensorNames = new ArrayList<>();

@@ -100,10 +100,10 @@ paths:
           description: Location of the sensor
           schema:
             type: string
-  /pump:
+  /actor:
     get:
       description: sends data to AMQ-topic to activate pump of specific Habarama-unit
-      operationId: sendPumpMessage
+      operationId: sendActorMessage
       parameters:
         - in: query
           name: location
@@ -111,15 +111,15 @@ paths:
           required: true
           description: location of the sensor
         - in: query
-          name: sensorName
+          name: actorName
           type: String
           required: true
-          description: Name of the sensor
+          description: Name of the actor
         - in: query
           name: duration
           type: integer
           required: true
-          description: duration of pump activation
+          description: duration of actor activation
       produces:
         - text/plain
       responses:

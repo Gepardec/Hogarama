@@ -29,7 +29,7 @@ public class WateringStrategyTest {
 		data.addValueMinusMinutes( 0.1, 10);
 		data.addValueAt(0.6, LocalDateTime.of(2019, Month.JUNE, 20, 14, 00));
 
-		watering.setHabaramaDAO(new DummySensorDAO(data.getData()));
+		watering.setSensorDAO(new DummySensorDAO(data.getData()));
 	}
 
 	@Test

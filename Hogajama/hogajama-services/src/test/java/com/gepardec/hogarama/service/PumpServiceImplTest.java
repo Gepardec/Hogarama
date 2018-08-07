@@ -9,8 +9,8 @@ public class PumpServiceImplTest {
   @Ignore
   public void testSendMessage() {
 
-    PumpServiceImpl service = new PumpServiceImpl();
-    service.sendPumpMessage("Wien", "GruenerGepard", 25);
+    ActorServiceImpl service = new ActorServiceImpl();
+    service.sendActorMessage("Wien", "GruenerGepard", 25);
 
   }
 }

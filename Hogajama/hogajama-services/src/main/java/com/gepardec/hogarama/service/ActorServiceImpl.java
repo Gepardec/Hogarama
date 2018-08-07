@@ -1,20 +1,21 @@
 package com.gepardec.hogarama.service;
 
+import com.gepardec.hogarama.domain.watering.ActorService;
 import com.gepardec.hogarama.mocks.cli.MqttClient;
-import com.gepardec.hogarama.service.dao.HabaramaDAOImpl;
+import com.gepardec.hogarama.service.dao.SensorDAOImpl;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.util.Optional;
 
-public class PumpServiceImpl implements PumpService {
+public class ActorServiceImpl implements ActorService {
 
   JSONObject json = new JSONObject();
 
   @Inject
-  private HabaramaDAOImpl habaramaDao;
+  private SensorDAOImpl habaramaDao;
 
-  public void sendPumpMessage(String location, String sensorName, Integer duration){
+  public void sendActorMessage(String location, String sensorName, Integer duration){
 
     // TODO activate when MongoDB is working
     // checkParametersOrFail(location, sensorName, duration);

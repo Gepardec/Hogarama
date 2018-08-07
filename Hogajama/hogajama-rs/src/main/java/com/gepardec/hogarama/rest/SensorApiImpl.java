@@ -23,7 +23,6 @@ public class SensorApiImpl implements SensorApi, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	@Named("habaramaDao")
 	private SensorDAO habaramaDAO;
 
 	@Inject

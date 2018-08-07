@@ -22,9 +22,8 @@ import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoIterable;
 
-@Named("habaramaDao")
 @RequestScoped
-public class HabaramaDAOImpl implements SensorDAO {
+public class SensorDAOImpl implements SensorDAO {
 
 	@Inject
 	private Datastore datastore;
