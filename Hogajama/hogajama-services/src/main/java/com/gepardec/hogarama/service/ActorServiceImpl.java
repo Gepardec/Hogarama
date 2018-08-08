@@ -1,8 +1,8 @@
 package com.gepardec.hogarama.service;
 
+import com.gepardec.hogarama.domain.sensor.SensorDAO;
 import com.gepardec.hogarama.domain.watering.ActorService;
 import com.gepardec.hogarama.mocks.cli.MqttClient;
-import com.gepardec.hogarama.service.dao.SensorDAOImpl;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -13,7 +13,7 @@ public class ActorServiceImpl implements ActorService {
   JSONObject json = new JSONObject();
 
   @Inject
-  private SensorDAOImpl habaramaDao;
+  private SensorDAO sensorDAO;
 
   public void sendActorMessage(String location, String sensorName, Integer duration){
 
@@ -38,12 +38,12 @@ public class ActorServiceImpl implements ActorService {
     mqttClient.connectAndPublish(message);
   }
 
-  private void checkParametersOrFail(String location, String sensorName, Integer duration) {
+  protected void checkParametersOrFail(String location, String sensorName, Integer duration) {
     if(location == null || location.isEmpty() || sensorName == null || sensorName.isEmpty() || duration == null) {
       throw new IllegalArgumentException(String.format("Supplied parameters '%s', '%s', '%s' must not be empty or null", location, sensorName, duration));
     }
 
-    String registeredLocation = habaramaDao.getLocationBySensorName(sensorName);
+    String registeredLocation = sensorDAO.getLocationBySensorName(sensorName);
     if(registeredLocation == null) {
       throw new IllegalArgumentException(sensorName + " is not a registered sensor.");
     }
