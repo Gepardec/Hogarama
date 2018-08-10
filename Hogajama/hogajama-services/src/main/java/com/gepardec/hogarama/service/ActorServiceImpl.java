@@ -27,7 +27,7 @@ public class ActorServiceImpl implements ActorService {
     // checkParametersOrFail(location, sensorName, duration);
 
     MqttClient mqttClient = new MqttClient().
-      withHost(Optional.ofNullable(System.getenv("AMQ_HOST")).orElse("https://broker-amq-mqtt-ssl-57-hogarama.cloud.itandtel.at")).
+      withHost(Optional.ofNullable(System.getenv("AMQ_HOST")).orElse("https://broker-amq-mqtt-ssl")).
       withUser(Optional.ofNullable(System.getenv("AMQ_USER")).orElse("mq_habarama")).
       withPassword(Optional.ofNullable(System.getenv("AMQ_PASSWDORD")).orElse("mq_habarama_pass")).
       withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("actor." + location + "." + actorName)).
