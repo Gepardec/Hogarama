@@ -61,7 +61,7 @@ public class DummySensorDAO implements SensorDAO {
 		return CollectionUtils.emptyIfNull(sensorDatas)
 				  			  .stream()
 				  			  .filter(s -> sensorName.equals(s.getSensorName()))
-				  			  .map(SensorData::getSensorName)
+				  			  .map(SensorData::getLocation)
 				  			  .findFirst()
 				  			  .orElse(DummyData.UNKNOW_LOCATION);
 	}

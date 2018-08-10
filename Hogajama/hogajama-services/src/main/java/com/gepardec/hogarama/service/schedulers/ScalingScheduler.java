@@ -33,7 +33,7 @@ public class ScalingScheduler {
 	@Inject
 	private Logger log;
 
-	@Schedule(hour = "*", minute = "*", second = "*", info = "Every second")
+	@Schedule(hour = "*", minute = "*", second = "1", info = "Every minute")
 	public void checkSessions() {
 		log.debug("Current Active Sessions: {}", getActiveSessions());
 

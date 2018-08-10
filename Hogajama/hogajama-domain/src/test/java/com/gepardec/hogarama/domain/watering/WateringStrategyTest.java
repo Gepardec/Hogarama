@@ -1,8 +1,7 @@
 package com.gepardec.hogarama.domain.watering;
 
 import static com.gepardec.hogarama.domain.DateUtils.toDate;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -21,7 +20,7 @@ public class WateringStrategyTest {
 
 	@Before
 	public void setUp() throws Exception {
-		watering = WateringStrategy.DEFAULT;
+		watering = new WateringStrategy();
 		
 		TestDataProducer data = new TestDataProducer(startSensorData());
 		
@@ -47,6 +46,16 @@ public class WateringStrategyTest {
 		assertTrue( 0 < watering.water("My Plant", LocalDateTime.of(2018, Month.JUNE, 20, 15, 00)));
 	}
 	
+	@Test
+	public void testWateringOfMyPlant() throws Exception {
+		MockActorService actor = new MockActorService("Vienna", "My Plant", 5);
+		watering.setActor(actor);
+		watering.setDate(LocalDateTime.of(2018, Month.JUNE, 20, 15, 00));
+		watering.waterAll();
+		assertTrue("Actor was called", actor.wasCalled());
+	}
+	
+	
 	private SensorData startSensorData() {
 		return new SensorData(
 				"1", 
@@ -57,4 +66,31 @@ public class WateringStrategyTest {
 				"Vienna", 
 				"1.0");
 	}
+	private class MockActorService implements ActorService {
+
+		private String location;
+		private String sensorName;
+		private Integer duration;
+		private boolean wasCalled = false;
+
+		public MockActorService(String location, String sensorName, Integer duration) {
+			this.location = location;
+			this.sensorName = sensorName;
+			this.duration = duration;
+		}
+
+		public boolean wasCalled() {
+			return wasCalled ;
+		}
+
+		@Override
+		public void sendActorMessage(String location, String sensorName, Integer duration) {
+			assertEquals(this.location, location);
+			assertEquals(this.sensorName, sensorName);
+			assertEquals(this.duration, duration);			
+			wasCalled = true;
+		}
+
+	}
 }
+
