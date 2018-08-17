@@ -12,7 +12,7 @@ public interface SensorMapper {
 
 	SensorMapper INSTANCE = Mappers.getMapper(SensorMapper.class);
 
-	SensorData mapSensor(com.gepardec.hogarama.domain.SensorData sensor);
+	SensorData mapSensor(com.gepardec.hogarama.domain.sensor.SensorData sensor);
 
-	List<SensorData> mapSensors(List<com.gepardec.hogarama.domain.SensorData> sensors);
+	List<SensorData> mapSensors(List<com.gepardec.hogarama.domain.sensor.SensorData> sensors);
 }

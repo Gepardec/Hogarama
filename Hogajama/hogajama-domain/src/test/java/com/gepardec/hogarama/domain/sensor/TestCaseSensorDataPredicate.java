@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.service.predicate;
+package com.gepardec.hogarama.domain.sensor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -10,12 +10,13 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import com.gepardec.hogarama.domain.SensorData;
-import com.gepardec.hogarama.util.DummyDataUtil;
+import com.gepardec.hogarama.dao.SensorDataPredicate;
+import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.testdata.DummyData;
 
 public class TestCaseSensorDataPredicate {
 
-	private List<SensorData> list = DummyDataUtil.getDummySensorData(2, 100, true);
+	private List<SensorData> list = DummyData.getDummySensorData(2, 100, true);
 
 	@Test
 	public void testSensorDataPredicateBadName() {
@@ -36,7 +37,7 @@ public class TestCaseSensorDataPredicate {
 	@Test
 	public void testSensorDataPredicateWithName() {
 		List<SensorData> result = list.stream()
-									  .filter(new SensorDataPredicate(DummyDataUtil.SENSOR_NAME + "0", null, null))
+									  .filter(new SensorDataPredicate(DummyData.SENSOR_NAME + "0", null, null))
 									  .collect(Collectors.toList());
 		assertTrue(result.size() > 0);
 	}
@@ -45,7 +46,7 @@ public class TestCaseSensorDataPredicate {
 	public void testSensorDataPredicateWithNameAndFrom1() {
 		Calendar calendar = new GregorianCalendar(1990, 01, 01);
 		List<SensorData> result = list.stream()
-				  					  .filter(new SensorDataPredicate(DummyDataUtil.SENSOR_NAME + "0", calendar.getTime(), null))
+				  					  .filter(new SensorDataPredicate(DummyData.SENSOR_NAME + "0", calendar.getTime(), null))
 				  					  .collect(Collectors.toList());
 		assertTrue(result.size() > 0);
 	}
@@ -54,7 +55,7 @@ public class TestCaseSensorDataPredicate {
 	public void testSensorDataPredicateWithNameAndFrom2() {
 		Calendar calendar = new GregorianCalendar(2999, 01, 01);
 		List<SensorData> result = list.stream()
-				                      .filter(new SensorDataPredicate(DummyDataUtil.SENSOR_NAME + "0", calendar.getTime(), null))
+				                      .filter(new SensorDataPredicate(DummyData.SENSOR_NAME + "0", calendar.getTime(), null))
 				                      .collect(Collectors.toList());
 		assertEquals(0, result.size());
 	}

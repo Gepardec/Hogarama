@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.domain;
+package com.gepardec.hogarama.domain.sensor;
 
 import java.util.HashMap;
 

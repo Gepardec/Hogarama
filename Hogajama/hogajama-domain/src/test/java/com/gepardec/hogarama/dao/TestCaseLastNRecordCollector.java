@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.service.collector;
+package com.gepardec.hogarama.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

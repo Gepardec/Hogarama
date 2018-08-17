@@ -11,9 +11,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import com.gepardec.hogarama.domain.sensor.SensorDAO;
 import com.gepardec.hogarama.rest.mapper.SensorMapper;
 import com.gepardec.hogarama.rest.util.DateUtil;
-import com.gepardec.hogarama.service.dao.HabaramaDAO;
 import com.gepardec.hogarama.service.schedulers.SensorsScheduler;
 
 @Path("sensor")
@@ -23,8 +23,7 @@ public class SensorApiImpl implements SensorApi, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	@Named("habaramaDao")
-	private HabaramaDAO habaramaDAO;
+	private SensorDAO habaramaDAO;
 
 	@Inject
 	private SensorsScheduler sensorsScheduler;

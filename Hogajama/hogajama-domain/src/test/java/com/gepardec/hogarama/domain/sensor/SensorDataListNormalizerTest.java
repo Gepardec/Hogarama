@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.domain;
+package com.gepardec.hogarama.domain.sensor;
 
 import static org.junit.Assert.assertTrue;
 
@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
 
 public class SensorDataListNormalizerTest {
 

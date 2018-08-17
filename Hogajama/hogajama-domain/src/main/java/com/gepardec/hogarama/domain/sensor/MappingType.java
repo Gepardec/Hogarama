@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.domain;
+package com.gepardec.hogarama.domain.sensor;
 
 /**
  * Defines how sensor Values are mapped to a [0..1] interval.

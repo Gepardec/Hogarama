@@ -29,10 +29,6 @@
 			<groupId>com.openshift</groupId>
 			<artifactId>openshift-restclient-java</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-collections4</artifactId>
-		</dependency>
 		<!-- Test Start -->
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -41,6 +37,15 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>com.gepardec.hogarama</groupId>
+			<artifactId>raspberry-pi-mocks-cli</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<!-- Test End -->
 	</dependencies>

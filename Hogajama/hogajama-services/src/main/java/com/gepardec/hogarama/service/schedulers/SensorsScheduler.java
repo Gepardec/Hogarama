@@ -11,7 +11,7 @@ import javax.inject.Named;
 
 import org.slf4j.Logger;
 
-import com.gepardec.hogarama.service.dao.HabaramaDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDAO;
 
 @Startup
 @Singleton
@@ -21,8 +21,7 @@ public class SensorsScheduler {
 	private Logger log;
 	
 	@Inject
-	@Named("habaramaDao")
-	private HabaramaDAO habaramaDao;
+	private SensorDAO habaramaDao;
 	
 	private List<String> sensorNames = new ArrayList<>();
 	

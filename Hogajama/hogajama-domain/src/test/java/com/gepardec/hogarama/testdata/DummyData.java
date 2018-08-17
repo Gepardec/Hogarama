@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.util;
+package com.gepardec.hogarama.testdata;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import com.gepardec.hogarama.domain.SensorData;
+import com.gepardec.hogarama.domain.sensor.SensorData;
 
-public class DummyDataUtil {
+public class DummyData {
 
 	public static final String UNKNOW_LOCATION = "unknown location";
 	public static final int MIN_VAL = 0;
@@ -22,7 +22,7 @@ public class DummyDataUtil {
 	private static final List<SensorData> sensorDatas = new ArrayList<>();
 	private static final Random RANDOM = new Random();
 
-	private DummyDataUtil() {
+	private DummyData() {
 		//static
 	}
 

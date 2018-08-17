@@ -1,11 +1,11 @@
-package com.gepardec.hogarama.service.predicate;
+package com.gepardec.hogarama.dao;
 
 import java.util.Date;
 import java.util.function.Predicate;
 
 import javax.validation.constraints.NotNull;
 
-import com.gepardec.hogarama.domain.SensorData;
+import com.gepardec.hogarama.domain.sensor.SensorData;
 
 public class SensorDataPredicate implements Predicate<SensorData> {
 	

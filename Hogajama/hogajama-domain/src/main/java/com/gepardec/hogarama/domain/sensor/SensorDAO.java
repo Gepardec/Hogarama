@@ -1,11 +1,9 @@
-package com.gepardec.hogarama.service.dao;
+package com.gepardec.hogarama.domain.sensor;
 
 import java.util.Date;
 import java.util.List;
 
-import com.gepardec.hogarama.domain.SensorData;
-
-public interface HabaramaDAO {
+public interface SensorDAO {
 
 	public List<String> getAllSensors();
 	public List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to);
