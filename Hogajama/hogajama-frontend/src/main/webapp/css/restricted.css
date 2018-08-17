@@ -1,0 +1,16 @@
+#container{
+	width: 50%;
+	height: 50%;
+	position: absolute;
+	left: 25%;
+	top: 25%;
+	border: 10px solid #900000;
+	border-radius: 25px;
+	overflow: hidden;
+	text-align: center;
+}
+
+#container img{
+	height: 100%;
+	object-fit: cover;
+}
