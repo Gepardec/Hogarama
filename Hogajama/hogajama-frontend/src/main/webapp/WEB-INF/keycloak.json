@@ -1,6 +1,6 @@
 {
   "realm": "hogarama",
-  "auth-server-url": "https://secure-sso-57-hogarama.cloud.itandtel.at/auth",
+  "auth-server-url": "https://secure-sso:8443/auth",
   "ssl-required": "external",
   "resource": "hogarama",
   "credentials": {
