@@ -18,7 +18,6 @@
 	</security-constraint>
 	
 	<login-config>
-		<realm-name>ApplicationRealm</realm-name>
 		<auth-method>BASIC</auth-method>
 	</login-config>
 	
