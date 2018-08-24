@@ -11,11 +11,24 @@
 	<artifactId>hogajama-frontend</artifactId>
 	<packaging>war</packaging>
 
+	<properties>
+		<keycloak.auth.server.url>http://sso-hogarama.10.0.75.2.nip.io/auth/</keycloak.auth.server.url>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
+							<filtering>true</filtering>
+							<targetPath>WEB-INF</targetPath>
+						</resource>
+					</webResources>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
