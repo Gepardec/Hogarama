@@ -17,7 +17,7 @@ public class WateringStrategy {
  
 	public enum Config{
 
-		DEFAULT(60, 0.2, 5);
+		DEFAULT(1, 0.2, 5);
 		
 		protected int measureInterval;
 		protected double lowWater;
