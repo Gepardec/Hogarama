@@ -34,6 +34,7 @@
         <extension module="org.wildfly.extension.security.manager"/>
         <extension module="org.wildfly.extension.undertow"/>
         <!-- ##KEYCLOAK_EXTENSION## -->
+        <extension module="org.keycloak.keycloak-adapter-subsystem"/>
     </extensions>
     <management>
         <security-realms>
@@ -510,7 +511,11 @@
                         <policy-module code="Delegating" flag="required"/>
                     </authorization>
                 </security-domain>
-                <!-- ##KEYCLOAK_SECURITY_DOMAIN## -->
+                <security-domain name="keycloak">
+                    <authentication>
+                        <login-module code="org.keycloak.adapters.jboss.KeycloakLoginModule" flag="required"/>
+                    </authentication>
+                </security-domain>
                 <!-- ##ADDITIONAL_SECURITY_DOMAINS## -->
             </security-domains>
         </subsystem>
@@ -569,6 +574,8 @@
             <client-config name="Standard-Client-Config"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:weld:4.0"/>
+        <!-- ## KEYCLOAK SUBSYSTEM -->
+        <subsystem xmlns="urn:jboss:domain:keycloak:1.1"/>
     </profile>
     <interfaces>
         <interface name="management">
