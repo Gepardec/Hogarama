@@ -33,12 +33,13 @@ public class MqttClient {
 	private String user;
 	private String password;
 	private String topic;
-	
+
+	//TODO: hardcoded port replacement should be fixed.
 	public MqttClient withHost(String host) {
 		this.host = host.replaceAll("https", "ssl");
 		this.host = this.host.replaceAll("http", "tcp");
 		if(!this.host.matches(PORT_PROVIDED_REGEX)) {
-			this.host += ":443";
+			this.host += ":8883";
 		}
 		return this;
 	}
