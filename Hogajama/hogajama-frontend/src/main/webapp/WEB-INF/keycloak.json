@@ -1,6 +1,6 @@
 {
   "realm": "hogarama",
-  "auth-server-url": "https://secure-sso:8443/auth",
+  "auth-server-url": "http://sso-hogarama.10.0.75.2.nip.io/auth",
   "ssl-required": "external",
   "resource": "hogarama",
   "credentials": {
