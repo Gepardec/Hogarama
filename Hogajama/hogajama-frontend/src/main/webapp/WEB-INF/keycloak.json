@@ -1,6 +1,6 @@
 {
   "realm": "hogarama",
-  "auth-server-url": "https://secure-sso-hogarama.10.0.75.2.nip.io/auth",
+  "auth-server-url": "${keycloak.auth.server.url}",
   "ssl-required": "external",
   "resource": "hogarama",
   "credentials": {
