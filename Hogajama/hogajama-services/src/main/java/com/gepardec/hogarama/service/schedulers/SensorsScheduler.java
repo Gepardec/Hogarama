@@ -25,7 +25,7 @@ public class SensorsScheduler {
 	
 	private List<String> sensorNames = new ArrayList<>();
 	
-	@Schedule(hour = "*", minute = "*", second = "*/5", info = "Every 5 second", persistent = false)
+	@Schedule(hour = "*", minute = "*", second = "*/10", info = "Every 10 second", persistent = false)
 	public void getSensors() {
 		log.info("Load the sensorNames from the database");
 		loadSensorsFromDB();
