@@ -936,7 +936,7 @@ objects:
     resources: {}
     runPolicy: Serial
     source:
-      contextDir: Habarama/raspberry-pi-mocks
+      contextDir: Hogajama
       git:
         ref: master
         uri: https://github.com/Gepardec/Hogarama.git
