@@ -22,14 +22,6 @@ def on_message(client, userdata, message):
 
     payload = json.loads(message.payload)
 
-    # Payload:
-    #
-    # {
-    #   "name": "MathiasJ",
-    #   "location": "vorarlberg",
-    #   "duration": 5
-    # }
-
     for actor in actors:
         if message.topic == "actor.{}.{}".format (actor['location'], actor['name']):
 
@@ -121,10 +113,11 @@ while True:
             payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
             payload = payload.format(sensor['name'],sensor['type'],percent,sensor['location'])
             for client in clients:
-
                 client.publish("habarama", payload=payload, qos=0, retain=False)
+                client.reconnect()
             GPIO.output(sensor['pin'], 0)
     except Exception as e:
         log("ERROR: " +str(e))
-        log("Oops! Something wrong. Trying luck in next iteration.")
+        log("Oops! Something went terribly wrong. We will attempt exactly the same in a few seconds.")
+        time.sleep(15)
     time.sleep(waitInterval)
