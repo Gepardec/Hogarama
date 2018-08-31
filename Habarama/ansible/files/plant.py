@@ -13,7 +13,6 @@ from threading import Thread
 def log(message):
     sys.stderr.write(message+"\n")
 
-
 def on_publish(client, userdata, mid):
     log(("Publish returned result: {} {} {}".format(client, userdata, mid)))
 
@@ -21,14 +20,6 @@ def on_message(client, userdata, message):
     log(("Message received\r\n  Topic: {}\r\n  Payload: {}".format(message.topic, message.payload)))
 
     payload = json.loads(message.payload)
-
-    # Payload:
-    #
-    # {
-    #   "name": "MathiasJ",
-    #   "location": "vorarlberg",
-    #   "duration": 5
-    # }
 
     for actor in actors:
         if message.topic == "actor.{}.{}".format (actor['location'], actor['name']):
@@ -44,6 +35,26 @@ def on_message(client, userdata, message):
 
             break
 
+def client_connect(brokerUrls):
+    clients = []
+    for index,brokerUrl in enumerate(brokerUrls):
+        client = paho.Client(clean_session=True)
+        client.on_publish = on_publish
+        client.on_message = on_message
+        ssl_ctx = ssl.create_default_context(cafile='broker.pem')
+        ssl_ctx.check_hostname = False
+        client.tls_set_context(ssl_ctx)
+        client.username_pw_set("mq_habarama", "mq_habarama_pass")
+
+        client.connect(brokerUrl, 443, 60)
+
+        for actor in actors:
+            topicName = "actor.{}.{}".format (actor['location'], actor['name'])
+            log("{0} subscribe to {1}".format (brokerUrl, topicName))
+            (result, mid) = client.subscribe(topicName, 0)
+
+        clients.append(client)
+        return clients
 
 def set_gpio_actor(actor, duration):
     try:
@@ -85,25 +96,7 @@ for actor in actors:
 
 
 # Setup Hogarama connection
-clients = []
-for index,brokerUrl in enumerate(brokerUrls):
-    client = paho.Client(clean_session=True)
-    client.on_publish = on_publish
-    client.on_message = on_message
-    ssl_ctx = ssl.create_default_context(cafile='broker.pem')
-    ssl_ctx.check_hostname = False
-    client.tls_set_context(ssl_ctx)
-    client.username_pw_set("mq_habarama", "mq_habarama_pass")
-
-    client.connect(brokerUrl, 443, 60)
-
-    for actor in actors:
-        topicName = "actor.{}.{}".format (actor['location'], actor['name'])
-        log("{0} subscribe to {1}".format (brokerUrl, topicName))
-        (result, mid) = client.subscribe(topicName, 0)
-
-    clients.append(client)
-
+clients = client_connect(brokerUrls)
 
 # Main program loop.
 while True:
@@ -126,5 +119,7 @@ while True:
             GPIO.output(sensor['pin'], 0)
     except Exception as e:
         log("ERROR: " +str(e))
-        log("Oops! Something wrong. Trying luck in next iteration.")
+        log("Oops! Something wrong. We will try again shortly...")
+        time.sleep(2)
+        clients = client_connect(brokerUrls)
     time.sleep(waitInterval)
