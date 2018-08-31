@@ -11,10 +11,6 @@
 	<artifactId>hogajama-frontend</artifactId>
 	<packaging>war</packaging>
 
-	<properties>
-		<keycloak.auth.server.url>http://sso-hogarama.10.0.75.2.nip.io/auth/</keycloak.auth.server.url>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
