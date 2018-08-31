@@ -1,9 +1,9 @@
 {
-  "realm": "hogarama",
-  "auth-server-url": "${keycloak.auth.server.url}",
-  "ssl-required": "external",
-  "resource": "hogarama",
-  "credentials": {
-    "secret": "12360720-0484-40da-9459-34ce53121677"
-  }
+	"realm": "hogarama",
+	"auth-server-url": "${keycloak.auth.server.url}",
+	"ssl-required": "external",
+	"resource": "hogarama",
+	"credentials": {"secret":"12360720-0484-40da-9459-34ce53121677"},
+	"disable-trust-manager":true,
+	"allow-any-hostname": true
 }
