@@ -13,6 +13,35 @@ from threading import Thread
 def log(message):
     sys.stderr.write(message+"\n")
 
+def client_connect(brokerUrls):
+    # Setup Hogarama connection
+    clients = []
+    for index,brokerUrl in enumerate(brokerUrls):
+        client = paho.Client(clean_session=True)
+        client.on_publish = on_publish
+        client.on_message = on_message
+        client.on_disconnect = on_disconnect
+        ssl_ctx = ssl.create_default_context(cafile='broker.pem')
+        ssl_ctx.check_hostname = False
+        client.tls_set_context(ssl_ctx)
+        client.username_pw_set("mq_habarama", "mq_habarama_pass")
+
+        client.connect(brokerUrl, 443, 10)
+        client.reconnect()
+
+        for actor in actors:
+            topicName = "actor.{}.{}".format (actor['location'], actor['name'])
+            log("{0} subscribe to {1}".format (brokerUrl, topicName))
+            (result, mid) = client.subscribe(topicName, 0)
+
+        clients.append(client)
+    return clients
+
+def on_disconnect(client, userdata, rc):
+    log(("Disconnect event occured: {} {} {}".format(client, userdata, rc)))
+    clients = []
+    clients = client_connect(brokerUrls)
+    return clients
 
 def on_publish(client, userdata, mid):
     log(("Publish returned result: {} {} {}".format(client, userdata, mid)))
@@ -21,14 +50,6 @@ def on_message(client, userdata, message):
     log(("Message received\r\n  Topic: {}\r\n  Payload: {}".format(message.topic, message.payload)))
 
     payload = json.loads(message.payload)
-
-    # Payload:
-    #
-    # {
-    #   "name": "MathiasJ",
-    #   "location": "vorarlberg",
-    #   "duration": 5
-    # }
 
     for actor in actors:
         if message.topic == "actor.{}.{}".format (actor['location'], actor['name']):
@@ -83,27 +104,7 @@ for actor in actors:
     else:
         log("Actor type {} of {} is not supported!".format(actor['type'], actor['name']))
 
-
-# Setup Hogarama connection
-clients = []
-for index,brokerUrl in enumerate(brokerUrls):
-    client = paho.Client(clean_session=True)
-    client.on_publish = on_publish
-    client.on_message = on_message
-    ssl_ctx = ssl.create_default_context(cafile='broker.pem')
-    ssl_ctx.check_hostname = False
-    client.tls_set_context(ssl_ctx)
-    client.username_pw_set("mq_habarama", "mq_habarama_pass")
-
-    client.connect(brokerUrl, 443, 60)
-
-    for actor in actors:
-        topicName = "actor.{}.{}".format (actor['location'], actor['name'])
-        log("{0} subscribe to {1}".format (brokerUrl, topicName))
-        (result, mid) = client.subscribe(topicName, 0)
-
-    clients.append(client)
-
+clients = client_connect(brokerUrls)
 
 # Main program loop.
 while True:
@@ -121,10 +122,10 @@ while True:
             payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
             payload = payload.format(sensor['name'],sensor['type'],percent,sensor['location'])
             for client in clients:
-
-                client.publish("habarama", payload=payload, qos=0, retain=False)
+                client.publish("habarama", payload=payload, qos=1, retain=False)
             GPIO.output(sensor['pin'], 0)
     except Exception as e:
         log("ERROR: " +str(e))
-        log("Oops! Something wrong. Trying luck in next iteration.")
+        log("Oops! Something went terribly wrong. We will attempt exactly the same in a few seconds.")
+        time.sleep(15)
     time.sleep(waitInterval)
