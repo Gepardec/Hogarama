@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 
+import com.gepardec.hogarama.domain.watering.WateringService;
 import com.gepardec.hogarama.domain.watering.WateringStrategy;
 
 @Startup
@@ -14,7 +15,7 @@ import com.gepardec.hogarama.domain.watering.WateringStrategy;
 public class WateringScheduler {
 
 	@Inject
-	WateringStrategy wateringStrategy;
+	WateringService wateringStrategy;
 
 	@Inject
 	private Logger log;

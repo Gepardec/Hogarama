@@ -15,76 +15,29 @@ import com.gepardec.hogarama.domain.sensor.SensorData;
 
 public class WateringStrategy {
  
-	public enum Config{
-
-		DEFAULT(1, 0.2, 5);
-		
-		protected int measureInterval;
-		protected double lowWater;
-		protected int waterDuration;
-		
-		Config( int measureInterval, double lowWater, int waterDuration) {
-			this.waterDuration = waterDuration;
-			this.measureInterval = measureInterval;
-			this.lowWater = lowWater;
-		}
-	}
-	
 	@Inject
-	private SensorDAO database;
-	
-	@Inject
-	private ActorService actor;
-	
-	private LocalDateTime now;
-
-	private Config config;
-
+	public SensorDAO sensorDao;
 	
 	public WateringStrategy() {
-		this.config = Config.DEFAULT;
 	}
 
-	public void waterAll() {
-		for (String sensorName : database.getAllSensors()) {
-			int dur = water(sensorName, getDate());
-			if ( dur > 0 ) {
-				actor.sendActorMessage(database.getLocationBySensorName(sensorName), sensorName, dur);
-			}
-		}
-	}
 	
-	public int water(String sensorName, LocalDateTime now) {
-		
-		List<SensorData> data = database.getAllData(200, sensorName, toDate(now.minus(Duration.ofMinutes(config.measureInterval))), toDate(now.plus(Duration.ofSeconds(1))));
+	protected WateringStrategy(SensorDAO dao) {
+		this.sensorDao = dao;
+	}
+
+
+	public int water(WateringConfigData config, LocalDateTime now) {
+		List<SensorData> data = sensorDao.getAllData(200, config.getSensorName(), toDate(now.minus(Duration.ofMinutes(config.getMeasureInterval()))), toDate(now.plus(Duration.ofSeconds(1))));
 		double sum = 0;
 		for (SensorData sensorData : data) {
 			sum += sensorData.getValue();
 		}
 		double avg = sum / data.size();
-		if ( avg < config.lowWater ) {
-			return config.waterDuration;
+		if ( avg < config.getLowWater() ) {
+			return config.getWaterDuration();
 		}
 		else return 0;
 	}
 	
-	protected void setSensorDAO(SensorDAO database) {
-		this.database = database;
-	}
-
-	protected void setActor(ActorService actor) {
-		this.actor = actor;
-	}
-
-	protected void setDate(LocalDateTime now) {
-		this.now = now;
-	}
-
-	private LocalDateTime getDate() {
-		if ( null != now) {
-			return now;
-		}
-		return LocalDateTime.now();
-	}
-
 }
