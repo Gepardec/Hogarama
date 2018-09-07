@@ -10,63 +10,24 @@ import sys
 
 from threading import Thread
 
-
 def log(message):
-    sys.stderr.write(message + "\n")
-
-
-def client_connect(brokerUrls):
-    clients = []
-    # Setup Hogarama connection
-    for index, brokerUrl in enumerate(brokerUrls):
-        client = paho.Client(clean_session=True)
-        client.on_publish = on_publish
-        client.on_message = on_message
-        client.on_disconnect = on_disconnect
-        client.on_connect = on_connect
-        ssl_ctx = ssl.create_default_context(cafile='broker.pem')
-        ssl_ctx.check_hostname = False
-        client.tls_set_context(ssl_ctx)
-        client.username_pw_set("mq_habarama", "mq_habarama_pass")
-
-        client.connect(brokerUrl, 443, 10)
-
-        clients.append(client)
-    return clients
-
-
-def on_disconnect(client, userdata, rc):
-    log(("Disconnect event occured: {} {} {}".format(client, userdata, rc)))
-    log("Regerence to Clients-Arraay when arriving in on_discconect() function: " + str(clients))
-    clients = client_connect(brokerUrls)
-    log("Reference to Clients-Array before returning it in on_disconnect function: " + str(clients))
-    return clients
-
-
-def on_connect(client, userdata, rc):
-    log("Connected with result code " + str(rc))
-    log("Trying to subscribe after successfull connection/reconnection")
-    for index, brokerUrl in enumerate(brokerUrls):
-        for actor in actors:
-            topicName = "actor.{}.{}".format(actor['location'], actor['name'])
-            log("{0} subscribe to {1}".format(brokerUrl, topicName))
-            (result, mid) = client.subscribe(topicName, 0)
+    sys.stderr.write(message+"\n")
 
 def on_publish(client, userdata, mid):
     log(("Publish returned result: {} {} {}".format(client, userdata, mid)))
-
 
 def on_message(client, userdata, message):
     log(("Message received\r\n  Topic: {}\r\n  Payload: {}".format(message.topic, message.payload)))
 
     payload = json.loads(message.payload)
 
+
     for actor in actors:
-        if message.topic == "actor.{}.{}".format(actor['location'], actor['name']):
+        if message.topic == "actor.{}.{}".format (actor['location'], actor['name']):
 
             if actor['type'] == "gpio":
                 # set actor in different thread to not block the main thread
-                thread = Thread(target=set_gpio_actor, args=(actor, payload['duration']))
+                thread = Thread(target = set_gpio_actor, args =(actor, payload['duration']))
                 thread.start()
             elif actor['type'] == "console":
                 log("Turning console actor {} on for {}s".format(actor['name'], payload['duration']))
@@ -75,6 +36,15 @@ def on_message(client, userdata, message):
 
             break
 
+def internet(host="8.8.8.8", port=53, timeout=3):
+    try:
+        time.sleep(5)
+        socket.setdefaulttimeout(timeout)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        return True
+    except Exception as ex:
+        print ex.message
+        return False
 
 def set_gpio_actor(actor, duration):
     try:
@@ -85,9 +55,21 @@ def set_gpio_actor(actor, duration):
         GPIO.output(actor['pin'], 1)
         log("{} turned off".format(actor['name']))
 
+def on_disconnect(client, userdata, rc):
+    log(("Disconnect event occured: {} {} {}".format(client, userdata, rc)))
+    while True:
+        result = internet()
+        log("Result of internet connection: " + str(result))
+        if result:
+            break
+    client.reconnect()
+    for actor in actors:
+        topicName = "actor.{}.{}".format (actor['location'], actor['name'])
+        log("{0} subscribe to {1}".format (brokerUrl, topicName))
+        (result, mid) = client.subscribe(topicName, 0)
 
 # Hardware SPI configuration:
-SPI_PORT = 0
+SPI_PORT   = 0
 SPI_DEVICE = 0
 mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
 
@@ -114,8 +96,27 @@ for actor in actors:
     else:
         log("Actor type {} of {} is not supported!".format(actor['type'], actor['name']))
 
-clients = client_connect(brokerUrls)
-log("Initial Object Reference for Clients-Array: " + str(clients))
+
+# Setup Hogarama connection
+clients = []
+for index,brokerUrl in enumerate(brokerUrls):
+    client = paho.Client(clean_session=True)
+    client.on_publish = on_publish
+    client.on_message = on_message
+    client.on_disconnect = on_disconnect
+    ssl_ctx = ssl.create_default_context(cafile='broker.pem')
+    ssl_ctx.check_hostname = False
+    client.tls_set_context(ssl_ctx)
+    client.username_pw_set("mq_habarama", "mq_habarama_pass")
+
+    client.connect(brokerUrl, 443, 60)
+
+    for actor in actors:
+        topicName = "actor.{}.{}".format (actor['location'], actor['name'])
+        log("{0} subscribe to {1}".format (brokerUrl, topicName))
+        (result, mid) = client.subscribe(topicName, 0)
+
+    clients.append(client)
 
 # Main program loop.
 while True:
@@ -128,17 +129,16 @@ while True:
             GPIO.output(sensor['pin'], 1)
             time.sleep(sampleInterval)
             waterLevel = mcp.read_adc(sensor['channel'])
-            percent = int(round(waterLevel / 10.24))
-            log("ADC Output: {0:4d} Percentage: {1:3}%".format(waterLevel, percent))
+            percent = int(round(waterLevel/10.24))
+            log("ADC Output: {0:4d} Percentage: {1:3}%".format (waterLevel,percent))
             payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
-            payload = payload.format(sensor['name'], sensor['type'], percent, sensor['location'])
+            payload = payload.format(sensor['name'],sensor['type'],percent,sensor['location'])
             for client in clients:
-                log("Reference to clients-array before publishing to server: " + str(clients))
-                client.publish("habarama", payload=payload, qos=1, retain=False)
+
+                client.publish("habarama", payload=payload, qos=0, retain=False)
             GPIO.output(sensor['pin'], 0)
     except Exception as e:
-        log("ERROR: " + str(e))
-        log("Oops! Something went terribly wrong. We will attempt exactly the same in a few seconds.")
-        time.sleep(15)
-        client.reconnect()
+        log("ERROR: " +str(e))
+        log("Oops! Something went terribly wrong, let us attempt exactly the same thing again!")
+        time.sleep(10)
     time.sleep(waitInterval)
