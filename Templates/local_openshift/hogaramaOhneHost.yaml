@@ -947,7 +947,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: redhat-openjdk18-openshift:1.3
+          name: redhat-openjdk18-openshift:latest
           namespace: openshift
       type: Source
     triggers:
