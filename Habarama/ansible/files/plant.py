@@ -36,7 +36,7 @@ def on_message(client, userdata, message):
 
             break
 
-def internet(host="8.8.8.8", port=53, timeout=3):
+def internetAvailable(host="8.8.8.8", port=53, timeout=3):
     try:
         time.sleep(5)
         socket.setdefaulttimeout(timeout)
@@ -57,11 +57,8 @@ def set_gpio_actor(actor, duration):
 
 def on_disconnect(client, userdata, rc):
     log(("Disconnect event occured: {} {} {}".format(client, userdata, rc)))
-    while True:
-        result = internet()
-        log("Result of internet connection: " + str(result))
-        if result:
-            break
+    while not internetAvailable():
+        log("No Internet connection available, will try again in a few seconds")
     client.reconnect()
     for actor in actors:
         topicName = "actor.{}.{}".format (actor['location'], actor['name'])
