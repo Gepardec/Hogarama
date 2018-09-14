@@ -465,6 +465,8 @@ objects:
             value: ${OPENSHIFT_AUTH_TOKEN}
           - name: TINYURL
             value: ${TINYURL}
+          - name: KEYCLOAK_AUTH_SERVER_URL
+            value: ${KEYCLOAK_AUTH_SERVER_URL}
           - name: CURRENT_NAMESPACE
             valueFrom:
               fieldRef:
@@ -1137,3 +1139,6 @@ parameters:
     - description: Tiny URL
       from: '[A-Z0-9]{8}'
       name: TINYURL
+    - description: Url of SSO authentication server
+      value: https://secure-sso-hogarama.10.0.75.2.nip.io/auth/
+      name: KEYCLOAK_AUTH_SERVER_URL
