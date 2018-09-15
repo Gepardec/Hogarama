@@ -1,5 +1,6 @@
 package com.gepardec.hogarama.mocks.cli;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -58,5 +59,16 @@ public class MqttClientTest {
 		verify(mockBlockingConnection, times(1)).publish("testtopic", "msg1".getBytes(), QoS.AT_LEAST_ONCE, false);
 		verify(mockBlockingConnection, times(1)).publish("testtopic", "msg2".getBytes(), QoS.AT_LEAST_ONCE, false);
 		verify(mockBlockingConnection, times(1)).disconnect();
+	}
+	
+	@Test
+	public void testFixHttps() throws Exception {
+		check("ssl://myhost:443", "https://myhost");
+		check("ssl://myhost:443", "ssl://myhost");
+		check("ssl://myhost:8443", "https://myhost:8443");
+	}
+
+	private void check(String expected, String url) {
+		assertEquals(expected, MqttClient.fixUrl(url));
 	}
 }

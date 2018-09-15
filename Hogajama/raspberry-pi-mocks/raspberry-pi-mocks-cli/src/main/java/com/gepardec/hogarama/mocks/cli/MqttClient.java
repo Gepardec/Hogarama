@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -13,6 +15,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -25,8 +28,10 @@ import org.slf4j.LoggerFactory;
 
 public class MqttClient {
 	
-	public static String PORT_PROVIDED_REGEX ="(.*)(:\\d+)";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MqttClient.class);
+	private static final String SSL = "ssl";
+	private static final String HTTPS = "https";
+	private static String PORT_PROVIDED_REGEX ="(.*)(:\\d+)";
+	private static final Logger LOGGER = LoggerFactory.getLogger(MqttClient.class);
 	
 	private MQTT mqtt;
 	private String host;
@@ -34,9 +39,56 @@ public class MqttClient {
 	private String password;
 	private String topic;
 
-	//TODO: hardcoded port replacement should be fixed.
+	public MqttClient defaultConnection() {
+		return withURL(Optional.ofNullable(System.getenv("AMQ_HOST")).orElse("https://broker-amq-mqtt-ssl::8883")).
+	      withUser(Optional.ofNullable(System.getenv("AMQ_USER")).orElse("mq_habarama")).
+	      withPassword(Optional.ofNullable(System.getenv("AMQ_PASSWDORD")).orElse("mq_habarama_pass"));
+	}	
+
+	/**
+	 * Set the URL to connect to the message broker
+	 * @param url
+	 * @return
+	 */
+	public MqttClient withURL(String url) {
+		this.host = fixUrl(url);
+		return this;
+	}
+
+
+	protected static String fixUrl(String url) {
+		URI uri;
+		try {
+			uri = new URI(url);
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+		int port = uri.getPort();
+		String scheme = uri.getScheme();
+		if ( HTTPS.equals(scheme) ) {
+			scheme = SSL;
+		}
+		if ( port == -1 &&  SSL.equals(scheme) ) {
+			port = 443;
+		}
+		String host;
+		try {
+			host = new URI(scheme,uri.getUserInfo(), uri.getHost(), port, uri.getPath(), uri.getQuery(), uri.getFragment()).toString();
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+		return host;
+	}
+
+
+	/**
+	 * Use {@link #withURL(String)} instead. This funktion contains obscure logic.
+	 * @param host
+	 * @return
+	 */
+	@Deprecated
 	public MqttClient withHost(String host) {
-		this.host = host.replaceAll("https", "ssl");
+		this.host = host.replaceAll(HTTPS, SSL);
 		this.host = this.host.replaceAll("http", "tcp");
 		if(!this.host.matches(PORT_PROVIDED_REGEX)) {
 			this.host += ":8883";
@@ -125,5 +177,4 @@ public class MqttClient {
 		
 		return sslContext;
 	}	
-	
 }

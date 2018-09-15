@@ -3,6 +3,8 @@ package com.gepardec.hogarama.service;
 import com.gepardec.hogarama.domain.sensor.SensorDAO;
 import com.gepardec.hogarama.domain.watering.ActorService;
 import com.gepardec.hogarama.mocks.cli.MqttClient;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 
@@ -11,7 +13,6 @@ import java.util.Optional;
 
 public class ActorServiceImpl implements ActorService {
 
-    JSONObject json = new JSONObject();
 
     @Inject
     private SensorDAO sensorDAO;
@@ -26,18 +27,17 @@ public class ActorServiceImpl implements ActorService {
    // TODO activate when MongoDB is working
     // checkParametersOrFail(location, sensorName, duration);
 
-    MqttClient mqttClient = new MqttClient().
-      withHost(Optional.ofNullable(System.getenv("AMQ_HOST")).orElse("https://broker-amq-mqtt-ssl")).
-      withUser(Optional.ofNullable(System.getenv("AMQ_USER")).orElse("mq_habarama")).
-      withPassword(Optional.ofNullable(System.getenv("AMQ_PASSWDORD")).orElse("mq_habarama_pass")).
+    MqttClient mqttClient = new MqttClient().defaultConnection().
       withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("actor." + location + "." + actorName)).
       build();
+    
+    JSONObject json = new JSONObject();
     try {
       json.put("name", actorName);
       json.put("location", location);
       json.put("duration", duration);
-    } catch (Exception e){
-      throw new RuntimeException("Error creating JSONObject.");
+    } catch (JSONException e){
+      throw new RuntimeException("Error creating JSONObject.", e);
     }
 
     String message = json.toString();
@@ -58,7 +58,4 @@ public class ActorServiceImpl implements ActorService {
     }
 
   }
-
-
-
 }
