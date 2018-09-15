@@ -28,7 +28,9 @@ import org.slf4j.LoggerFactory;
 
 public class MqttClient {
 	
+	private static final String TCP = "tcp";
 	private static final String SSL = "ssl";
+	private static final String HTTP = "http";
 	private static final String HTTPS = "https";
 	private static String PORT_PROVIDED_REGEX ="(.*)(:\\d+)";
 	private static final Logger LOGGER = LoggerFactory.getLogger(MqttClient.class);
@@ -70,6 +72,12 @@ public class MqttClient {
 		}
 		if ( port == -1 &&  SSL.equals(scheme) ) {
 			port = 443;
+		}
+		if ( HTTP.equals(scheme) ) {
+			scheme = TCP;
+		}
+		if ( port == -1 &&  TCP.equals(scheme) ) {
+			port = 80;
 		}
 		String host;
 		try {

@@ -62,10 +62,12 @@ public class MqttClientTest {
 	}
 	
 	@Test
-	public void testFixHttps() throws Exception {
+	public void testFixBrokerUrl() throws Exception {
 		check("ssl://myhost:443", "https://myhost");
 		check("ssl://myhost:443", "ssl://myhost");
 		check("ssl://myhost:8443", "https://myhost:8443");
+		check("tcp://myhost:80", "http://myhost");
+		check("tcp://myhost:8080", "http://myhost:8080");
 	}
 
 	private void check(String expected, String url) {
