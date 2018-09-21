@@ -338,7 +338,7 @@ objects:
         - broker-amq
         from:
           kind: ImageStreamTag
-          name: jboss-amq-62:latest
+          name: jboss-amq-6:latest
           namespace: openshift
       type: ImageChange
     - type: ConfigChange
