@@ -28,7 +28,7 @@ public class ActorServiceImpl implements ActorService {
     // checkParametersOrFail(location, sensorName, duration);
 
     MqttClient mqttClient = new MqttClient().defaultConnection().
-      withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("actor." + location + "." + actorName)).
+      withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("habarama")).
       build();
     
     JSONObject json = new JSONObject();

@@ -83,6 +83,52 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/errorModel'
+  /sensor/allWateringData:
+      get:
+        description: Returns all Watering Data
+        operationId: 'getAllWateringData({maxNumber})'
+        parameters:
+          - in: query
+            name: maxNumber
+            type: integer
+            required: false
+            description: Maximum number of watering data entries
+          - in: query
+            name: sensor
+            type: string
+            required: false
+            description: Sensorname for which data should be shown
+          - in: query
+            name: from
+            type: string
+            format: string
+            required: false
+            description: Start (date, time) from where data entries should be shown
+          - in: query
+            name: to
+            type: string
+            format: string
+            required: false
+            description: End (date, time) from where data entries should be shown
+          - in: query
+            name: onlyDataFromToday
+            type: boolean
+            format: boolean
+            required: true
+            description: True, we show only the data from today.
+        produces:
+          - application/json
+        responses:
+          '200':
+            description: watering data response
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/wateringData'
+          default:
+            description: unexpected error
+            schema:
+              $ref: '#/definitions/errorModel'
   /sensor/location:
     get:
       description: Return the location by sensorName
@@ -161,6 +207,30 @@ definitions:
         type: string
       version:
         type: string
+  wateringData:
+      type: object
+      required:
+        - id
+        - time
+        - name
+        - location
+        - duration
+        - value
+      properties:
+        id:
+          type: string
+        time:
+          type: string
+          format: date
+        name:
+          type: string
+        location:
+          type: string
+        duration:
+          type: integer
+        value:
+          type: number
+          format: double
   errorModel:
     type: object
     required:

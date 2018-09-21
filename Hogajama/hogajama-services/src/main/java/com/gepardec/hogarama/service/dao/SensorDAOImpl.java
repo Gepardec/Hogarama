@@ -9,6 +9,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
 
+import com.mongodb.Block;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.Projections;
 import org.apache.commons.lang.StringUtils;
 import org.bson.Document;
 import org.mongodb.morphia.Datastore;
@@ -21,6 +24,7 @@ import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoIterable;
+import static com.mongodb.client.model.Filters.*;
 
 @RequestScoped
 public class SensorDAOImpl implements SensorDAO {

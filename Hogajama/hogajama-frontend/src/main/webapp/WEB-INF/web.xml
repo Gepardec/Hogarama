@@ -17,9 +17,9 @@
 		</auth-constraint>
 	</security-constraint>
 	
-	<login-config>
-		<auth-method>KEYCLOAK</auth-method>
-	</login-config>
+	<!--<login-config>-->
+		<!--<auth-method>KEYCLOAK</auth-method>-->
+	<!--</login-config>-->
 	
 	<security-role>
 		<role-name>admins</role-name>
