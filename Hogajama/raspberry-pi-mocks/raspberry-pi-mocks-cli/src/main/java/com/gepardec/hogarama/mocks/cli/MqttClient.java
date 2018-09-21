@@ -42,7 +42,7 @@ public class MqttClient {
 	private String topic;
 
 	public MqttClient defaultConnection() {
-		return withURL(Optional.ofNullable(System.getenv("AMQ_HOST")).orElse("https://broker-amq-mqtt-ssl::8883")).
+		return withURL(Optional.ofNullable(System.getenv("AMQ_HOST")).orElse("https://broker-amq-mqtt-ssl:8883")).
 	      withUser(Optional.ofNullable(System.getenv("AMQ_USER")).orElse("mq_habarama")).
 	      withPassword(Optional.ofNullable(System.getenv("AMQ_PASSWDORD")).orElse("mq_habarama_pass"));
 	}	
@@ -63,7 +63,7 @@ public class MqttClient {
 		try {
 			uri = new URI(url);
 		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Error creating URI from " + url, e);
 		}
 		int port = uri.getPort();
 		String scheme = uri.getScheme();
@@ -83,7 +83,7 @@ public class MqttClient {
 		try {
 			host = new URI(scheme,uri.getUserInfo(), uri.getHost(), port, uri.getPath(), uri.getQuery(), uri.getFragment()).toString();
 		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Error recreating URI from " + url, e);
 		}
 		return host;
 	}
