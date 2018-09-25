@@ -13,7 +13,6 @@ from threading import Thread
 def log(message):
     sys.stderr.write(message+"\n")
 
-
 def on_publish(client, userdata, mid):
     log(("Publish returned result: {} {} {}".format(client, userdata, mid)))
 
@@ -22,13 +21,6 @@ def on_message(client, userdata, message):
 
     payload = json.loads(message.payload)
 
-    # Payload:
-    #
-    # {
-    #   "name": "MathiasJ",
-    #   "location": "vorarlberg",
-    #   "duration": 5
-    # }
 
     for actor in actors:
         if message.topic == "actor.{}.{}".format (actor['location'], actor['name']):
@@ -44,6 +36,15 @@ def on_message(client, userdata, message):
 
             break
 
+def internetAvailable(host="8.8.8.8", port=53, timeout=3):
+    try:
+        time.sleep(5)
+        socket.setdefaulttimeout(timeout)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        return True
+    except Exception as ex:
+        print ex.message
+        return False
 
 def set_gpio_actor(actor, duration):
     try:
@@ -54,6 +55,15 @@ def set_gpio_actor(actor, duration):
         GPIO.output(actor['pin'], 1)
         log("{} turned off".format(actor['name']))
 
+def on_disconnect(client, userdata, rc):
+    log(("Disconnect event occured: {} {} {}".format(client, userdata, rc)))
+    while not internetAvailable():
+        log("No Internet connection available, will try again in a few seconds")
+    client.reconnect()
+    for actor in actors:
+        topicName = "actor.{}.{}".format (actor['location'], actor['name'])
+        log("{0} subscribe to {1}".format (brokerUrl, topicName))
+        (result, mid) = client.subscribe(topicName, 0)
 
 # Hardware SPI configuration:
 SPI_PORT   = 0
@@ -90,6 +100,7 @@ for index,brokerUrl in enumerate(brokerUrls):
     client = paho.Client(clean_session=True)
     client.on_publish = on_publish
     client.on_message = on_message
+    client.on_disconnect = on_disconnect
     ssl_ctx = ssl.create_default_context(cafile='broker.pem')
     ssl_ctx.check_hostname = False
     client.tls_set_context(ssl_ctx)
@@ -104,14 +115,13 @@ for index,brokerUrl in enumerate(brokerUrls):
 
     clients.append(client)
 
-
 # Main program loop.
 while True:
     for client in clients:
         client.loop()
 
     try:
-      # client.connect(brokerUrl, 443, 60)
+        # client.connect(brokerUrl, 443, 60)
         for sensor in sensors:
             GPIO.output(sensor['pin'], 1)
             time.sleep(sampleInterval)
@@ -126,5 +136,6 @@ while True:
             GPIO.output(sensor['pin'], 0)
     except Exception as e:
         log("ERROR: " +str(e))
-        log("Oops! Something wrong. Trying luck in next iteration.")
+        log("Oops! Something went terribly wrong, let us attempt exactly the same thing again!")
+        time.sleep(10)
     time.sleep(waitInterval)
