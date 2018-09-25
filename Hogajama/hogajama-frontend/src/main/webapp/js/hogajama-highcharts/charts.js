@@ -39,13 +39,7 @@ function createChart(){
             text: null
         },
         xAxis: {
-            type: 'datetime',
-            plotLines: [{
-                color: '{series.color}', // Color value
-                dashStyle: 'solid', // Style of the plot line. Default to solid
-                value: Date.now(), // Value of where the line will appear
-                width: 200 // Width of the line
-            }]
+            type: 'datetime'
         },
         yAxis: {
             min: 0,
@@ -146,6 +140,7 @@ function getSensorDataBySensorName(sensorNames){
 		let from = getFrom();
 		let to = getTo();
 		let sensorDatas = getDataForSensor(sensorNames[i], from, to);
+		let wateringDatas = getWateringDataForSensor(sensorNames[i], from, to);
 		let sensor = [];
 		sensor.name = sensorNames[i];
 		if(sensorDatas.length == 0){
@@ -154,6 +149,7 @@ function getSensorDataBySensorName(sensorNames){
 			sensor.location = sensorDatas[0]['location'];
 		}
 		sensor.sensorData = sensorDatas;
+		sensor.wateringData = wateringDatas;
 		sensors.push(sensor);
 	}
 	return sensors;
@@ -260,10 +256,6 @@ function getSeries(sensors){
 
 
    for(let i = 0; i < sensors.length; i++){
-       let from = getFrom();
-       let to = getTo();
-       let wateringData = getWateringDataForSensor(sensors[i].name, from, to);
-
        let values = [];
        for(let j = 0; j < sensors[i].sensorData.length; j++){
     	   let value = {};
@@ -273,27 +265,29 @@ function getSeries(sensors){
            values.push(value);
        }
 
-       for(let j = 0; j < wateringData.length; j++){
+       for(let j = 0; j < sensors[i].wateringData.length; j++){
            let value = {};
-           let dateStr = wateringData[j]['time'];
+           let dateStr = sensors[i].wateringData[j]['time'];
            value['x'] = getDateFromString(dateStr);
-           value['y'] = 0.2;
-           value['duration'] = wateringData[j]['duration'];
+           value['duration'] = sensors[i].wateringData[j]['duration'];
            value['marker'] = {
                enabled: true,
-               symbol: "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF/SURBVDhPrZJdS8JgFMeNvkIXdR19noLoC9RtF6F7sfIu6LKg1G0qdhWYUBcGgkGaL5szWGXeCAkFDgqMCnRzQ+X0HHkkassK+sEf9jznf152Ns842LC87BOUFXr8G4xYmuVFxeAk2WSFizl6/UsAJvwR9eqgqA/ixeZgPareLiWTkzT6M5xQXN1OVNv5J4D8I8DW4Y3Ji7KPhsfjlXJTXERppxsmFEgB1Gm9A5wom0wwN01t38NJSjCUaXRHySPtp+9sXirHqM0d7M6TpZ092J+SUZl7C6ew1sT8DLU7IZv37qbq5tfkkXZSdYsVFZbanWzE1OpJ7c01GXVcfQXydWrU7oQTZOO82XdNRmVJDD3U7oQVZDur98EeAFRazgJYnHgsanfij5Wvj7Rn0A2AF9tZBGP+qKpRuxMmXFoMxC87Wb03LIKTfHTvwWa8YjDB0jy1u8NHlBBZZjehtYYj43tj5wBJ5qTyHrWNxxsqLJD/X8OdoPAZ72j4P/F43gEZw3JkItFPHAAAAABJRU5ErkJggg==)"
+               symbol: "url(img/waterdrop.png)"
            };
            values.push(value);
        }
 
        values.sort(Comparator);
+       for(let j = 0; j < values.length; j++){
+           if(values[j]['y'] == null && j != 0){
+               values[j]['y'] = values[j-1]['y'];
+           }
+	   }
 
-       console.log(values);
        let serie = {
            name: sensors[i].name + " " + sensors[i].location,
            data: values,
            turboThreshold: 0
-
        };
 
        series.push(serie);
