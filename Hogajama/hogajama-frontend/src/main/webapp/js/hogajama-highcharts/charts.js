@@ -253,8 +253,6 @@ function showErrorMessage(message){
 function getSeries(sensors){
    let series = [];
 
-
-
    for(let i = 0; i < sensors.length; i++){
        let values = [];
        for(let j = 0; j < sensors[i].sensorData.length; j++){
@@ -278,11 +276,16 @@ function getSeries(sensors){
        }
 
        values.sort(Comparator);
+       let elementsToRemove = 0;
        for(let j = 0; j < values.length; j++){
+       	   if(values[j]['marker']){
+       	   	elementsToRemove++;
+		   }
            if(values[j]['y'] == null && j != 0){
                values[j]['y'] = values[j-1]['y'];
            }
 	   }
+	   values.splice(0, elementsToRemove);
 
        let serie = {
            name: sensors[i].name + " " + sensors[i].location,

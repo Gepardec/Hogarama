@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Id;
 
 import java.util.Date;
 
-@Entity("habarama")
+@Entity("watering")
 public class WateringData {
 
     @Id
@@ -20,12 +20,16 @@ public class WateringData {
 
     }
 
-    public WateringData(String id, Date time, String name, String location, Integer duration) {
-        this.id = id;
+    public WateringData(Date time, String name, String location, Integer duration){
         this.time = time;
         this.name = name;
         this.location = location;
         this.duration = duration;
+    }
+
+    public WateringData(String id, Date time, String name, String location, Integer duration) {
+        this(time, name, location,duration);
+        this.id = id;
     }
 
     public String getId() {
