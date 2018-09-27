@@ -17,10 +17,11 @@ import com.gepardec.hogarama.testdata.TestDataProducer;
 public class WateringStrategyTest {
 
 	private WateringStrategy watering;
+	
+	private WateringConfigData config;
 
 	@Before
 	public void setUp() throws Exception {
-		watering = new WateringStrategy();
 		
 		TestDataProducer data = new TestDataProducer(startSensorData());
 		
@@ -28,33 +29,25 @@ public class WateringStrategyTest {
 		data.addValueMinusMinutes( 0.1, 10);
 		data.addValueAt(0.6, LocalDateTime.of(2019, Month.JUNE, 20, 14, 00));
 
-		watering.setSensorDAO(new DummySensorDAO(data.getData()));
+		watering = new WateringStrategy(new DummySensorDAO(data.getData()));
+		
+		config = new WateringConfigData("My Plant", "My Plant", 60, 0.2, 5);
 	}
 
 	@Test
 	public void whenEmptyListNoWatering() {
-		assertFalse( 0 <  watering.water("My Plant", LocalDateTime.of(2018, Month.JUNE, 20, 17, 00)));
+		assertFalse( 0 <  watering.water(config, LocalDateTime.of(2018, Month.JUNE, 20, 17, 00)));
 	}
 
 	@Test
 	public void whenLastDataHighThenNoWatering() throws Exception {		
-		assertFalse( 0 <  watering.water("My Plant", LocalDateTime.of(2018, Month.JUNE, 20, 14, 00)));
+		assertFalse( 0 <  watering.water(config, LocalDateTime.of(2018, Month.JUNE, 20, 14, 00)));
 	}
 
 	@Test
 	public void whenLastDataLowThenWatering() throws Exception {		
-		assertTrue( 0 < watering.water("My Plant", LocalDateTime.of(2018, Month.JUNE, 20, 15, 00)));
+		assertTrue( 0 < watering.water(config, LocalDateTime.of(2018, Month.JUNE, 20, 15, 00)));
 	}
-	
-	@Test
-	public void testWateringOfMyPlant() throws Exception {
-		MockActorService actor = new MockActorService("Vienna", "My Plant", 5);
-		watering.setActor(actor);
-		watering.setDate(LocalDateTime.of(2018, Month.JUNE, 20, 15, 00));
-		watering.waterAll();
-		assertTrue("Actor was called", actor.wasCalled());
-	}
-	
 	
 	private SensorData startSensorData() {
 		return new SensorData(
@@ -65,32 +58,6 @@ public class WateringStrategyTest {
 				0.1, 
 				"Vienna", 
 				"1.0");
-	}
-	private class MockActorService implements ActorService {
-
-		private String location;
-		private String sensorName;
-		private Integer duration;
-		private boolean wasCalled = false;
-
-		public MockActorService(String location, String sensorName, Integer duration) {
-			this.location = location;
-			this.sensorName = sensorName;
-			this.duration = duration;
-		}
-
-		public boolean wasCalled() {
-			return wasCalled ;
-		}
-
-		@Override
-		public void sendActorMessage(String location, String sensorName, Integer duration) {
-			assertEquals(this.location, location);
-			assertEquals(this.sensorName, sensorName);
-			assertEquals(this.duration, duration);			
-			wasCalled = true;
-		}
-
 	}
 }
 
