@@ -12,6 +12,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.watering.WateringDAO;
+import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.rest.mapper.SensorMapper;
 import com.gepardec.hogarama.rest.util.DateUtil;
 import com.gepardec.hogarama.service.schedulers.SensorsScheduler;
@@ -24,6 +26,9 @@ public class SensorApiImpl implements SensorApi, Serializable {
 
 	@Inject
 	private SensorDAO habaramaDAO;
+
+	@Inject
+	private WateringDAO wateringDAO;
 
 	@Inject
 	private SensorsScheduler sensorsScheduler;
@@ -50,6 +55,19 @@ public class SensorApiImpl implements SensorApi, Serializable {
 		}
 		List<SensorData> sensorData = SensorMapper.INSTANCE.mapSensors(habaramaDAO.getAllData(maxNumber, sensor, fromDate, toDate));
 		return Response.ok(sensorData).build();
+	}
+
+	@Override
+	public Response getAllWateringDataMaxNumber(Boolean onlyDataFromToday, Integer maxNumber, String sensor, String from, String to, SecurityContext securityContext) {
+		Date fromDate = DateUtil.getDateTimeFromString(from);
+		Date toDate = DateUtil.getDateTimeFromString(to);
+
+		if (onlyDataFromToday) {
+			fromDate = getTodayStartTime();
+			toDate = getTodayEndTime();
+		}
+		List<WateringData> wateringData = wateringDAO.getWateringData(maxNumber, sensor, fromDate, toDate);
+		return Response.ok(wateringData).build();
 	}
 
 	@Override

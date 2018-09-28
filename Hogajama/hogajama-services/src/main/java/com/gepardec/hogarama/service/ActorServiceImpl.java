@@ -2,13 +2,16 @@ package com.gepardec.hogarama.service;
 
 import com.gepardec.hogarama.domain.sensor.SensorDAO;
 import com.gepardec.hogarama.domain.watering.ActorService;
+import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.mocks.cli.MqttClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.Optional;
 
 public class ActorServiceImpl implements ActorService {
@@ -16,6 +19,9 @@ public class ActorServiceImpl implements ActorService {
 
     @Inject
     private SensorDAO sensorDAO;
+
+    @Inject
+    private Datastore db;
 
     @Inject
 	private Logger log;
@@ -28,18 +34,13 @@ public class ActorServiceImpl implements ActorService {
     // checkParametersOrFail(location, sensorName, duration);
 
     MqttClient mqttClient = new MqttClient().defaultConnection().
-      withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("actor." + location + "." + actorName)).
+      withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("watering")).
       build();
     
-    JSONObject json = new JSONObject();
-    try {
-      json.put("name", actorName);
-      json.put("location", location);
-      json.put("duration", duration);
-    } catch (JSONException e){
-      throw new RuntimeException("Error creating JSONObject.", e);
-    }
 
+    WateringData data = new WateringData(new Date(), actorName, location, duration);
+    db.save(data);
+    JSONObject json = new JSONObject(data);
     String message = json.toString();
     mqttClient.connectAndPublish(message);
   }
