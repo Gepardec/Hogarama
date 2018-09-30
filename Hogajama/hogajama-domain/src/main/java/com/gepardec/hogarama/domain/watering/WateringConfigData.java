@@ -3,7 +3,7 @@ package com.gepardec.hogarama.domain.watering;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-@Entity("watering")
+@Entity("wateringConfig")
 public class WateringConfigData {
 	
 	@Id
