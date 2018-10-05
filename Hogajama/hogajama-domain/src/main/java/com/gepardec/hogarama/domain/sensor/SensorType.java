@@ -16,6 +16,7 @@ public class SensorType {
 	    put("LINEAR1024", MappingType.LINEAR1024);
 	    put("INVERSE_LINEAR1024", MappingType.INVERSE_LINEAR1024);
 	    put("Chinese Water Sensor", MappingType.INVERSE_LINEAR1024);
+	    put("sparkfun", MappingType.LINEAR1024);
 	}};
 
 	public static MappingType getMappingType(String type) {
