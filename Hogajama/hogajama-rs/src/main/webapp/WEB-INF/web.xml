@@ -6,5 +6,24 @@
 	<session-config>
 		<session-timeout>1</session-timeout>
 	</session-config>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Restricted</web-resource-name>
+			<url-pattern>/rest/actor</url-pattern>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admins</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<login-config>
+		<auth-method>KEYCLOAK</auth-method>
+	</login-config>
+	
+	<security-role>
+		<role-name>admins</role-name>
+	</security-role>
 
 </web-app>
