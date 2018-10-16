@@ -1,26 +1,23 @@
 package com.gepardec.hogarama.service.dao;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.NoResultException;
-
-import org.apache.commons.lang.StringUtils;
-import org.bson.Document;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.FindOptions;
-import org.mongodb.morphia.query.Query;
-
 import com.gepardec.hogarama.domain.sensor.SensorDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoIterable;
+import org.apache.commons.lang.StringUtils;
+import org.bson.Document;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.FindOptions;
+import org.mongodb.morphia.query.Query;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.persistence.NoResultException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @RequestScoped
 public class SensorDAOImpl implements SensorDAO {

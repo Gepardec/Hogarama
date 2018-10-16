@@ -1,7 +1,7 @@
 var maxNumberOfRecords=-1;
 var chart;
 
-$(document).ready(function (e) { 
+$(document).ready(function (e) {
 	if(isNormalGraph){
 		maxNumberOfRecords = 30;
 	}
@@ -13,7 +13,13 @@ $(document).ready(function (e) {
 function createChart(){
 	//Hide chart until data
 	hideChart();
-	
+
+    Highcharts.setOptions({
+        global: {
+            timezoneOffset: -2 * 60
+        }
+    });
+
 	return Highcharts.chart('moisture-chart', {
         chart: {
             type: 'line',
@@ -57,8 +63,19 @@ function createChart(){
             ],
         },
         tooltip: {
-            headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '<b>Time</b> :{point.x:%Y-%m-%d %H:%M:%S}<br><b>Value:</b> {point.y:.2f}'
+            formatter: function () {
+                var s = '<b>' + this.series.name + '</b>';
+
+                var d = new Date(this.point.x);
+                s += '<br><b>Time:</b> ' + d.toLocaleDateString() + " " + d.toLocaleTimeString();
+                s += '<br><b>Value:</b> ' + this.point.y;
+
+                if(this.point.duration){
+                    s += '<br><b>Duration</b>: ' + this.point.duration + ' sec';
+                }
+
+                return s;
+            }
         },
         plotOptions: {
             line: {
@@ -91,9 +108,9 @@ function loadSeries(){
 function getSensorsWithData(){
 	let sensors = [];
 	let sensorNames = [];
-		
+
 	let sensorName = getTextFromElementIfExist("sensornames option:selected");
-	
+
 	if(sensorName === ''){
 		sensorNames = getSensorNames();
 		if(sensorNames == null){
@@ -104,9 +121,9 @@ function getSensorsWithData(){
 	} else {
 		sensorNames.push(sensorName);
 	}
-	
+
 	setMesswertIfNeeded();
-	
+
 	sensors = getSensorDataBySensorName(sensorNames);
 	return sensors;
 }
@@ -123,6 +140,7 @@ function getSensorDataBySensorName(sensorNames){
 		let from = getFrom();
 		let to = getTo();
 		let sensorDatas = getDataForSensor(sensorNames[i], from, to);
+		let wateringDatas = getWateringDataForSensor(sensorNames[i], from, to);
 		let sensor = [];
 		sensor.name = sensorNames[i];
 		if(sensorDatas.length == 0){
@@ -131,6 +149,7 @@ function getSensorDataBySensorName(sensorNames){
 			sensor.location = sensorDatas[0]['location'];
 		}
 		sensor.sensorData = sensorDatas;
+		sensor.wateringData = wateringDatas;
 		sensors.push(sensor);
 	}
 	return sensors;
@@ -164,7 +183,7 @@ function getDateISOFromElement(id){
 	if(val === ""){
 		return val;
 	}
-	
+
 	let utcDate = getDateFromString(val);
 	let date = new Date(utcDate);
 	return date.toISOString();
@@ -211,6 +230,19 @@ function getDataForSensor(sensor, from, to){
 	return sensorDatas;
 }
 
+function getWateringDataForSensor(sensor, from, to){
+	let wateringData = [];
+	let onlyDataFromToday = isNormalGraph;
+	$.ajax({
+		url: '/hogajama-rs/rest/sensor/allWateringData?maxNumber=' + maxNumberOfRecords + '&sensor=' + sensor + '&from=' + from + "&to=" + to + "&onlyDataFromToday=" + onlyDataFromToday,
+		success: function (response) {
+			wateringData = response;
+		},
+		async: false,
+	});
+	return wateringData;
+}
+
 function showErrorMessage(message){
 	$("#spinner").addClass('hidden');
 	$("#moisture-chart").empty();
@@ -220,22 +252,47 @@ function showErrorMessage(message){
 
 function getSeries(sensors){
    let series = [];
+
    for(let i = 0; i < sensors.length; i++){
        let values = [];
        for(let j = 0; j < sensors[i].sensorData.length; j++){
-    	   let value = [];
+    	   let value = {};
     	   let dateStr = sensors[i].sensorData[j]['time'];
-           value[0] = getDateFromString(dateStr);
-           value[1] = sensors[i].sensorData[j]['value'];
+           value['x'] = getDateFromString(dateStr);
+           value['y'] = sensors[i].sensorData[j]['value'];
            values.push(value);
        }
-       
+
+       for(let j = 0; j < sensors[i].wateringData.length; j++){
+           let value = {};
+           let dateStr = sensors[i].wateringData[j]['time'];
+           value['x'] = getDateFromString(dateStr);
+           value['duration'] = sensors[i].wateringData[j]['duration'];
+           value['marker'] = {
+               enabled: true,
+               symbol: "url(img/waterdrop.png)"
+           };
+           values.push(value);
+       }
+
        values.sort(Comparator);
+       let elementsToRemove = 0;
+       for(let j = 0; j < values.length; j++){
+       	   if(values[j]['marker']){
+       	   	elementsToRemove++;
+		   }
+           if(values[j]['y'] == null && j != 0){
+               values[j]['y'] = values[j-1]['y'];
+           }
+	   }
+	   values.splice(0, elementsToRemove);
+
        let serie = {
            name: sensors[i].name + " " + sensors[i].location,
-           data: values
+           data: values,
+           turboThreshold: 0
        };
-       
+
        series.push(serie);
    }
    return series;
@@ -253,14 +310,14 @@ function updateChart(){
 
 function getDatePritty(date, separator){
 	let dd = date.getDate();
-	let mm = date.getMonth() + 1; 
+	let mm = date.getMonth() + 1;
 	let yyyy = date.getFullYear();
 	return dd + separator + mm + separator + yyyy;
 }
 
 function Comparator(a, b) {
-   if (a[0] < b[0]) return -1;
-   if (a[0] > b[0]) return 1;
+   if (a['x'] < b['x']) return -1;
+   if (a['x'] > b['x']) return 1;
    return 0;
 }
 

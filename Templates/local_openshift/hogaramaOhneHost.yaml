@@ -338,7 +338,7 @@ objects:
         - broker-amq
         from:
           kind: ImageStreamTag
-          name: jboss-amq-62:latest
+          name: jboss-amq-6:latest
           namespace: openshift
       type: ImageChange
     - type: ConfigChange
@@ -465,6 +465,8 @@ objects:
             value: ${OPENSHIFT_AUTH_TOKEN}
           - name: TINYURL
             value: ${TINYURL}
+          - name: KEYCLOAK_AUTH_SERVER_URL
+            value: ${KEYCLOAK_AUTH_SERVER_URL}
           - name: CURRENT_NAMESPACE
             valueFrom:
               fieldRef:
@@ -936,7 +938,7 @@ objects:
     resources: {}
     runPolicy: Serial
     source:
-      contextDir: Habarama/raspberry-pi-mocks
+      contextDir: Hogajama
       git:
         ref: master
         uri: https://github.com/Gepardec/Hogarama.git
@@ -945,7 +947,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: redhat-openjdk18-openshift:1.3
+          name: redhat-openjdk18-openshift:latest
           namespace: openshift
       type: Source
     triggers:
@@ -1137,3 +1139,6 @@ parameters:
     - description: Tiny URL
       from: '[A-Z0-9]{8}'
       name: TINYURL
+    - description: Url of SSO authentication server
+      value: https://secure-sso-hogarama.10.0.75.2.nip.io/auth/
+      name: KEYCLOAK_AUTH_SERVER_URL

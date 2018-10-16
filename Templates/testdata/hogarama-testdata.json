@@ -1,181 +1,180 @@
-
-{
-    "_id" : ObjectId("58f9fc197aafd2000b549d12"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 553,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:33:23.000Z")
-}
-{
-    "_id" : ObjectId("58f9fc197aafd2000b549d13"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 627,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:33:28.000Z")
-}
-{
-    "_id" : ObjectId("58f9fc237aafd2000b549d14"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 633,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:33:34.000Z")
-}
-{
-    "_id" : ObjectId("58f9fc697aafd2000b549d15"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 515,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:34:47.000Z")
-}
-{
-    "_id" : ObjectId("58f9fc737aafd2000b549d16"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 604,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:34:52.000Z")
-}
-{
-    "_id" : ObjectId("58f9fc737aafd2000b549d17"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 631,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:34:57.000Z")
-}
-{
-    "_id" : ObjectId("58f9fc7d7aafd2000b549d18"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 636,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:35:03.000Z")
-}
-{
-    "_id" : ObjectId("58f9fc7d7aafd2000b549d19"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 637,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:35:08.000Z")
-}
-{
-    "_id" : ObjectId("58f9fc877aafd2000b549d1a"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 637,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:35:13.000Z")
-}
-{
-    "_id" : ObjectId("58f9fc877aafd2000b549d1b"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 637,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:35:18.000Z")
-}
-{
-    "_id" : ObjectId("58f9fcb97aafd2000b549d1c"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 619,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T12:36:08.000Z")
-}
-{
-    "_id" : ObjectId("58fa03d37aafd2000b549d1d"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 586,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T13:06:18.000Z")
-}
-{
-    "_id" : ObjectId("58fa0ae57aafd2000b549d1e"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 616,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T13:36:29.000Z")
-}
-{
-    "_id" : ObjectId("58fa11f87aafd2000b549d1f"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 622,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T14:06:39.000Z")
-}
-{
-    "_id" : ObjectId("58fa190b7aafd2000b549d20"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 619,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T14:36:49.000Z")
-}
-{
-    "_id" : ObjectId("58fa201d7aafd2000b549d21"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 601,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T15:07:00.000Z")
-}
-{
-    "_id" : ObjectId("58fa27307aafd2000b549d22"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 591,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T15:37:10.000Z")
-}
-{
-    "_id" : ObjectId("58fa2e387aafd2000b549d23"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 582,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T16:07:20.000Z")
-}
-{
-    "_id" : ObjectId("58fa354b7aafd2000b549d24"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 583,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T16:37:30.000Z")
-}
-{
-    "_id" : ObjectId("58fa3c627aafd2000b549d25"),
-    "sensorName" : "Pflanze",
-    "type" : "moisture",
-    "value" : 580,
-    "location" : "Wien",
-    "version" : 0,
-    "time" : ISODate("2017-04-21T17:07:41.000Z")
-}
+  {
+    "_id": ObjectId("5b9b499e97ba370ddcd2f4d1"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 52,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-02-27T08:13:27.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499e023168391e24dbe6"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 80,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-08-27T10:06:53.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499e294f42c9f0d1643c"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 56,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-07-03T03:11:01.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499e1e521da2049f69b3"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 62,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-01-26T10:03:06.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499ee9654fd98b492d0b"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 65,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-05-11T04:47:13.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499e039b3e2d1c3808b1"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 37,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-03-20T06:41:36.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499ed48a736b9e2dce90"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 84,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-07-04T05:17:21.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499ea3e5a2a00bc7ac7e"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 14,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-03-01T05:40:22.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499ece33517fd880788b"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 69,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-05-18T05:53:25.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499eab48c2e1dc1baa2a"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 5,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-08-15T01:55:01.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499e1f142c0e244b00a9"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 93,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-07-15T10:45:52.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499ee973939ef1020bb8"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 27,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-01-05T06:36:35.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499e121eb69a24c19a12"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 0,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-01-10T07:07:13.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499eda69e8c5d295a80b"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 59,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-04-24T09:23:11.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499e15c3e919597e062c"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 79,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-07-20T06:29:36.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499efe5be84e7e6176b3"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 78,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-02-20T10:43:30.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499e3788a2f95afe069a"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 2,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-05-11T12:24:13.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499ec88db92007a38af0"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 47,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-04-06T04:37:46.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499e736265e2123ae850"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 35,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-01-29T05:45:29.000Z")
+  }
+  {
+    "_id": ObjectId("5b9b499e3e58c06b1b8cc261"),
+    "sensorName": "Pflanze",
+    "type": "moisture",
+    "value": 54,
+    "location": "Wien",
+    "version": 0,
+    "time": ISODate("2018-06-07T07:37:32.000Z")
+  }
