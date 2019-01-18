@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>hogajama-monitoring</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

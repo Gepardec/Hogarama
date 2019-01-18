@@ -61,6 +61,11 @@
 				<artifactId>hogajama-interfaces-frontend</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.gepardec.hogarama</groupId>
+				<artifactId>hogajama-monitoring</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- Externe -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
