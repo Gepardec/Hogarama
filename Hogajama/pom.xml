@@ -16,6 +16,7 @@
 		<module>hogajama-services</module>
 		<module>hogajama-rs</module>
         <module>raspberry-pi-mocks</module>
+		<module>hogajama-monitoring</module>
 	</modules>
 
 	<properties>
@@ -114,23 +115,7 @@
 				<artifactId>morphia</artifactId>
 				<version>1.3.2</version>
 			</dependency>
-			<dependency>
-				<groupId>io.prometheus</groupId>
-				<artifactId>simpleclient_hotspot</artifactId>
-				<version>${prometheus.io.version}</version>
-			</dependency>
-			<!-- Exposition servlet -->
-			<dependency>
-				<groupId>io.prometheus</groupId>
-				<artifactId>simpleclient_servlet</artifactId>
-				<version>${prometheus.io.version}</version>
-			</dependency>
-			<!-- The client -->
-			<dependency>
-				<groupId>io.prometheus</groupId>
-				<artifactId>simpleclient</artifactId>
-				<version>${prometheus.io.version}</version>
-			</dependency>
+
 			<!-- TESTING -->
 			<dependency>
 				<groupId>org.mockito</groupId>
