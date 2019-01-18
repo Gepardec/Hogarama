@@ -18,22 +18,18 @@
 
     <dependencies>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient_hotspot</artifactId>
             <version>${prometheus.io.version}</version>
         </dependency>
+
         <!-- Exposition servlet -->
         <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient_servlet</artifactId>
             <version>${prometheus.io.version}</version>
         </dependency>
+
         <!-- The client -->
         <dependency>
             <groupId>io.prometheus</groupId>

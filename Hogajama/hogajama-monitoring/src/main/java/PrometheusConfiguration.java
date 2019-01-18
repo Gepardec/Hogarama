@@ -6,6 +6,6 @@ public class PrometheusConfiguration {
         return CollectorRegistry.defaultRegistry;
     }
 
-    }
-
 }
+
+
