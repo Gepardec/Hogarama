@@ -1,3 +1,5 @@
+package com.gepardec.hogarama.monitoring;
+
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.exporter.MetricsServlet;
 

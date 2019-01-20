@@ -10,10 +10,11 @@
     </parent>
 
     <artifactId>hogajama-monitoring</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.org.jboss.resteasy>3.0.12.Final</version.org.jboss.resteasy>
     </properties>
 
     <dependencies>
@@ -28,14 +29,38 @@
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient_servlet</artifactId>
             <version>${prometheus.io.version}</version>
-        </dependency>
-
+    	</dependency>
+    
         <!-- The client -->
         <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient</artifactId>
             <version>${prometheus.io.version}</version>
         </dependency>
-    </dependencies>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>${version.org.jboss.resteasy}</version>
+            <scope>provided</scope>
+        </dependency>
+ <!--        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>jaxrs-api</artifactId>
+            <version>${version.org.jboss.resteasy}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson2-provider</artifactId>
+            <version>${version.org.jboss.resteasy}</version>
+            <scope>provided</scope>
+        </dependency>
+         -->
+   </dependencies>
 
 </project>
