@@ -23,13 +23,13 @@ import org.slf4j.LoggerFactory;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.exporter.common.TextFormat;
 
-@Path("/prometheus")
+@Path("/metrics")
 //@GZIP
 @ApplicationScoped
 public class PrometheusHandler {
     private static final Logger logger = LoggerFactory.getLogger(PrometheusHandler.class);
 
-    CollectorRegistry prometheusRegistry;
+    private CollectorRegistry prometheusRegistry;
 
     @PostConstruct
     public void init(){
