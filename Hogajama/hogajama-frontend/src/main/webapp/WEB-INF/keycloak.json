@@ -1,6 +1,6 @@
 {
 	"realm": "hogarama",
-	"auth-server-url": "https://secure-sso-57-hogarama.cloud.itandtel.at/auth/",
+	"auth-server-url": "${env.KEYCLOAK_AUTH_SERVER_URL}",
 	"ssl-required": "external",
 	"resource": "hogarama",
 	"credentials": {"secret":"12360720-0484-40da-9459-34ce53121677"},
