@@ -23,6 +23,10 @@
             <artifactId>hogajama-domain</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.gepardec.hogajama</groupId>
+            <artifactId>hogajama-services</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient_hotspot</artifactId>
             <version>${prometheus.io.version}</version>
