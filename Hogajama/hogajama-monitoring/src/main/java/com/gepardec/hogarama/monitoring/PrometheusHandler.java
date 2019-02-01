@@ -33,6 +33,7 @@ public class PrometheusHandler {
 
     @PostConstruct
     public void init(){
+        Metrics metrics = new Metrics();
         prometheusRegistry = CollectorRegistry.defaultRegistry;
         new HogaramaExports().register();
     }
@@ -40,6 +41,7 @@ public class PrometheusHandler {
     @GET
     @Produces(TextFormat.CONTENT_TYPE_004)
     public Response getMetrics() throws IOException{
+        Metrics.requestsTotal.inc();
         HttpServletRequest request = ResteasyProviderFactory.getContextData(HttpServletRequest.class);
         StringWriter writer = new StringWriter();
         TextFormat.write004(writer, prometheusRegistry.filteredMetricFamilySamples(parse(request)));
