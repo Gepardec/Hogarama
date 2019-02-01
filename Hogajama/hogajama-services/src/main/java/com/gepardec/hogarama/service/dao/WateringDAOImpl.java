@@ -1,5 +1,6 @@
 package com.gepardec.hogarama.service.dao;
 
+import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.watering.WateringDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
@@ -22,10 +23,13 @@ public class WateringDAOImpl implements WateringDAO {
     private Datastore dataStore;
     @Inject
     private MongoCollection<Document> collection;
-
+    @Inject
+    private Metrics metrics;
 
     @Override
     public List<WateringData> getWateringData(Integer maxNumber, String actorName, Date from, Date to) {
+
+        Metrics.requestsTotal.labels("hogajama_services", "getWateringData");
         Query<WateringData> query = dataStore.createQuery(WateringData.class).order("-_id");
         limitQueryByActor(actorName, query);
         limitQueryByDate(from, to, query);
