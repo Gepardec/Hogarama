@@ -1,28 +1,27 @@
 package com.gepardec.hogarama.monitoring;
 
+import com.gepardec.hogarama.domain.metrics.Metrics;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.Summary;
+import io.prometheus.client.exporter.common.TextFormat;
+import org.jboss.resteasy.spi.ResteasyProviderFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
-
-import io.prometheus.client.Summary;
-import org.jboss.resteasy.annotations.GZIP;
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.prometheus.client.CollectorRegistry;
-import io.prometheus.client.exporter.common.TextFormat;
 
 @Path("/metrics")
 //@GZIP
@@ -32,9 +31,10 @@ public class PrometheusHandler {
 
     private CollectorRegistry prometheusRegistry;
 
+
     @PostConstruct
     public void init(){
-        Metrics metrics = new Metrics();
+
         prometheusRegistry = CollectorRegistry.defaultRegistry;
         new HogaramaExports().register();
         Metrics.requestsTotal.labels("init_requests").inc();

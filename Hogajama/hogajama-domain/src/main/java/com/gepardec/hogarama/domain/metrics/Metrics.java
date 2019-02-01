@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.monitoring;
+package com.gepardec.hogarama.domain.metrics;
 
 import io.prometheus.client.Counter;
 import io.prometheus.client.Summary;

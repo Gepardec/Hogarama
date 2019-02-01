@@ -1,5 +1,6 @@
 package com.gepardec.hogarama.service.dao;
 
+import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
@@ -29,10 +30,12 @@ public class SensorDAOImpl implements SensorDAO {
 
 	@Inject
 	SensorNormalizer sensorNormalizer;
+
 	
 	@Override
 	public List<String> getAllSensors() {
 		DistinctIterable<String> sensors = collection.distinct("sensorName", String.class);
+		Metrics.requestsTotal.labels("sensor_service").inc();
 		return createResultList(sensors);
 	}
 
@@ -44,6 +47,7 @@ public class SensorDAOImpl implements SensorDAO {
 
 	@Override
 	public List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to) {
+		Metrics.requestsTotal.labels("sensor_service").inc();
 		Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id");
 		limitQueryBySensor(sensorName, query);
 		limitQueryByDate(from, to, query);
@@ -81,6 +85,7 @@ public class SensorDAOImpl implements SensorDAO {
 	 * TODO: rewrite query and logic with single result
 	 */
 	public String getLocationBySensorName(String sensorName) {
+		Metrics.requestsTotal.labels("sensor_service").inc();
 		Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id");
 		limitQueryBySensor(sensorName, query);
 
