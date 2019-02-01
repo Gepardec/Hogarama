@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import io.prometheus.client.Summary;
 import org.jboss.resteasy.annotations.GZIP;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.slf4j.Logger;
@@ -36,17 +37,20 @@ public class PrometheusHandler {
         Metrics metrics = new Metrics();
         prometheusRegistry = CollectorRegistry.defaultRegistry;
         new HogaramaExports().register();
+        Metrics.requestsTotal.labels("init_requests").inc();
     }
 
     @GET
     @Produces(TextFormat.CONTENT_TYPE_004)
     public Response getMetrics() throws IOException{
-        Metrics.requestsTotal.inc();
+        Summary.Timer requestTimer = Metrics.requestLatency.labels("monitoring_self").startTimer();
+        Metrics.requestsTotal.labels("monitoring_self").inc();
         HttpServletRequest request = ResteasyProviderFactory.getContextData(HttpServletRequest.class);
         StringWriter writer = new StringWriter();
         TextFormat.write004(writer, prometheusRegistry.filteredMetricFamilySamples(parse(request)));
         logger.info("GET Request {}", request);
         writer.flush();
+        requestTimer.observeDuration();
         return Response.ok(writer.toString()).build();
     }
 
