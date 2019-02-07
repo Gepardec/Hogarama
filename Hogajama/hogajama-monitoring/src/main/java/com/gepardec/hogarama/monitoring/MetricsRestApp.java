@@ -8,10 +8,10 @@ import org.slf4j.LoggerFactory;
 
 
 @ApplicationPath("/")
-public class HawkularMetricsRestApp extends Application {
-    private static final Logger logger = LoggerFactory.getLogger(HawkularMetricsRestApp.class);
+public class MetricsRestApp extends Application {
+    private static final Logger logger = LoggerFactory.getLogger(MetricsRestApp.class);
   
-    public HawkularMetricsRestApp() {
+    public MetricsRestApp() {
         logger.info("Starting REST application " + this.getClass().getName());
     }
 
