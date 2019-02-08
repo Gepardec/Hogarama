@@ -108,6 +108,10 @@
 			<artifactId>undertow</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>keycloak</artifactId>
+		</dependency>
+		<dependency>
 			<artifactId>raspberry-pi-mocks-cli</artifactId>
 			<groupId>com.gepardec.hogarama</groupId>
 			<version>0.0.1-SNAPSHOT</version>
