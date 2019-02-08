@@ -15,7 +15,11 @@ public class Metrics {
 
     public static final Counter requestsTotal = Counter.build()
             .name("hogarama_requests_total")
-            .help("Request.").labelNames("hogarama_module", "request_type").register();
+            .help("Requests").labelNames("hogarama_module", "request_type").register();
+
+    public static final Counter exceptionsThrown = Counter.build()
+            .name("hogarama_exceptions_total")
+            .help("Exceptions thrown in hogajama").labelNames("hogarama_modul", "exception_name", "method").register();
 
 
 }

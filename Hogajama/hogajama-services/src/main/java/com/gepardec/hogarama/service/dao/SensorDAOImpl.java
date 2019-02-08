@@ -103,6 +103,7 @@ public class SensorDAOImpl implements SensorDAO {
         if (!sensors.isEmpty()) {
             return sensors.get(0).getLocation();
         } else {
+            Metrics.exceptionsThrown.labels("hogarama_services", "NoResultException", "SensorDAOImple.getLocationBySensorName").inc();
             throw new NoResultException("Could not find location by sensorName");
         }
     }

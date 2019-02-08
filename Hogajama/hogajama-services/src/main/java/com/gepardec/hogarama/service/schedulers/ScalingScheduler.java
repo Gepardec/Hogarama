@@ -15,6 +15,7 @@ import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
 
+import com.gepardec.hogarama.domain.metrics.Metrics;
 import org.slf4j.Logger;
 
 import com.openshift.restclient.ClientBuilder;
@@ -70,6 +71,7 @@ public class ScalingScheduler {
 			}
 		} catch (MalformedObjectNameException | AttributeNotFoundException | InstanceNotFoundException | MBeanException
 				| ReflectionException e) {
+			Metrics.exceptionsThrown.labels("hogarama_services", e.getClass().toString(), "ScalingScheduler.getActiveSessions").inc();
 			throw new RuntimeException(e);
 		}
 
@@ -86,6 +88,7 @@ public class ScalingScheduler {
 		// Retreive auth token from ENV
 		String authToken = System.getenv("OPENSHIFT_AUTH_TOKEN");
 		if (authToken == null || authToken.isEmpty()) {
+			Metrics.exceptionsThrown.labels("hogarama_services", "RuntimeException", "ScalingScheduler.getOpenshiftClient").inc();
 			throw new RuntimeException("Cannot auth to openshift: OPENSHIFT_AUTH_TOKEN not found");
 		}
 		client.getAuthorizationContext().setToken(authToken);
