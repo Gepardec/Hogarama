@@ -1,5 +1,6 @@
 package com.gepardec.hogarama.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
@@ -18,5 +19,10 @@ public class DateUtils {
 	public static Date toDate(LocalDateTime time) {
 		return Date.from(time.atZone(ZoneId.systemDefault()).toInstant());
 	}
+
+	public static LocalDate toLocalDate(Date time) {
+		return LocalDate.from(time.toInstant().atZone(ZoneId.systemDefault()));
+	}
+
 
 }
