@@ -54,6 +54,12 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-bundle-jaxrs</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.prometheus</groupId>
+			<artifactId>simpleclient_hotspot</artifactId>
+			<version>${prometheus.io.version}</version>
+			<scope>compile</scope>
+		</dependency>
 		<!-- Test End -->
 	</dependencies>
 

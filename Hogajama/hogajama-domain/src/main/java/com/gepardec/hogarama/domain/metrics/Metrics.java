@@ -16,4 +16,6 @@ public class Metrics {
     public static final Counter requestsTotal = Counter.build()
             .name("hogarama_requests_total")
             .help("Request.").labelNames("hogarama_module", "request_type").register();
+
+
 }

@@ -16,7 +16,6 @@
 		<module>hogajama-services</module>
 		<module>hogajama-rs</module>
         <module>raspberry-pi-mocks</module>
-		<module>hogajama-monitoring</module>
 	</modules>
 
 	<properties>
