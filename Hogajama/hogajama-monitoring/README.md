@@ -24,7 +24,7 @@ scrape_configs:
   - job_name: 'hogarama'
 
     scrape_interval: 5s
-    metrics_path: /hogarama-monitoring/metrics
+    metrics_path: /hogajama-rs/rest/metrics
 
     static_configs:
       - targets: ['10.0.0.47:8080']

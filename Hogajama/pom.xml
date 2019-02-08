@@ -26,6 +26,7 @@
 		<prometheus.io.version>0.6.0</prometheus.io.version>
 		<org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
 		<junit.version>4.11</junit.version>
+        <org.jboss.resteasy.version>3.0.12.Final</org.jboss.resteasy.version>
 	</properties>
 
 	<dependencies>

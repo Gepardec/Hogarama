@@ -29,6 +29,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_servlet</artifactId>
+            <version>${prometheus.io.version}</version>
+        </dependency>
 		<!-- Test Start -->
 		<dependency>
 			<groupId>junit</groupId>

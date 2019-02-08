@@ -16,7 +16,7 @@ import com.gepardec.hogarama.domain.sensor.SensorData;
 public class WateringStrategy {
  
 	@Inject
-	public SensorDAO sensorDao;
+	private SensorDAO sensorDao;
 	
 	public WateringStrategy() {
 	}
