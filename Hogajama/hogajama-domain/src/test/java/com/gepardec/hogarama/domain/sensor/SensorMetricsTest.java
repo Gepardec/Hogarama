@@ -3,8 +3,10 @@ package com.gepardec.hogarama.domain.sensor;
 import static com.gepardec.hogarama.domain.DateUtils.toDate;
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +32,8 @@ public class SensorMetricsTest {
     @Test
     public void testLatestValue() throws Exception {
         Map<String, SensorData> data = SensorMetrics.getLatestValues(setupWatering());
-        assertEquals("Only one latest sensor value", "Thu Jun 20 14:00:00 CEST 2019", data.get("My Plant").getTime().toString());
+
+        assertEquals("Only one latest sensor value", "2019-06-20", LocalDate.from(data.get("My Plant").getTime().toInstant().atZone(ZoneId.systemDefault())).toString());
     }
 
     private SensorData startSensorData() {
