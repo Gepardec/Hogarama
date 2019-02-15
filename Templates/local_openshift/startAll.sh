@@ -2,7 +2,7 @@
 
 set -x
 
-oc cluster up
+oc cluster up --skip-registry-check=true
 oc login -u system:admin
 oc policy add-role-to-user system:image-pusher developer
 oc create -f alltemplates.yaml -n openshift

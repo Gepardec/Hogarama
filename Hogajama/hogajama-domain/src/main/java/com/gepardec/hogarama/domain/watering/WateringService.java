@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.inject.Inject;
 
+import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorDAO;
 
 public class WateringService {
@@ -51,6 +52,7 @@ public class WateringService {
 		for (String sensorName : sensorDao.getAllSensors()) {
 			int dur = watering.water(getConfig(sensorName), getDate());
 			if (dur > 0) {
+				Metrics.wateringEventsFired.labels(sensorName).inc();
 				actor.sendActorMessage(sensorDao.getLocationBySensorName(sensorName), sensorName, dur);
 			}
 		}
