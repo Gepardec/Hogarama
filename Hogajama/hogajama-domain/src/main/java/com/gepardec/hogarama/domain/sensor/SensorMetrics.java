@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import com.gepardec.hogarama.domain.metrics.Metrics;
 import io.prometheus.client.Gauge;
 
 @ApplicationScoped
@@ -20,23 +21,14 @@ public class SensorMetrics {
     @Inject
     private SensorDAO sensorDao;
     
-    private Gauge sensorValues;
-    
+
     public void collect() {
 
         Map<String, SensorData> values = getLatestValues();
         for (String key : values.keySet()) {
             SensorData sensorData = values.get(key);
-            sensorValues.labels(sensorData.getSensorName()).set(sensorData.getValue());
+            Metrics.sensorValues.labels(sensorData.getSensorName(), sensorData.getLocation()).set(sensorData.getValue());
         }
-    }
-
-
-    @PostConstruct
-    private void createMetrics() {
-        sensorValues = Gauge.build()
-                .name("hogarama_sensor_value")
-                .help("Water Sensor Values.").labelNames("sensor_name").register();
     }
 
     private Map<String, SensorData> getLatestValues() {

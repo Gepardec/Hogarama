@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.domain.metrics;
 
 import io.prometheus.client.Counter;
+import io.prometheus.client.Gauge;
 import io.prometheus.client.Summary;
 
 public class Metrics {
@@ -36,5 +37,9 @@ public class Metrics {
             .help("Number of times a watering event has been fired")
             .labelNames("Sensor_Name").register();
 
+    public static final Gauge sensorValues = Gauge.build()
+            .name("hogarama_sensor_value")
+            .help("Water Sensor Values.")
+            .labelNames("sensor_name", "sensor_location").register();
 
 }
