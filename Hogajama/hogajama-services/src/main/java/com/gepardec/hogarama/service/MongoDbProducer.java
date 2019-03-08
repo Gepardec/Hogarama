@@ -25,7 +25,7 @@ public class MongoDbProducer {
 	private static final char[] PASSWORD = System.getenv("MONGODB_PW").toCharArray();
 	private static final int PORT = 27017;
 	private static final String COLLECTION = "habarama";
-	private static final String HOST = System.getProperty("mongo.host", "localhost");
+	private static final String HOST = System.getProperty("mongo.host", "mongodb");
 	private static MongoClient client;
 
 	@Produces

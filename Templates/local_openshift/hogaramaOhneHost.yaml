@@ -997,6 +997,8 @@ objects:
         - env:
           - name: AMQ_HOST
             value: http://broker-amq-mqtt:1883
+          - name: KEYCLOAK_AUTH_SERVER_URL
+            value: ${KEYCLOAK_AUTH_SERVER_URL}
           - name: JAVA_OPTIONS
             value: -Djava.net.preferIPv4Stack=true
           image: hogarama/mock-gui
