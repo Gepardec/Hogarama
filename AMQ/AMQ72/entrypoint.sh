@@ -15,6 +15,7 @@ rm -f /home/jboss/broker/etc/login.config
 cp /home/jboss/cfg/etc/broker.xml /home/jboss/broker/etc/
 cp /home/jboss/cfg/etc/login.config /home/jboss/broker/etc/
 cp /home/jboss/cfg/etc/keycloak.json /home/jboss/broker/etc/
+cp /home/jboss/cfg/etc/broker.jks /home/jboss/broker/etc/
 
 cd /home/jboss/broker/etc/
 sed 's/domain=\"activemq\"/domain=\"keycloak\"/g' bootstrap.xml > text.xml && rm bootstrap.xml && mv text.xml bootstrap.xml
