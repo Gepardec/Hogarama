@@ -36,15 +36,15 @@ def on_message(client, userdata, message):
 
             break
 
-def internetAvailable(host="8.8.8.8", port=53, timeout=3):
-    try:
+def reconnect(client):
+    while True:
+        log("Try connect again in a few seconds")
         time.sleep(5)
-        socket.setdefaulttimeout(timeout)
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
-        return True
-    except Exception as ex:
-        print ex.message
-        return False
+        try:
+            client.reconnect()
+            return True
+        except Exception as ex:
+            log("error on reconnect: " + str(ex))
 
 def set_gpio_actor(actor, duration):
     try:
@@ -57,9 +57,8 @@ def set_gpio_actor(actor, duration):
 
 def on_disconnect(client, userdata, rc):
     log(("Disconnect event occured: {} {} {}".format(client, userdata, rc)))
-    while not internetAvailable():
-        log("No Internet connection available, will try again in a few seconds")
-    client.reconnect()
+    reconnect(client)
+
     for actor in actors:
         topicName = "actor.{}.{}".format (actor['location'], actor['name'])
         log("{0} subscribe to {1}".format (brokerUrl, topicName))
