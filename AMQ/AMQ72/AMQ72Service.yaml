@@ -36,6 +36,10 @@ spec:
       port: 8778
       protocol: TCP
       targetPort: 8778
+    - name: 8883-tcp
+      port: 8883
+      protocol: TCP
+      targetPort: 8883
     - name: 8888-tcp
       port: 8888
       protocol: TCP
