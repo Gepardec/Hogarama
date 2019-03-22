@@ -8,7 +8,6 @@ metadata:
     app: amq72
   name: amq72
   namespace: hogarama
-  resourceVersion: '3451'
   selfLink: /apis/build.openshift.io/v1/namespaces/hogarama/buildconfigs/amq72
   uid: b90c6d4d-46f2-11e9-bb10-00155d648647
 spec:
