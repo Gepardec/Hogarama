@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  labels:
+    app: amq72
+  name: amq72
+  namespace: hogarama
+  selfLink: /api/v1/namespaces/hogarama/services/amq72
+  uid: 8480e5e7-4705-11e9-bb10-00155d648647
+spec:
+  clusterIP: 172.30.163.168
+  ports:
+    - name: 1883-tcp
+      port: 1883
+      protocol: TCP
+      targetPort: 1883
+    - name: 5671-tcp
+      port: 5671
+      protocol: TCP
+      targetPort: 5671
+    - name: 5672-tcp
+      port: 5672
+      protocol: TCP
+      targetPort: 5672
+    - name: 7800-tcp
+      port: 7800
+      protocol: TCP
+      targetPort: 7800
+    - name: 8161-tcp
+      port: 8161
+      protocol: TCP
+      targetPort: 8161
+    - name: 8778-tcp
+      port: 8778
+      protocol: TCP
+      targetPort: 8778
+    - name: 8883-tcp
+      port: 8883
+      protocol: TCP
+      targetPort: 8883
+    - name: 8888-tcp
+      port: 8888
+      protocol: TCP
+      targetPort: 8888
+    - name: 9876-tcp
+      port: 9876
+      protocol: TCP
+      targetPort: 9876
+    - name: 61612-tcp
+      port: 61612
+      protocol: TCP
+      targetPort: 61612
+    - name: 61613-tcp
+      port: 61613
+      protocol: TCP
+      targetPort: 61613
+    - name: 61616-tcp
+      port: 61616
+      protocol: TCP
+      targetPort: 61616
+    - name: 61617-tcp
+      port: 61617
+      protocol: TCP
+      targetPort: 61617
+  selector:
+    deploymentconfig: amq72
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

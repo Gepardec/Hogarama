@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+    generation: 1
+    labels:
+      app: amq72
+    name: amq72
+	namespace: hogarama
+spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+        openshift.io/imported-from: registry.access.redhat.com/amq-broker-7/amq-broker-72-openshift
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/amq-broker-7/amq-broker-72-openshift
+      generation: 1
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: Source
