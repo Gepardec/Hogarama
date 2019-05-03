@@ -1,28 +1,19 @@
 package com.gepardec.hogarama.mocks.cli;
 
+import org.apache.commons.cli.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.fusesource.hawtdispatch.transport.SslProtocolCodec.ClientAuth;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MockCli {
 	
