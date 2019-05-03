@@ -1,7 +1,6 @@
 package com.gepardec.hogarama.service.dao;
 
 import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.watering.WateringDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
 import com.mongodb.client.MongoCollection;
@@ -35,17 +34,18 @@ public class WateringDAOImpl implements WateringDAO {
         limitQueryByDate(from, to, query);
 
         FindOptions numberLimitOption = getFindOptionsWithMaxNumber(maxNumber);
-        List<WateringData> data = query.asList(numberLimitOption);
-        return data;
+        return query.asList(numberLimitOption);
     }
 
     private void limitQueryByActor(String sensorName, Query<WateringData> query) {
+
         if (StringUtils.isNotEmpty(sensorName)) {
             query.field("name").equal(sensorName);
         }
     }
 
     private void limitQueryByDate(Date from, Date to, Query<WateringData> query) {
+
         if (from != null) {
             if (to == null) {
                 to = new Date();
@@ -56,6 +56,7 @@ public class WateringDAOImpl implements WateringDAO {
     }
 
     private FindOptions getFindOptionsWithMaxNumber(Integer maxNumber) {
+
         FindOptions findOptions = new FindOptions();
         if (maxNumber != null && maxNumber >= 0) {
             findOptions.limit(maxNumber);
