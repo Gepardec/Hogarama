@@ -1,17 +1,14 @@
 package com.gepardec.hogarama.domain.watering;
 
-import static com.gepardec.hogarama.domain.DateUtils.toDate;
+import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorData;
 
+import javax.inject.Inject;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
-import com.gepardec.hogarama.domain.sensor.SensorData;
+import static com.gepardec.hogarama.domain.DateUtils.toDate;
 
 public class WateringStrategy {
  
