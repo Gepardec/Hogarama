@@ -25,7 +25,7 @@ public class MockCli {
 		printRunConfiguration(runConfiguration);
 		
 		MqttClient mqttClient = new MqttClient().
-				withHost(runConfiguration.getHost()).
+				withURL(runConfiguration.getHost()).
 				withUser(runConfiguration.getUser()).
 				withPassword(runConfiguration.getPassword()).
 				withTopic(runConfiguration.getTopic()).
