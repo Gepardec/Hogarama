@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.gepardec.hogarama.domain.watering.WateringConfigData;
@@ -17,7 +18,7 @@ public class DaoTest  {
 		dao.setUpForTest();
 	}
 
-	@Test
+	@Test  @Ignore // Das ist eher ein Integrationstest. Man benötigt Mongo-Zugriff
 	public void test() {
 		WateringConfigData wconf = new WateringConfigData("sensor", "actor", 60, 0.2, 5);
 		dao.save(wconf);
