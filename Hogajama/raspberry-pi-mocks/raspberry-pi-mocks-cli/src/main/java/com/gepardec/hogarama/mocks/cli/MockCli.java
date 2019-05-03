@@ -133,7 +133,7 @@ public class MockCli {
         } catch (IOException ex) {
             LOGGER.error("An expcetion occured while loading properties", ex);
             System.exit(1);
-            return null;
+            return new Properties();
         } finally {
             if (input != null) {
                 try {
