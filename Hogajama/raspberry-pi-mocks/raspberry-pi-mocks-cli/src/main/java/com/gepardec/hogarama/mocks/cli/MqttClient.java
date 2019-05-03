@@ -149,7 +149,7 @@ public class MqttClient {
 				connection.publish(this.topic, message.getBytes(), QoS.AT_LEAST_ONCE, false);
 				LOGGER.info("Published " + counter + " of " + messages.size());
 				Thread.sleep(delayMs);
-			};
+			}
 			connection.disconnect();
 		} catch (Exception e) {
 			LOGGER.error("Error while publishing ", e);
@@ -160,8 +160,8 @@ public class MqttClient {
 		connectAndPublish(Arrays.asList(messages), 1000L);
 	}
 
-	private SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyStoreException, IOException,
-			CertificateException, FileNotFoundException, UnrecoverableKeyException, KeyManagementException {
+	private SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyStoreException,
+			CertificateException, IOException, UnrecoverableKeyException, KeyManagementException {
 		SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
 
 		KeyManagerFactory factory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -174,9 +174,11 @@ public class MqttClient {
 		keystoreInputStream.read(keystoreBuffer);
 		
 		File keystoreTempFile = File.createTempFile("broker", ".jks");
-		FileOutputStream keystoreOutputStream = new FileOutputStream(keystoreTempFile);
-		keystoreOutputStream.write(keystoreBuffer);
-		keystoreOutputStream.close();
+
+		try (FileOutputStream keystoreOutputStream = new FileOutputStream(keystoreTempFile)){
+			keystoreOutputStream.write(keystoreBuffer);
+		}
+
 	    
 		System.setProperty("javax.net.ssl.trustStore" , keystoreTempFile.getAbsolutePath());
 		
