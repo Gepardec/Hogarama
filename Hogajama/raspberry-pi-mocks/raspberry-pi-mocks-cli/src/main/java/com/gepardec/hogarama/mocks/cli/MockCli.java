@@ -114,7 +114,7 @@ public class MockCli {
 			return messages;
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Exception occured while getting test messages", e);
 			System.exit(1);
 			return null;
 		}
@@ -131,7 +131,7 @@ public class MockCli {
 			prop.load(input);
 			return prop;
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			LOGGER.error("An expcetion occured while loading properties", ex);
 			System.exit(1);
 			return null;
 		} finally {
@@ -139,7 +139,7 @@ public class MockCli {
 				try {
 					input.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOGGER.error("Exception occured while closing inputstream", e);
 					System.exit(1);
 				}
 			}
