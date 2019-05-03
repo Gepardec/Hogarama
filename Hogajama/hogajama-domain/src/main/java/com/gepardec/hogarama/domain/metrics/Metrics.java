@@ -22,16 +22,6 @@ public class Metrics {
             .name("hogarama_exceptions_total")
             .help("Exceptions thrown in hogajama").labelNames("hogarama_modul", "exception_name", "method").register();
 
-    public static final Counter methodCalls = Counter.build()
-            .name("hogarama_method_calls")
-            .help("Methodenaufrufe in Hogarama")
-            .labelNames("hogarama_modul", "method_name").register();
-
-    public static final Summary methodDuration = Summary.build()
-            .name("hogarama_method_duration")
-            .help("Dauer des Methodenaufrufes")
-            .labelNames("hogarama_modul", "method_name").register();
-
     public static final Counter wateringEventsFired = Counter.build()
             .name("hogarama_watering_events_fired")
             .help("Number of times a watering event has been fired")
