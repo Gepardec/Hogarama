@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class HogaramaBackendService {
-  public baseUrl: string = 'https://hogajama-57-hogarama.cloud.itandtel.at/hogajama-rs';
+  public baseUrl: string = '/hogajama-rs';
 
   constructor(private http: HttpClient) {
     /*if (isDevMode()) {
