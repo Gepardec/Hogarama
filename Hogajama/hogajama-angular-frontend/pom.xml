@@ -26,7 +26,6 @@
                         <artifactId>maven-war-plugin</artifactId>
                         <configuration>
                             <outputDirectory>deployments</outputDirectory>
-                            <warName>hogajama-frontend-${project.version}</warName>
                         </configuration>
 
                     </plugin>
