@@ -5,13 +5,4 @@
     <welcome-file-list>
         <welcome-file>/index.html</welcome-file>
     </welcome-file-list>
-
-    <servlet>
-        <servlet-name>index</servlet-name>
-        <jsp-file>/index.html</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>index</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
 </web-app>
