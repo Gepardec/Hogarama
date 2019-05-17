@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import { AuthenticationService } from './services/AuthenticationService/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,8 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   title = 'hogajama-angular-frontend';
+
+  constructor(private authService: AuthenticationService) {
+    //this.authService.loginUser();
+  }
 }

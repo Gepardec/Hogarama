@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class HogaramaBackendService {
-  public baseUrl: string = '/hogajama-rs';
+  public baseUrl = '/hogajama-rs';
 
   constructor(private http: HttpClient) {
     /*if (isDevMode()) {

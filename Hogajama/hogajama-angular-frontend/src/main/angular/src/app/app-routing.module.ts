@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import { TestPrototypeComponent } from './modules/test-prototype/test-prototype.component';
-import { TestPrototypeModule } from './modules/test-prototype/test-prototype.module';
+import { AuthGuard } from './shared/auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -12,6 +11,11 @@ const routes: Routes = [
   {
     path: 'testPrototype',
     loadChildren: './modules/test-prototype/test-prototype.module#TestPrototypeModule',
+    canLoad: [AuthGuard]
+  },
+  {
+    path: 'testLoginRedirect',
+    loadChildren: './modules/test-login-redirect/test-login-redirect.module#TestLoginRedirectModule',
   }
 ];
 
