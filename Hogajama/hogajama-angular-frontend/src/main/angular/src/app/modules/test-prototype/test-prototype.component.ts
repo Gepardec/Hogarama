@@ -18,7 +18,7 @@ export class TestPrototypeComponent implements OnInit {
       sub.unsubscribe();
     }, (error) => {
       console.error(error);
-      this.error = error.statusText;
+      this.error = error.message;
     });
   }
 
