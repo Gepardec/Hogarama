@@ -25,6 +25,9 @@
 #define mqtt_server_port 443
 #define mqtt_user "mq_habarama"
 #define mqtt_password "mq_habarama_pass"
+#define isSensor true
+#define isActor false
+#define waitIntervall 5000
 
 WiFiClientSecure espClient;
 PubSubClient client(espClient);
@@ -37,8 +40,8 @@ typedef struct {
 
 // configuration for actor.
 actor_type actors[] = {
-   {D0, 0, "actor.Wien.GruenerGepard"},
-   {D1, 0, "actor.Wien.GruenerArduino"}
+  {D0, 0, "actor.Wien.GruenerGepard"},
+  {D1, 0, "actor.Wien.GruenerArduino"}
 };
 
 long lastSensorDataSent = 0;
@@ -59,7 +62,7 @@ void initializeWifi() {
   //WiFiManager wifiManager;
   Serial.println("WiFi Manager intiliazing");
   WiFi.begin("Gepardec Gast", "gast@gepard");
-  while(WiFi.status() != WL_CONNECTED){
+  while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.println("working on wifi connection");
   }
@@ -117,6 +120,30 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
   }
 }
 
+void handleSensor() {
+  if (client.connected()) {
+    client.loop();
+
+    // send each 60s sensor data to cloud.
+    long now = millis();
+    if (now - lastSensorDataSent > 1000) {
+      lastSensorDataSent = now;
+
+      sendSensorData();
+    }
+  }
+}
+
+void handleActor() {
+  for (byte i = 0; i < (sizeof(actors) / sizeof(*actors)); i++) {
+    if (actors[i].ticks_until < millis() && digitalRead(actors[i].pin)) {
+      Serial.print("Setting actor to low: ");
+      Serial.println(actors[i].topic);
+      digitalWrite(actors[i].pin, LOW);
+    }
+  }
+}
+
 void setGpio(actor_type *actor, long duration) {
   Serial.print("Setting actor to hight: ");
   Serial.println(actor->topic);
@@ -160,33 +187,21 @@ void subscribeToMqtt() {
 }
 
 void loop() {
-   Serial.println("SETUP DONE");
-   Serial.println("ENTERING LOOP");
-  // set pin of actor to low when ticks_until passed.
-  /*for (byte i = 0; i < (sizeof(actors) / sizeof(*actors)); i++) {
-    if (actors[i].ticks_until < millis() && digitalRead(actors[i].pin)) {
-      Serial.print("Setting actor to low: ");
-      Serial.println(actors[i].topic);
-      digitalWrite(actors[i].pin, LOW);
-    }
-  }
-  */
+  // handle disconnects
   if (!client.connected()) {
     reconnect();
   }
 
-  if (client.connected()) {
-    client.loop();
-
-    // send each 60s sensor data to cloud.
-    long now = millis();
-    if (now - lastSensorDataSent > 1000) {
-      lastSensorDataSent = now;
-
-      sendSensorData();
-    }
+  if (isActor) {
+    // set pin of actor to low when ticks_until passed.
+    handleActor();
   }
-  delay(2000);
+
+  if (isSensor) {
+    handleSensor();
+  }
+
+  delay(waitIntervall);
   Serial.println("LOOP COMPLETED");
 }
 
