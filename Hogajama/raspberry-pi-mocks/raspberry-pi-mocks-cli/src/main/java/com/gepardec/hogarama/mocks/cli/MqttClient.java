@@ -1,30 +1,24 @@
 package com.gepardec.hogarama.mocks.cli;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-
 import org.fusesource.mqtt.client.BlockingConnection;
 import org.fusesource.mqtt.client.MQTT;
 import org.fusesource.mqtt.client.QoS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.*;
+import java.security.cert.CertificateException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 public class MqttClient {
 	
@@ -149,7 +143,7 @@ public class MqttClient {
 				connection.publish(this.topic, message.getBytes(), QoS.AT_LEAST_ONCE, false);
 				LOGGER.info("Published " + counter + " of " + messages.size());
 				Thread.sleep(delayMs);
-			};
+			}
 			connection.disconnect();
 		} catch (Exception e) {
 			LOGGER.error("Error while publishing ", e);
@@ -160,8 +154,8 @@ public class MqttClient {
 		connectAndPublish(Arrays.asList(messages), 1000L);
 	}
 
-	private SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyStoreException, IOException,
-			CertificateException, FileNotFoundException, UnrecoverableKeyException, KeyManagementException {
+	private SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyStoreException,
+			CertificateException, IOException, UnrecoverableKeyException, KeyManagementException {
 		SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
 
 		KeyManagerFactory factory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -174,9 +168,11 @@ public class MqttClient {
 		keystoreInputStream.read(keystoreBuffer);
 		
 		File keystoreTempFile = File.createTempFile("broker", ".jks");
-		FileOutputStream keystoreOutputStream = new FileOutputStream(keystoreTempFile);
-		keystoreOutputStream.write(keystoreBuffer);
-		keystoreOutputStream.close();
+
+		try (FileOutputStream keystoreOutputStream = new FileOutputStream(keystoreTempFile)){
+			keystoreOutputStream.write(keystoreBuffer);
+		}
+
 	    
 		System.setProperty("javax.net.ssl.trustStore" , keystoreTempFile.getAbsolutePath());
 		

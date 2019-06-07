@@ -5,8 +5,6 @@ import com.gepardec.hogarama.domain.sensor.SensorDAO;
 import com.gepardec.hogarama.domain.watering.ActorService;
 import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.mocks.cli.MqttClient;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
@@ -28,18 +26,17 @@ public class ActorServiceImpl implements ActorService {
     private Logger log;
 
 
-    public void sendActorMessage(String location, String actorName, Integer duration) {
+    public void sendActorMessage(String location, String sensorName, Integer duration) {
 
-        log.info("sendActorMessage: location: {}, actorName: {}, duration: {}", location, actorName, duration);
-        // TODO activate when MongoDB is working
-        // checkParametersOrFail(location, sensorName, duration);
+        log.info("sendActorMessage: location: {}, actorName: {}, duration: {}", location, sensorName, duration);
+        checkParametersOrFail(location, sensorName, duration);
 
         MqttClient mqttClient = new MqttClient().defaultConnection().
-                withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("actor." + location + "." + actorName)).
+                withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("actor." + location + "." + sensorName)).
                 build();
 
 
-        WateringData data = new WateringData(new Date(), actorName, location, duration);
+        WateringData data = new WateringData(new Date(), sensorName, location, duration);
         db.save(data);
         JSONObject json = new JSONObject(data);
         String message = json.toString();
