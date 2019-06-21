@@ -12,6 +12,10 @@ export class TestLoginRedirectComponent implements OnInit {
   constructor(private authService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
+    this.authService.isKeycloakAuthenticated().then(
+      () => this.router.navigateByUrl('/testPrototype'),
+      () => alert('Login failure!')
+    );
   }
 
   onLoginClickTest(): void {
