@@ -2,6 +2,7 @@ package com.gepardec.hogarama.domain.sensor;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -106,7 +107,7 @@ public class SensorData {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public  boolean equals(Object obj){
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -114,39 +115,18 @@ public class SensorData {
 		if (getClass() != obj.getClass())
 			return false;
 		SensorData other = (SensorData) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (location == null) {
-			if (other.location != null)
-				return false;
-		} else if (!location.equals(other.location))
-			return false;
-		if (sensorName == null) {
-			if (other.sensorName != null)
-				return false;
-		} else if (!sensorName.equals(other.sensorName))
-			return false;
-		if (time == null) {
-			if (other.time != null)
-				return false;
-		} else if (!time.equals(other.time))
-			return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
-			return false;
-		if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value))
-			return false;
-		if (version == null) {
-			if (other.version != null)
-				return false;
-		} else if (!version.equals(other.version))
-			return false;
-		return true;
+
+		return new EqualsBuilder()
+				.append(id, other.id)
+				.append(location, other.location)
+				.append(sensorName, other.sensorName)
+				.append(time, other.time)
+				.append(type, other.type)
+				.append(Double.doubleToLongBits(value), Double.doubleToLongBits(other.value))
+				.append(version, other.version)
+				.build();
 	}
+
+
 	
 }
