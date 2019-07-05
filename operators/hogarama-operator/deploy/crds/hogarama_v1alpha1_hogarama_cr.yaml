@@ -3,5 +3,7 @@ kind: Hogarama
 metadata:
   name: example-hogarama
 spec:
-  # Add fields here
-  size: 3
+  # mongodb password
+  mongodb_password: 'password'
+  # mongodb admin password
+  mongodb_admin_password: 'admin_password'
