@@ -7,8 +7,8 @@ import {UserData} from "../../shared/model/UserData";
   providedIn: 'root'
 })
 export class HogaramaBackendService {
-  // public baseUrl = '/hogajama-rs';
-  public baseUrl = 'http://localhost:8080/hogajama-rs';
+  public baseUrl = '/hogajama-rs';
+  // public baseUrl = 'http://localhost:8080/hogajama-rs';
 
   constructor(private http: HttpClient) {
     /*if (isDevMode()) {
