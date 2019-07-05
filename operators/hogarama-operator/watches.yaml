@@ -1,0 +1,5 @@
+---
+- version: v1alpha1
+  group: hogarama.gepardec.com
+  kind: Hogarama
+  playbook: /opt/ansible/playbook.yml

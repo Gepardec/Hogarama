@@ -1,0 +1,7 @@
+apiVersion: hogarama.gepardec.com/v1alpha1
+kind: Hogarama
+metadata:
+  name: example-hogarama
+spec:
+  # Add fields here
+  size: 3

@@ -1,0 +1,10 @@
+= Hogarama Operator
+
+This is the documentation for the Hogarama operator, which manages a Hogarama System in Openshift.
+
+== Development
+=== Setup
+=== Create Operator
+The following command creates the Ansible Operator Skeleton.
+
+``operator-sdk new --type ansible --kind Hogarama --api-version hogarama.gepardec.com/v1alpha1 hogarama-operator --generate-playbook --skip-git-init``
