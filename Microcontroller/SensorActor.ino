@@ -12,8 +12,9 @@
 #include <WiFiManager.h>          //WiFi Configuration Magic - https://github.com/tzapu/WiFiManager
 
 #include <PubSubClient.h>         // Client to connect to cloud via mqtt - https://github.com/plapointe6/EspMQTTClient
-#include <ArduinoJson.h>          // Library to parse Json. Used for payload of mqtt ATTENTION: Version 5 is required at the moment. Support for v6 in the Future
+#include <ArduinoJson.h>          // Library to parse Json. Used for payload of mqtt
 #include <stdio.h>
+#include <EEPROM.h>               // Library to write to persistent storage
 
 // configuration for sensor
 #define sensor_name "GruenerArduino"
@@ -47,10 +48,125 @@ actor_type actors[] = {
 long lastSensorDataSent = 0;
 long lastReconnect = 0;
 
+
+class PersistentSettings {
+
+  public:
+    static StaticJsonDocument<200> persistentSettings;
+    static const int eepromSize = 512;
+
+    void setup() {
+    }
+
+    void loop() {
+    }
+
+    static void storeSettings() {
+      Serial.println("Saving configuration to flash");
+
+      // Setup EEPROM
+      EEPROM.begin(PersistentSettings::eepromSize);
+      clearEeprom();
+
+      // Setup data
+      String tempJsonString;
+      serializeJson(PersistentSettings::persistentSettings, tempJsonString);
+
+      // Writing serialized data to Serial for testing
+      Serial.println("Serialized data to save:");
+      Serial.println(tempJsonString);
+
+      // Save data
+      for (int i = 0 ; i < tempJsonString.length() ; i++) {
+        char currentChar = tempJsonString.charAt(i);
+        EEPROM.write(i, currentChar);
+      }
+
+      EEPROM.end();
+      Serial.println("Done saving configuration");
+    }
+
+    static void clearEeprom() {
+      EEPROM.begin(PersistentSettings::eepromSize);
+      for (int i = 0 ; i < EEPROM.length() ; i++) {
+        EEPROM.write(i, 0);
+      }
+      EEPROM.commit();
+    }
+
+    static boolean readSettings() {
+      Serial.println("Reading configuration from flash");
+
+      EEPROM.begin(PersistentSettings::eepromSize);
+
+      // Reading JSON data from EEPROM
+      char allChars[EEPROM.length()];
+      for (int i = 0 ; i < EEPROM.length() ; i++) {
+        allChars[i] = EEPROM.read(i);
+      }
+
+      // Return false, if no data is read
+      if(sizeof(allChars) == 0) {
+        return false;
+      }
+
+      // Writing serialized data to Serial for testing
+      Serial.println("Serialized data:");
+      for (int i = 0 ; i < sizeof(allChars); i++) {
+        Serial.print(allChars[i]);
+      }
+      Serial.println("");
+      auto error = deserializeJson(PersistentSettings::persistentSettings, allChars, sizeof(allChars));
+
+      // Return false, if data cant be mapped to JSON
+      if(error) {
+        return false;
+      }
+
+      // Mapping JSON data to strings
+      JsonObject data = PersistentSettings::persistentSettings.as<JsonObject>();
+      const char* name = data["wifiName"];
+      String nameStr = String(name);
+      const char* pass = data["wifiPass"];
+      String passStr = String(pass);
+
+      // Writing deserialized data to Serial for testing
+      Serial.println("Deserialized data:");
+      Serial.println("Name: "+ nameStr);
+      Serial.println("Password: "+ passStr);
+
+      Serial.println("Done reading configuration");
+      EEPROM.end();
+
+      return true;
+    }
+
+    static StaticJsonDocument<200> getSettings() {
+      return PersistentSettings::persistentSettings;
+    }
+};
+
+PersistentSettings settings();
+StaticJsonDocument<200> PersistentSettings::persistentSettings; //Static class members need to be declared inside the class, but defined outside of it
+
+
 void setup() {
   Serial.begin(115200);
 
-  initializeWifi();
+  // Disable comments, to setup test data
+  //PersistentSettings::persistentSettings["wifiName"] = "Gepardec Gast";
+  //PersistentSettings::persistentSettings["wifiPass"] = "gast@gepard";
+  //PersistentSettings::storeSettings();
+
+  // Disable comment to delete test data
+  //PersistentSettings::clearEeprom();
+
+  // Example usage:
+  //if(PersistentSettings::readSettings() == true) {
+  //  initializeWifi();
+  //} else {
+  //  setupViaBluetooth();
+  //}
 
   //initializeActors();
 
@@ -61,7 +177,15 @@ void setup() {
 void initializeWifi() {
   //WiFiManager wifiManager;
   Serial.println("WiFi Manager intiliazing");
-  WiFi.begin("Gepardec Gast", "gast@gepard");
+
+  // TODO: remove this bulk
+  JsonObject data = PersistentSettings::getSettings().as<JsonObject>();
+  const char* name = data["wifiName"];
+  String nameStr = String(name);
+  const char* pass = data["wifiPass"];
+  String passStr = String(pass);
+
+  WiFi.begin(nameStr, passStr);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.println("working on wifi connection");
@@ -93,17 +217,17 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("mqtt topic: ");
   Serial.println(topic);
 
-  StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& root = jsonBuffer.parseObject(payload);
-
+  StaticJsonDocument<200> root;
+  auto error = deserializeJson(root, payload, length);
   for (byte i = 0; i < (sizeof(actors) / sizeof(*actors)); i++) {
 
     // Check if topic matches to actor
     if (strcmp(topic, actors[i].topic.c_str()) == 0) {
       Serial.println("actor found");
 
-      if (!root.success()) {
+      if (error) {
         Serial.println("Could not parse payload from mqtt");
+        Serial.println(error.c_str());
         return;
       }
 
@@ -222,15 +346,14 @@ void sendSensorData() {
       }
   */
 
-  StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& root = jsonBuffer.createObject();
+  StaticJsonDocument<200> root;
   root["sensorName"] = sensor_name;
   root["type"] = sensor_type;
   root["value"] = 800;
   root["location"] = sensor_location;
   root["version"] = 1;
 
-  root.printTo(payload);
+  serializeJson(root, payload);
 
   Serial.print("Sending: ");
   Serial.println(payload);
