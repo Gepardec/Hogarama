@@ -2,15 +2,17 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
-  production: false
+import { KeycloakConfig } from 'keycloak-angular';
+
+// Add here your keycloak setup infos
+const keycloakConfig: KeycloakConfig = {
+  url: 'https://secure-sso-57-hogarama.cloud.itandtel.at/auth/',
+  realm: 'hogarama',
+  clientId: 'hogarama',
+  credentials : {secret : '12360720-0484-40da-9459-34ce53121677'}
 };
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+export const environment = {
+  production: false,
+  keycloak: keycloakConfig
+};

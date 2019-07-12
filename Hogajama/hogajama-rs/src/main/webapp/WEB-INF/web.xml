@@ -17,6 +17,26 @@
 			<role-name>admins</role-name>
 		</auth-constraint>
 	</security-constraint>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Restricted</web-resource-name>
+			<url-pattern>/rest/sensor</url-pattern>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admins</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Restricted</web-resource-name>
+			<url-pattern>/rest/user</url-pattern>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admins</role-name>
+		</auth-constraint>
+	</security-constraint>
 	
 	<login-config>
 		<auth-method>KEYCLOAK</auth-method>

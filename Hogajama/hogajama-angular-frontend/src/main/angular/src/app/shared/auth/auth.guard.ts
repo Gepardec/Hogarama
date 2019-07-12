@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanLoad, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import {from, Observable, Subject} from 'rxjs';
 import { AuthenticationService } from 'src/app/services/AuthenticationService/authentication.service';
 
 @Injectable({
@@ -17,12 +17,20 @@ export class AuthGuard implements CanLoad {
     });
   }
 
-  canLoad(route: import('@angular/router').Route, segments: import('@angular/router').UrlSegment[])
+  canLoad(route: import ('@angular/router').Route, segments: import ('@angular/router').UrlSegment[])
     : boolean | Observable<boolean> | Promise<boolean> {
 
-    if (!this._canLoad) {
-      this.router.navigateByUrl('/testLoginRedirect');
-    }
-    return this._canLoad;
+    return new Promise<boolean>((resolve, reject) => {
+      return this.authService.isKeycloakAuthenticated().then((val) => {
+        console.log('KEYCLOAK AUTH ' + val);
+        if (!val) {
+          this.router.navigateByUrl('/testLoginRedirect');
+        }
+        resolve(val);
+      }, (val) => {
+        console.log('KEYCLOAK AUTH REJ' + val);
+        reject(val);
+      });
+    });
   }
 }

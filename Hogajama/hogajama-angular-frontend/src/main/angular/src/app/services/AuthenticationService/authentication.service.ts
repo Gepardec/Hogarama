@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
+import {Router} from '@angular/router';
+import {KeycloakService} from 'keycloak-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -7,9 +9,10 @@ import { Subject, Observable } from 'rxjs';
 export class AuthenticationService {
 // tslint:disable-next-line: variable-name
   private _isAuthenticated: Subject<boolean> = new Subject();
+  // tslint:disable-next-line: variable-name
   private _isCurrentlyAuthenticated: boolean;
 
-  constructor() {
+  constructor(protected keycloakAngular: KeycloakService) {
     this.isAuthenticated().subscribe((status: boolean) => {
       this._isCurrentlyAuthenticated = status;
     });
@@ -17,18 +20,34 @@ export class AuthenticationService {
 
   public loginUser(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      let loginStatus = true;
-      this._isAuthenticated.next(loginStatus);
-      resolve(loginStatus);
+      this.keycloakAngular.login().then(() => {
+        this._isAuthenticated.next(true);
+        this._isCurrentlyAuthenticated = true;
+        resolve(true);
+      }, () => {
+        this._isAuthenticated.next(false);
+      });
     });
+    /*return new Promise<boolean>((resolve, reject) => {
+      this._isAuthenticated.next(true);
+      resolve(true);
+    });´*/
   }
 
   public logoutUser(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      let loginStatus = false;
-      this._isAuthenticated.next(loginStatus);
-      resolve(loginStatus);
+      this.keycloakAngular.logout().then(() => {
+        this._isAuthenticated.next(false);
+        this._isCurrentlyAuthenticated = false;
+        resolve(false);
+      }, () => {
+        reject();
+      });
     });
+    /*return new Promise<boolean>((resolve, reject) => {
+      this._isAuthenticated.next(false);
+      resolve(false);
+    });*/
   }
 
   public isAuthenticated(): Observable<boolean> {
@@ -37,5 +56,9 @@ export class AuthenticationService {
 
   public isCurrentlyAuthenticated(): boolean {
     return this._isCurrentlyAuthenticated;
+  }
+
+  public isKeycloakAuthenticated(): Promise<boolean> {
+      return this.keycloakAngular.isLoggedIn();
   }
 }
