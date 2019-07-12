@@ -1,0 +1,46 @@
+- name: "Setting up dc/"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: DeploymentConfig
+      metadata:
+        creationTimestamp: null
+        name: "{{ _hogajama_name }}"
+        namespace: "{{ _namespace }}"
+        labels:
+          app: "{{ _label_app }}"
+      spec:
+        replicas: " {{ _hogajama_replicas }}"
+        selector:
+          deploymentconfig: "{{ _hogajama_name }}"
+        strategy:
+          rollingParams:
+            intervalSeconds: 1
+            maxSurge: 25%
+            maxUnavailable: 25%
+            timeoutSeconds: 600
+            updatePeriodSeconds: 1
+          type: Rolling
+        template:
+          metadata:
+            creationTimestamp: null
+            labels:
+              app: "{{ _label_app }}"
+          spec:
+            containers:
+              - image: "{{_hogajama_image }}"
+                imagePullPolicy: Always
+                name: "{{ _hogajama_name }}"
+                ports:
+                  - containerPort: "{{ _hogajama_port_unsecure }}"
+                    protocol: TCP
+                  - containerPort: "{{ _hogajama_port_secure }}"
+                    protocol: TCP
+                  - containerPort: "{{ _hogajama_port_other }}"
+                    protocol: TCP
+                resources: {}
+                terminationMessagePath: /dev/termination-log
+            dnsPolicy: ClusterFirst
+            restartPolicy: Always
+            terminationGracePeriodSeconds: 60

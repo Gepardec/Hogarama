@@ -4,7 +4,7 @@ metadata:
   name: example-hogarama
 spec:
   # Installation name
-  name: "test"
+  name: "hogarama"
   # Mongodb replica count
   mongodb_replicas: 1
   # mongodb admin user

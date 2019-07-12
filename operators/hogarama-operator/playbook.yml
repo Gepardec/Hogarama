@@ -4,8 +4,11 @@
     # Set facts for all roles and playbook executions from now on
     - name: "Set Facts"
       set_fact:
-        _mongodb_namespace: "{{ meta.namespace }}"
-        _mongodb_name: "{{ name | default('hogarama') }}"
+        # COMMON Part
+        _label_app: "{{ name }}"
+        _namespace: "{{ meta.namespace }}"
+        # MONGODB Part
+        _mongodb_name: "{{ name }}-mongodb"
         _mongodb_replicas: "{{ mongodb_replicas | default('1') }}"
         _mongodb_db: "hogarama-db"
         _mongodb_user: "{{ mongodb_user | default('hogarama') }}"
@@ -14,6 +17,14 @@
         _mongodb_pvc_size: "{{ mongodb_pvc_size | default('512Mi') }}"
         _mongodb_port: 27017
         _mongodb_image: "registry.access.redhat.com/rhscl/mongodb-32-rhel7:latest"
+        _hogajama_name: "{{ name }}-hogajama"
+        _hogajama_replicas: "{{ hogajama_replicas | default('1') }}"
+        # HOGAJAMA Part
+        # TODO: Pu image to quay.io?? What are the ports for? Manage via image stream or directly use image?
+        _hogajama_image: "172.30.194.147:5000/57-hogarama/hogajama:production"
+        _hogajama_port_unsecure: 8080
+        _hogajama_port_secure: 8443
+        _hogajama_port_other: 8778
 
     # Skip execution if mongodb_replica count is invalid
     - name: "Checking 'mongodb_replicas' setting"

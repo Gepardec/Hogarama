@@ -3,8 +3,64 @@
 This is the documentation for the Hogarama operator, which manages a Hogarama System in Openshift.
 
 == Development
-=== Setup
-=== Create Operator
+=== 1. Create Operator project skeleton
 The following command creates the Ansible Operator Skeleton.
 
 ``operator-sdk new --type ansible --kind Hogarama --api-version hogarama.gepardec.com/v1alpha1 hogarama-operator --generate-playbook --skip-git-init``
+
+=== 1. Prepare 'operator.yml'
+Go to link:hogarama-operator/deploy/operator.yml[operator.yml] and provide the following data:
+
+. The fully qualified image name of the operator you will build
+. The image pull policy
+
+=== 2. Prepare 'roles.yml'
+You need to assign all roles the operator will need to be functional.
+
+IMPORTANT: The default generated ones are not enough and '*' wildcard is not supported in OCP 3.11.x
+
+=== 3. Implement 'playbook.yml'
+This playbook will be called periodically, so make sure the actions are idempotent.
+
+WARNING: If you use password generation in yaml and use this password in a resource, then an update event is triggered
+and for instance a deploymentConfig would always be newly rolled out. This is caused because the password is generated and will always be a new one,
+which causes a configChange to happen.
+
+This playbook shall prepare common facts/variables and delegate to the proper tasks to manage the resources.
+
+=== 4. Implement tasks
+Implement tasks which manage the kubernetes/openshift resources. For instance a task file for ``mongodb``, another for ``amq`` and so on.
+
+== Deploy
+
+=== 1. Deploy custom resource
+[source,bash]
+----
+cd operators/hograma-operator
+oc apply -f ./deploy/crd/hogarama_v1alpha1_hogarama_crd.yaml
+----
+
+WARNING: You need to be cluster admin to create a cutom resource definition
+
+
+=== 1. Deploy the operator
+The following command will create all resource defined by all yml file within the ``deploy`` directory.
+
+[source,bash]
+----
+cd operators/hograma-operator
+oc apply -f ./deploy/
+----
+
+WARNING: You need to be cluster admin to create the roles which are part of the descriptors in the ``deploy`` directory.
+
+=== 1. Deploy the custom resource
+Implement a custom resource like link:hogarama-operator/deploy/crd/hogarama_v1alpha1_hogarama_cr.yaml[this].
+
+[source,bash]
+----
+cd operators/hograma-operator
+oc apply -f ./deploy/crd/hogarama_v1alpha1_hogarama_cr.yaml
+----
+
+IMPORTANT: If the custom resource gets deleted, then all resource get deleted.

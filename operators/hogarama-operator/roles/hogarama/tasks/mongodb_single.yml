@@ -7,15 +7,38 @@
       metadata:
         creationTimestamp: null
         name: "{{ _mongodb_name }}"
-        namespace: "{{ _mongodb_namespace }}"
+        namespace: "{{ _namespace }}"
         labels:
-          app: "{{ _mongodb_name }}"
+          app: "{{ _label_app }}"
       spec:
         accessModes:
           - ReadWriteOnce
         resources:
           requests:
             storage: "{{ _mongodb_pvc_size }}"
+
+- name: "Set mongodb svc/{{ mongodb_name }}"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        creationTimestamp: null
+        name: "{{ _mongodb_name }}"
+        namespace: "{{ _namespace }}"
+        labels:
+          app: "{{ _label_app }}"
+      spec:
+        ports:
+          - name: "{{ _mongodb_name }}"
+            port: "{{ _mongodb_port}}"
+            protocol: TCP
+            targetPort: "{{ _mongodb_port }}"
+        selector:
+          name: "{{ _mongodb_name }}"
+        sessionAffinity: None
+        type: ClusterIP
 
 - name: "Set mongodb dc/{{ _mongodb_name }}"
   k8s:
@@ -25,10 +48,10 @@
       kind: DeploymentConfig
       metadata:
         name: "{{ _mongodb_name }}"
-        namespace: "{{ _mongodb_namespace }}"
+        namespace: "{{ _namespace }}"
         generation: 1
         labels:
-          app: "{{ _mongodb_name }}"
+          app: "{{ _label_app }}"
       spec:
         replicas: "{{ _mongodb_replicas }}"
         selector:
