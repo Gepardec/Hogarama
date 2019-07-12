@@ -1,0 +1,93 @@
+- name: "Setting up pvc/{{ _mongodb_name }}"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        name: "{{ _mongodb_name }}"
+        namespace: "{{ _mongodb_namespace }}"
+        labels:
+          app: "{{ _mongodb_name }}"
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "{{ _mongodb_pvc_size }}"
+
+- name: "Set mongodb dc/{{ _mongodb_name }}"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: DeploymentConfig
+      metadata:
+        name: "{{ _mongodb_name }}"
+        namespace: "{{ _mongodb_namespace }}"
+        generation: 1
+        labels:
+          app: "{{ _mongodb_name }}"
+      spec:
+        replicas: "{{ _mongodb_replicas }}"
+        selector:
+          name: "{{ _mongodb_name }}"
+        strategy:
+          type: Recreate
+        template:
+          metadata:
+            creationTimestamp: null
+            labels:
+              name: "{{ _mongodb_name }}"
+          spec:
+            containers:
+              - env:
+                  - name: MONGODB_USER
+                    value: "{{ _mongodb_user }}"
+                  - name: MONGODB_PASSWORD
+                    value: "{{ _mongodb_password }}"
+                  - name: MONGODB_DATABASE
+                    value: "{{ _mongodb_db }}"
+                  - name: MONGODB_ADMIN_PASSWORD
+                    value: "{{ _mongodb_admin_password }}"
+                image: "{{ _mongodb_image }}"
+                imagePullPolicy: IfNotPresent
+                livenessProbe:
+                  failureThreshold: 3
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  successThreshold: 1
+                  timeoutSeconds: 1
+                  tcpSocket:
+                    port: "{{ _mongodb_port }}"
+                name: "{{ _mongodb_name }}"
+                ports:
+                  - containerPort: "{{ _mongodb_port }}"
+                    protocol: TCP
+                readinessProbe:
+                  exec:
+                    failureThreshold: 3
+                    initialDelaySeconds: 3
+                    periodSeconds: 10
+                    successThreshold: 1
+                    timeoutSeconds: 1
+                    command:
+                      - "/bin/sh"
+                      - "-i"
+                      - "-c"
+                      - "mongo localhost:{{ _mongodb_port }}/${MONGODB_DATABASE} -u ${MONGODB_USER} -p ${MONGODB_PASSWORD} --eval='quit()'"
+                resources:
+                  limits:
+                    memory: "{{ _mongodb_pvc_size }}"
+                terminationMessagePath: /dev/termination-log
+                volumeMounts:
+                  - mountPath: /var/lib/mongodb/data
+                    name: mongodb-data
+            dnsPolicy: ClusterFirst
+            restartPolicy: Always
+            terminationGracePeriodSeconds: 30
+            volumes:
+              - name: mongodb-data
+                persistentVolumeClaim:
+                  claimName: "{{ _mongodb_name }}"

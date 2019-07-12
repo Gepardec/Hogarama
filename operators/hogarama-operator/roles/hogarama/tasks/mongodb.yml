@@ -1,8 +1,0 @@
-- name: "Set mongodb svc"
-  log: "Not implemented yet"
-
-- name: "Set mongodb pvc"
-  log: "Not implemented yet"
-
-- name: "Set mongodb dc"
-  log: "Not implemented yet"

@@ -1,5 +1,26 @@
 - hosts: localhost
   gather_facts: no
   tasks:
-  - import_role:
-      name: "hogarama"
+    # Set facts for all roles and playbook executions from now on
+    - name: "Set Facts"
+      set_fact:
+        _mongodb_namespace: "{{ meta.namespace }}"
+        _mongodb_name: "{{ name | default('hogarama') }}"
+        _mongodb_replicas: "{{ mongodb_replicas | default('1') }}"
+        _mongodb_db: "hogarama-db"
+        _mongodb_user: "{{ mongodb_user | default('hogarama') }}"
+        _mongodb_password: "{{ mongodb_password | default('hogarama') }}"
+        _mongodb_admin_password: "{{ mongodb_admin_password | default('hogarama') }}"
+        _mongodb_pvc_size: "{{ mongodb_pvc_size | default('512Mi') }}"
+        _mongodb_port: 27017
+        _mongodb_image: "registry.access.redhat.com/rhscl/mongodb-32-rhel7:latest"
+
+    # Skip execution if mongodb_replica count is invalid
+    - name: "Checking 'mongodb_replicas' setting"
+      fail: "Skipping installation because {{ mongodb_replicas }} is invalid (mongodb_replicas >= 1)"
+      when: mongodb_replicas < 0
+
+    # Setup a single noe mongodb instance
+    - name: "Setup mongodb (single)"
+      include_tasks: "roles/hogarama/tasks/mongodb_single.yml"
+      when: mongodb_replicas == 1

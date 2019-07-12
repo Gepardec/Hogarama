@@ -7,15 +7,41 @@ rules:
 - apiGroups:
   - ""
   resources:
+  - deploymentconfigs
   - pods
   - services
   - endpoints
   - persistentvolumeclaims
-  - events
   - configmaps
   - secrets
+  - routes
   verbs:
-  - '*'
+  - create
+  - update
+  - delete
+  - get
+  - list
+  - watch
+  - patch
+- apiGroups:
+  - apps.openshift.io
+  resources:
+  - deploymentconfigs
+  - pods
+  - services
+  - endpoints
+  - persistentvolumeclaims
+  - configmaps
+  - secrets
+  - routes
+  verbs:
+  - create
+  - update
+  - delete
+  - get
+  - list
+  - watch
+  - patch
 - apiGroups:
   - apps
   resources:
@@ -24,14 +50,25 @@ rules:
   - replicasets
   - statefulsets
   verbs:
-  - '*'
-- apiGroups:
-  - monitoring.coreos.com
-  resources:
-  - servicemonitors
-  verbs:
-  - get
   - create
+  - update
+  - delete
+  - get
+  - list
+  - watch
+  - patch
+- apiGroups:
+  - route.openshift.io
+  resources:
+  - routes
+  verbs:
+  - create
+  - update
+  - delete
+  - get
+  - list
+  - watch
+  - patch
 - apiGroups:
   - apps
   resourceNames:
@@ -43,6 +80,15 @@ rules:
 - apiGroups:
   - hogarama.gepardec.com
   resources:
-  - '*'
+  - hogaramas
+  - hogarama
+  - hogarama/status
+  - hogaramas/status
   verbs:
-  - '*'
+  - create
+  - update
+  - delete
+  - get
+  - list
+  - watch
+  - patch

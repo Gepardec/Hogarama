@@ -3,7 +3,15 @@ kind: Hogarama
 metadata:
   name: example-hogarama
 spec:
+  # Installation name
+  name: "test"
+  # Mongodb replica count
+  mongodb_replicas: 1
+  # mongodb admin user
+  mongodb_user: "{{ name }}"
   # mongodb password
-  mongodb_password: 'password'
+  mongodb_password: "mongodb"
   # mongodb admin password
-  mongodb_admin_password: 'admin_password'
+  mongodb_admin_password: "mongodb"
+  # mongodb persistence size
+  mongodb_pvc_size: "1Gi"
