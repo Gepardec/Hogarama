@@ -179,6 +179,23 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/errorModel'
+  /user:
+    get:
+      description: returns information on the logged in user
+      operationId: getUser
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: user data response
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/userData'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
 definitions:
   sensorData:
     type: object
@@ -241,4 +258,20 @@ definitions:
         type: integer
         format: int32
       message:
+        type: string
+  userData:
+    type: object
+    required:
+      - givenName
+      - familyName
+      - name
+      - email
+    properties:
+      givenName:
+        type: string
+      familyName:
+        type: string
+      name:
+        type: string
+      email:
         type: string
