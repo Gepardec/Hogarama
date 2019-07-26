@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>ConfigureDevice</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen padding scroll-y="false">
+  <ion-slides pager="true" [options]="slideOpts">
+    <ion-slide>
+      <h1>Please connect to the wifi of your arduino</h1>
+    </ion-slide>
+    <ion-slide>
+      <h1>Please enter your WIFI credentials</h1>
+      <p>We will redirect you to:</p>
+      <p>IP: {{arduinoIp}}</p>
+      <p>Port: {{arduinoPort}}</p>
+      <ion-button size="large" (click)="showInAppBrowser()">Click here</ion-button>
+    </ion-slide>
+    <ion-slide>
+      <h1>Configure your device</h1>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

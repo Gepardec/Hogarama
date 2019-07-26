@@ -1,0 +1,31 @@
+// App Styles
+// ----------------------------------------------------------------------------
+// Put style rules here that you want to apply to the entire application. These 
+// styles are for the entire app and not just one component. Additionally, this 
+// file can hold Sass mixins, functions, and placeholder classes to be imported 
+// and used throughout the application.
+
+
+:root {
+    /*Generated using https://ionicframework.com/docs/theming/colors#new-color-creator */
+    --ion-color-primary: #30c751;
+    --ion-color-primary-rgb: 48,199,81;
+    --ion-color-primary-contrast: #000000;
+    --ion-color-primary-contrast-rgb: 0,0,0;
+    --ion-color-primary-shade: #2aaf47;
+    --ion-color-primary-tint: #45cd62;
+}
+
+.card-button-container{
+    float: right; 
+    padding-top: 15px; 
+    padding-bottom: 15px;
+}
+
+ion-slides {
+    height: 100%;
+}
+
+ion-slide  {
+    display: block !important;
+}

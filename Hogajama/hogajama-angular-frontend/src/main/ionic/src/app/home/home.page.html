@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card class="welcome-card">
+      <img src="/assets/shapes.svg" alt="" />
+      <ion-card-header>
+        <ion-card-subtitle>Get Started</ion-card-subtitle>
+        <ion-card-title>Welcome to Hogarama</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Now that you bought your first Hogarama component, you might want to configure it.</p>
+        <div class="card-button-container">
+          <ion-button fill="clear" slot="end">Dismiss</ion-button>
+          <ion-button slot="end" (click)="presentConfigureModal()">Configure</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+</ion-content>
