@@ -5,7 +5,7 @@ before_install:
 - cd Hogajama
 - mvn clean
 install:
-- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+- mvn install -Dmaven.javadoc.skip=true -B -V
 addons:
   sonarcloud:
     organization: "gepardec"
