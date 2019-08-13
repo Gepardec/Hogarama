@@ -29,11 +29,11 @@ public class SensorApiImpl implements SensorApi, Serializable {
 	private WateringDAO wateringDAO;
 
 	@Inject
-	private SensorNamesCache sensorsScheduler;
+	private SensorNamesCache sensorNamesCache;
 
 	@Override
 	public Response getAllSensors(SecurityContext securityContext) {
-		return Response.ok(sensorsScheduler.getSensorNames()).build();
+		return Response.ok(sensorNamesCache.getSensorNames()).build();
 	}
 	
 
