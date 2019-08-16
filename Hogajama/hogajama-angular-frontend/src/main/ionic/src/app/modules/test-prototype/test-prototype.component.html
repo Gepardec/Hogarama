@@ -1,0 +1,7 @@
+<h1>All Sensors</h1>
+<ul *ngFor="let sensor of sensorArr">
+  <li>{{ sensor }}</li>
+</ul>
+<p>{{ error }}</p>
+<app-user-name></app-user-name>
+<button (click)="logout()">LOGOUT</button>

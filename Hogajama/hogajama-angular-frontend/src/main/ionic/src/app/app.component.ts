@@ -16,8 +16,8 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'Add Device',
-      url: '/configure-device',
+      title: 'Login',
+      url: '/testLoginRedirect',
       icon: 'add-circle-outline'
     }
   ];

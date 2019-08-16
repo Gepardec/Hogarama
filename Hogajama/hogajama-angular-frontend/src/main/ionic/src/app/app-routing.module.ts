@@ -1,22 +1,27 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './shared/auth/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: '/home',
     pathMatch: 'full'
   },
   {
     path: 'home',
-    loadChildren: './home/home.module#HomePageModule'
+    loadChildren: './modules/test-prototype/test-prototype.module#TestPrototypeModule',
+    canLoad: [AuthGuard]
   },
-  { path: 'configure-device', loadChildren: './configure-device/configure-device.module#ConfigureDevicePageModule' }
+  {
+    path: 'testLoginRedirect',
+    loadChildren: './modules/test-login-redirect/test-login-redirect.module#TestLoginRedirectModule',
+  }
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { useHash: true })
   ],
   exports: [RouterModule]
 })
