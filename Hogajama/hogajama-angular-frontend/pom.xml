@@ -42,7 +42,7 @@
                 <configuration>
                     <nodeVersion>${version.node}</nodeVersion>
                     <npmVersion>${version.npm}</npmVersion>
-                    <workingDirectory>src/main/angular/</workingDirectory>
+                    <workingDirectory>src/main/ionic/</workingDirectory>
                 </configuration>
                 <executions>
                     <execution>
@@ -58,6 +58,15 @@
                         </goals>
                     </execution>
                     <execution>
+                        <id>npm rebuild node-sass</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>rebuild node-sass</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>npm run build</id>
                         <goals>
                             <goal>npm</goal>
@@ -65,16 +74,6 @@
                         <configuration>
                             <arguments>run build</arguments>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>prod</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run-script build</arguments>
-                        </configuration>
-                        <phase>generate-resources</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -93,7 +92,7 @@
                             <resources>
                                 <resource>
                                     <directory>
-                                        ${project.parent.basedir}/hogajama-angular-frontend/src/main/angular/dist/hogajama-angular-frontend/
+                                        ${project.parent.basedir}/hogajama-angular-frontend/src/main/ionic/www/
                                     </directory>
                                 </resource>
                             </resources>
