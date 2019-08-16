@@ -1,11 +1,9 @@
 package at.gepardec.hogarama.scaling;
 
-import com.gepardec.hogarama.domain.metrics.Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.management.*;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -60,7 +58,6 @@ public class ScalingTestServlet extends HttpServlet {
 				}
 			} catch (MalformedObjectNameException | AttributeNotFoundException | InstanceNotFoundException
 					| MBeanException | ReflectionException e) {
-				Metrics.exceptionsThrown.labels("hogajama-frontend", e.getClass().toString(), "ScalingTestServlet.getActiveSessions").inc();
 				throw new RuntimeException(e);
 			}
         return activeSessions;
