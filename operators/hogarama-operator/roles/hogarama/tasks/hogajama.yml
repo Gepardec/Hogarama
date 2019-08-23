@@ -7,13 +7,9 @@
       metadata:
         labels:
           app: "{{ _label_app }}"
-        name: {{ _hogajama_name }}
+        name: "{{ _hogajama_name }}"
         namespace: "{{ _namespace }}"
       spec:
-        output:
-          to:
-            kind: ImageStreamTag
-            name: "{{ _hogajama_name }:latest"
         source:
           contextDir: "{{ _hogajama_s2i_context_dir }}"
           type: Git
@@ -21,8 +17,8 @@
             ref: "{{ _hogajama_git_ref }}"
             uri: "{{ _hogajama_git_repo }}"
         strategy:
+          type: "Source"
           sourceStrategy:
-          type: Source
             env:
               - name: "MAVEN_MIRROR_URL"
                 value: "{{ _hogajama_s2i_m2_url }}"
@@ -32,13 +28,17 @@
               kind: ImageStreamTag
               name: "{{ _hogajama_s2i_imagestream }}"
               namespace: "{{ _hogajama_s2i_namespace }}"
+        output:
+          to:
+            kind: ImageStreamTag
+            name: "{{ _hogajama_name }}:latest"
         triggers:
           - type: GitHub
             github:
               secret: "{{ _hogajama_s2i_trigger_secret_github }}"
           - type: Generic
             generic:
-              secret: "{{ hogajama_s2i_trigger_secret_generic }}"
+              secret: "{{ _hogajama_s2i_trigger_secret_generic }}"
           - type: ConfigChange
 
 - name: "Setting up dc/{{ _hogajama_name }}"
@@ -53,22 +53,22 @@
         labels:
           app: "{{ _label_app }}"
       spec:
-        replicas: " {{ _hogajama_replicas }}"
+        replicas: "{{ _hogajama_replicas }}"
         selector:
-          deploymentconfig: "{{ _hogajama_name }}"
+          name: "{{ _hogajama_name }}"
         strategy:
+          type: Rolling
           rollingParams:
             intervalSeconds: 1
             maxSurge: 25%
             maxUnavailable: 25%
             timeoutSeconds: 600
             updatePeriodSeconds: 1
-          type: Rolling
         template:
           metadata:
-            creationTimestamp: null
             labels:
               app: "{{ _label_app }}"
+              name: "{{ _hogajama_name }}"
           spec:
             containers:
               - name: "{{ _hogajama_name }}"
@@ -89,12 +89,12 @@
         triggers:
           - type: ImageChange
             imageChangeParams:
-            automatic: true
+              automatic: true
               containerNames:
                 - "{{ _hogajama_name }}"
               from:
                 kind: ImageStreamTag
-                name: "{{ _hogajama_name }:latest"
+                name: "{{ _hogajama_name }}:latest"
           - type: ConfigChange
 
 - name: "Setting up svc/{{ _hogajama_name }}"
@@ -106,6 +106,7 @@
         labels:
           app: "{{ _label_app }}"
         name: "{{ _hogajama_name }}"
+        namespace: "{{ _namespace }}"
       spec:
         ports:
           - name: "{{ _hogajama_name }}-web-unsecure"
@@ -132,10 +133,10 @@
       apiVersion: v1
       kind: Route
       metadata:
-        creationTimestamp: null
         labels:
           app: "{{ _label_app }}"
-        name: "{{ _hogajama_name }"
+        name: "{{ _hogajama_name }}"
+        namespace: "{{ _namespace }}"
       spec:
         port:
           targetPort: "{{ _hogajama_name }}-web-unsecure"
@@ -154,12 +155,10 @@
       apiVersion: v1
       kind: Route
       metadata:
-        annotations:
-          openshift.io/host.generated: "true"
-        creationTimestamp: null
         labels:
           app: "{{ _label_app }}"
         name: "{{ _hogajama_name }}-passthrough"
+        namespace: "{{ _namespace }}"
       spec:
         port:
           targetPort: "{{ _hogajama_name }}-web-secure"

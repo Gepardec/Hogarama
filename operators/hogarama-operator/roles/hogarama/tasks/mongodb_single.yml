@@ -60,7 +60,6 @@
           type: Recreate
         template:
           metadata:
-            creationTimestamp: null
             labels:
               name: "{{ _mongodb_name }}"
           spec:
