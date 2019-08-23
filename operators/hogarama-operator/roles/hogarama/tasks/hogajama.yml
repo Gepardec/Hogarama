@@ -1,11 +1,53 @@
-- name: "Setting up dc/"
+- name: "Set Hogajama bc/{{ _hogajama_name }}"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: BuildConfig
+      metadata:
+        labels:
+          app: "{{ _label_app }}"
+        name: {{ _hogajama_name }}
+        namespace: "{{ _namespace }}"
+      spec:
+        output:
+          to:
+            kind: ImageStreamTag
+            name: "{{ _hogajama_name }:latest"
+        source:
+          contextDir: "{{ _hogajama_s2i_context_dir }}"
+          type: Git
+          git:
+            ref: "{{ _hogajama_git_ref }}"
+            uri: "{{ _hogajama_git_repo }}"
+        strategy:
+          sourceStrategy:
+          type: Source
+            env:
+              - name: "MAVEN_MIRROR_URL"
+                value: "{{ _hogajama_s2i_m2_url }}"
+              - name: "MAVEN_ARGS"
+                value: "{{ _hogajama_s2i_m2_args }}"
+            from:
+              kind: ImageStreamTag
+              name: "{{ _hogajama_s2i_imagestream }}"
+              namespace: "{{ _hogajama_s2i_namespace }}"
+        triggers:
+          - type: GitHub
+            github:
+              secret: "{{ _hogajama_s2i_trigger_secret_github }}"
+          - type: Generic
+            generic:
+              secret: "{{ hogajama_s2i_trigger_secret_generic }}"
+          - type: ConfigChange
+
+- name: "Setting up dc/{{ _hogajama_name }}"
   k8s:
     state: present
     definition:
       apiVersion: v1
       kind: DeploymentConfig
       metadata:
-        creationTimestamp: null
         name: "{{ _hogajama_name }}"
         namespace: "{{ _namespace }}"
         labels:
@@ -29,13 +71,13 @@
               app: "{{ _label_app }}"
           spec:
             containers:
-              - image: "{{_hogajama_image }}"
+              - name: "{{ _hogajama_name }}"
+                image: " "
                 imagePullPolicy: Always
-                name: "{{ _hogajama_name }}"
                 ports:
-                  - containerPort: "{{ _hogajama_port_unsecure }}"
+                  - containerPort: "{{ _hogajama_port_web_unsecure }}"
                     protocol: TCP
-                  - containerPort: "{{ _hogajama_port_secure }}"
+                  - containerPort: "{{ _hogajama_port_web_secure }}"
                     protocol: TCP
                   - containerPort: "{{ _hogajama_port_other }}"
                     protocol: TCP
@@ -44,3 +86,87 @@
             dnsPolicy: ClusterFirst
             restartPolicy: Always
             terminationGracePeriodSeconds: 60
+        triggers:
+          - type: ImageChange
+            imageChangeParams:
+            automatic: true
+              containerNames:
+                - "{{ _hogajama_name }}"
+              from:
+                kind: ImageStreamTag
+                name: "{{ _hogajama_name }:latest"
+          - type: ConfigChange
+
+- name: "Setting up svc/{{ _hogajama_name }}"
+  k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        labels:
+          app: "{{ _label_app }}"
+        name: "{{ _hogajama_name }}"
+      spec:
+        ports:
+          - name: "{{ _hogajama_name }}-web-unsecure"
+            port: "{{ _hogajama_port_web_unsecure }}"
+            targetPort: "{{ _hogajama_port_web_unsecure }}"
+            protocol: TCP
+          - name: "{{ _hogajama_name }}-web-secure"
+            port: "{{ _hogajama_port_web_secure }}"
+            targetPort: "{{ _hogajama_port_web_secure }}"
+            protocol: TCP
+          - name: "{{ _hogajama_name }}-other"
+            port: "{{ _hogajama_port_other }}"
+            targetPort: "{{ _hogajama_port_other }}"
+            protocol: TCP
+        selector:
+          deploymentconfig: "{{ _hogajama_name }}"
+        sessionAffinity: None
+        type: ClusterIP
+
+- name: "Setting up route/{{ _hogajama_name }}-ssl"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Route
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: "{{ _label_app }}"
+        name: "{{ _hogajama_name }"
+      spec:
+        port:
+          targetPort: "{{ _hogajama_name }}-web-unsecure"
+        tls:
+          termination: edge
+        to:
+          kind: Service
+          name: "{{ _hogajama_name }}"
+          weight: 100
+        wildcardPolicy: None
+
+- name: "Setting up route/{{ _hogajama_name }}-passthrough"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Route
+      metadata:
+        annotations:
+          openshift.io/host.generated: "true"
+        creationTimestamp: null
+        labels:
+          app: "{{ _label_app }}"
+        name: "{{ _hogajama_name }}-passthrough"
+      spec:
+        port:
+          targetPort: "{{ _hogajama_name }}-web-secure"
+        tls:
+          termination: passthrough
+        to:
+          kind: Service
+          name: "{{ _hogajama_name }}"
+          weight: 100
+        wildcardPolicy: None

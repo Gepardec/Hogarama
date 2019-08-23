@@ -17,14 +17,22 @@
         _mongodb_pvc_size: "{{ mongodb_pvc_size | default('512Mi') }}"
         _mongodb_port: 27017
         _mongodb_image: "registry.access.redhat.com/rhscl/mongodb-32-rhel7:latest"
-        _hogajama_name: "{{ name }}-hogajama"
         _hogajama_replicas: "{{ hogajama_replicas | default('1') }}"
         # HOGAJAMA Part
-        # TODO: Pu image to quay.io?? What are the ports for? Manage via image stream or directly use image?
+        _hogajama_name: "{{ name }}-hogajama"
+        _hogajama_git_repo: "{{ hogajama_repo | default('https://github.com/Gepardec/Hogarama.git'}}"
+        _hogajama_git_ref: "{{ hogajama_git_ref | default('master'}}"
+        _hogajama_s2i_trigger_secret_github: "{{ hogajama_s2i_trigger_secret_github | default('6dd31c017aceb946') }}"
+        _hogajama_s2i_trigger_secret_generic: "{{ hogajama_s2i_trigger_secret_generic | default('a1b587899e786b0a') }}"
+        _hogajama_s2i_imagestream: "{{ hogajama_s2i_imagestream | default('jboss-eap71-openshift:latest') }}"
+        _hogajama_s2i_namespace: "{{ hogajama_s2i_namespace | default('openshift') }}"
+        _hogajama_s2i_context_dir: "{{ hogajama_s2i_context_dir | default('Hogajama') }}"
+        _hogajama_s2i_m2_url: "{{ hogajama_s2i_m2_url | default('https://nexus3-57-dev-tools.cloud.itandtel.at/repository/maven-public/') }}"
+        _hogajama_s2i_m2_args: "{{ hogajama_s2i_m2_args | default('-e -Popenshift -Dcom.redhat.xpaas.repo.redhatga package -Djava.net.preferIPv4Stack=true') }}"
         _hogajama_image: "172.30.194.147:5000/57-hogarama/hogajama:production"
-        _hogajama_port_unsecure: 8080
-        _hogajama_port_secure: 8443
-        _hogajama_port_other: 8778
+        _hogajama_port_web_unsecure: "8080"
+        _hogajama_port_web_secure: "8443"
+        _hogajama_port_other: "8778"
 
     # Skip execution if mongodb_replica count is invalid
     - name: "Checking 'mongodb_replicas' setting"
@@ -32,6 +40,10 @@
       when: mongodb_replicas < 0
 
     # Setup a single noe mongodb instance
-    - name: "Setup mongodb (single)"
+    - name: "Setup mongodb '{{ _mongodb_name }}'"
       include_tasks: "roles/hogarama/tasks/mongodb_single.yml"
       when: mongodb_replicas == 1
+
+    # Setup hogajama
+    - name: "Setup hogajama '{{ _hogajama_name }}'"
+      include_tasks: "roles/hogarama/tasks/hogajama.yml"
