@@ -16,7 +16,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" > /etc/
 # RUN echo wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 RUN apt update
 
-# Install ``software-python-common``, ``software-properties-common`` and PostgreSQL 10
+# Install ``software-python-common``, ``software-properties-common`` and PostgreSQL 11
 #  There are some warnings (in red) that show up during the build. You can hide
 #  them by prefixing each apt-get statement with DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y software-properties-common postgresql-11 postgresql-client-11 postgresql-contrib-11
