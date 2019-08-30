@@ -162,6 +162,12 @@ objects:
             value: /etc/sso-secret-volume
           - name: SSO_TRUSTSTORE_PASSWORD
             value: keystorepwd
+          - name: JAVA_OPTS
+            value: >-
+              -Xms128m -Xmx128m -XX:MaxMetaspaceSize=96m
+              -Djava.net.preferIPv4Stack=true
+              -Djboss.modules.system.pkgs=org.jboss.logmanager,jdk.nashorn.api,com.sun.crypto.provider
+              -Djava.awt.headless=true
           image: registry.access.redhat.com/redhat-sso-7/sso71-openshift@sha256:896d60f51b52219c0f9116e334e20b982a457964d96816a015ffdb9ff1958d9e
           imagePullPolicy: Always
           lifecycle:

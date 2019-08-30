@@ -1,11 +1,11 @@
 package com.gepardec.hogarama.rest;
 
 import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorNamesCache;
 import com.gepardec.hogarama.domain.watering.WateringDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.rest.mapper.SensorMapper;
 import com.gepardec.hogarama.rest.util.DateUtil;
-import com.gepardec.hogarama.service.schedulers.SensorsScheduler;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -29,11 +29,11 @@ public class SensorApiImpl implements SensorApi, Serializable {
 	private WateringDAO wateringDAO;
 
 	@Inject
-	private SensorsScheduler sensorsScheduler;
+	private SensorNamesCache sensorNamesCache;
 
 	@Override
 	public Response getAllSensors(SecurityContext securityContext) {
-		return Response.ok(sensorsScheduler.getSensorNames()).build();
+		return Response.ok(sensorNamesCache.getSensorNames()).build();
 	}
 	
 

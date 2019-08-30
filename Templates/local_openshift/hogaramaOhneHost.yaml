@@ -484,6 +484,12 @@ objects:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
+          - name: JAVA_OPTS
+            value: >-
+              -Xms128m -Xmx128m -XX:MaxMetaspaceSize=96m
+              -Djava.net.preferIPv4Stack=true
+              -Djboss.modules.system.pkgs=org.jboss.logmanager,jdk.nashorn.api,com.sun.crypto.provider
+              -Djava.awt.headless=true
           image: hogarama/hogajama
           imagePullPolicy: Always
           name: hogajama
@@ -1155,5 +1161,5 @@ parameters:
       from: '[A-Z0-9]{8}'
       name: TINYURL
     - description: Url of SSO authentication server
-      value: https://secure-sso-hogarama.10.0.75.2.nip.io/auth/
+      value: https://secure-sso-57-hogarama.cloud.itandtel.at/auth/
       name: KEYCLOAK_AUTH_SERVER_URL
