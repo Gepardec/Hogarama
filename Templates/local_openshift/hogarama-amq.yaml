@@ -5,6 +5,19 @@ metadata:
   name: hogarama-amq
 objects:
 - apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/display-name: "Red Hat JBoss EAP 7.0"
+    labels:
+      app: amq-persistent-ssl
+      application: broker
+      template: hogarama-amq
+      xpaas: 1.3.1
+    name: jboss-amq-6
+  spec:
+    dockerImageRepository: "registry.access.redhat.com/jboss-amq-6/amq63-openshift"
+- apiVersion: v1
   kind: Service
   metadata:
     annotations:
@@ -119,7 +132,6 @@ objects:
             value: L(o?cqGPtJ}7YiHu
           - name: AMQ_STORAGE_USAGE_LIMIT
             value: 1 gb
-          image: registry.access.redhat.com/jboss-amq-6/amq62-openshift@sha256:cb16f56a2b4f3a65bd640e3033d342d0a63e785a779ed2b609d5ffa8ce39cc2b
           imagePullPolicy: Always
           name: broker-amq
           ports:
