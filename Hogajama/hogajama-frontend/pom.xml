@@ -29,17 +29,6 @@
 		</plugins>
 	</build>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.gepardec.hogajama</groupId>
-			<artifactId>hogajama-domain</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.gepardec.hogajama</groupId>
-			<artifactId>hogajama-services</artifactId>
-		</dependency>
-	</dependencies>
-
 	<profiles>
 		<profile>
 			<id>openshift</id>
