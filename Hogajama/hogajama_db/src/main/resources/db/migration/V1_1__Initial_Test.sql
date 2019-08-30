@@ -1,0 +1,1 @@
+create table blubb (id BIGSERIAL PRIMARY KEY);

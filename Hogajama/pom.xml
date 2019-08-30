@@ -17,7 +17,8 @@
 		<module>hogajama-rs</module>
         <module>raspberry-pi-mocks</module>
         <module>hogajama-angular-frontend</module>
-    </modules>
+		<module>hogajama_db</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
