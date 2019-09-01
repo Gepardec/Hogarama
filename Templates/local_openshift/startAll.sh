@@ -72,7 +72,7 @@ HOGARAMA_VARS="OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN"
 if [ x$DO_SSO != xTrue ]; then
   HOGARAMA_VARS="$HOGARAMA_VARS KEYCLOAK_AUTH_SERVER_URL=$KEYCLOAK_AUTH_SERVER_URL"
 fi
-$EXEC oc process -f amq.yaml | $EXEC oc create -f -
+$EXEC oc process -f hogarama-amq.yaml | $EXEC oc create -f -
 $EXEC oc process -f hogaramaOhneHost.yaml $HOGARAMA_VARS | $EXEC oc create -f -
 
 if [ x$DO_SSO = xTrue ]; then
