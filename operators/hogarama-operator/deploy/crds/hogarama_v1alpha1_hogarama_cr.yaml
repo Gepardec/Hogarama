@@ -15,3 +15,20 @@ spec:
   mongodb_admin_password: "mongodb"
   # mongodb persistence size
   mongodb_pvc_size: "1Gi"
+  ###################################
+  # AMQ Configuration
+  ###################################
+  # amq admin user
+  amq_user: "amq_user"
+  # amq admin password
+  amq_password: "amq_password"
+  # amq truststore password
+  amq_truststore_password: "L(o?cqGPtJ}7YiHu"
+  # aq keystore password
+  amq_keystore_password: "L(o?cqGPtJ}7YiHu"
+  # amq secret where keystore, trustore reside
+  amq_secret_name: ""
+  # amq storage limit
+  amq_storage_limit: "1 gb"
+  amq_pvc_limit: "1Gi"
+

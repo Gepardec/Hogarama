@@ -1,0 +1,153 @@
+- name: "AMQ Broker pvc/{{ _amq_name }}"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        labels:
+          app: "{{ _label_app }}"
+        name: "{{ _amq_name }}"
+        namespace: "{{ _namespace }}"
+      spec:
+        accessModes:
+          - ReadWriteMany
+        resources:
+          requests:
+            storage: "{{ _amq_pvc_limit }}"
+
+- name: "AMQ Broker svc/{{ _amq_name }}"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        annotations:
+          description: The broker's MQTT SSL port.
+        labels:
+          app: "{{ _label_app }}"
+        name: "{{ _amq_name }}"
+        namespace: "{{ _namespace }}"
+      spec:
+        ports:
+          - port: "{{ _amq_mqtt_ssl_port }}-tcp"
+            protocol: TCP
+            targetPort: "{{ _amq_mqtt_ssl_port }}"
+          - port: "{{ _amq_mqtt_port }}-tcp"
+            protocol: TCP
+            targetPort: "{{ _amq_mqtt_port }}"
+        selector:
+          deploymentConfig: "{{ _amq_name }}"
+        sessionAffinity: None
+        type: ClusterIP
+
+- name: "AMQ Broker dc/{{ _amq_name }}"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: DeploymentConfig
+      metadata:
+        generation: 1
+        labels:
+          app: "{{ _label_app }}"
+        name: "{{ _amq_name }}"
+        namespace: "{{ _namespace }}"
+      spec:
+        replicas: 1
+        selector:
+          deploymentConfig: "{{ _amq_name }}"
+        strategy:
+          activeDeadlineSeconds: 21600
+          rollingParams:
+            intervalSeconds: 1
+            maxSurge: 0
+            maxUnavailable: 25%
+            timeoutSeconds: 600
+            updatePeriodSeconds: 1
+          type: Rolling
+        template:
+          metadata:
+            labels:
+              deploymentConfig: "{{ _amq_name }}"
+              app: "{{ _label_app }}"
+            name: " "
+          spec:
+            containers:
+              - env:
+                  - name: AMQ_USER
+                    value: "{{ _amq_user }}"
+                  - name: AMQ_PASSWORD
+                    value: "{{ _amq_password }}"
+                  - name: AMQ_TRANSPORTS
+                    value: mqtt
+                  - name: AMQ_TOPICS
+                    value: "{{ _amq_topic }}"
+                  - name: AMQ_SPLIT
+                    value: "false"
+                  - name: AMQ_MESH_DISCOVERY_TYPE
+                    value: "kube"
+                  - name: AMQ_MESH_SERVICE_NAME
+                    value: "{{ _amq_name }}-tcp"
+                  - name: AMQ_MESH_SERVICE_NAMESPACE
+                    valueFrom:
+                      fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+                  - name: AMQ_KEYSTORE_TRUSTSTORE_DIR
+                    value: "/etc/amq-secret-volume"
+                  - name: AMQ_TRUSTSTORE
+                    value: "broker.ks"
+                  - name: AMQ_TRUSTSTORE_PASSWORD
+                    value: "{{ amq_truststore_password }}"
+                  - name: AMQ_KEYSTORE
+                    value: "broker.ks"
+                  - name: AMQ_KEYSTORE_PASSWORD
+                    value: "amq_keystore_password"
+                  - name: AMQ_STORAGE_USAGE_LIMIT
+                    value: "{{ _amq_storage_limit }}"
+                image: "{{ _amq_image }}"
+                imagePullPolicy: Always
+                name: "{{_amq_name }}"
+                ports:
+                  - containerPort: "{{ _amq_jolokia_port }}"
+                    name: "{{ _amq_jolokia_port }}"
+                    protocol: TCP
+                  - containerPort: "{{ _amq_mqtt_port }}"
+                    name: "{{ _amq_mqtt_port }}"
+                    protocol: TCP
+                  - containerPort: "{{ _amq_mqtt_ssl_port }}"
+                    name: "{{ _amq_mqtt_ssl_port }}"
+                    protocol: TCP
+                resources: {}
+                terminationMessagePath: /dev/termination-log
+                volumeMounts:
+                  - mountPath: /etc/amq-secret-volume
+                    name: "{{ _amq_name }}-vol-secret"
+                    readOnly: true
+                  - mountPath: /opt/amq/data
+                    name: "{{ _amq_name }}-pvc"
+            dnsPolicy: ClusterFirst
+            restartPolicy: Always
+            terminationGracePeriodSeconds: 60
+            volumes:
+              - name: "{{ _amq_name }}-vol-secret"
+                secret:
+                  defaultMode: 420
+                  secretName: "{{ amq_secret_name }}"
+              - name: "{{ _amq_name }}-pvc"
+                persistentVolumeClaim:
+                  claimName: "{{ _amq_name }}"
+        test: false
+        triggers:
+          - type: ImageChange
+            imageChangeParams:
+              automatic: true
+              containerNames:
+                - "{{ _amq_name }}"
+              from:
+                kind: ImageStreamTag
+                name: "{{_amq_image_Stream }}"
+                namespace: openshift
+          - type: ConfigChange

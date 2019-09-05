@@ -33,6 +33,17 @@
         _hogajama_port_web_unsecure: 8080
         _hogajama_port_web_secure: 8443
         _hogajama_port_other: 8778
+        # AMQ Broker part
+        _amq_name: "{{ name }}-broker"
+        _amq_user: "{{ amq_user | default('amq') }}"
+        _amq_password: "{{ amq_user | default('amq') }}"
+        _amq_topic: "habarama"
+        _amq_mqtt_ssl_port: 8883
+        _amq_mqtt_port: 1883
+        _amq_jolokia_port: 8778
+        _amq_image_Stream: "jboss-amq-6:latest"
+        _amq_storage_limit: "{{ amq_storage_limit | default('512mb')}}"
+        _amq_pvc_limit: "{{ amq_pvc_limit | default('512Mi') }}"
 
     # Skip execution if mongodb_replica count is invalid
     - name: "Checking 'mongodb_replicas' setting"

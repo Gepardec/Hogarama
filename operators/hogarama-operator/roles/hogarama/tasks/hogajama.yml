@@ -109,15 +109,15 @@
         namespace: "{{ _namespace }}"
       spec:
         ports:
-          - name: "{{ _hogajama_name }}-web-unsecure"
+          - name: "{{ _hogajama_port_web_unsecure }}-tcp"
             port: "{{ _hogajama_port_web_unsecure }}"
             targetPort: "{{ _hogajama_port_web_unsecure }}"
             protocol: TCP
-          - name: "{{ _hogajama_name }}-web-secure"
+          - name: "{{ _hogajama_port_web_secure }}-tcp"
             port: "{{ _hogajama_port_web_secure }}"
             targetPort: "{{ _hogajama_port_web_secure }}"
             protocol: TCP
-          - name: "{{ _hogajama_name }}-other"
+          - name: "{{ _hogajama_port_other }}-tcp"
             port: "{{ _hogajama_port_other }}"
             targetPort: "{{ _hogajama_port_other }}"
             protocol: TCP
@@ -139,7 +139,7 @@
         namespace: "{{ _namespace }}"
       spec:
         port:
-          targetPort: "{{ _hogajama_name }}-web-unsecure"
+          targetPort: "{{ _hogajama_port_web_unsecure }}-tcp"
         tls:
           termination: edge
         to:
@@ -161,7 +161,7 @@
         namespace: "{{ _namespace }}"
       spec:
         port:
-          targetPort: "{{ _hogajama_name }}-web-secure"
+          targetPort: "{{ _hogajama_port_web_secure }}-tcp"
         tls:
           termination: passthrough
         to:
