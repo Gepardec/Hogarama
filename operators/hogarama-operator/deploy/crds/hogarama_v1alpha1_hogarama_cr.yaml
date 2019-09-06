@@ -25,7 +25,7 @@ spec:
   # amq truststore password
   amq_truststore_password: "L(o?cqGPtJ}7YiHu"
   # aq keystore password
-  amq_keystore_password: "L(o?cqGPtJ}7YiHu"
+  amq_keystore_password: "{{ amq_keystore_password }}"
   # amq secret where keystore, trustore reside
   amq_secret_name: ""
   # amq storage limit

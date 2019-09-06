@@ -44,6 +44,15 @@
         _amq_image_Stream: "jboss-amq-6:latest"
         _amq_storage_limit: "{{ amq_storage_limit | default('512mb')}}"
         _amq_pvc_limit: "{{ amq_pvc_limit | default('512Mi') }}"
+        # Fluentd
+        _fluentd_name: "{{ name }}-fluentd"_
+        _fluentd_git_repo: "{{ fluentd_git_repo | default('https://github.com/Gepardec/Hogarama.git') }}"
+        _fluentd_context_dir: "{{ fluentd_context_dir | default('Fluentd') }}"
+        _fluentd_bc_is: "{{ fluentd_bc_is | default('fluentd-onbuild:v1.1.0-debian-onbuild') }}"
+        _fluentd_bc_trigger_secret_github: "{{ fluentd_bc_trigger_secret_github | default('4m9EY9lErQRrs8LJjudP') }}"
+        _fluentd_bc_trigger_secret_generic: "{{ fluentd_bc_trigger_secret_github | default('A2YAGDWxu2zgCfjIyo25') }}"
+        _fluentd_5140_port: ""
+
 
     # Skip execution if mongodb_replica count is invalid
     - name: "Checking 'mongodb_replicas' setting"

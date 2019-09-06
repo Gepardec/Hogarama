@@ -1,0 +1,67 @@
+- name: "Fluentd bc/{{ _fluentd_name }}"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: BuildConfig
+      metadata:
+        labels:
+          app: "{{ _label_app }}"
+        name: "{{ _fluentd_name }}"
+        namespace: "{{ _namespace }}"
+      spec:
+        output:
+          to:
+            kind: ImageStreamTag
+            name: fluentd:latest
+        runPolicy: Serial
+        source:
+          contextDir: "{{ _fluentd_context_dir }}"
+          git:
+            uri: "{{ _fluentd_git_repo }}"
+          type: Git
+        strategy:
+          type: Docker
+          dockerStrategy:
+            from:
+              kind: ImageStreamTag
+              name: "{{ _fluentd_bc_is }}"
+        triggers:
+          - github:
+              secret: "{{ _fluentd_bc_trigger_secret_github }}"
+            type: GitHub
+          - generic:
+              secret: "{{ _fluentd_bc_trigger_secret_generic }}"
+            type: Generic
+          - type: ConfigChange
+          - imageChange: {}
+            type: ImageChange
+
+- name: "FLuentd svc/{{ _fluentd_name }}"
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        labels:
+          app: "{{ _label_app }}"
+        name: "{{ _fluentd_name }}"
+        namespace: "{{ _namespace }}"
+      spec:
+        ports:
+          - name: 5140-tcp
+            port: 5140
+            protocol: TCP
+            targetPort: 5140
+          - name: 24224-tcp
+            port: 24224
+            protocol: TCP
+            targetPort: 24224
+        selector:
+          app: fluentd
+          deploymentconfig: fluentd
+        sessionAffinity: None
+        type: ClusterIP
+      status:
+        loadBalancer: {}

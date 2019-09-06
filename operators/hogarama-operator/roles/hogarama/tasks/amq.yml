@@ -104,7 +104,7 @@
                   - name: AMQ_KEYSTORE
                     value: "broker.ks"
                   - name: AMQ_KEYSTORE_PASSWORD
-                    value: "amq_keystore_password"
+                    value: "{{ amq_keystore_password }}"
                   - name: AMQ_STORAGE_USAGE_LIMIT
                     value: "{{ _amq_storage_limit }}"
                 image: "{{ _amq_image }}"
