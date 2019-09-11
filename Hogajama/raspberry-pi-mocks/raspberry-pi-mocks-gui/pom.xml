@@ -33,6 +33,20 @@
 
 	<build>
 		<finalName>raspberry-pi-mocks-gui</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.wildfly.swarm</groupId>
+				<artifactId>wildfly-swarm-plugin</artifactId>
+				<version>${version.wildfly.swarm}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<profiles>
@@ -41,24 +55,12 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.wildfly.swarm</groupId>
-						<artifactId>wildfly-swarm-plugin</artifactId>
-						<version>${version.wildfly.swarm}</version>
-
-						<executions>
-							<execution>
-								<goals>
-									<goal>package</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
 						<artifactId>maven-resources-plugin</artifactId>
 						<executions>
 							<execution>
+								<!-- The OpenShift SourceToImage Build expects the jar in the
+									target dir of the base directory -->
 								<id>copy-resources</id>
-								<!-- here the phase you need -->
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
