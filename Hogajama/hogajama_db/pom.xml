@@ -18,7 +18,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>6.0.1</version>
                 <configuration>
-                    <url>jdbc:postgresql://localhost:5432/hogajama</url>
+                    <url>jdbc:postgresql://localhost:5431/hogajama</url>
                     <user>hogajama</user>
                     <password>hogajama</password>
                     <schemas>
