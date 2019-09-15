@@ -206,8 +206,8 @@ under the License.
          </address>
 		<address name="habarama">
 			<multicast>
-				<queue name="fluentd.habarama"/>
-				<queue name="eap.habarama"/>
+				<queue name="fluentd.sensordata"/>
+				<queue name="habarama.sensordata"/>
 			</multicast>
 		</address>
 
