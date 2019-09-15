@@ -204,16 +204,14 @@ under the License.
                <queue name="ExpiryQueue" />
             </anycast>
          </address>
+		<address name="habarama">
+			<multicast>
+				<queue name="fluentd.habarama"/>
+				<queue name="eap.habarama"/>
+			</multicast>
+		</address>
 
       </addresses>
-
-	<destinationInterceptors> 
-  		<virtualDestinationInterceptor> 
-    		<virtualDestinations> 
-      		<virtualTopic name="hogajama" prefix="VirtualTopicConsumers.*." selectorAware="false"/>   
-    		</virtualDestinations>
-  		</virtualDestinationInterceptor> 
-	</destinationInterceptors>
 
       <!-- Uncomment the following if you want to use the Standard LoggingActiveMQServerPlugin pluging to log in events
       <broker-plugins>
