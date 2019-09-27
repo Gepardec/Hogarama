@@ -1,7 +1,19 @@
-<h1>All Sensors</h1>
-<ul *ngFor="let sensor of sensorArr">
-  <li>{{ sensor }}</li>
-</ul>
-<p>{{ error }}</p>
-<app-user-name></app-user-name>
-<button (click)="logout()">LOGOUT</button>
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            All Sensors
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <h1>All Sensors</h1>
+    <ul *ngFor="let sensor of sensorArr">
+        <li>{{ sensor }}</li>
+    </ul>
+    <p>{{ error }}</p>
+    <app-user-name></app-user-name>
+    <button (click)="logout()">LOGOUT</button>
+</ion-content>

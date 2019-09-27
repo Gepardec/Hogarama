@@ -1,15 +1,17 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { TestLoginRedirectRoutingModule } from './test-login-redirect-routing.module';
-import { TestLoginRedirectComponent } from './test-login-redirect.component';
+import {TestLoginRedirectRoutingModule} from './test-login-redirect-routing.module';
+import {TestLoginRedirectComponent} from './test-login-redirect.component';
+import {IonicModule} from "@ionic/angular";
 
 @NgModule({
   declarations: [TestLoginRedirectComponent],
-  imports: [
-    CommonModule,
-    TestLoginRedirectRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        TestLoginRedirectRoutingModule,
+        IonicModule
+    ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TestLoginRedirectModule { }
