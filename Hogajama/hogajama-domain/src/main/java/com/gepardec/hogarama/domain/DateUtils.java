@@ -8,6 +8,10 @@ import java.util.Date;
 
 public class DateUtils {
 
+	private DateUtils(){
+
+	}
+
 	public static LocalDateTime toLocalDateTime(Date date) {
 		return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
 	}

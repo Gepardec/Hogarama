@@ -1,22 +1,20 @@
 package com.gepardec.hogarama.rest;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-
 import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorNamesCache;
 import com.gepardec.hogarama.domain.watering.WateringDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.rest.mapper.SensorMapper;
 import com.gepardec.hogarama.rest.util.DateUtil;
-import com.gepardec.hogarama.service.schedulers.SensorsScheduler;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 @Path("sensor")
 @SessionScoped
@@ -31,11 +29,11 @@ public class SensorApiImpl implements SensorApi, Serializable {
 	private WateringDAO wateringDAO;
 
 	@Inject
-	private SensorsScheduler sensorsScheduler;
+	private SensorNamesCache sensorNamesCache;
 
 	@Override
 	public Response getAllSensors(SecurityContext securityContext) {
-		return Response.ok(sensorsScheduler.getSensorNames()).build();
+		return Response.ok(sensorNamesCache.getSensorNames()).build();
 	}
 	
 

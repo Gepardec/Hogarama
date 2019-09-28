@@ -34,7 +34,7 @@ test $error = 0 || exit $error
 
 TmpInstall=${JBOSS_HOME}_Tmp$$
 
-unzip -d $TmpInstall $JBossPackage
+unzip -qd $TmpInstall $JBossPackage
 mv $TmpInstall/* $JBOSS_HOME
 rm -r $TmpInstall
 

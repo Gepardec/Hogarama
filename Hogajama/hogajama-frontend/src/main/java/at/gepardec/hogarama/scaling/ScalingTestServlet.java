@@ -1,26 +1,16 @@
 package at.gepardec.hogarama.scaling;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.management.ManagementFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.management.AttributeNotFoundException;
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectInstance;
-import javax.management.ObjectName;
-import javax.management.ReflectionException;
-import javax.servlet.ServletException;
+import javax.management.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.gepardec.hogarama.domain.metrics.Metrics;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
 
 @WebServlet("/ScalingTest")
 public class ScalingTestServlet extends HttpServlet {
@@ -30,27 +20,32 @@ public class ScalingTestServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
+			HttpServletResponse response) {
+		try{
+			PrintWriter out = response.getWriter();
 
-		out.println("Session ID: " + request.getSession().getId());
+			out.println("Session ID: " + request.getSession().getId());
 
-		if (request.getSession().getAttribute("test") == null) {
-			out.println("New session. Current session is empty.");
+			if (request.getSession().getAttribute("test") == null) {
+				out.println("New session. Current session is empty.");
 
-			request.getSession().setAttribute("test", Integer.valueOf(1));
-			logger.info("Here we start with a new session");
+				request.getSession().setAttribute("test", Integer.valueOf(1));
+				logger.info("Here we start with a new session");
 
-		} else {
-			Integer value = (Integer) request.getSession().getAttribute("test");
-			out.println("Existing session: Value is " + value);
+			} else {
+				Integer value = (Integer) request.getSession().getAttribute("test");
+				out.println("Existing session: Value is " + value);
 
-			request.getSession().setAttribute("test",
-					Integer.valueOf(value.intValue() + 1));
+				request.getSession().setAttribute("test",
+						Integer.valueOf(value.intValue() + 1));
+			}
+
+			out.println("Active Sessions: " + getActiveSession());
+			out.println("End");
+		} catch(IOException e){
+			logger.error("Error handling http request", e);
 		}
 
-		out.println("Active Sessions: " + getActiveSession());
-		out.println("End");
 	}
 
 	private int getActiveSession() {
@@ -63,7 +58,6 @@ public class ScalingTestServlet extends HttpServlet {
 				}
 			} catch (MalformedObjectNameException | AttributeNotFoundException | InstanceNotFoundException
 					| MBeanException | ReflectionException e) {
-				Metrics.exceptionsThrown.labels("hogajama-frontend", e.getClass().toString(), "ScalingTestServlet.getActiveSessions").inc();
 				throw new RuntimeException(e);
 			}
         return activeSessions;
