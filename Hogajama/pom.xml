@@ -26,7 +26,7 @@
 		<org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
 		<junit.version>4.11</junit.version>
         <org.jboss.resteasy.version>3.0.12.Final</org.jboss.resteasy.version>
-		<com.fasterxml.jackson.core.datbind.version>2.9.9.2</com.fasterxml.jackson.core.datbind.version>
+		<com.fasterxml.jackson.core.databind.version>2.9.10</com.fasterxml.jackson.core.databind.version>
 		<org.slf4j.slf4j.api.version>1.7.5</org.slf4j.slf4j.api.version>
 		<com.openshift.openshift-restclient-java.version>5.9.0.Final</com.openshift.openshift-restclient-java.version>
 	</properties>
@@ -95,7 +95,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>${com.fasterxml.jackson.core.datbind.version}</version>
+				<version>${com.fasterxml.jackson.core.databind.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.swagger</groupId>
