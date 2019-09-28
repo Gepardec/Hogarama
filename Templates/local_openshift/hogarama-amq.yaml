@@ -18,52 +18,68 @@ objects:
   spec:
     dockerImageRepository: "registry.access.redhat.com/amq-broker-7/amq-broker-72-openshift"
 - apiVersion: v1
-  kind: Service
+  kind: ImageStream
   metadata:
-    annotations:
-      description: The broker's MQTT port.
-      service.alpha.openshift.io/dependencies: '[{"name":"broker-amq-mqtt-ssl","namespace":"","kind":"Service"}]'
-    creationTimestamp: null
     labels:
-      app: amq-persistent-ssl
-      application: broker
       template: hogarama-amq
-      xpaas: 1.3.1
-    name: broker-amq-mqtt
+      app: broker-amq
+    name: broker-amq
   spec:
-    ports:
-    - port: 1883
-      protocol: TCP
-      targetPort: 1883
-    selector:
-      deploymentConfig: broker-amq
-    sessionAffinity: None
-    type: ClusterIP
-  status:
-    loadBalancer: {}
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: broker-amq:latest
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
 - apiVersion: v1
-  kind: Service
+  kind: BuildConfig
   metadata:
     annotations:
-      description: The broker's MQTT SSL port.
+      openshift.io/generated-by: OpenShiftWebConsole
     creationTimestamp: null
     labels:
-      app: amq-persistent-ssl
-      application: broker
       template: hogarama-amq
-      xpaas: 1.3.1
-    name: broker-amq-mqtt-ssl
+      app: broker-amq
+    name: broker-amq
   spec:
-    ports:
-    - port: 8883
-      protocol: TCP
-      targetPort: 8883
-    selector:
-      deploymentConfig: broker-amq
-    sessionAffinity: None
-    type: ClusterIP
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: broker-amq:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: AMQ
+      git:
+        ref: ${BRANCH}
+        uri: https://github.com/Gepardec/Hogarama.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: jboss-amq-7:latest
+      type: Source
+    triggers:
+    - generic:
+        secret: 839d5fe938836ff1
+      type: Generic
+    - github:
+        secret: 35fcf10dc7b7c67a
+      type: GitHub
+    - imageChange: {}
+      type: ImageChange
+    - type: ConfigChange
   status:
-    loadBalancer: {}
+    lastVersion: 0
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -189,7 +205,7 @@ objects:
         - broker-amq
         from:
           kind: ImageStreamTag
-          name: jboss-amq-7:latest
+          name: broker-amq:latest
       type: ImageChange
     - type: ConfigChange
   status:
@@ -199,6 +215,53 @@ objects:
     replicas: 0
     unavailableReplicas: 0
     updatedReplicas: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's MQTT port.
+      service.alpha.openshift.io/dependencies: '[{"name":"broker-amq-mqtt-ssl","namespace":"","kind":"Service"}]'
+    creationTimestamp: null
+    labels:
+      app: amq-persistent-ssl
+      application: broker
+      template: hogarama-amq
+      xpaas: 1.3.1
+    name: broker-amq-mqtt
+  spec:
+    ports:
+    - port: 1883
+      protocol: TCP
+      targetPort: 1883
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's MQTT SSL port.
+    creationTimestamp: null
+    labels:
+      app: amq-persistent-ssl
+      application: broker
+      template: hogarama-amq
+      xpaas: 1.3.1
+    name: broker-amq-mqtt-ssl
+  spec:
+    ports:
+    - port: 8883
+      protocol: TCP
+      targetPort: 8883
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -299,7 +362,44 @@ objects:
         type: Admitted
       routerName: router-poi-4
       wildcardPolicy: None
+- apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    labels:
+      app: amq-management
+      template: hogarama-amq
+    name: amq-management
+  spec:
+    port:
+      targetPort: 8161-tcp
+    tls:
+      termination: passthrough
+    to:
+      kind: Service
+      name: amq-management
+      weight: 100
+    wildcardPolicy: None
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: amq-management
+      template: hogarama-amq
+    name: amq-management
+  spec:
+    ports:
+    - name: 8161-tcp
+      port: 8161
+      protocol: TCP
+      targetPort: 8161
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
 parameters:
-    - description: Url of SSO authentication server
-      value: https://secure-sso-57-hogarama.cloud.itandtel.at/auth/
-      name: KEYCLOAK_AUTH_SERVER_URL
+    - description: Branch for Builds
+      from: '[A-Z0-9]{8}'
+      value: master
+      name: BRANCH
