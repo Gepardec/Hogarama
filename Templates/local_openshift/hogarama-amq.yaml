@@ -1,0 +1,305 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: hogarama-amq
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/display-name: "Red Hat JBoss EAP 7.0"
+    labels:
+      app: amq-persistent-ssl
+      application: broker
+      template: hogarama-amq
+      xpaas: 1.3.1
+    name: jboss-amq-7
+  spec:
+    dockerImageRepository: "registry.access.redhat.com/amq-broker-7/amq-broker-72-openshift"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's MQTT port.
+      service.alpha.openshift.io/dependencies: '[{"name":"broker-amq-mqtt-ssl","namespace":"","kind":"Service"}]'
+    creationTimestamp: null
+    labels:
+      app: amq-persistent-ssl
+      application: broker
+      template: hogarama-amq
+      xpaas: 1.3.1
+    name: broker-amq-mqtt
+  spec:
+    ports:
+    - port: 1883
+      protocol: TCP
+      targetPort: 1883
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The broker's MQTT SSL port.
+    creationTimestamp: null
+    labels:
+      app: amq-persistent-ssl
+      application: broker
+      template: hogarama-amq
+      xpaas: 1.3.1
+    name: broker-amq-mqtt-ssl
+  spec:
+    ports:
+    - port: 8883
+      protocol: TCP
+      targetPort: 8883
+    selector:
+      deploymentConfig: broker-amq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: amq-persistent-ssl
+      application: broker
+      template: hogarama-amq
+      xpaas: 1.3.1
+    name: broker-amq
+  spec:
+    replicas: 1
+    selector:
+      deploymentConfig: broker-amq
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 0
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          application: broker
+          deploymentConfig: broker-amq
+        name: broker-amq
+      spec:
+        containers:
+        - env:
+          - name: AMQ_USER
+            value: mq_habarama
+          - name: AMQ_PASSWORD
+            value: mq_habarama_pass
+          - name: AMQ_TRANSPORTS
+            value: mqtt
+          - name: AMQ_QUEUES
+          - name: AMQ_TOPICS
+          - name: MQ_SERIALIZABLE_PACKAGES
+          - name: AMQ_SPLIT
+            value: "false"
+          - name: AMQ_MESH_DISCOVERY_TYPE
+            value: kube
+          - name: AMQ_MESH_SERVICE_NAME
+            value: broker-amq-tcp
+          - name: AMQ_MESH_SERVICE_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: AMQ_KEYSTORE_TRUSTSTORE_DIR
+            value: /etc/amq-secret-volume
+          - name: AMQ_TRUSTSTORE
+            value: broker.ks
+          - name: AMQ_TRUSTSTORE_PASSWORD
+            value: 765rjvb5rtzh8i7587fg
+          - name: AMQ_KEYSTORE
+            value: broker.ks
+          - name: AMQ_KEYSTORE_PASSWORD
+            value: 765rjvb5rtzh8i7587fg
+          - name: AMQ_STORAGE_USAGE_LIMIT
+            value: 1 gb
+          imagePullPolicy: Always
+          name: broker-amq
+          ports:
+          - containerPort: 8161
+            name: jolokia
+            protocol: TCP
+          - containerPort: 5672
+            name: amqp
+            protocol: TCP
+          - containerPort: 5671
+            name: amqp-ssl
+            protocol: TCP
+          - containerPort: 1883
+            name: mqtt
+            protocol: TCP
+          - containerPort: 8883
+            name: mqtt-ssl
+            protocol: TCP
+          - containerPort: 61613
+            name: stomp
+            protocol: TCP
+          - containerPort: 61612
+            name: stomp-ssl
+            protocol: TCP
+          - containerPort: 61616
+            name: tcp
+            protocol: TCP
+          - containerPort: 61617
+            name: tcp-ssl
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /etc/amq-secret-volume
+            name: broker-secret-volume
+            readOnly: true
+          - mountPath: /opt/amq/data
+            name: broker-amq-pvol
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 60
+        volumes:
+        - name: broker-secret-volume
+          secret:
+            defaultMode: 420
+            secretName: amq-app-secret
+        - name: broker-amq-pvol
+          persistentVolumeClaim:
+            claimName: broker-amq-claim
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - broker-amq
+        from:
+          kind: ImageStreamTag
+          name: jboss-amq-7:latest
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: amq-persistent-ssl
+      application: broker
+      template: hogarama-amq
+      xpaas: 1.3.1
+    name: broker-amq-claim
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 512Mi
+  status: {}
+- apiVersion: v1
+  data:
+    broker.ks: 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
+  kind: Secret
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: amq-persistent-ssl
+      application: broker
+      template: hogarama-amq
+      xpaas: 1.3.1
+    name: amq-app-secret
+  type: Opaque
+- apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    creationTimestamp: null
+    labels:
+      app: amq-persistent-ssl
+      application: broker
+      template: hogarama-amq
+      xpaas: 1.3.1
+    name: broker-amq-mqtt-ssl
+  spec:
+    tls:
+      termination: passthrough
+    to:
+      kind: Service
+      name: broker-amq-mqtt-ssl
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: 2017-02-17T11:33:49Z
+        status: "True"
+        type: Admitted
+      routerName: prod-router
+      wildcardPolicy: None
+    - conditions:
+      - lastTransitionTime: 2017-04-20T16:55:50Z
+        status: "True"
+        type: Admitted
+      routerName: markusrouter
+      wildcardPolicy: None
+    - conditions:
+      - lastTransitionTime: 2017-04-21T12:02:36Z
+        status: "True"
+        type: Admitted
+      routerName: markusrouterpoi
+      wildcardPolicy: None
+    - conditions:
+      - lastTransitionTime: 2017-04-24T08:11:32Z
+        status: "True"
+        type: Admitted
+      routerName: router
+      wildcardPolicy: None
+    - conditions:
+      - lastTransitionTime: 2017-04-24T08:19:08Z
+        status: "True"
+        type: Admitted
+      routerName: router-poi
+      wildcardPolicy: None
+    - conditions:
+      - lastTransitionTime: 2017-04-25T09:55:14Z
+        status: "True"
+        type: Admitted
+      routerName: ha-router-poi
+      wildcardPolicy: None
+    - conditions:
+      - lastTransitionTime: 2017-04-25T10:21:11Z
+        status: "True"
+        type: Admitted
+      routerName: ha-router-poi1
+      wildcardPolicy: None
+    - conditions:
+      - lastTransitionTime: 2017-05-02T14:32:06Z
+        status: "True"
+        type: Admitted
+      routerName: router-poi-4
+      wildcardPolicy: None
+parameters:
+    - description: Url of SSO authentication server
+      value: https://secure-sso-57-hogarama.cloud.itandtel.at/auth/
+      name: KEYCLOAK_AUTH_SERVER_URL

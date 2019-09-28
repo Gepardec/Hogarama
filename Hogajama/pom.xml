@@ -37,6 +37,7 @@
 		<org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
 		<junit.version>4.11</junit.version>
         <org.jboss.resteasy.version>3.0.12.Final</org.jboss.resteasy.version>
+
 		<project.version>0.0.2-SNAPSHOT</project.version>
 		<org.slf4j.version>1.7.25</org.slf4j.version>
 		<javax.javaee-api.version>7.0</javax.javaee-api.version>
@@ -98,6 +99,7 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${org.slf4j.version}</version>
+
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -113,7 +115,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.openshift</groupId>
-				<artifactId>openshift-restclient-java</artifactId>
+	 	   	<artifactId>openshift-restclient-java</artifactId>
 				<version>${openshift-restclient-java.version}</version>
 			</dependency>
 			<dependency>

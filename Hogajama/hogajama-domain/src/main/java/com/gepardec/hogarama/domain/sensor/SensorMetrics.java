@@ -1,19 +1,16 @@
 package com.gepardec.hogarama.domain.sensor;
 
-import static com.gepardec.hogarama.domain.DateUtils.toDate;
+import com.gepardec.hogarama.domain.metrics.Metrics;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
-import com.gepardec.hogarama.domain.metrics.Metrics;
-import io.prometheus.client.Gauge;
+import static com.gepardec.hogarama.domain.DateUtils.toDate;
 
 @ApplicationScoped
 public class SensorMetrics {

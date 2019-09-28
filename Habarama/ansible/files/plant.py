@@ -22,8 +22,10 @@ def on_message(client, userdata, message):
     payload = json.loads(message.payload)
 
 
+    actorFound = False
     for actor in actors:
-        if message.topic == "actor.{}.{}".format (actor['location'], actor['name']):
+        if ( message.topic == "actor.{}.{}".format (actor['location'], actor['name']) ) or (
+           message.topic == "actor/{}/{}".format (actor['location'], actor['name']) ):
 
             if actor['type'] == "gpio":
                 # set actor in different thread to not block the main thread
@@ -34,7 +36,10 @@ def on_message(client, userdata, message):
             else:
                 log("Actor type {} of {} is not supported".format(actor['type'], actor['name']))
 
+            actorFound = True
             break
+    if not actorFound:
+        log("ERROR: No actor found for topic {}!".format(message.topic))
 
 def reconnect(client):
     while True:

@@ -1,22 +1,20 @@
 package com.gepardec.hogajama.raspberrypimocks.websocket;
 
-import java.io.IOException;
-import java.util.Optional;
+import com.gepardec.hogarama.mocks.cli.MqttClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-
-import com.gepardec.hogarama.mocks.cli.MqttClient;
+import java.io.IOException;
+import java.util.Optional;
 
 @ServerEndpoint("/mock")
 public class Endpoint {
 	
 	private static final String TEST_MESSAGE = "{\"sensorName\" : \"$name\", \"type\" : \"$type\", \"value\" : $value, \"location\" : \"Wien\", \"version\" : 0}";
+	private static final Logger LOGGER = LoggerFactory.getLogger(Endpoint.class);
 	
 	private MqttClient mqttClient;
 	
@@ -49,8 +47,7 @@ public class Endpoint {
 				session.getBasicRemote().sendText("ok");
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Exception occured while receiving messages", e);
 		}
 	}
 

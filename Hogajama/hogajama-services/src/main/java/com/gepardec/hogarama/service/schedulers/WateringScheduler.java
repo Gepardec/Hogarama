@@ -1,14 +1,12 @@
 package com.gepardec.hogarama.service.schedulers;
 
+import com.gepardec.hogarama.domain.watering.WateringService;
+import org.slf4j.Logger;
+
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-
-import org.slf4j.Logger;
-
-import com.gepardec.hogarama.domain.watering.WateringService;
-import com.gepardec.hogarama.domain.watering.WateringStrategy;
 
 @Startup
 @Singleton
