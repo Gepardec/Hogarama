@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/services/AuthenticationService/authentication.service';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from 'src/app/services/AuthenticationService/authentication.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-test-login-redirect',
@@ -18,16 +18,16 @@ export class TestLoginRedirectComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.isKeycloakAuthenticated().then(
-      () => this.router.navigateByUrl('/home'),
-      () => alert('Login failure!')
-    );
+    const authed = this.authService.isKeycloakAuthenticated();
+      if(authed) {
+        this.router.navigateByUrl('/home')
+      }
   }
 
   onLoginClickTest(): void {
     this.authService.loginUser().then(
       () => this.router.navigateByUrl('/home'),
-      () => alert('Login failure!')
+      (reason) => console.log(reason)
     );
   }
 

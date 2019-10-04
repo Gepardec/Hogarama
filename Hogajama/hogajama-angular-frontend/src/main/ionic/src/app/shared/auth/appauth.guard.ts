@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanLoad } from '@angular/router';
-import { KeycloakService, KeycloakAuthGuard } from 'keycloak-angular';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {CanLoad, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {AuthenticationService} from "../../services/AuthenticationService/authentication.service";
 
 @Injectable()
-export class AppAuthGuard extends KeycloakAuthGuard implements CanLoad {
-  constructor(protected router: Router, protected keycloakAngular: KeycloakService) {
-    super(router, keycloakAngular);
+export class AppAuthGuard implements CanLoad {
+  constructor(protected router: Router, protected keycloak: AuthenticationService) {
   }
 
-  isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  canLoad(route: import ('@angular/router').Route, segments: import ('@angular/router').UrlSegment[])
+    : boolean | Observable<boolean> | Promise<boolean> {
     return new Promise((resolve, reject) => {
-      if (!this.authenticated) {
-        this.keycloakAngular.login();
+      if (!this.keycloak.isCurrentlyAuthenticated()) {
+        this.keycloak.loginUser();
         return;
       }
 
@@ -20,12 +20,12 @@ export class AppAuthGuard extends KeycloakAuthGuard implements CanLoad {
       if (!requiredRoles || requiredRoles.length === 0) {
         return resolve(true);
       } else {
-        if (!this.roles || this.roles.length === 0) {
+        if (!this.keycloak.getRoles() || this.keycloak.getRoles().length === 0) {
           resolve(false);
         }
         let granted = false;
         for (const requiredRole of requiredRoles) {
-          if (this.roles.indexOf(requiredRole) > -1) {
+          if (this.keycloak.getRoles().indexOf(requiredRole) > -1) {
             granted = true;
             break;
           }
@@ -33,11 +33,5 @@ export class AppAuthGuard extends KeycloakAuthGuard implements CanLoad {
         resolve(granted);
       }
     });
-  }
-
-  canLoad(route: import ('@angular/router').Route, segments: import ('@angular/router').UrlSegment[])
-    : boolean | Observable<boolean> | Promise<boolean> {
-
-    return false;
   }
 }

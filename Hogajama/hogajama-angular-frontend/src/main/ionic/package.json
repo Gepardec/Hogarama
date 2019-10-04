@@ -33,7 +33,7 @@
     "cordova-plugin-network-information": "^2.0.2",
     "cordova-plugin-networkinterface": "^2.0.0",
     "core-js": "^2.5.4",
-    "keycloak-angular": "^5.1.0",
+    "keycloak-js": "^6.0.1",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.29"

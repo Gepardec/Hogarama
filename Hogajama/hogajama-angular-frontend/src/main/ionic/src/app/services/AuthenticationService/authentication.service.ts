@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Subject, Observable, BehaviorSubject } from 'rxjs';
-import {KeycloakService} from 'keycloak-angular';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {environment} from "../../../environments/environment";
+import * as Keycloak from "keycloak-js";
 
 @Injectable({
   providedIn: 'root'
@@ -8,37 +9,38 @@ import {KeycloakService} from 'keycloak-angular';
 export class AuthenticationService {
   // tslint:disable-next-line: variable-name
     private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    private _keycloak;
 
-    constructor(protected keycloakAngular: KeycloakService) {
-      this.isKeycloakAuthenticated().then(isAuthed => {
-        this._isAuthenticated.next(isAuthed);
-      });
+    constructor() {
+        this._keycloak = Keycloak(environment.keycloak);
+        this._isAuthenticated.next(this.isKeycloakAuthenticated());
+    }
+
+    public init(): Promise<boolean> {
+        return this._keycloak.init({
+            onLoad: 'check-sso',
+            adapter: 'default',
+            promiseType: 'native'
+        }).then((isAuthed) => {
+            this._isAuthenticated.next(isAuthed);
+        });
+    }
+
+    public getRoles(): string[] {
+        return this._keycloak.realmAccess.roles;
     }
 
     public loginUser(): Promise<boolean> {
-      return new Promise<boolean>((resolve, reject) => {
-        this.keycloakAngular.login().then(() => {
+      return this._keycloak.login().then(() => {
           this._isAuthenticated.next(true);
-          resolve(true);
-        }, () => {
-          this._isAuthenticated.next(false);
-        });
       });
-      /*return new Promise<boolean>((resolve, reject) => {
-        this._isAuthenticated.next(true);
-        resolve(true);
-      });´*/
     }
 
+
     public logoutUser(): Promise<boolean> {
-      return new Promise<boolean>((resolve, reject) => {
-        this.keycloakAngular.logout().then(() => {
+      return this._keycloak.logout().then(() => {
           this._isAuthenticated.next(false);
-          resolve(false);
-        }, () => {
-          reject();
         });
-      });
     }
 
     public isAuthenticated(): Observable<boolean> {
@@ -49,7 +51,7 @@ export class AuthenticationService {
       return this._isAuthenticated.getValue();
     }
 
-    public isKeycloakAuthenticated(): Promise<boolean> {
-        return this.keycloakAngular.isLoggedIn();
+    public isKeycloakAuthenticated(): boolean {
+        return this._keycloak.authenticated;
     }
 }
