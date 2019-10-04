@@ -741,7 +741,7 @@ objects:
           - name: JAVA_OPTIONS
             value: -Djava.net.preferIPv4Stack=true
           - name: GC_MAX_METASPACE_SIZE
-            value: 175
+            value: "175"
           image: hogarama/mock-gui
           imagePullPolicy: Always
           name: mock-gui
