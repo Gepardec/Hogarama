@@ -17,6 +17,8 @@ import com.gepardec.hogarama.testdata.TestDataProducer;
 public class WateringServiceTest {
 
 	private WateringService watering;
+    private MockActorService actor;
+    private InMemoryWateringConfigDAO wateringConfigDao;
 
 	@Before
 	public void setUp() throws Exception {		
@@ -34,17 +36,16 @@ public class WateringServiceTest {
 		watering.setDate(LocalDateTime.of(2018, Month.JUNE, 20, 15, 00));
 		
 	}
-
-	private void setupWatering(MockActorService actor) {
-		InMemoryWateringConfigDAO wateringConfigDao = new InMemoryWateringConfigDAO();
-		setupWatering(actor, wateringConfigDao);
-	}
-	
+    
+    private void setupWatering() {
+        actor = new MockActorService("Vienna", "My Plant", WateringService.Config.DEFAULT.waterDuration);
+        wateringConfigDao = new InMemoryWateringConfigDAO();
+        setupWatering(actor, wateringConfigDao);
+    }
+    
 	@Test
 	public void testWateringOfMyPlant() throws Exception {
-		MockActorService actor = new MockActorService("Vienna", "My Plant", 5);
-
-		setupWatering(actor);
+		setupWatering();
 		watering.waterAll();
 		assertTrue("Actor was called", actor.wasCalled());
 	}
@@ -64,11 +65,7 @@ public class WateringServiceTest {
 	
 	@Test
 	public void testWateringWillSaveDefaultConfig() throws Exception {
-
-		InMemoryWateringConfigDAO wateringConfigDao = new InMemoryWateringConfigDAO();
-		MockActorService actor = new MockActorService("Vienna", "My Plant", 5);
-		
-		setupWatering(actor, wateringConfigDao);
+		setupWatering();
 		watering.waterAll();
 
 		assertNotNull(wateringConfigDao.getBySensorName("My Plant"));
