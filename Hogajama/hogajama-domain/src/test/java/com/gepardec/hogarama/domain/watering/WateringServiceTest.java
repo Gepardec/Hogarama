@@ -86,15 +86,40 @@ public class WateringServiceTest {
 		assertNotNull(wateringConfigDao.getBySensorName("My Plant"));
 	}
 	
-	@Test @Ignore
-    public void testLowVatueWillTriggerWatering() throws Exception {
+    @Test
+    public void testLowValueWillTriggerWatering() throws Exception {
         setupWatering();
         SensorData val = data.getNext();
         assertEquals(0.1, val.getValue(), 0.01);
         watering.water(val);
         assertTrue("Actor was called", actorSvc.wasCalled());
    }
-	
+    
+    @Test
+    public void testHighValueWontTriggerWatering() throws Exception {
+        setupWatering();
+        data.getNext();
+        data.getNext();
+        data.getNext();
+        SensorData val = data.getNext();
+        assertEquals(0.6, val.getValue(), 0.01);
+        watering.water(val);
+        assertFalse("Actor was not called", actorSvc.wasCalled());
+   }
+    
+    @Test
+    public void testStrategieUsesAverage() throws Exception {
+        setupWatering();
+        watering.water(data.getNext().setValue(0.4));
+        assertFalse("Actor was not called with 0.4", actorSvc.wasCalled());
+        watering.water(data.getNext().setValue(0.1));
+        assertFalse("Actor was not called with 0.1", actorSvc.wasCalled());
+        watering.water(data.getNext().setValue(0.1));
+        assertFalse("Actor was not called with second 0.1", actorSvc.wasCalled());
+        watering.water(data.getNext().setValue(0.1));
+        assertTrue("Actor was called with third 0.1", actorSvc.wasCalled());
+   }
+    
 	private SensorData startSensorData() {
 		return new SensorData(
 				"1", 
