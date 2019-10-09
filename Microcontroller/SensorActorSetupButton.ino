@@ -51,6 +51,8 @@ actor_type actors[] = {
 const int buttonPin = D3;     // the number of the pushbutton pin
 int buttonState = 0;         // variable for reading the pushbutton status
 
+const int sensorPin = 0;
+
 long lastSensorDataSent = 0;
 long lastReconnect = 0;
 
@@ -354,10 +356,6 @@ String urlDecode(String input) {
 }
 
 void sendSensorData() {
-  String payload;
-
-  // read sensor data
-  int val = analogRead(0);
 
   /*Create json payload.
      Example:
@@ -370,12 +368,13 @@ void sendSensorData() {
       }
   */
 
+  String payload;
+  // read sensor data
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
   root["sensorName"] = sensor_name;
   root["type"] = sensor_type;
-  long value= 50*random(10, 20);
-  root["value"] = value;
+  root["value"] = analogRead(sensorPin);;
   root["location"] = sensor_location;
   root["version"] = 1;
 
