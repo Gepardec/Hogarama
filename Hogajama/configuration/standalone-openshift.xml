@@ -628,7 +628,7 @@
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
         <outbound-socket-binding name="messaging-remote-broker01">
-            <remote-destination host="amq-broker-netty" port="61626"/>
+            <remote-destination host="broker-amq-netty" port="61616"/>
         </outbound-socket-binding>
     </socket-binding-group>
 </server>
