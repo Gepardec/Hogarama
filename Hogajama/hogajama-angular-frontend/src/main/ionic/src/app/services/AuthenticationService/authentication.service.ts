@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from "../../../environments/environment";
 import * as Keycloak from "keycloak-js";
+import {PlatformInfoService} from "../PlatformInfoService/platform-info.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AuthenticationService {
     private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
     private _keycloak;
 
-    constructor() {
+    constructor(private platformInfo: PlatformInfoService) {
         this._keycloak = Keycloak(environment.keycloak);
         this._isAuthenticated.next(this.isKeycloakAuthenticated());
     }
@@ -19,9 +20,13 @@ export class AuthenticationService {
     public init(): Promise<boolean> {
         return this._keycloak.init({
             onLoad: 'check-sso',
-            adapter: 'default',
+            adapter: this.platformInfo.isCurrentPlatformApp() ? 'cordova-native' : 'default',
             promiseType: 'native'
         }).then((isAuthed) => {
+            if(!isAuthed)
+                this.loginUser().then((isNow) => {
+                    this._isAuthenticated.next(isNow);
+                });
             this._isAuthenticated.next(isAuthed);
         });
     }

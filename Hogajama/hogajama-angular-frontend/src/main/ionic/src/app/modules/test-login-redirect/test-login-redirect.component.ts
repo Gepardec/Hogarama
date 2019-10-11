@@ -18,10 +18,6 @@ export class TestLoginRedirectComponent implements OnInit {
   }
 
   ngOnInit() {
-    const authed = this.authService.isKeycloakAuthenticated();
-      if(authed) {
-        this.router.navigateByUrl('/home')
-      }
   }
 
   onLoginClickTest(): void {

@@ -11,6 +11,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {NetworkInterface} from '@ionic-native/network-interface/ngx';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {HttpClientModule} from '@angular/common/http';
+import {DeviceDetectorModule} from "ngx-device-detector";
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +21,8 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    DeviceDetectorModule.forRoot()
   ],
   providers: [
     StatusBar,
