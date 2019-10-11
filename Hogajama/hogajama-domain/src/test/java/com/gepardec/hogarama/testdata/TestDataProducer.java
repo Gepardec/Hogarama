@@ -15,6 +15,7 @@ public class TestDataProducer {
 	private ArrayList<SensorData> data;
 	private SensorData akt;
 	private LocalDateTime lastTime;
+	private int index = -1;
 	
 	public TestDataProducer(SensorData sensorData) {
 		data = new ArrayList<SensorData>();
@@ -51,6 +52,10 @@ public class TestDataProducer {
 
 	public List<SensorData> getData() {
 		return data;
-	}	
+	}
+
+    public SensorData getNext() {
+        return data.get(++index);
+    }	
 
 }

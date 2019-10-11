@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.gepardec.hogarama.dao.DummySensorDAO;
@@ -17,36 +18,38 @@ import com.gepardec.hogarama.testdata.TestDataProducer;
 public class WateringServiceTest {
 
 	private WateringService watering;
+    private MockActorService actorSvc;
+    private InMemoryWateringConfigDAO wateringConfigDao;
+    private TestDataProducer data;
 
 	@Before
 	public void setUp() throws Exception {		
 	}
 
-	private void setupWatering(MockActorService actor, InMemoryWateringConfigDAO wateringConfigDao) {
-		TestDataProducer data = new TestDataProducer(startSensorData());
+	private void setupWatering(MockActorService actorSvc, InMemoryWateringConfigDAO wateringConfigDao) {
+		data = new TestDataProducer(startSensorData());
 		data.addValueMinusMinutes( 0.1, 10);
 		data.addValueMinusMinutes( 0.1, 10);
 		data.addValueAt(0.6, LocalDateTime.of(2019, Month.JUNE, 20, 14, 00));
 
 		DummySensorDAO sensorDao = new DummySensorDAO(data.getData());
 
-		watering = new WateringService(sensorDao, actor, new WateringStrategy(sensorDao), wateringConfigDao);
+		watering = new WateringService(sensorDao, actorSvc, new WateringStrategy(sensorDao), wateringConfigDao);
 		watering.setDate(LocalDateTime.of(2018, Month.JUNE, 20, 15, 00));
 		
 	}
-
-	private void setupWatering(MockActorService actor) {
-		InMemoryWateringConfigDAO wateringConfigDao = new InMemoryWateringConfigDAO();
-		setupWatering(actor, wateringConfigDao);
-	}
-	
+    
+    private void setupWatering() {
+        actorSvc = new MockActorService("Vienna", "My Plant", WateringService.Config.DEFAULT.waterDuration);
+        wateringConfigDao = new InMemoryWateringConfigDAO();
+        setupWatering(actorSvc, wateringConfigDao);
+    }
+    
 	@Test
 	public void testWateringOfMyPlant() throws Exception {
-		MockActorService actor = new MockActorService("Vienna", "My Plant", 5);
-
-		setupWatering(actor);
+		setupWatering();
 		watering.waterAll();
-		assertTrue("Actor was called", actor.wasCalled());
+		assertTrue("Actor was called", actorSvc.wasCalled());
 	}
 	
 	@Test
@@ -61,19 +64,62 @@ public class WateringServiceTest {
 		watering.waterAll();
 		assertTrue("Actor was called", actor.wasCalled());
 	}
-	
+
+   @Test
+    public void testUseDifferentActorNameThanSensorName() throws Exception {
+        
+        InMemoryWateringConfigDAO wateringConfigDao = new InMemoryWateringConfigDAO();
+        WateringConfigData wconfig = new WateringConfigData("My Plant", "My Actor", 60, 0.2, 6);
+        wateringConfigDao.save(wconfig);
+        MockActorService actor = new MockActorService("Vienna", "My Actor", 6);
+        
+        setupWatering(actor, wateringConfigDao);
+        watering.waterAll();
+        assertTrue("Actor was called", actor.wasCalled());
+    }
+
 	@Test
 	public void testWateringWillSaveDefaultConfig() throws Exception {
-
-		InMemoryWateringConfigDAO wateringConfigDao = new InMemoryWateringConfigDAO();
-		MockActorService actor = new MockActorService("Vienna", "My Plant", 5);
-		
-		setupWatering(actor, wateringConfigDao);
+		setupWatering();
 		watering.waterAll();
 
 		assertNotNull(wateringConfigDao.getBySensorName("My Plant"));
 	}
 	
+    @Test
+    public void testLowValueWillTriggerWatering() throws Exception {
+        setupWatering();
+        SensorData val = data.getNext();
+        assertEquals(0.1, val.getValue(), 0.01);
+        watering.water(val);
+        assertTrue("Actor was called", actorSvc.wasCalled());
+   }
+    
+    @Test
+    public void testHighValueWontTriggerWatering() throws Exception {
+        setupWatering();
+        data.getNext();
+        data.getNext();
+        data.getNext();
+        SensorData val = data.getNext();
+        assertEquals(0.6, val.getValue(), 0.01);
+        watering.water(val);
+        assertFalse("Actor was not called", actorSvc.wasCalled());
+   }
+    
+    @Test
+    public void testStrategieUsesAverage() throws Exception {
+        setupWatering();
+        watering.water(data.getNext().setValue(0.4));
+        assertFalse("Actor was not called with 0.4", actorSvc.wasCalled());
+        watering.water(data.getNext().setValue(0.1));
+        assertFalse("Actor was not called with 0.1", actorSvc.wasCalled());
+        watering.water(data.getNext().setValue(0.1));
+        assertFalse("Actor was not called with second 0.1", actorSvc.wasCalled());
+        watering.water(data.getNext().setValue(0.1));
+        assertTrue("Actor was called with third 0.1", actorSvc.wasCalled());
+   }
+    
 	private SensorData startSensorData() {
 		return new SensorData(
 				"1", 
@@ -87,13 +133,13 @@ public class WateringServiceTest {
 	private class MockActorService implements ActorService {
 
 		private String location;
-		private String sensorName;
+		private String actorName;
 		private Integer duration;
 		private boolean wasCalled = false;
 
-		public MockActorService(String location, String sensorName, Integer duration) {
+		public MockActorService(String location, String actorName, Integer duration) {
 			this.location = location;
-			this.sensorName = sensorName;
+			this.actorName = actorName;
 			this.duration = duration;
 		}
 
@@ -102,9 +148,9 @@ public class WateringServiceTest {
 		}
 
 		@Override
-		public void sendActorMessage(String location, String sensorName, Integer duration) {
+		public void sendActorMessage(String location, String actorName, Integer duration) {
 			assertEquals(this.location, location);
-			assertEquals(this.sensorName, sensorName);
+			assertEquals(this.actorName, actorName);
 			assertEquals(this.duration, duration);			
 			wasCalled = true;
 		}

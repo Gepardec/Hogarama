@@ -70,8 +70,9 @@ public class SensorData {
 		return value;
 	}
 
-	public void setValue(double value) {
+	public SensorData setValue(double value) {
 		this.value = value;
+		return this;
 	}
 
 	public String getLocation() {
