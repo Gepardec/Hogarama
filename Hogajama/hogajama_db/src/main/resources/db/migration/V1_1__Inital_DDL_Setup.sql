@@ -30,10 +30,10 @@ alter sequence seq_unit_id owner to hogajama;
 
 create table owner
 (
-    id          bigint not null
+    id          bigint       not null
         constraint pk_owner
             primary key,
-    sso_user_id bigint not null
+    sso_user_id varchar(255) not null
 );
 
 alter table owner
