@@ -12,7 +12,7 @@ public class Owner {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "sso_user_id")
+    @Column(name = "sso_user_id", nullable = false)
     private Long ssoUserId;
 
     @OneToMany(mappedBy = "owner")

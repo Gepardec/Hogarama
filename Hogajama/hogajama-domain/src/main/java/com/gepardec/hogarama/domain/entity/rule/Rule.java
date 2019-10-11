@@ -14,10 +14,11 @@ public abstract class Rule {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "unit_id")
+    @JoinColumn(name = "unit_id", nullable = false)
     private Unit unit;
 
     public Long getId() {

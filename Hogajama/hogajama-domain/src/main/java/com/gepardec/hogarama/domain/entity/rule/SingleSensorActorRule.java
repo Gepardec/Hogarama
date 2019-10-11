@@ -16,18 +16,18 @@ import java.math.BigDecimal;
 @Table(name = "single_sensor_actor_rule")
 public class SingleSensorActorRule extends Rule {
 
-    @Column(name = "moisture_threshold")
+    @Column(name = "moisture_threshold", nullable = false)
     private BigDecimal moistureThreshold;
 
-    @Column(name = "watering_duration_in_seconds")
+    @Column(name = "watering_duration_in_secods", nullable = false)
     private Integer wateringDurationInSeconds;
 
     @ManyToOne
-    @JoinColumn(name = "sensor_id")
+    @JoinColumn(name = "sensor_id", nullable = false)
     private Sensor sensor;
 
     @ManyToOne
-    @JoinColumn(name = "actor_id")
+    @JoinColumn(name = "actor_id", nullable = false)
     private Actor actor;
 
     public BigDecimal getMoistureThreshold() {

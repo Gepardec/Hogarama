@@ -18,8 +18,11 @@ public class Unit {
 
     private String description;
 
+    @Column(columnDefinition = "boolean default false", name = "is_default", nullable = false)
+    private Boolean isDefaultUnit;
+
     @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 
     @OneToMany(mappedBy = "unit")
@@ -85,5 +88,13 @@ public class Unit {
 
     public void setRuleList(List<Rule> ruleList) {
         this.ruleList = ruleList;
+    }
+
+    public Boolean isDefaultUnit() {
+        return isDefaultUnit;
+    }
+
+    public void setDefaultUnit(Boolean defaultUnit) {
+        isDefaultUnit = defaultUnit;
     }
 }

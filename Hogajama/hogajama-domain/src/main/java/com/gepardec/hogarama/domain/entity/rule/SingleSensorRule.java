@@ -16,10 +16,10 @@ import java.math.BigDecimal;
 public class SingleSensorRule extends Rule {
 
     @ManyToOne
-    @JoinColumn(name = "sensor_id")
+    @JoinColumn(name = "sensor_id", nullable = false)
     private Sensor sensor;
 
-    @Column(name = "moisture_threshold")
+    @Column(name = "moisture_threshold", nullable = false)
     private BigDecimal moistureThreshold;
 
     public Sensor getSensor() {
