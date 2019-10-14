@@ -1,5 +1,6 @@
 package com.gepardec.hogarama.rest;
 
+import com.gepardec.hogarama.rest.interceptor.DetermineOwner;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.representations.AccessToken;
@@ -8,6 +9,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+@DetermineOwner
 public class UserApiImpl implements UserApi {
 
     @Context
