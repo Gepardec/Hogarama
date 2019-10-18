@@ -31,6 +31,7 @@
 #define endByte 4096
 // change it for lower or higher startByte (Default = 0)
 #define startByte 0
+#define macAdress ""
 
 WiFiClientSecure espClient;
 PubSubClient client(espClient);
@@ -71,6 +72,8 @@ unsigned long tok = 0;
 
 void setup() {
   Serial.begin(115200);
+
+  macAdress = WiFi.macAddress(mac);
 
   pinMode(buttonPin, INPUT);  //    initialize digital pin buttonPin -D3 as an input.
   pinMode(LED_BUILTIN, OUTPUT);  // initialize digital pin LED_BUILTIN as an output.
@@ -365,6 +368,7 @@ void sendSensorData() {
        "value": <value read from sensor (0 - 1023)>,
        "location": "<location of sensor>",
        "version": <version of this sensor>
+       "macAddress" : <mac address of wifi-module>
       }
   */
 
@@ -377,6 +381,7 @@ void sendSensorData() {
   root["value"] = analogRead(sensorPin);;
   root["location"] = sensor_location;
   root["version"] = 1;
+  root["macAddress"] = macAddress;
 
   root.printTo(payload);
 
