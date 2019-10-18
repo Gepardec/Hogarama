@@ -31,7 +31,7 @@ EOF
 
 DO_SSO=True
 EXEC=""
-CLUSTER_UP_OPTIONS="--skip-registry-check=true"
+CLUSTER_UP_OPTIONS=""
 
 ######################   Optionen bestimmen ###################
 
