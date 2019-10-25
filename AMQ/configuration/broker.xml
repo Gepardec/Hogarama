@@ -138,9 +138,9 @@ under the License.
          <acceptor name="netty-acceptor">tcp://0.0.0.0:61616?anycastPrefix=jms.queue.;multicastPrefix=jms.topic.</acceptor>
 
          <!-- MQTT Acceptor -->
-         <acceptor name="mqtt">tcp://0.0.0.0:1883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=true</acceptor>
+         <acceptor name="mqtt">tcp://0.0.0.0:1883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=false</acceptor>
 
-            <acceptor name="mqtt-ssl">tcp://0.0.0.0:8883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=true;connectionsAllowed=1000;sslEnabled=true;keyStorePath=/etc/amq-secret-volume/broker.ks;keyStorePassword=765rjvb5rtzh8i7587fg</acceptor>
+            <acceptor name="mqtt-ssl">tcp://0.0.0.0:8883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=false;connectionsAllowed=1000;sslEnabled=true;keyStorePath=/etc/amq-secret-volume/broker.ks;keyStorePassword=765rjvb5rtzh8i7587fg</acceptor>
 
       </acceptors>
 
