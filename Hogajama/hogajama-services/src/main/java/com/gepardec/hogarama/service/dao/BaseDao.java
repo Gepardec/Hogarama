@@ -6,8 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
-public abstract class AbstractJpaDao<T extends Serializable> implements GenericDao<T> {
+public abstract class BaseDao<T extends Serializable> implements GenericDao<T> {
 
     @PersistenceContext
     protected EntityManager entityManager;
@@ -15,8 +16,8 @@ public abstract class AbstractJpaDao<T extends Serializable> implements GenericD
     public abstract Class<T> getEntityClass();
 
     @Override
-    public T getById(Long id) {
-        return entityManager.find(getEntityClass(), id);
+    public Optional<T> getById(Long id) {
+        return Optional.ofNullable(entityManager.find(getEntityClass(), id));
     }
 
     @Override
@@ -42,7 +43,7 @@ public abstract class AbstractJpaDao<T extends Serializable> implements GenericD
 
     @Override
     public void deleteById(Long id) {
-        T entity = getById(id);
-        delete(entity);
+        Optional<T> optionalEntity = getById(id);
+        optionalEntity.ifPresent(this::delete);
     }
 }

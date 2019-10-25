@@ -42,4 +42,12 @@ public class Owner implements Serializable {
     public void setUnitList(List<Unit> unitList) {
         this.unitList = unitList;
     }
+
+    public Unit getDefaultUnit() {
+        return getUnitList().stream()
+                .filter(Unit::isDefaultUnit)
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException(String.format("No Default unit given for user with id %s present.", getId())));
+    }
 }
