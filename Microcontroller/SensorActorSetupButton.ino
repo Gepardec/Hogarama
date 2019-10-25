@@ -10,9 +10,9 @@
 #include <stdio.h>
 
 // configuration for sensor
-#define sensor_name "ArduinoImReisfeld"
+#define sensor_name "Blubb"
 #define sensor_type "sparkfun"
-#define sensor_location "China"
+#define sensor_location "Gruenbach"
 
 // configuration for mqtt server
 #define mqtt_server "broker-amq-mqtt-ssl-57-hogarama.cloud.itandtel.at"
@@ -31,7 +31,7 @@
 #define endByte 4096
 // change it for lower or higher startByte (Default = 0)
 #define startByte 0
-#define macAdress ""
+
 
 WiFiClientSecure espClient;
 PubSubClient client(espClient);
@@ -73,11 +73,9 @@ unsigned long tok = 0;
 void setup() {
   Serial.begin(115200);
 
-  macAdress = WiFi.macAddress(mac);
-
   pinMode(buttonPin, INPUT);  //    initialize digital pin buttonPin -D3 as an input.
   pinMode(LED_BUILTIN, OUTPUT);  // initialize digital pin LED_BUILTIN as an output.
-  
+
   EEPROM.begin(512);
   delay(10);
   if (restoreConfig()) {
@@ -167,7 +165,7 @@ void pressButtonClearEEPROM(){
 
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (buttonState == LOW) {
-    blinkForSetup();   
+    blinkForSetup();
     Serial.println("BUTTON IS PRESSED!");
     clearEEPROM();
   } else {
@@ -372,26 +370,31 @@ void sendSensorData() {
       }
   */
 
+
+  String clientMac = WiFi.macAddress();
+  //clientMac.replace(":", "");
+  //clientMac.remove(8, 10);
+
   String payload;
   // read sensor data
-  StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& root = jsonBuffer.createObject();
+  StaticJsonBuffer <300> jsonBufferPayload ;
+  JsonObject& root = jsonBufferPayload.createObject();
   root["sensorName"] = sensor_name;
   root["type"] = sensor_type;
   root["value"] = analogRead(sensorPin);;
   root["location"] = sensor_location;
   root["version"] = 1;
-  root["macAddress"] = macAddress;
+  root["macAddress"] = clientMac;
 
   root.printTo(payload);
 
   Serial.print("Sending: ");
+  char payloadChar[payload.length() + 20];
   Serial.println(payload);
-  char payloadChar[payload.length() + 1];
+  payload.toCharArray(payloadChar, payload.length() + 20);
 
-  payload.toCharArray(payloadChar, payload.length() + 1);
-
-  client.publish("habarama", payloadChar, true);
+  bool result = client.publish("habarama", payloadChar, true);
+  Serial.println(result);
 }
 
 void reconnect() {
@@ -530,7 +533,7 @@ void clearEEPROM(){
   Serial.println("**********************************************************************************************************");
   Serial.println("Start Setup");
   setup();
- 
+
 }
 
 void blinkForSetup(){
@@ -543,5 +546,7 @@ void blinkForSetup(){
        digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
    }
 }
+
+
 
 
