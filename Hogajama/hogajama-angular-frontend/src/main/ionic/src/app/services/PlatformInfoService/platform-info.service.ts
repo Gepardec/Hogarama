@@ -19,11 +19,7 @@ export class PlatformInfoService {
     return !!(<any>window).cordova;
   }
 
-  public isCurrentPlatformNativeMobile(): boolean {
-    return this.deviceService.isMobile();
-  }
-
   public isCurrentPlatformMobile(): boolean {
-    return this.isCurrentPlatformApp() || this.isCurrentPlatformNativeMobile() || (window.innerWidth * 1.5 < window.innerHeight) || (window.innerWidth < 800);
+    return this.isCurrentPlatformApp() || (window.innerWidth * 1.5 < window.innerHeight) || (window.innerWidth < 800);
   }
 }

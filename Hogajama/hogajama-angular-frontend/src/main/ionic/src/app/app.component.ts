@@ -46,17 +46,27 @@ export class AppComponent {
 
 
   async ngOnInit() {
-    const params = new URLSearchParams(window.location.hash.substr(1));
-    // If we get the params from the keycloak auth back
-    if (params.has('state') && params.has('code')) {
-      let state = params.get('state'), code = params.get('code');
+    if(window.location) {
+      const params = new URLSearchParams(window.location.hash.substr(1));
+      // If we get the params from the keycloak auth back
+      if (params.has('state') && params.has('code')) {
+        let state = params.get('state'), code = params.get('code');
 
-      console.log(state);
-      console.log(code);
+        console.log(state);
+        console.log(code);
+      }
     }
 
-    await this.authService.init();
-
-    this.router.navigateByUrl('');
+    try {
+        await this.authService.init().then(authed => {
+          if(!authed) {
+            //this.authService.loginUser();
+          }
+        });
+    } catch(error) {
+        console.log('Cant init Keycloak Connection');
+    } finally {
+        this.router.navigateByUrl('');
+    }
   }
 }

@@ -12,6 +12,7 @@ import {NetworkInterface} from '@ionic-native/network-interface/ngx';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {HttpClientModule} from '@angular/common/http';
 import {DeviceDetectorModule} from "ngx-device-detector";
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,8 @@ import {DeviceDetectorModule} from "ngx-device-detector";
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    DeviceDetectorModule.forRoot()
+    DeviceDetectorModule.forRoot(),
+    IonicStorageModule.forRoot()
   ],
   providers: [
     StatusBar,
