@@ -2,14 +2,14 @@ package com.gepardec.hogarama.service.dao;
 
 import com.gepardec.hogarama.domain.entity.QSensor;
 import com.gepardec.hogarama.domain.entity.Sensor;
-import com.gepardec.hogarama.domain.sensor.SensorDao;
+import com.gepardec.hogarama.domain.sensor.SensorDaoToRefactor;
 import com.querydsl.jpa.impl.JPAQuery;
 
 import javax.enterprise.context.Dependent;
 import java.util.List;
 
 @Dependent
-public class SensorDaoImpl extends BaseDao<Sensor> implements SensorDao {
+public class SensorDaoImplToRefactor extends BaseDao<Sensor> implements SensorDaoToRefactor {
 
     @Override
     public Class<Sensor> getEntityClass() {
