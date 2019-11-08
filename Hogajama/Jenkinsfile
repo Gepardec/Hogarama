@@ -35,6 +35,7 @@ pipeline {
             steps {
 				sh "java -version"
                 sh "mvn clean test"
+
                 
             }//end steps
             post {
