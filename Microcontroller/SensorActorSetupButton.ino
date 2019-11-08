@@ -383,8 +383,8 @@ void sendSensorData() {
   root["type"] = sensor_type;
   root["value"] = analogRead(sensorPin);;
   root["location"] = sensor_location;
-  root["version"] = 1;
-  root["macAddress"] = clientMac;
+  root["version"] = 2;
+  root["deviceId"] = clientMac;
 
   root.printTo(payload);
 
