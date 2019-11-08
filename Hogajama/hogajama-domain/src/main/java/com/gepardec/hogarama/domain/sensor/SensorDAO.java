@@ -1,11 +1,14 @@
 package com.gepardec.hogarama.domain.sensor;
 
-import com.gepardec.hogarama.domain.GenericDao;
-import com.gepardec.hogarama.domain.entity.Sensor;
-
+import java.util.Date;
 import java.util.List;
 
-public interface SensorDao extends GenericDao<Sensor> {
+public interface SensorDAO {
 
-    List<Sensor> getAllSensorForOwner(Long ownerId);
+    /** Constant to use for querying all sensors */
+	String ALL_SENSORS = "";
+	
+    public List<String> getAllSensors();
+	public List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to);
+	public String getLocationBySensorName(String sensorName);
 }
