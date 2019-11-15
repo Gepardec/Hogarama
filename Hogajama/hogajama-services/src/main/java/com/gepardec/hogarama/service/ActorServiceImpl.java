@@ -1,7 +1,7 @@
 package com.gepardec.hogarama.service;
 
 import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.watering.ActorService;
 import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.mocks.cli.MqttClient;
@@ -17,7 +17,7 @@ public class ActorServiceImpl implements ActorService {
 
 
     @Inject
-    private SensorDAO sensorDAO;
+    private SensorDataDAO sensorDataDAO;
 
     @Inject
     private Datastore db;
@@ -49,7 +49,7 @@ public class ActorServiceImpl implements ActorService {
             throw new IllegalArgumentException(String.format("Supplied parameters '%s', '%s', '%s' must not be empty or null", location, sensorName, duration));
         }
 
-        String registeredLocation = sensorDAO.getLocationBySensorName(sensorName);
+        String registeredLocation = sensorDataDAO.getLocationBySensorName(sensorName);
         if (registeredLocation == null) {
             Metrics.exceptionsThrown.labels("hogarama_services", "IllegalArgumentException", "ActorServiceImpl.checkParametersOrFail").inc();
             throw new IllegalArgumentException(sensorName + " is not a registered sensor.");

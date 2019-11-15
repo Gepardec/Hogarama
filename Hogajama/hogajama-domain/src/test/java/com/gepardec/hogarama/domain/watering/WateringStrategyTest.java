@@ -1,18 +1,17 @@
 package com.gepardec.hogarama.domain.watering;
 
-import static com.gepardec.hogarama.domain.DateUtils.toDate;
-import static org.junit.Assert.*;
+import com.gepardec.hogarama.dao.DummySensorDataDAO;
+import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.testdata.TestDataProducer;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.gepardec.hogarama.dao.DummySensorDAO;
-import com.gepardec.hogarama.domain.sensor.SensorData;
-import com.gepardec.hogarama.domain.watering.WateringStrategy;
-import com.gepardec.hogarama.testdata.TestDataProducer;
+import static com.gepardec.hogarama.domain.DateUtils.toDate;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class WateringStrategyTest {
 
@@ -29,7 +28,7 @@ public class WateringStrategyTest {
 		data.addValueMinusMinutes( 0.1, 10);
 		data.addValueAt(0.6, LocalDateTime.of(2019, Month.JUNE, 20, 14, 00));
 
-		watering = new WateringStrategy(new DummySensorDAO(data.getData()));
+		watering = new WateringStrategy(new DummySensorDataDAO(data.getData()));
 		
 		config = new WateringConfigData("My Plant", "My Plant", 60, 0.2, 5);
 	}

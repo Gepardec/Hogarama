@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.service;
 
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +15,7 @@ import static org.junit.Assert.fail;
 public class ActorServiceImplTest {
 
   @Mock
-  private SensorDAO sensorDAO;
+  private SensorDataDAO sensorDataDAO;
 
   @InjectMocks
   private ActorServiceImpl actorService;
@@ -25,7 +25,7 @@ public class ActorServiceImplTest {
     String sensorName = "Palmlilie";
     String location = "Vienna";
 
-    Mockito.when(sensorDAO.getLocationBySensorName(sensorName)).thenReturn(location);
+    Mockito.when(sensorDataDAO.getLocationBySensorName(sensorName)).thenReturn(location);
 
     actorService.checkParametersOrFail(location, sensorName, 5);
   }
@@ -35,7 +35,7 @@ public class ActorServiceImplTest {
     String sensorName = null;
     String location = null;
 
-    Mockito.when(sensorDAO.getLocationBySensorName(sensorName)).thenReturn(location);
+    Mockito.when(sensorDataDAO.getLocationBySensorName(sensorName)).thenReturn(location);
 
     try {
       actorService.checkParametersOrFail(location, sensorName, 5);
@@ -50,7 +50,7 @@ public class ActorServiceImplTest {
     String sensorName = "";
     String location = "";
 
-    Mockito.when(sensorDAO.getLocationBySensorName(sensorName)).thenReturn(location);
+    Mockito.when(sensorDataDAO.getLocationBySensorName(sensorName)).thenReturn(location);
 
     try {
       actorService.checkParametersOrFail(location, sensorName, 5);
@@ -65,7 +65,7 @@ public class ActorServiceImplTest {
     String sensorName = "Palmlilie";
     String location = "Vienna";
 
-    Mockito.when(sensorDAO.getLocationBySensorName(sensorName)).thenReturn("Linz");
+    Mockito.when(sensorDataDAO.getLocationBySensorName(sensorName)).thenReturn("Linz");
 
     try {
       actorService.checkParametersOrFail(location, sensorName, 5);
@@ -80,7 +80,7 @@ public class ActorServiceImplTest {
     String sensorName = "Palmlilie";
     String location = "Vienna";
 
-    Mockito.when(sensorDAO.getLocationBySensorName(sensorName)).thenReturn(null);
+    Mockito.when(sensorDataDAO.getLocationBySensorName(sensorName)).thenReturn(null);
 
     try {
       actorService.checkParametersOrFail(location, sensorName, 5);
