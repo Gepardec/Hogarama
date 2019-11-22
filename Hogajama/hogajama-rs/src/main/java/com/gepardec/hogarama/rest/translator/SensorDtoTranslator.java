@@ -53,7 +53,7 @@ public class SensorDtoTranslator implements Translator<SensorDto, Sensor> {
         if (optionalSensorType.isPresent()) {
             sensor.setSensorType(optionalSensorType.get());
         } else {
-            throw new TechnicalException("No sensorType with id " + dto.getSensorTypeId() + "found.");
+            throw new TechnicalException("No sensorType with id " + dto.getSensorTypeId() + " found.");
         }
         return sensor;
     }
