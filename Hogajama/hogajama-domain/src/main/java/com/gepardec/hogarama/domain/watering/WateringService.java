@@ -1,11 +1,10 @@
 package com.gepardec.hogarama.domain.watering;
 
-import java.time.LocalDateTime;
+import com.gepardec.hogarama.domain.metrics.Metrics;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 
 import javax.inject.Inject;
-
-import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import java.time.LocalDateTime;
 
 public class WateringService {
 
@@ -25,7 +24,7 @@ public class WateringService {
 	}
 
 	@Inject
-	public SensorDAO sensorDao;
+	public SensorDataDAO sensorDataDao;
 
 	@Inject
 	public WateringConfigDAO configDao;
@@ -41,19 +40,19 @@ public class WateringService {
 	public WateringService() {
 	}
 
-	protected WateringService(SensorDAO sensorDao, ActorService actor, WateringStrategy watering, WateringConfigDAO configDao) {
-		this.sensorDao = sensorDao;
+	protected WateringService(SensorDataDAO sensorDataDao, ActorService actor, WateringStrategy watering, WateringConfigDAO configDao) {
+		this.sensorDataDao = sensorDataDao;
 		this.actor = actor;
 		this.watering = watering;
 		this.configDao = configDao;
 	}
 
 	public void waterAll() {
-		for (String sensorName : sensorDao.getAllSensors()) {
+		for (String sensorName : sensorDataDao.getAllSensors()) {
 			int dur = watering.water(getConfig(sensorName), getDate());
 			if (dur > 0) {
 				Metrics.wateringEventsFired.labels(sensorName).inc();
-				actor.sendActorMessage(sensorDao.getLocationBySensorName(sensorName), sensorName, dur);
+				actor.sendActorMessage(sensorDataDao.getLocationBySensorName(sensorName), sensorName, dur);
 			}
 		}
 	}

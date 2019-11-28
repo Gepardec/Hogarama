@@ -5,7 +5,7 @@ import com.gepardec.hogarama.domain.entity.Sensor;
 
 import java.util.List;
 
-public interface SensorDaoToRefactor extends GenericDao<Sensor> {
+public interface SensorDao extends GenericDao<Sensor> {
 
     List<Sensor> getAllSensorForOwner(Long ownerId);
 }

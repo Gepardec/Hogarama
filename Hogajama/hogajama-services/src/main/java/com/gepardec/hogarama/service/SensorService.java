@@ -2,7 +2,7 @@ package com.gepardec.hogarama.service;
 
 import com.gepardec.hogarama.domain.entity.Sensor;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
-import com.gepardec.hogarama.domain.sensor.SensorDaoToRefactor;
+import com.gepardec.hogarama.domain.sensor.SensorDao;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 public class SensorService {
 
     @Inject
-    private SensorDaoToRefactor dao;
+    private SensorDao dao;
     @Inject
     private OwnerStore store;
 
