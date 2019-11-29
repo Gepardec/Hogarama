@@ -18,10 +18,16 @@ export class AuthenticationService {
         this._isAuthenticated.next(this.isKeycloakAuthenticated());
     }
 
-    public init(): Promise<boolean> {
+    public async init(): Promise<boolean> {
+        const token = localStorage.getItem('kc_token');
+        const refreshToken = localStorage.getItem('kc_refreshToken');
+        console.log(token);
+        console.log(refreshToken);
         return this._keycloak.init({
             adapter: this.platformInfo.isCurrentPlatformApp() ? 'cordova' : 'default',
-            promiseType: 'native'
+            promiseType: 'native',
+            onLoad: 'check-sso',
+            token, refreshToken
         }).then((isAuthed) => {
             console.log('Authentication Status: ', isAuthed);
             this._isAuthenticated.next(isAuthed);
@@ -35,12 +41,23 @@ export class AuthenticationService {
         });
     }
 
+    public getToken(): string {
+        return this._keycloak.token;
+    }
+
+    public getRefreshToken(): string {
+        return this._keycloak.refreshToken;
+    }
+
     public getRoles(): string[] {
         return this._keycloak.realmAccess.roles;
     }
 
     public loginUser(): Promise<boolean> {
         return this._keycloak.login().then(() => {
+
+            localStorage.setItem('kc_token', this.getToken());
+            localStorage.setItem('kc_refreshToken', this.getRefreshToken());
             this._isAuthenticated.next(true);
             return true;
         });
@@ -49,6 +66,8 @@ export class AuthenticationService {
 
     public logoutUser(): Promise<void> {
         return this._keycloak.logout().then(() => {
+            localStorage.setItem('kc_token', null);
+            localStorage.setItem('kc_refreshToken', null);
             this._isAuthenticated.next(false);
             return;
         });

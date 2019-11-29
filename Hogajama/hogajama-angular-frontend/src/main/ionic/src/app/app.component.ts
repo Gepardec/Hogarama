@@ -51,17 +51,15 @@ export class AppComponent {
       // If we get the params from the keycloak auth back
       if (params.has('state') && params.has('code')) {
         let state = params.get('state'), code = params.get('code');
-
         console.log(state);
         console.log(code);
       }
     }
 
     try {
-        await this.authService.init().then(authed => {
-          if(!authed) {
-            //this.authService.loginUser();
-          }
+        await this.authService.init().then(() => {
+          localStorage.setItem('kc_token', this.authService.getToken());
+          localStorage.setItem('kc_refreshToken', this.authService.getRefreshToken());
         });
     } catch(error) {
         console.log('Cant init Keycloak Connection');

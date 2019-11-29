@@ -10,9 +10,10 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {NetworkInterface} from '@ionic-native/network-interface/ngx';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {DeviceDetectorModule} from "ngx-device-detector";
 import { IonicStorageModule } from '@ionic/storage';
+import {MyHttpInterceptor} from "./services/HttpInterceptor/http-interceptor";
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +28,11 @@ import { IonicStorageModule } from '@ionic/storage';
     IonicStorageModule.forRoot()
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MyHttpInterceptor,
+      multi: true
+    },
     StatusBar,
     SplashScreen,
     InAppBrowser,
