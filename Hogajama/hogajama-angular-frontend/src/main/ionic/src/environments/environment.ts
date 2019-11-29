@@ -11,7 +11,8 @@ const keycloakConfig = {
 };
 
 export const environment = {
-  production: false,
-  keycloak: keycloakConfig,
-  keycloakLibrarySubUrl: 'js/keycloak.js'
+    production: false,
+    keycloak: keycloakConfig,
+    keycloakLibrarySubUrl: 'js/keycloak.js',
+    backendUrl: 'http://localhost:8080/hogajama-rs'
 };

@@ -2,17 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserData } from 'src/app/shared/models/UserData';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HogaramaBackendService {
-  public baseUrl = '/hogajama-rs';
+  public baseUrl = environment.backendUrl;
 
   constructor(private http: HttpClient) {
-    /*if (isDevMode()) {
-      this.baseUrl = 'http://localhost:8080/hogajama-rs';
-    }*/
   }
 
   public getAllSensors(): Observable<string[]> {
