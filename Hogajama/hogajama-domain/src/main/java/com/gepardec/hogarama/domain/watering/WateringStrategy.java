@@ -1,7 +1,7 @@
 package com.gepardec.hogarama.domain.watering;
 
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 
 import javax.inject.Inject;
 import java.time.Duration;
@@ -13,19 +13,19 @@ import static com.gepardec.hogarama.domain.DateUtils.toDate;
 public class WateringStrategy {
  
 	@Inject
-	private SensorDAO sensorDao;
+	private SensorDataDAO sensorDataDao;
 	
 	public WateringStrategy() {
 	}
 
-	
-	protected WateringStrategy(SensorDAO dao) {
-		this.sensorDao = dao;
+
+	protected WateringStrategy(SensorDataDAO dao) {
+		this.sensorDataDao = dao;
 	}
 
 
 	public int water(WateringConfigData config, LocalDateTime now) {
-		List<SensorData> data = sensorDao.getAllData(200, config.getSensorName(), toDate(now.minus(Duration.ofMinutes(config.getMeasureInterval()))), toDate(now.plus(Duration.ofSeconds(1))));
+		List<SensorData> data = sensorDataDao.getAllData(200, config.getSensorName(), toDate(now.minus(Duration.ofMinutes(config.getMeasureInterval()))), toDate(now.plus(Duration.ofSeconds(1))));
 		double sum = 0;
 		for (SensorData sensorData : data) {
 			sum += sensorData.getValue();

@@ -13,11 +13,11 @@ public class Actor {
 
     private String name;
 
-    @Column(name="device_id", unique = true)
+    @Column(name = "device_id", unique = true, nullable = false)
     private String deviceId;
 
     @ManyToOne
-    @JoinColumn(name = "unit_id")
+    @JoinColumn(name = "unit_id", nullable = false)
     private Unit unit;
 
     public Long getId() {

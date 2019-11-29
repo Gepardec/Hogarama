@@ -10,9 +10,9 @@
 #include <stdio.h>
 
 // configuration for sensor
-#define sensor_name "ArduinoImReisfeld"
+#define sensor_name "Blubb"
 #define sensor_type "sparkfun"
-#define sensor_location "China"
+#define sensor_location "Gruenbach"
 
 // configuration for mqtt server
 #define mqtt_server "broker-amq-mqtt-ssl-57-hogarama.cloud.itandtel.at"
@@ -32,6 +32,7 @@
 // change it for lower or higher startByte (Default = 0)
 #define startByte 0
 
+
 WiFiClientSecure espClient;
 PubSubClient client(espClient);
 
@@ -50,6 +51,8 @@ actor_type actors[] = {
 //configuration for button.
 const int buttonPin = D3;     // the number of the pushbutton pin
 int buttonState = 0;         // variable for reading the pushbutton status
+
+const int sensorPin = 0;
 
 long lastSensorDataSent = 0;
 long lastReconnect = 0;
@@ -72,7 +75,7 @@ void setup() {
 
   pinMode(buttonPin, INPUT);  //    initialize digital pin buttonPin -D3 as an input.
   pinMode(LED_BUILTIN, OUTPUT);  // initialize digital pin LED_BUILTIN as an output.
-  
+
   EEPROM.begin(512);
   delay(10);
   if (restoreConfig()) {
@@ -162,7 +165,7 @@ void pressButtonClearEEPROM(){
 
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (buttonState == LOW) {
-    blinkForSetup();   
+    blinkForSetup();
     Serial.println("BUTTON IS PRESSED!");
     clearEEPROM();
   } else {
@@ -354,10 +357,6 @@ String urlDecode(String input) {
 }
 
 void sendSensorData() {
-  String payload;
-
-  // read sensor data
-  int val = analogRead(0);
 
   /*Create json payload.
      Example:
@@ -367,27 +366,35 @@ void sendSensorData() {
        "value": <value read from sensor (0 - 1023)>,
        "location": "<location of sensor>",
        "version": <version of this sensor>
+       "macAddress" : <mac address of wifi-module>
       }
   */
 
-  StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& root = jsonBuffer.createObject();
+
+  String clientMac = WiFi.macAddress();
+  //clientMac.replace(":", "");
+  //clientMac.remove(8, 10);
+
+  String payload;
+  // read sensor data
+  StaticJsonBuffer <300> jsonBufferPayload ;
+  JsonObject& root = jsonBufferPayload.createObject();
   root["sensorName"] = sensor_name;
   root["type"] = sensor_type;
-  long value= 50*random(10, 20);
-  root["value"] = value;
+  root["value"] = analogRead(sensorPin);;
   root["location"] = sensor_location;
-  root["version"] = 1;
+  root["version"] = 2;
+  root["deviceId"] = clientMac;
 
   root.printTo(payload);
 
   Serial.print("Sending: ");
+  char payloadChar[payload.length() + 20];
   Serial.println(payload);
-  char payloadChar[payload.length() + 1];
+  payload.toCharArray(payloadChar, payload.length() + 20);
 
-  payload.toCharArray(payloadChar, payload.length() + 1);
-
-  client.publish("habarama", payloadChar, true);
+  bool result = client.publish("habarama", payloadChar, true);
+  Serial.println(result);
 }
 
 void reconnect() {
@@ -526,7 +533,7 @@ void clearEEPROM(){
   Serial.println("**********************************************************************************************************");
   Serial.println("Start Setup");
   setup();
- 
+
 }
 
 void blinkForSetup(){
@@ -539,5 +546,7 @@ void blinkForSetup(){
        digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
    }
 }
+
+
 
 

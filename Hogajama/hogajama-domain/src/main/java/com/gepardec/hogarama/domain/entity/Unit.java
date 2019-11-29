@@ -3,10 +3,11 @@ package com.gepardec.hogarama.domain.entity;
 import com.gepardec.hogarama.domain.entity.rule.Rule;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Unit {
+public class Unit implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UnitIdGenerator", strategy = GenerationType.SEQUENCE)
@@ -18,8 +19,11 @@ public class Unit {
 
     private String description;
 
+    @Column(columnDefinition = "boolean default false", name = "is_default", nullable = false)
+    private Boolean isDefaultUnit;
+
     @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 
     @OneToMany(mappedBy = "unit")
@@ -85,5 +89,22 @@ public class Unit {
 
     public void setRuleList(List<Rule> ruleList) {
         this.ruleList = ruleList;
+    }
+
+    public Boolean isDefaultUnit() {
+        return isDefaultUnit;
+    }
+
+    public void setDefaultUnit(Boolean defaultUnit) {
+        isDefaultUnit = defaultUnit;
+    }
+
+    public static Unit createDefault(Owner owner) {
+        Unit unit = new Unit();
+        unit.setDefaultUnit(true);
+        unit.setName("DEFAULT_UNIT");
+        unit.setDescription("Automatically created default unit.");
+        unit.setOwner(owner);
+        return unit;
     }
 }

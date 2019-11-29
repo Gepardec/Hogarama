@@ -16,7 +16,7 @@ import static com.gepardec.hogarama.domain.DateUtils.toDate;
 public class SensorMetrics {
 
     @Inject
-    private SensorDAO sensorDao;
+    private SensorDataDAO sensorDataDao;
     
 
     public void collect() {
@@ -30,13 +30,12 @@ public class SensorMetrics {
 
     private Map<String, SensorData> getLatestValues() {
         LocalDateTime now = LocalDateTime.now();
-        Map<String, SensorData> values = getLatestValues(sensorDao.getAllData(200, SensorDAO.ALL_SENSORS, 
+        return getLatestValues(sensorDataDao.getAllData(200, SensorDataDAO.ALL_SENSORS,
                 toDate(now.minus(Duration.ofMinutes(60))),
                 toDate(now.plus(Duration.ofSeconds(1)))));
-        return values;
     }
     
-    static public Map<String, SensorData> getLatestValues(List<SensorData> values) {
+    public static Map<String, SensorData> getLatestValues(List<SensorData> values) {
         Map<String, SensorData> latests = new HashMap<>();
         
         for (SensorData sensorData : values) {

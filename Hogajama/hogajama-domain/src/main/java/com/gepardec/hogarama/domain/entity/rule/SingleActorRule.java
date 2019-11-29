@@ -8,13 +8,13 @@ import javax.persistence.*;
 @Table(name = "single_actor_rule")
 public class SingleActorRule extends Rule {
 
-    @Column(name = "watering_duration_in_seconds")
+    @Column(name = "watering_duration_in_seconds", nullable = false)
     private Integer wateringDurationInSeconds;
-    @Column(name = "interval_between_waterings_in_hours")
+    @Column(name = "interval_between_waterings_in_hours", nullable = false)
     private Integer intervalBetweenWateringsInHours;
 
     @ManyToOne
-    @JoinColumn(name = "actor_id")
+    @JoinColumn(name = "actor_id", nullable = false)
     private Actor actor;
 
     public Integer getWateringDurationInSeconds() {

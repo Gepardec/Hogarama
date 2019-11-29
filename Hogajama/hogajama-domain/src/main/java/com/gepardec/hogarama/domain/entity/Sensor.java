@@ -1,9 +1,10 @@
 package com.gepardec.hogarama.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Sensor {
+public class Sensor implements Serializable {
 
     @Id
     @GeneratedValue(generator = "SensorIdGenerator", strategy = GenerationType.SEQUENCE)
@@ -12,16 +13,16 @@ public class Sensor {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "sensor_type_id")
+    @JoinColumn(name = "sensor_type_id", nullable = false)
     private SensorType sensorType;
 
     private String name;
 
-    @Column(name = "device_id", unique = true)
+    @Column(name = "device_id", unique = true, nullable = false)
     private String deviceId;
 
     @ManyToOne
-    @JoinColumn(name = "unit_id")
+    @JoinColumn(name = "unit_id", nullable = false)
     private Unit unit;
 
     public Long getId() {

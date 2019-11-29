@@ -6,21 +6,24 @@ import io.prometheus.client.Summary;
 
 public class Metrics {
 
+    public static final String HOGARAMA_MODULE = "hogarama_module";
+    public static final String REQUEST_TYPE = "request_type";
+
     public static final Summary requestLatency = Summary.build()
             .name("hogarama_requests_latency_seconds")
-            .help("Request latency in seconds.").labelNames("hogarama_module", "request_type").register();
+            .help("Request latency in seconds.").labelNames(HOGARAMA_MODULE, REQUEST_TYPE).register();
 
     public static final Counter requestFailures = Counter.build()
             .name("hogarama_requests_failures_total")
-            .help("Request failures.").labelNames("hogarama_module", "request_type").register();
+            .help("Request failures.").labelNames(HOGARAMA_MODULE, REQUEST_TYPE).register();
 
     public static final Counter requestsTotal = Counter.build()
             .name("hogarama_requests_total")
-            .help("Requests").labelNames("hogarama_module", "request_type").register();
+            .help("Requests").labelNames(HOGARAMA_MODULE, REQUEST_TYPE).register();
 
     public static final Counter exceptionsThrown = Counter.build()
             .name("hogarama_exceptions_total")
-            .help("Exceptions thrown in hogajama").labelNames("hogarama_modul", "exception_name", "method").register();
+            .help("Exceptions thrown in hogajama").labelNames(HOGARAMA_MODULE, "exception_name", "method").register();
 
     public static final Counter wateringEventsFired = Counter.build()
             .name("hogarama_watering_events_fired")
