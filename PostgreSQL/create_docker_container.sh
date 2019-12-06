@@ -1,0 +1,1 @@
+docker run --rm -it -p 5432:5432 -e POSTGRES_USER=hogajama -e POSTGRES_PASSWORD=hogajama -e POSTGRES_DB=hogajama postgres:11
