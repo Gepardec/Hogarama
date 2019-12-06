@@ -29,11 +29,7 @@ public class OwnerServiceImpl implements OwnerService {
     public Owner register(String ssoUserId) {
         Owner owner = new Owner();
         owner.setSsoUserId(ssoUserId);
-        try {
-            ownerDao.save(owner);
-        } catch (Exception e) {
-            return getRegisteredOwner(ssoUserId).orElse(null);
-        }
+        ownerDao.save(owner);
         unitDao.save(Unit.createDefault(owner));
         return owner;
     }
