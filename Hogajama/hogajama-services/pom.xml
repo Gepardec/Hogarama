@@ -47,6 +47,11 @@
 			<artifactId>raspberry-pi-mocks-cli</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.gepardec.hogajama</groupId>
+			<artifactId>warpunit-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<!-- Test End -->
 	</dependencies>
 </project>

@@ -18,7 +18,8 @@
         <module>raspberry-pi-mocks</module>
         <module>hogajama-angular-frontend</module>
 		<module>hogajama_db</module>
-	</modules>
+        <module>warpunit-core</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -69,6 +70,11 @@
 			<dependency>
 				<groupId>com.gepardec.hogarama</groupId>
 				<artifactId>hogajama-monitoring</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gepardec.hogarama</groupId>
+				<artifactId>warpunit-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<!-- Externe -->
@@ -143,6 +149,12 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-bundle-jaxrs</artifactId>
 				<version>2.7.14</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-core</artifactId>
+				<version>3.14.0</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
