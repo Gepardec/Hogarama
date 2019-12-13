@@ -23,17 +23,21 @@ import java.util.*;
  */
 public class EntityManipulator implements Closeable {
 
-	private static DBAssist dbAssist = WarpUnit.builder()
-            .primaryClass(DBAssistImpl.class)
-            .includeInterface(true)
-            .url("http://localhost:8080/hogajama-rs/rest/") // TODO use system property or something similiar
-            .createProxyGate(DBAssist.class);
-	
 	private static Mapper mapper = new DozerBeanMapper();
 
     private final Map<Object, Object> loadedEntities = new HashMap<>();
     private final Collection<Object> createdEntities = new ArrayList<>();
     private final Collection<Object> updatedEntities = new ArrayList<>();
+
+    private DBAssist dbAssist;
+
+    public EntityManipulator(String baseRestUrl) {
+        dbAssist = WarpUnit.builder()
+            .primaryClass(DBAssistImpl.class)
+            .includeInterface(true)
+            .url(baseRestUrl)
+            .createProxyGate(DBAssist.class);
+    }
 
     public <T> T loadEntity(Object id, Class<T> clazz) {
         T originalEntity = dbAssist.load(id, clazz);

@@ -41,6 +41,9 @@ package org.dcm4che.test.remote.serverside;
 
 import org.dcm4che.test.remote.*;
 import org.dcm4che.test.remote.Base64;
+import org.dcm4che.test.support.JPASupport;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 import org.jboss.weld.bean.builtin.BeanManagerProxy;
 import org.jboss.weld.resources.ClassTransformer;
 
@@ -48,9 +51,11 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
+import javax.persistence.Entity;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -59,6 +64,8 @@ import java.util.*;
  * @author rawmahn
  */
 public class WarpUnitInsider implements WarpUnitInsiderREST {
+
+    private static Mapper mapper = new DozerBeanMapper();
 
     @Inject
     BeanManager beanManager;
@@ -119,13 +126,52 @@ public class WarpUnitInsider implements WarpUnitInsiderREST {
         methods.addAll(Arrays.asList(myObjectClass.getMethods()));
         methods.addAll(Arrays.asList(myObjectClass.getDeclaredMethods()));
 
+        JPASupport jpaSupport = null;
+
+        for(Field f : myObjectClass.getDeclaredFields()){
+            if(f.getType().isAssignableFrom(JPASupport.class)){
+                f.setAccessible(true);
+                try {
+                    jpaSupport = (JPASupport) f.get(object);
+                    break;
+                } catch (IllegalAccessException e) {
+
+                }
+            }
+        }
+
+        if(jpaSupport == null){
+            for(Field f : myObjectClass.getSuperclass().getDeclaredFields()){
+                if(f.getType().isAssignableFrom(JPASupport.class)){
+                    f.setAccessible(true);
+                    try {
+                        jpaSupport = (JPASupport) f.get(object);
+                        break;
+                    } catch (IllegalAccessException e) {
+
+                    }
+                }
+            }
+        }
+
         for (Method method : methods) {
             if (method.getName().equals(requestJSON.methodName)) {
                 try {
                     // make sure we can do lambdas
                     method.setAccessible(true);
 
-                    result = method.invoke(object, (Object[]) DeSerializer.deserialize(Base64.fromBase64(requestJSON.args)));
+                    boolean isJpa = method.getReturnType().isAnnotationPresent(Entity.class) && jpaSupport != null;
+                    if(isJpa){
+                        jpaSupport.beginTx();
+                        Object res = method.invoke(object, (Object[]) DeSerializer.deserialize(Base64.fromBase64(requestJSON.args)));
+                        if(res != null) {
+                            result = mapper.map(res, method.getReturnType());
+                        }
+                        jpaSupport.commitTx();
+                    } else {
+                        result = method.invoke(object, (Object[]) DeSerializer.deserialize(Base64.fromBase64(requestJSON.args)));
+                    }
+
                 } catch (Exception e) {
                     // send the exception back to the caller - it will recognize it and rethrow on it's side
 
