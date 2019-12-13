@@ -21,8 +21,10 @@ export class AuthenticationService {
     public async init(): Promise<boolean> {
         const token = localStorage.getItem('kc_token');
         const refreshToken = localStorage.getItem('kc_refreshToken');
-        console.log(token);
-        console.log(refreshToken);
+
+        console.log(`Init Keycloak with token [${token}]`);
+        console.log(`Init Keycloak with refresh-token [${refreshToken}]`);
+
         return this._keycloak.init({
             adapter: this.platformInfo.isCurrentPlatformApp() ? 'cordova' : 'default',
             promiseType: 'native',
@@ -55,11 +57,14 @@ export class AuthenticationService {
 
     public loginUser(): Promise<boolean> {
         return this._keycloak.login().then(() => {
-
             localStorage.setItem('kc_token', this.getToken());
             localStorage.setItem('kc_refreshToken', this.getRefreshToken());
+
             this._isAuthenticated.next(true);
             return true;
+        }).catch(() => {
+            this._isAuthenticated.next(false);
+            return false;
         });
     }
 
@@ -68,6 +73,7 @@ export class AuthenticationService {
         return this._keycloak.logout().then(() => {
             localStorage.setItem('kc_token', null);
             localStorage.setItem('kc_refreshToken', null);
+
             this._isAuthenticated.next(false);
             return;
         });

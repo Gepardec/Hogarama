@@ -64,7 +64,7 @@ export class AppComponent {
     } catch(error) {
         console.log('Cant init Keycloak Connection');
     } finally {
-        this.router.navigateByUrl('');
+        this.router.initialNavigation();
     }
   }
 }
