@@ -68,4 +68,4 @@ To run, you need to include Keycloak.
 <extension module="org.keycloak.keycloak-adapter-subsystem"/>
 ````
 
-5. For local development, replace all occurences of `env.KEYCLOAK_AUTH_SERVER_URL` with `https://secure-sso-57-hogarama.cloud.itandtel.at/auth/`
+5. For local development, you might need to replace all occurences of `env.KEYCLOAK_AUTH_SERVER_URL` with `https://secure-sso-57-hogarama.cloud.itandtel.at/auth/`

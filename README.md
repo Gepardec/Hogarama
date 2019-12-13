@@ -22,3 +22,60 @@ Jenkins docker image project. This docker image containing Jenkins for building 
 For this project, the following RedHat products are used which require at least a RedHat developer subscription:
 * JBoss EAP
 * JBoss A-MQ
+
+# Run Hogajama locally with Wildfly
+
+## Automatic
+
+* Navigate to the folder `Templates/local_wildfly`
+* Edit the bash-script (`entrypoint.sh`):
+    * `CREATE_USER=true` > Should a user be created
+    * `WILDFLY_USERNAME` > Username of user that gets created
+    * `WILDFLY_PASSWORD` > Password of user that gets created
+    * `WILDFLY_PORT` > Port where Wildfly will be running
+* Build the dockerfile: `docker build . -t test`
+
+Info: Can also be run with an existing Wildfly (`<installFolder>` is the home dir)
+
+### Windows
+* Run the dockerfile: `docker run -v %cd%/<installFolder>:/mnt test`
+
+### Linux
+* Run the dockerfile: `docker run -v $(pwd)/<installFolder>:/mnt test`
+
+**OR**
+
+* Edit the bash-script, to change the paths at the top
+    * `SCRIPT_PATH` > Path where the `entrypoint.sh` file is located
+    * `INSTALL_PATH` > Path where the `<installFolder>` folder is located (including `<installFolder>` itself)
+* Run the bash-script: `./entrypoint.sh`
+
+## Manually
+* Read `Hogajama/readme.md`
+* Read `PostgreSQL/readme.md`
+
+## Post-Steps
+
+* Run the Postgre Container with the command in `PostgreSQL/create_docker_container.sh`
+* Migrate the db with flyway by running `mvn -DskipTests=true org.flywaydb:flyway-maven-plugin:6.0.1:migrate` in the `hogajama_db` module
+
+**IntelliJ:**
+
+* Add a postgres configuration
+    * Open the `Database` window
+    * Click th configure button (4th from left)
+    * Add a new PostgreSQL config with:
+        * Host: localhost
+        * Port: 5432
+        * Username: hogajama
+        * Password: hogajama
+        * Database: hogajama
+    * In the config under "Schemas" enable the schema `hogajama/administration`
+* Add Wildfly
+    * In the top right, open the drop-down
+    * Click on "Edit Configurations"
+    * Add new JBoss > local
+    * To the deployments add `hogajama-rs`
+    * If you want to develop in ionic, I suggest using `ionic serve` for that
+    * If not, add it to the deployments also (`hogajama-angular-frontend`)
+    * Now open the "Application Servers" view and start the server
