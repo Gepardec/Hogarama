@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 #uid=${FLUENT_UID:-1000}
 
