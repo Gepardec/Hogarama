@@ -66,7 +66,7 @@ objects:
     source:
       contextDir: Hogajama
       git:
-        ref: master
+        ref: ${BRANCH}
         uri: https://github.com/Gepardec/Hogarama.git
       type: Git
     strategy:
@@ -679,7 +679,7 @@ objects:
     source:
       contextDir: Hogajama
       git:
-        ref: master
+        ref: ${BRANCH}
         uri: https://github.com/Gepardec/Hogarama.git
       type: Git
     strategy:
@@ -740,6 +740,8 @@ objects:
             value: ${KEYCLOAK_AUTH_SERVER_URL}
           - name: JAVA_OPTIONS
             value: -Djava.net.preferIPv4Stack=true
+          - name: GC_MAX_METASPACE_SIZE
+            value: "175"
           image: hogarama/mock-gui
           imagePullPolicy: Always
           name: mock-gui
@@ -883,3 +885,7 @@ parameters:
     - description: Url of SSO authentication server
       value: https://secure-sso-57-hogarama.cloud.itandtel.at/auth/
       name: KEYCLOAK_AUTH_SERVER_URL
+    - description: Branch for Builds
+      from: '[A-Z0-9]{8}'
+      value: master
+      name: BRANCH

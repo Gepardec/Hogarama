@@ -4,6 +4,7 @@ PRG=`basename $0`
 
 KEYCLOAK_AUTH_SERVER_URL="https://secure-sso-57-hogarama.cloud.itandtel.at/auth/"
 DEFAULT_DATA_DIR=/tmp/Hogarama_data
+BRANCH=master
 
 #####################################################################
 ##                              print_usage
@@ -11,7 +12,7 @@ DEFAULT_DATA_DIR=/tmp/Hogarama_data
 print_usage(){
 cat <<EOF 1>&2
 
-usage: $PRG [-hSXD] [-s sso_url] 
+usage: $PRG [-hSXD] [-s sso_url] [-b branch]
 
 Options:
     S: Don't install SSO-Server locally. Should be used together with option -s
@@ -19,6 +20,7 @@ Options:
         Default: $KEYCLOAK_AUTH_SERVER_URL
     D: Use persistent data for etcd in $DEFAULT_DATA_DIR. Restart keeps configuration.
     X: Don't Execute, just echo commands
+    b branch: Use branch for builds. Default is $BRANCH
     h: This help
 
 Function:
@@ -29,11 +31,11 @@ EOF
 
 DO_SSO=True
 EXEC=""
-CLUSTER_UP_OPTIONS="--skip-registry-check=true"
+CLUSTER_UP_OPTIONS=""
 
 ######################   Optionen bestimmen ###################
 
-while getopts "DSs:Xh" option
+while getopts "DSs:Xb:h" option
 do
     case $option in
       D)
@@ -42,6 +44,8 @@ do
         DO_SSO=False;;
       s)
         KEYCLOAK_AUTH_SERVER_URL=$OPTARG;;
+      b)
+        BRANCH=$OPTARG;;
       X)
         EXEC=echo;;
       *)
@@ -67,12 +71,12 @@ $EXEC oc create is hogajama
 $EXEC oc create is fluentd
 
 OPENSHIFT_TOKEN=$(oc whoami -t)
-HOGARAMA_VARS="OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN"
+HOGARAMA_VARS="OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN BRANCH=$BRANCH"
 
 if [ x$DO_SSO != xTrue ]; then
   HOGARAMA_VARS="$HOGARAMA_VARS KEYCLOAK_AUTH_SERVER_URL=$KEYCLOAK_AUTH_SERVER_URL"
 fi
-$EXEC oc process -f hogarama-amq.yaml | $EXEC oc create -f -
+$EXEC oc process -f hogarama-amq.yaml BRANCH=$BRANCH | $EXEC oc create -f -
 $EXEC oc process -f hogaramaOhneHost.yaml $HOGARAMA_VARS | $EXEC oc create -f -
 
 if [ x$DO_SSO = xTrue ]; then

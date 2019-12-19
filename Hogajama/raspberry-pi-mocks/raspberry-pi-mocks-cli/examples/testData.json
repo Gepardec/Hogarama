@@ -1,4 +1,12 @@
-[{
+[
+{
+    "sensorName" : "Pflanze",
+    "type" : "wasser",
+    "value" : 0.1,
+    "location" : "Wien",
+    "version" : 0
+},
+{
     "sensorName" : "Pflanze",
     "type" : "wasser",
     "value" : 55.3,
@@ -9,6 +17,34 @@
     "sensorName" : "Pflanze",
     "type" : "wasser",
     "value" : 65.3,
+    "location" : "Wien",
+    "version" : 0
+},
+{
+    "sensorName" : "Pflanze",
+    "type" : "wasser",
+    "value" : 5.0,
+    "location" : "Wien",
+    "version" : 0
+},
+{
+    "sensorName" : "Pflanze",
+    "type" : "wasser",
+    "value" : 5.0,
+    "location" : "Wien",
+    "version" : 0
+},
+{
+    "sensorName" : "Pflanze",
+    "type" : "wasser",
+    "value" : 5.0,
+    "location" : "Wien",
+    "version" : 0
+},
+{
+    "sensorName" : "Pflanze",
+    "type" : "wasser",
+    "value" : 5.0,
     "location" : "Wien",
     "version" : 0
 },

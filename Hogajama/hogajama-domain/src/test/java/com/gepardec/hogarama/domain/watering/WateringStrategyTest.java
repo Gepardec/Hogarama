@@ -36,17 +36,17 @@ public class WateringStrategyTest {
 
 	@Test
 	public void whenEmptyListNoWatering() {
-		assertFalse( 0 <  watering.water(config, LocalDateTime.of(2018, Month.JUNE, 20, 17, 00)));
+		assertFalse( 0 <  watering.computeWateringDuration(config, LocalDateTime.of(2018, Month.JUNE, 20, 17, 00)));
 	}
 
 	@Test
 	public void whenLastDataHighThenNoWatering() throws Exception {		
-		assertFalse( 0 <  watering.water(config, LocalDateTime.of(2018, Month.JUNE, 20, 14, 00)));
+		assertFalse( 0 <  watering.computeWateringDuration(config, LocalDateTime.of(2018, Month.JUNE, 20, 14, 00)));
 	}
 
 	@Test
 	public void whenLastDataLowThenWatering() throws Exception {		
-		assertTrue( 0 < watering.water(config, LocalDateTime.of(2018, Month.JUNE, 20, 15, 00)));
+		assertTrue( 0 < watering.computeWateringDuration(config, LocalDateTime.of(2018, Month.JUNE, 20, 15, 00)));
 	}
 	
 	private SensorData startSensorData() {
