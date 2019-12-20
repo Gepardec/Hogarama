@@ -1,0 +1,7 @@
+- job_name: 'prometheus'
+  static_configs:
+    - targets: ['localhost:9090']
+- job_name: 'hogarama'
+  metrics_path: /hogajama-rs/rest/metrics
+  static_configs:
+    - targets: ['hogajama:8080']
