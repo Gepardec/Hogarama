@@ -110,4 +110,12 @@ public class EntityManipulator implements Closeable {
         loadedEntities.clear();
         return exception;
     }
+
+    /**
+     * Remove the given entity without restoring after test
+     * @param entity to remove
+     */
+    public void removeEntityWithoutRestoring(Object entity) {
+        dbAssist.remove(entity);
+    }
 }

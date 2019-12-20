@@ -3,6 +3,7 @@ package com.gepardec.hogarama.domain.entity.rule;
 import com.gepardec.hogarama.domain.entity.Sensor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "single_sensor_rule")
-public class SingleSensorRule extends Rule {
+public class SingleSensorRule extends Rule implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "sensor_id", nullable = false)

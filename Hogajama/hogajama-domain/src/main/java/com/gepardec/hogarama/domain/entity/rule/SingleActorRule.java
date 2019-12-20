@@ -3,10 +3,11 @@ package com.gepardec.hogarama.domain.entity.rule;
 import com.gepardec.hogarama.domain.entity.Actor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "single_actor_rule")
-public class SingleActorRule extends Rule {
+public class SingleActorRule extends Rule implements Serializable {
 
     @Column(name = "watering_duration_in_seconds", nullable = false)
     private Integer wateringDurationInSeconds;

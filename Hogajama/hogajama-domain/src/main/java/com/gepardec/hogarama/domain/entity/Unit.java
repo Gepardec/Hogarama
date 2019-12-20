@@ -20,7 +20,7 @@ public class Unit implements Serializable {
     private String description;
 
     @Column(columnDefinition = "boolean default false", name = "is_default", nullable = false)
-    private Boolean isDefaultUnit;
+    private Boolean defaultUnit;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
@@ -91,12 +91,16 @@ public class Unit implements Serializable {
         this.ruleList = ruleList;
     }
 
+    public Boolean getDefaultUnit() {
+        return defaultUnit;
+    }
+
     public Boolean isDefaultUnit() {
-        return isDefaultUnit;
+        return defaultUnit;
     }
 
     public void setDefaultUnit(Boolean defaultUnit) {
-        isDefaultUnit = defaultUnit;
+        this.defaultUnit = defaultUnit;
     }
 
     public static Unit createDefault(Owner owner) {

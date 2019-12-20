@@ -1,9 +1,10 @@
 package com.gepardec.hogarama.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Actor {
+public class Actor implements Serializable {
 
     @Id
     @GeneratedValue(generator = "ActorIdGenerator", strategy = GenerationType.SEQUENCE)

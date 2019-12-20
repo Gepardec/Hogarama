@@ -2,7 +2,7 @@ package com.gepardec.hogarama.rest.interceptor;
 
 
 import com.gepardec.hogarama.domain.entity.Owner;
-import com.gepardec.hogarama.domain.owner.OwnerService;
+import com.gepardec.hogarama.service.OwnerService;
 import com.gepardec.hogarama.service.OwnerStore;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;

@@ -4,6 +4,7 @@ import com.gepardec.hogarama.domain.entity.Actor;
 import com.gepardec.hogarama.domain.entity.Sensor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "single_sensor_actor_rule")
-public class SingleSensorActorRule extends Rule {
+public class SingleSensorActorRule extends Rule implements Serializable {
 
     @Column(name = "moisture_threshold", nullable = false)
     private BigDecimal moistureThreshold;

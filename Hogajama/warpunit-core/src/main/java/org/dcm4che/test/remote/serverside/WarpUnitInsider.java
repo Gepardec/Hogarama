@@ -58,6 +58,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -161,11 +162,20 @@ public class WarpUnitInsider implements WarpUnitInsiderREST {
                     method.setAccessible(true);
 
                     boolean isJpa = method.getReturnType().isAnnotationPresent(Entity.class) && jpaSupport != null;
+                    boolean isList = method.getReturnType().isAssignableFrom(List.class) && jpaSupport != null;
                     if(isJpa){
                         jpaSupport.beginTx();
                         Object res = method.invoke(object, (Object[]) DeSerializer.deserialize(Base64.fromBase64(requestJSON.args)));
                         if(res != null) {
                             result = mapper.map(res, method.getReturnType());
+                        }
+                        jpaSupport.commitTx();
+                    } else if(isList){
+                        jpaSupport.beginTx();
+                        Object res = method.invoke(object, (Object[]) DeSerializer.deserialize(Base64.fromBase64(requestJSON.args)));
+                        List<Object> resList = new ArrayList<>((Collection<Object>) res);
+                        if(resList != null) {
+                            result =resList.stream().map(o -> mapper.map(o, o.getClass())).collect(Collectors.toList());
                         }
                         jpaSupport.commitTx();
                     } else {

@@ -1,18 +1,21 @@
 package org.dcm4che.test.support;
 
-import org.dcm4che.test.em.DBAssist;
-import org.dcm4che.test.em.DBAssistImpl;
 import org.dcm4che.test.em.EntityManipulator;
 import org.dcm4che.test.remote.WarpGate;
 import org.dcm4che.test.remote.WarpUnit;
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
+import org.junit.After;
 import org.junit.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class WarpUnitTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(WarpUnitTest.class);
 
     private WarpGate gate;
 
@@ -21,8 +24,21 @@ public class WarpUnitTest {
 
     private WarpUnitTestConfig config;
 
+    private List<Runnable> cleanUpHandlers = new ArrayList<>();
+
+    @After
+    public void tearDown() {
+        for (Runnable cleanUpHandler : cleanUpHandlers) {
+            try {
+                cleanUpHandler.run();
+            } catch (Exception e) {
+                LOG.warn("Exception occured while running cleanup task.", e);
+            }
+        }
+    }
+
     @Before
-    public void setup(){
+    public void setup() {
         config = getConfig();
         gate = WarpUnit.builder()
                 .primaryClass(this.getClass())
@@ -31,20 +47,24 @@ public class WarpUnitTest {
                 .createGate();
     }
 
-    protected EntityManipulator getEntityManipulator(){
+    protected void cleanUp(Runnable cleanUpRunner) {
+        cleanUpHandlers.add(cleanUpRunner);
+    }
+
+    protected EntityManipulator getEntityManipulator() {
         return new EntityManipulator(config.baseRestUrl());
     }
 
-    protected void warp(Runnable lambda){
+    protected void warp(Runnable lambda) {
         gate.warp(lambda);
     }
 
-    protected <R> R warp(Supplier<R> lambda){
+    protected <R> R warp(Supplier<R> lambda) {
         return gate.warp(lambda);
     }
 
-    private WarpUnitTestConfig getConfig(){
-        if(this.getClass().isAnnotationPresent(WarpUnitTestConfig.class)){
+    private WarpUnitTestConfig getConfig() {
+        if (this.getClass().isAnnotationPresent(WarpUnitTestConfig.class)) {
             return this.getClass().getAnnotation(WarpUnitTestConfig.class);
         } else {
             throw new RuntimeException("WarpUnitTestConfig on the test not found");

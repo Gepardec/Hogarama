@@ -3,7 +3,6 @@ package com.gepardec.hogarama.service;
 import com.gepardec.hogarama.domain.entity.Owner;
 import com.gepardec.hogarama.domain.entity.Unit;
 import com.gepardec.hogarama.domain.owner.OwnerDao;
-import com.gepardec.hogarama.domain.owner.OwnerService;
 import com.gepardec.hogarama.domain.unit.UnitDao;
 
 import javax.enterprise.context.RequestScoped;
@@ -12,25 +11,25 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 @RequestScoped
-public class OwnerServiceImpl implements OwnerService {
+public class OwnerService {
 
     @Inject
     private OwnerDao ownerDao;
     @Inject
     private UnitDao unitDao;
 
-    @Override
     public Optional<Owner> getRegisteredOwner(String ssoUserId) {
         return ownerDao.getBySsoUserId(ssoUserId);
     }
 
     @Transactional
-    @Override
     public Owner register(String ssoUserId) {
         Owner owner = new Owner();
         owner.setSsoUserId(ssoUserId);
         ownerDao.save(owner);
-        unitDao.save(Unit.createDefault(owner));
+        Unit defaultUnit = Unit.createDefault(owner);
+        unitDao.save(defaultUnit);
+        owner.addToUnitList(defaultUnit);
         return owner;
     }
 

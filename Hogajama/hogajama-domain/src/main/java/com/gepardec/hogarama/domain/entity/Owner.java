@@ -2,6 +2,7 @@ package com.gepardec.hogarama.domain.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -49,5 +50,12 @@ public class Owner implements Serializable {
                 .findFirst()
                 .orElseThrow(() ->
                         new RuntimeException(String.format("No Default unit given for user with id %s present.", getId())));
+    }
+
+    public void addToUnitList(Unit unit) {
+        if(getUnitList() == null) {
+            unitList = new ArrayList<>();
+        }
+        unitList.add(unit);
     }
 }
