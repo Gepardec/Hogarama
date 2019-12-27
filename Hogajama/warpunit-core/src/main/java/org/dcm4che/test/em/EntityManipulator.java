@@ -118,4 +118,12 @@ public class EntityManipulator implements Closeable {
     public void removeEntityWithoutRestoring(Object entity) {
         dbAssist.remove(entity);
     }
+
+    /**
+     * Remove the given entity by id without restoring after test
+     * @param id of the entity to be removed
+     */
+    public void removeEntityWithoutRestoringById(Object id, Class<?> clazz) {
+        dbAssist.removeById(id, clazz);
+    }
 }

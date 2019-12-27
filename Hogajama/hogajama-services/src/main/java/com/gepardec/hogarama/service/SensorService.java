@@ -6,6 +6,7 @@ import com.gepardec.hogarama.domain.sensor.SensorDao;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SensorService {
 
@@ -23,7 +24,7 @@ public class SensorService {
     }
 
     public void createSensor(Sensor sensor) {
-        if (store.getOwner().getUnitList().contains(sensor.getUnit())) {
+        if (store.getOwner().getUnitList().stream().map(unit -> unit.getId()).collect(Collectors.toSet()).contains(sensor.getUnit().getId())) {
             dao.save(sensor);
         } else {
             throw new TechnicalException("Unit doesn't belong to owner");

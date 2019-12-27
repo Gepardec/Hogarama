@@ -7,6 +7,6 @@ public interface DBAssist {
 	public <T> T update(T entity);
 	public <T> T insert(T entity);
 	public void remove(Object entity);
-
+	public <T> void removeById(Object id, Class<T> clazz);
     
 }

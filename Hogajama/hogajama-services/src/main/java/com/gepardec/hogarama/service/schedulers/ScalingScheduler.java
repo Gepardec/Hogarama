@@ -23,7 +23,7 @@ import com.openshift.restclient.IClient;
 import com.openshift.restclient.ResourceKind;
 import com.openshift.restclient.model.IDeploymentConfig;
 
-@Startup
+//@Startup
 @Singleton
 public class ScalingScheduler {
 
@@ -34,7 +34,7 @@ public class ScalingScheduler {
 	@Inject
 	private Logger log;
 
-	@Schedule(hour = "*", minute = "*", second = "1", info = "Every minute")
+	//@Schedule(hour = "*", minute = "*", second = "1", info = "Every minute")
 	public void checkSessions() {
 		log.debug("Current Active Sessions: {}", getActiveSessions());
 
@@ -50,7 +50,7 @@ public class ScalingScheduler {
 		return !scaledUp && getActiveSessions() > 3;
 	}
 	
-	@Schedule(hour = "*", minute = "*/10", info = "Every Minute")
+	//@Schedule(hour = "*", minute = "*/10", info = "Every Minute")
 	public void resetScaleUp() {
 		log.info("Reset scaledUp.");
 		scaledUp = false;

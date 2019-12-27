@@ -41,7 +41,9 @@ package org.dcm4che.test.remote.serverside;
 
 import org.dcm4che.test.remote.*;
 import org.dcm4che.test.remote.Base64;
+import org.dcm4che.test.support.BeforeWarp;
 import org.dcm4che.test.support.JPASupport;
+import org.dcm4che.test.support.WarpMeta;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.jboss.weld.bean.builtin.BeanManagerProxy;
@@ -56,6 +58,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -161,10 +164,13 @@ public class WarpUnitInsider implements WarpUnitInsiderREST {
                     // make sure we can do lambdas
                     method.setAccessible(true);
 
+                    WarpMeta meta = (WarpMeta) DeSerializer.deserialize(Base64.fromBase64(requestJSON.metadata));
+
                     boolean isJpa = method.getReturnType().isAnnotationPresent(Entity.class) && jpaSupport != null;
                     boolean isList = method.getReturnType().isAssignableFrom(List.class) && jpaSupport != null;
                     if(isJpa){
                         jpaSupport.beginTx();
+                        proceedMeta(meta, object);
                         Object res = method.invoke(object, (Object[]) DeSerializer.deserialize(Base64.fromBase64(requestJSON.args)));
                         if(res != null) {
                             result = mapper.map(res, method.getReturnType());
@@ -172,13 +178,20 @@ public class WarpUnitInsider implements WarpUnitInsiderREST {
                         jpaSupport.commitTx();
                     } else if(isList){
                         jpaSupport.beginTx();
+                        proceedMeta(meta, object);
                         Object res = method.invoke(object, (Object[]) DeSerializer.deserialize(Base64.fromBase64(requestJSON.args)));
                         List<Object> resList = new ArrayList<>((Collection<Object>) res);
                         if(resList != null) {
                             result =resList.stream().map(o -> mapper.map(o, o.getClass())).collect(Collectors.toList());
                         }
                         jpaSupport.commitTx();
+                    } else if(meta != null && meta.isExecuteInTransaction() && jpaSupport != null) {
+                        jpaSupport.beginTx();
+                        proceedMeta(meta, object);
+                        result = method.invoke(object, (Object[]) DeSerializer.deserialize(Base64.fromBase64(requestJSON.args)));
+                        jpaSupport.commitTx();
                     } else {
+                        proceedMeta(meta, object);
                         result = method.invoke(object, (Object[]) DeSerializer.deserialize(Base64.fromBase64(requestJSON.args)));
                     }
 
@@ -201,6 +214,33 @@ public class WarpUnitInsider implements WarpUnitInsiderREST {
 
         return Base64.toBase64(DeSerializer.serialize(result));
 
+    }
+
+    private void proceedMeta(WarpMeta meta, Object object) throws InvocationTargetException, IllegalAccessException {
+        if(meta == null){
+            return;
+        }
+        List<Method> methodsToBeCalled = new ArrayList<>();
+        if(meta.isExecuteBeforeWarp()){
+            Method[] declaredMethods = object.getClass().getDeclaredMethods();
+            for (Method declaredMethod : declaredMethods) {
+                if(declaredMethod.isAnnotationPresent(BeforeWarp.class)){
+                    methodsToBeCalled.add(declaredMethod);
+                }
+            }
+
+            declaredMethods = object.getClass().getSuperclass().getDeclaredMethods();
+            for (Method declaredMethod : declaredMethods) {
+                if(declaredMethod.isAnnotationPresent(BeforeWarp.class)){
+                    methodsToBeCalled.add(declaredMethod);
+                }
+            }
+
+            for (Method method : methodsToBeCalled) {
+                method.setAccessible(true);
+                method.invoke(object);
+            }
+        }
     }
 
 

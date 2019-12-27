@@ -5,15 +5,20 @@ import org.dcm4che.test.remote.WarpGate;
 import org.dcm4che.test.remote.WarpUnit;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class WarpUnitTest {
+
+    protected WarpMeta warpMeta;
 
     private static final Logger LOG = LoggerFactory.getLogger(WarpUnitTest.class);
 
@@ -39,6 +44,7 @@ public class WarpUnitTest {
 
     @Before
     public void setup() {
+        warpMeta = new WarpMeta();
         config = getConfig();
         gate = WarpUnit.builder()
                 .primaryClass(this.getClass())
@@ -56,11 +62,11 @@ public class WarpUnitTest {
     }
 
     protected void warp(Runnable lambda) {
-        gate.warp(lambda);
+        gate.warp(warpMeta, lambda);
     }
 
     protected <R> R warp(Supplier<R> lambda) {
-        return gate.warp(lambda);
+        return gate.warp(warpMeta, lambda);
     }
 
     private WarpUnitTestConfig getConfig() {

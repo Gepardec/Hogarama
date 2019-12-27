@@ -39,6 +39,7 @@
 
 package org.dcm4che.test.remote;
 
+import org.dcm4che.test.support.WarpMeta;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import sun.reflect.ConstantPool;
 
@@ -137,7 +138,7 @@ public class WarpUnit {
         Object proxy = Proxy.newProxyInstance(insiderInterface.getClassLoader(), new Class[]{insiderInterface}, new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                return warp(method.getName(), args, classesToSend, url);
+                return warp(null, method.getName(), args, classesToSend, url);
             }
         });
         return (T) proxy;
@@ -155,31 +156,56 @@ public class WarpUnit {
 
         @Override
         public <R> R warp(Supplier<R> lambda) {
-            return WarpUnit.warp(lambda, classes, url);
+            return WarpUnit.warp(null, lambda, classes, url);
+        }
+
+        @Override
+        public <R> R warp(WarpMeta meta, Supplier<R> lambda) {
+            return WarpUnit.warp(meta, lambda, classes, url);
         }
 
         @Override
         public void warp(Runnable lambda) {
-            WarpUnit.warp(lambda, classes, url);
+            WarpUnit.warp(null, lambda, classes, url);
+        }
+
+        @Override
+        public void warp(WarpMeta meta, Runnable lambda) {
+            WarpUnit.warp(meta, lambda, classes, url);
         }
 
         @Override
         public <R> Future<R> warpAsync(Supplier<R> lambda) {
-            return warpAndMakeFuture(lambda);
+            return warpAndMakeFuture(null,lambda);
+        }
+
+        @Override
+        public <R> Future<R> warpAsync(WarpMeta meta, Supplier<R> lambda) {
+            return warpAndMakeFuture(meta, lambda);
         }
 
         @Override
         public Future<Void> warpAsync(Runnable lambda) {
-            return warpAndMakeFuture(lambda);
+            return warpAndMakeFuture(null, lambda);
+        }
+
+        @Override
+        public Future<Void> warpAsync(WarpMeta meta, Runnable lambda) {
+            return warpAndMakeFuture(null, lambda);
         }
 
         @Override
         public Object warp(String methodName, Object[] args) {
-            return WarpUnit.warp(methodName, args, classes, url);
+            return WarpUnit.warp(null, methodName, args, classes, url);
         }
 
-        private <R> Future<R> warpAndMakeFuture(Object warpable) {
-            FutureTask futureTask = new FutureTask<>(() -> WarpUnit.warp(warpable, classes, url));
+        @Override
+        public Object warp(WarpMeta meta, String methodName, Object[] args) {
+            return WarpUnit.warp(meta, methodName, args, classes, url);
+        }
+
+        private <R> Future<R> warpAndMakeFuture(WarpMeta meta, Object warpable) {
+            FutureTask futureTask = new FutureTask<>(() -> WarpUnit.warp(meta, warpable, classes, url));
             getExecutor().execute(futureTask);
             return futureTask;
         }
@@ -198,12 +224,29 @@ public class WarpUnit {
         }
 
         @Override
+        public <R> R warp(WarpMeta meta, Supplier<R> lambda) {
+            return lambda.get();
+        }
+
+        @Override
         public void warp(Runnable lambda) {
             lambda.run();
         }
 
         @Override
+        public void warp(WarpMeta meta, Runnable lambda) {
+            lambda.run();
+        }
+
+        @Override
         public <R> Future<R> warpAsync(Supplier<R> lambda) {
+            FutureTask<R> futureTask = new FutureTask<>(() -> lambda.get());
+            getExecutor().execute(futureTask);
+            return futureTask;
+        }
+
+        @Override
+        public <R> Future<R> warpAsync(WarpMeta meta, Supplier<R> lambda) {
             FutureTask<R> futureTask = new FutureTask<>(() -> lambda.get());
             getExecutor().execute(futureTask);
             return futureTask;
@@ -220,13 +263,28 @@ public class WarpUnit {
         }
 
         @Override
+        public Future<Void> warpAsync(WarpMeta meta, Runnable lambda) {
+            FutureTask<Void> futureTask = new FutureTask<>(() -> {
+                lambda.run();
+                return null;
+            });
+            getExecutor().execute(futureTask);
+            return futureTask;
+        }
+
+        @Override
         public Object warp(String methodName, Object[] args) {
+            throw new RuntimeException("not implemented");
+        }
+
+        @Override
+        public Object warp(WarpMeta meta, String methodName, Object[] args) {
             throw new RuntimeException("not implemented");
         }
 
     }
 
-    private static <T> T warp(Object lambda, Class[] classes, String url) {
+    private static <T> T warp(WarpMeta meta, Object lambda, Class[] classes, String url) {
 
         try {
             List<Object> args = new ArrayList<>();
@@ -257,7 +315,7 @@ public class WarpUnit {
             }
 
 
-            return (T) warp(methodRefInfo[1], args.toArray(), classes, url);
+            return (T) warp(meta, methodRefInfo[1], args.toArray(), classes, url);
         } catch (Exception e) {
             throw new RuntimeException("Warp failed", e);
         }
@@ -266,12 +324,13 @@ public class WarpUnit {
     /**
      * @param classes classes to warp. The [0]th class is considered primary - i.e. the once whose method will be called
      */
-    private static Object warp(String methodName, Object[] args, Class[] classes, String url) throws RemoteExecutionException {
+    private static Object warp(WarpMeta meta, String methodName, Object[] args, Class[] classes, String url) throws RemoteExecutionException {
         RemoteRequestJSON requestJSON = new RemoteRequestJSON();
 
         requestJSON.methodName = methodName;
         requestJSON.primaryClassName = classes[0].getName();
         requestJSON.args = Base64.toBase64(DeSerializer.serialize(args));
+        requestJSON.metadata = Base64.toBase64(DeSerializer.serialize(meta));
         requestJSON.classes = new HashMap<>();
 
 

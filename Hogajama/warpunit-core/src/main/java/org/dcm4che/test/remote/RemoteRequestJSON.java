@@ -54,6 +54,10 @@ public class RemoteRequestJSON {
      * Base64'ed Object[] of args
      */
     public String args;
+    /**
+     * Base64'ed of WarpMeta
+     */
+    public String metadata;
 
     /**
      * full class name to Base64'ed bytecode

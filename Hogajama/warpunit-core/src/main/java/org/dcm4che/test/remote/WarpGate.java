@@ -1,5 +1,7 @@
 package org.dcm4che.test.remote;
 
+import org.dcm4che.test.support.WarpMeta;
+
 import java.util.concurrent.Future;
 import java.util.function.Supplier;
 
@@ -18,23 +20,27 @@ public interface WarpGate {
      * @return Result of this lambda invocation on the server
      */
     <R> R warp(Supplier<R> lambda);
+    <R> R warp(WarpMeta meta, Supplier<R> lambda);
 
     /**
      * Same as {@link #warp}, but the specified lambda has no return value
      * @return
      */
     void warp(Runnable lambda);
+    void warp(WarpMeta meta, Runnable lambda);
 
     /**
      * Warps (see {@link #warp}) a lambda asynchronously.
      * @return A future that is resolved when the warp returns. The value returned by .get() is the same value that {@link #warp} method would return (or the same exception is thrown).
      */
     <R> Future<R> warpAsync(Supplier<R> lambda);
+    <R> Future<R> warpAsync(WarpMeta meta, Supplier<R> lambda);
 
     /**
      * Same as {@link #warpAsync(Supplier)}, but the specified lambda has no return value
      */
     Future<Void> warpAsync(Runnable lambda);
+    Future<Void> warpAsync(WarpMeta meta, Runnable lambda);
 
     /**
      * Non-type-safe way to warp the specified method on the primary class defined for the gate.
@@ -44,4 +50,5 @@ public interface WarpGate {
      * @return result of a warp'd execution (on the server)
      */
     Object warp(String methodName, Object[] args);
+    Object warp(WarpMeta meta, String methodName, Object[] args);
 }

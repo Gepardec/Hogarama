@@ -4,6 +4,7 @@ import com.gepardec.hogarama.domain.entity.Owner;
 import com.gepardec.hogarama.domain.entity.Sensor;
 import com.gepardec.hogarama.domain.entity.SensorType;
 import org.dcm4che.test.em.EntityManipulator;
+import org.dcm4che.test.support.BeforeWarp;
 import org.dcm4che.test.support.WarpUnitTest;
 import org.dcm4che.test.support.WarpUnitTestConfig;
 import org.junit.Test;
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @WarpUnitTestConfig(baseRestUrl = "http://localhost:8080/hogajama-rs/rest/")
 public class SensorServiceIT extends WarpUnitTest implements Serializable {
 
+    public static final String TEST_OWNER = "TEST_OWNER";
     @Inject
     private OwnerService ownerService;
 
@@ -31,7 +33,7 @@ public class SensorServiceIT extends WarpUnitTest implements Serializable {
     @Test
     public void getAllSensors() throws IOException {
         try (EntityManipulator manipulator = getEntityManipulator()) {
-            Owner owner = createTestOwner("TEST_OWNER");
+            Owner owner = createTestOwner(TEST_OWNER);
             SensorType sensorType = manipulator.loadEntity(1L, SensorType.class);
 
             Sensor sensor1 = new Sensor();
@@ -55,8 +57,11 @@ public class SensorServiceIT extends WarpUnitTest implements Serializable {
 
     @Test
     public void createSensor() throws IOException {
+        warpMeta.setExecuteBeforeWarp(true);
+        warpMeta.setExecuteInTransaction(true);
+
         try (EntityManipulator manipulator = getEntityManipulator()) {
-            Owner owner = createTestOwner("TEST_OWNER");
+            Owner owner = createTestOwner(TEST_OWNER);
             SensorType sensorType = manipulator.loadEntity(1L, SensorType.class);
 
             Sensor sensor1 = new Sensor();
@@ -67,7 +72,9 @@ public class SensorServiceIT extends WarpUnitTest implements Serializable {
             Sensor sensor = sensor1;
             warp(() -> service.createSensor(sensor));
             Sensor result = manipulator.loadEntityByQuery("select s from Sensor as s where s.name = 'MySensor1'", Sensor.class);
-            System.out.println("ASd");
+
+            assertThat(result.getDeviceId()).isEqualTo("MySensorDeviceId");
+            getEntityManipulator().removeEntityWithoutRestoringById(result.getId(), Sensor.class);
         }
     }
 
@@ -78,7 +85,6 @@ public class SensorServiceIT extends WarpUnitTest implements Serializable {
     private Owner createTestOwner(String ssoUserId) {
         Owner registeredOwner = warp(() -> {
             Owner owner = ownerService.register(ssoUserId);
-            store.setOwner(owner);
             return owner;
         });
         cleanUp(() -> {
@@ -87,5 +93,10 @@ public class SensorServiceIT extends WarpUnitTest implements Serializable {
             getEntityManipulator().removeEntityWithoutRestoring(registeredOwner);
         });
         return registeredOwner;
+    }
+
+    @BeforeWarp
+    private void fillOwnerStore(){
+        store.setOwner(ownerService.getRegisteredOwner(TEST_OWNER).orElse(null));
     }
 }

@@ -8,7 +8,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
-@Startup
+//@Startup
 @Singleton
 public class WateringScheduler {
 
@@ -18,7 +18,7 @@ public class WateringScheduler {
 	@Inject
 	private Logger log;
 
-	@Schedule(hour = "*", minute = "*", second = "10", info = "Every minute", persistent = false)
+	//@Schedule(hour = "*", minute = "*", second = "10", info = "Every minute", persistent = false)
 	public void water() {
 		log.info("Check for watering");
 		wateringStrategy.waterAll();
