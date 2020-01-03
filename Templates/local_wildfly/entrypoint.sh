@@ -10,9 +10,10 @@ INSTALL_PATH="/mnt"
 
 cd $SCRIPT_PATH
 echo ">> Using pwd: $SCRIPT_PATH"
+echo $(ls -A  $INSTALL_PATH)
 
 # 1. Download & Extract WildFly if it is an empty dir
-if ! ls -A $INSTALL_PATH; then
+if [ -z "$(ls -A  $INSTALL_PATH)" ]; then
     echo ">> Mounted dir is empty. Installing Wildfly 17.0.1"
     
     tempZipFile=$INSTALL_PATH/wildfly.zip
@@ -24,6 +25,7 @@ if ! ls -A $INSTALL_PATH; then
     WILDFLY_FOLDER="$INSTALL_PATH/$(ls -1 $INSTALL_PATH)"
 
     mv ${WILDFLY_FOLDER}/* $INSTALL_PATH
+    rm -rf ${WILDFLY_FOLDER}
 else
     echo ">> Mounted dir is filled. Using that server"
     # Shutdown the server, if running
