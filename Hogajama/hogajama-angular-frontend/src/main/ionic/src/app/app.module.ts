@@ -1,18 +1,19 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {RouteReuseStrategy} from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
+import {SplashScreen} from '@ionic-native/splash-screen/ngx';
+import {StatusBar} from '@ionic-native/status-bar/ngx';
 
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { NetworkInterface } from '@ionic-native/network-interface/ngx';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { initializer } from './app-init';
-import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
-import { HttpClientModule } from '@angular/common/http';
+import {AppComponent} from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {NetworkInterface} from '@ionic-native/network-interface/ngx';
+import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {DeviceDetectorModule} from "ngx-device-detector";
+import { IonicStorageModule } from '@ionic/storage';
+import {MyHttpInterceptor} from "./services/HttpInterceptor/http-interceptor";
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,18 +24,20 @@ import { HttpClientModule } from '@angular/common/http';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    KeycloakAngularModule
+    DeviceDetectorModule.forRoot(),
+    IonicStorageModule.forRoot()
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MyHttpInterceptor,
+      multi: true
+    },
     StatusBar,
     SplashScreen,
     InAppBrowser,
     NetworkInterface,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    {provide: APP_INITIALIZER,
-      useFactory: initializer,
-      multi: true,
-      deps: [KeycloakService]}
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })

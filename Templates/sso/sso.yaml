@@ -374,10 +374,10 @@ objects:
     name: secure-sso
   spec:
     tls:
-      termination: passthrough
+      termination: edge
     to:
       kind: Service
-      name: secure-sso
+      name: sso
       weight: 100
     wildcardPolicy: None
 - apiVersion: v1

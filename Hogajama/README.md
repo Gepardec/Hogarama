@@ -42,3 +42,30 @@ http://localhost:8080/
 
 ## REST-Services
 http://localhost:8080/hogajama-rs/rest/*
+
+To run, you need to include Keycloak.
+
+1. Unzip `keycloak.zip` inside modules folder
+2. Add the following inside of `standalone.xml` in subsystem `urn:jboss:domain:security:2.0 / security-domains` :
+
+````xml
+<security-domain name="keycloak">
+    <authentication>
+        <login-module code="org.keycloak.adapters.jboss.KeycloakLoginModule" flag="required"/>
+    </authentication>
+</security-domain>
+````
+
+3. Add new subsystem:
+
+````xml
+<subsystem xmlns="urn:jboss:domain:keycloak:1.1"/>
+````
+
+4. Add new extension:
+
+````xml
+<extension module="org.keycloak.keycloak-adapter-subsystem"/>
+````
+
+5. For local development, you might need to replace all occurences of `env.KEYCLOAK_AUTH_SERVER_URL` with `https://secure-sso-57-hogarama.cloud.itandtel.at/auth/`

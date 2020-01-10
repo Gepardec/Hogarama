@@ -2,10 +2,8 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { KeycloakConfig } from 'keycloak-angular';
-
 // Add here your keycloak setup infos
-const keycloakConfig: KeycloakConfig = {
+const keycloakConfig = {
   url: 'https://secure-sso-57-hogarama.cloud.itandtel.at/auth/',
   realm: 'hogarama',
   clientId: 'hogarama',
@@ -13,6 +11,8 @@ const keycloakConfig: KeycloakConfig = {
 };
 
 export const environment = {
-  production: false,
-  keycloak: keycloakConfig
+    production: false,
+    keycloak: keycloakConfig,
+    keycloakLibrarySubUrl: 'js/keycloak.js',
+    backendUrl: 'http://localhost:8080/hogajama-rs'
 };

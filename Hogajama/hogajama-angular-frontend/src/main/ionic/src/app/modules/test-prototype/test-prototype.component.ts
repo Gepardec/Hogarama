@@ -17,22 +17,22 @@ export class TestPrototypeComponent implements OnInit {
   constructor(private rs: HogaramaBackendService, private authService: AuthenticationService, private router: Router) {
   }
 
-  ngOnInit() {
-    const allSub = this.rs.getAllSensors().subscribe((sensorData: { response: Sensor[] }) => {
+  async ngOnInit() {
+    try {
+      const sensorData: { response: Sensor[] } = await this.rs.getAllSensors().toPromise();
       this.allSensorArr = sensorData.response;
-      allSub.unsubscribe();
-    }, (error) => {
+    } catch(error) {
       console.error(error);
       this.error = error.message;
-    });
+    }
 
-    const ownerSub = this.rs.getAllSensors().subscribe((sensorData: { response: Sensor[] }) => {
+    try {
+      const sensorData: { response: Sensor[] } = await this.rs.getAllSensorsForOwner().toPromise();
       this.ownerSensorArr = sensorData.response;
-      ownerSub.unsubscribe();
-    }, (error) => {
+    } catch(error) {
       console.error(error);
       this.error = error.message;
-    });
+    }
   }
 
   logout() {
