@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 @WarpUnitTestConfig(baseRestUrl = "http://localhost:8080/hogajama-rs/rest/")
@@ -36,12 +37,11 @@ public class SensorServiceIT extends WarpUnitTest implements Serializable {
             Owner owner = createTestOwner(TEST_OWNER);
             SensorType sensorType = manipulator.loadEntity(1L, SensorType.class);
 
-            Sensor sensor1 = new Sensor();
-            sensor1.setName("MySensor1");
-            sensor1.setDeviceId("MySensorDeviceId");
-            sensor1.setSensorType(sensorType);
-            sensor1.setUnit(owner.getDefaultUnit());
-            Sensor sensor = sensor1;
+            Sensor sensor = new Sensor();
+            sensor.setName("MySensor1");
+            sensor.setDeviceId("MySensorDeviceId");
+            sensor.setSensorType(sensorType);
+            sensor.setUnit(owner.getDefaultUnit());
             manipulator.insertEntity(sensor);
 
             List<Sensor> sensorList = warp(() -> service.getAllSensors());
@@ -52,7 +52,35 @@ public class SensorServiceIT extends WarpUnitTest implements Serializable {
     }
 
     @Test
-    public void getAllSensorForOwner() {
+    public void getAllSensorForOwner() throws IOException {
+        warpMeta.setExecuteBeforeWarp(true);
+        warpMeta.setExecuteInTransaction(true);
+
+        try (EntityManipulator manipulator = getEntityManipulator()) {
+            Owner owner = createTestOwner(TEST_OWNER);
+            SensorType sensorType = manipulator.loadEntity(1L, SensorType.class);
+
+            Sensor sensor1 = new Sensor();
+            sensor1.setName("MySensor1");
+            sensor1.setDeviceId("MySensorDeviceId1");
+            sensor1.setSensorType(sensorType);
+            sensor1.setUnit(owner.getDefaultUnit());
+            manipulator.insertEntity(sensor1);
+
+            Sensor sensor2 = new Sensor();
+            sensor2.setName("MySensor2");
+            sensor2.setDeviceId("MySensorDeviceId2");
+            sensor2.setSensorType(sensorType);
+            sensor2.setUnit(owner.getDefaultUnit());
+            manipulator.insertEntity(sensor2);
+
+            List<Sensor> sensorList = warp(() -> service.getAllSensors());
+            assertThat(sensorList).hasSize(2);
+            assertThat(sensorList.get(0))
+                    .extracting(Sensor::getName).isEqualTo("MySensor1");
+            assertThat(sensorList.get(1))
+                    .extracting(Sensor::getName).isEqualTo("MySensor2");
+        }
     }
 
     @Test
@@ -64,12 +92,11 @@ public class SensorServiceIT extends WarpUnitTest implements Serializable {
             Owner owner = createTestOwner(TEST_OWNER);
             SensorType sensorType = manipulator.loadEntity(1L, SensorType.class);
 
-            Sensor sensor1 = new Sensor();
-            sensor1.setName("MySensor1");
-            sensor1.setDeviceId("MySensorDeviceId");
-            sensor1.setSensorType(sensorType);
-            sensor1.setUnit(owner.getDefaultUnit());
-            Sensor sensor = sensor1;
+            Sensor sensor = new Sensor();
+            sensor.setName("MySensor1");
+            sensor.setDeviceId("MySensorDeviceId");
+            sensor.setSensorType(sensorType);
+            sensor.setUnit(owner.getDefaultUnit());
             warp(() -> service.createSensor(sensor));
             Sensor result = manipulator.loadEntityByQuery("select s from Sensor as s where s.name = 'MySensor1'", Sensor.class);
 
@@ -79,7 +106,25 @@ public class SensorServiceIT extends WarpUnitTest implements Serializable {
     }
 
     @Test
-    public void createSensorForDefaultUnit() {
+    public void createSensorForDefaultUnit() throws IOException {
+        warpMeta.setExecuteBeforeWarp(true);
+        warpMeta.setExecuteInTransaction(true);
+
+        try (EntityManipulator manipulator = getEntityManipulator()) {
+            Owner owner = createTestOwner(TEST_OWNER);
+            SensorType sensorType = manipulator.loadEntity(1L, SensorType.class);
+
+            Sensor sensor = new Sensor();
+            sensor.setName("MySensor1");
+            sensor.setDeviceId("MySensorDeviceId");
+            sensor.setSensorType(sensorType);
+            warp(() -> service.createSensorForDefaultUnit(sensor));
+            Sensor result = manipulator.loadEntityByQuery("select s from Sensor as s where s.name = 'MySensor1'", Sensor.class);
+
+            assertThat(result.getDeviceId()).isEqualTo("MySensorDeviceId");
+            assertTrue(result.getUnit().isDefaultUnit());
+            getEntityManipulator().removeEntityWithoutRestoringById(result.getId(), Sensor.class);
+        }
     }
 
     private Owner createTestOwner(String ssoUserId) {
@@ -96,7 +141,7 @@ public class SensorServiceIT extends WarpUnitTest implements Serializable {
     }
 
     @BeforeWarp
-    private void fillOwnerStore(){
+    private void fillOwnerStore() {
         store.setOwner(ownerService.getRegisteredOwner(TEST_OWNER).orElse(null));
     }
 }

@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.service;
 
 import com.gepardec.hogarama.domain.entity.Sensor;
+import com.gepardec.hogarama.domain.entity.Unit;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.sensor.SensorDao;
 
@@ -24,7 +25,7 @@ public class SensorService {
     }
 
     public void createSensor(Sensor sensor) {
-        if (store.getOwner().getUnitList().stream().map(unit -> unit.getId()).collect(Collectors.toSet()).contains(sensor.getUnit().getId())) {
+        if (store.getOwner().getUnitList().stream().map(Unit::getId).collect(Collectors.toSet()).contains(sensor.getUnit().getId())) {
             dao.save(sensor);
         } else {
             throw new TechnicalException("Unit doesn't belong to owner");

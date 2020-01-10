@@ -20,7 +20,7 @@ public interface SensorApi {
     Response getAllSensors(@Context SecurityContext securityContext);
 
     @GET
-    Response getSensorForCurrentOwner(@Context SecurityContext securityContext);
+    Response getSensorsForOwner(@Context SecurityContext securityContext);
 
     @POST
     Response createSensor(@Context SecurityContext securityContext, SensorDto sensorDto);

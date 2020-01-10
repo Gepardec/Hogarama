@@ -6,6 +6,9 @@ public class ActorDto extends BaseDTO {
     private String deviceId;
     private Long unitId;
 
+    public ActorDto() {
+    }
+
     private ActorDto(Long id, String name, String deviceId, Long unitId) {
         super(id);
         this.name = name;

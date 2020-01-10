@@ -28,7 +28,7 @@ public class SensorApiImpl implements SensorApi {
     }
 
     @Override
-    public Response getSensorForCurrentOwner(SecurityContext securityContext) {
+    public Response getSensorsForOwner(SecurityContext securityContext) {
         List<SensorDto> dtoList = translator.toDtoList(service.getAllSensorForOwner());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }

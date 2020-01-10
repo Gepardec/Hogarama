@@ -18,8 +18,6 @@ import java.util.Optional;
 @Dependent
 public class SensorDtoTranslator implements Translator<SensorDto, Sensor> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SensorDtoTranslator.class);
-
     @Inject
     private UnitDao unitDao;
     @Inject
@@ -40,10 +38,7 @@ public class SensorDtoTranslator implements Translator<SensorDto, Sensor> {
     public Sensor fromDto(SensorDto dto) {
         Sensor sensor = new Sensor();
         if (dto.getUnitId() != null) {
-            Unit unit = unitDao.getById(dto.getUnitId()).orElseGet(() -> {
-                LOG.warn("No unit with id {} found.", dto.getUnitId());
-                return ownerStore.getOwner().getDefaultUnit();
-            });
+            Unit unit = TranslatorUtils.getUnitByUnitId(dto.getUnitId(), unitDao, ownerStore);
             sensor.setUnit(unit);
         }
         sensor.setDeviceId(dto.getDeviceId());

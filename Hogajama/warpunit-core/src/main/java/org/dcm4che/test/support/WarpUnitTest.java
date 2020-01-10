@@ -5,18 +5,16 @@ import org.dcm4che.test.remote.WarpGate;
 import org.dcm4che.test.remote.WarpUnit;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.lang.reflect.Method;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class WarpUnitTest {
+public class WarpUnitTest implements Serializable {
 
     protected WarpMeta warpMeta;
 

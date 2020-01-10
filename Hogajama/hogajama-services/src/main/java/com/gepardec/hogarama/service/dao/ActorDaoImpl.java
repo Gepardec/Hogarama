@@ -18,7 +18,7 @@ public class ActorDaoImpl extends BaseDao<Actor> implements ActorDao {
     }
 
     @Override
-    public List<Actor> getAllActorForOwner(Long ownerId) {
+    public List<Actor> getActorsForOwner(Long ownerId) {
         JPAQuery<Sensor> query = new JPAQuery<>(entityManager);
         QActor actor = QActor.actor;
         return query.select(actor).from(actor).where(actor.unit.owner.id.eq(ownerId)).fetch();

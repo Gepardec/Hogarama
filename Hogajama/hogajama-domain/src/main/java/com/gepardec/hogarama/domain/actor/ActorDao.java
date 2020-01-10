@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ActorDao extends GenericDao<Actor> {
 
-    List<Actor> getAllActorForOwner(Long ownerId);
+    List<Actor> getActorsForOwner(Long ownerId);
 }
