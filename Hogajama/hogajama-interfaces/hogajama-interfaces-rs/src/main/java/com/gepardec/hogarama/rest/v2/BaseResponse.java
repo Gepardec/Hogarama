@@ -5,6 +5,7 @@ import javax.ws.rs.core.Response;
 public class BaseResponse<T> {
     private T response;
     private int statusCode;
+    private String message;
 
     public BaseResponse(T response, int statusCode) {
         this.response = response;
@@ -13,6 +14,10 @@ public class BaseResponse<T> {
 
     public BaseResponse(int statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public Response createRestResponse() {
+        return Response.status(statusCode).entity(this).build();
     }
 
     public T getResponse() {
@@ -31,7 +36,11 @@ public class BaseResponse<T> {
         this.statusCode = statusCode;
     }
 
-    public Response createRestResponse() {
-        return Response.status(statusCode).entity(this).build();
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
