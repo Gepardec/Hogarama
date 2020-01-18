@@ -1,0 +1,1 @@
+/subsystem=logging/logger=com.gepardec.hogarama:add(level=DEBUG)

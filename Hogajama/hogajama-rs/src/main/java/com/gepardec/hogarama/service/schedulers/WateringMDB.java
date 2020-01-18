@@ -12,6 +12,9 @@ import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 // import org.jboss.ejb3.annotation.ResourceAdapter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
@@ -26,7 +29,9 @@ import com.gepardec.hogarama.domain.watering.WateringService;
     }
 )
 public class WateringMDB implements MessageListener {
-    
+
+    private static final Logger log = LoggerFactory.getLogger(WateringMDB.class);
+
     @Inject
     WateringService wateringSvc;
 
@@ -34,6 +39,7 @@ public class WateringMDB implements MessageListener {
     SensorNormalizer sensorNormalizer;
 
 	public void onMessage(Message message) {
+	    log.debug("Receive message of type " + message.getClass().getName());
 	    BytesMessage msg = (BytesMessage) message;
 		try {
 		    byte[] b = new byte[(int) msg.getBodyLength()];
@@ -44,9 +50,8 @@ public class WateringMDB implements MessageListener {
 
             wateringSvc.water(sensorNormalizer.normalize(sensorData));
             
-            System.out.println("Message Type " + message.getClass().getName());
 		} catch (JMSException | IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Error handling sensor data!", e);
 		}
 	}
 }
