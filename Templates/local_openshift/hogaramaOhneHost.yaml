@@ -8,47 +8,6 @@ objects:
   kind: BuildConfig
   metadata:
     annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    labels:
-      app: fluentd
-    name: fluentd
-  spec:
-    nodeSelector: null
-    output:
-      to:
-        kind: ImageStreamTag
-        name: fluentd:latest
-    postCommit: {}
-    resources: {}
-    runPolicy: Serial
-    source:
-      contextDir: Fluentd
-      git:
-        uri: https://github.com/Gepardec/Hogarama/
-      type: Git
-    strategy:
-      type: Docker
-      dockerStrategy:
-        from:
-          kind: ImageStreamTag
-          name: 'fluentd-onbuild:v1.1.0-debian-onbuild'
-    triggers:
-    - github:
-        secret: 4m9EY9lErQRrs8LJjudP
-      type: GitHub
-    - generic:
-        secret: A2YAGDWxu2zgCfjIyo25
-      type: Generic
-    - type: ConfigChange
-    - imageChange: {}
-      type: ImageChange
-  status:
-    lastVersion: 0
-- apiVersion: v1
-  kind: BuildConfig
-  metadata:
-    annotations:
       openshift.io/generated-by: OpenShiftWebConsole
     creationTimestamp: null
     labels:
@@ -89,32 +48,6 @@ objects:
     - type: ConfigChange
   status:
     lastVersion: 0
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    labels:
-      app: fluentd
-    name: fluentd
-  spec:
-    ports:
-    - name: 5140-tcp
-      port: 5140
-      protocol: TCP
-      targetPort: 5140
-    - name: 24224-tcp
-      port: 24224
-      protocol: TCP
-      targetPort: 24224
-    selector:
-      app: fluentd
-      deploymentconfig: fluentd
-    sessionAffinity: None
-    type: ClusterIP
-  status:
-    loadBalancer: {}
 - apiVersion: v1
   kind: Service
   metadata:
@@ -164,94 +97,6 @@ objects:
     type: ClusterIP
   status:
     loadBalancer: {}
-- apiVersion: v1
-  kind: DeploymentConfig
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    generation: 1
-    labels:
-      app: fluentd
-    name: fluentd
-  spec:
-    replicas: 1
-    selector:
-      app: fluentd
-      deploymentconfig: fluentd
-    strategy:
-      activeDeadlineSeconds: 21600
-      resources: {}
-      rollingParams:
-        intervalSeconds: 1
-        maxSurge: 25%
-        maxUnavailable: 25%
-        timeoutSeconds: 600
-        updatePeriodSeconds: 1
-      type: Rolling
-    template:
-      metadata:
-        annotations:
-          openshift.io/container.fluentd.image.entrypoint: '["/bin/bash"]'
-          openshift.io/generated-by: OpenShiftNewApp
-        creationTimestamp: null
-        labels:
-          app: fluentd
-          deploymentconfig: fluentd
-      spec:
-        containers:
-        - image: hogarama/fluentd
-          imagePullPolicy: Always
-          livenessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - '-c'
-                - >-
-                  tail -1 /fluentd/log/fluent.log | grep -q
-                  Mongo::Auth::Unauthorized; test $? != 0
-            failureThreshold: 3
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 5
-          name: fluentd
-          ports:
-          - containerPort: 24224
-            protocol: TCP
-          - containerPort: 5140
-            protocol: TCP
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          volumeMounts:
-          - mountPath: /fluentd/log
-            name: fluentd-log-volume
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
-        volumes:
-        - name: fluentd-log-volume
-          persistentVolumeClaim:
-            claimName: fluentd-log-claim
-    test: false
-    triggers:
-    - type: ConfigChange
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - fluentd
-        from:
-          kind: ImageStreamTag
-          name: fluentd:latest
-      type: ImageChange
-  status:
-    availableReplicas: 0
-    latestVersion: 0
-    observedGeneration: 0
-    replicas: 0
-    unavailableReplicas: 0
-    updatedReplicas: 0
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -452,18 +297,6 @@ objects:
   kind: PersistentVolumeClaim
   metadata:
     creationTimestamp: null
-    name: fluentd-log-claim
-  spec:
-    accessModes:
-    - ReadWriteMany
-    resources:
-      requests:
-        storage: 1Gi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
     labels:
       app: mongodb-persistent
       template: mongodb-persistent-template
@@ -631,33 +464,6 @@ objects:
       routerName: router-poi-4
       wildcardPolicy: None
       apiVersion: v1
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    annotations:
-      openshift.io/image.dockerRepositoryCheck: 2018-02-03T11:11:05Z
-    creationTimestamp: null
-    generation: 2
-    labels:
-      app: fluentd-onbuild
-    name: fluentd-onbuild
-  spec:
-    lookupPolicy:
-      local: false
-    tags:
-    - annotations:
-        openshift.io/generated-by: OpenShiftWebConsole
-        openshift.io/imported-from: fluent/fluentd:v1.1.0-debian-onbuild
-      from:
-        kind: DockerImage
-        name: fluent/fluentd:v1.1.0-debian-onbuild
-      generation: 2
-      importPolicy: {}
-      name: v1.1.0-debian-onbuild
-      referencePolicy:
-        type: Source
-  status:
-    dockerImageRepository: ""
 - apiVersion: v1
   kind: BuildConfig
   metadata:

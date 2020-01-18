@@ -1,0 +1,217 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: hogarama-fluentd
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: fluentd-onbuild
+      template: hogarama-fluentd
+    name: fluentd-onbuild
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+        openshift.io/imported-from: fluent/fluentd:edge-debian
+      from:
+        kind: DockerImage
+        name: fluent/fluentd:edge-debian
+      generation: 2
+      importPolicy: {}
+      name: edge-debian
+      referencePolicy:
+        type: Source
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: fluentd
+      template: hogarama-fluentd
+    name: fluentd
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: fluentd
+      template: hogarama-fluentd
+    name: fluentd-log-claim
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+  status: {}
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: fluentd
+      template: hogarama-fluentd
+    name: fluentd
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: fluentd:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: Fluentd
+      git:
+        ref: ${BRANCH}
+        uri: https://github.com/Gepardec/Hogarama/
+      type: Git
+    strategy:
+      type: Docker
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: 'fluentd-onbuild:edge-debian'
+    triggers:
+    - github:
+        secret: 4m9EY9lErQRrs8LJjudP
+      type: GitHub
+    - generic:
+        secret: A2YAGDWxu2zgCfjIyo25
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: fluentd
+      template: hogarama-fluentd
+    name: fluentd
+  spec:
+    ports:
+    - name: 5140-tcp
+      port: 5140
+      protocol: TCP
+      targetPort: 5140
+    - name: 24224-tcp
+      port: 24224
+      protocol: TCP
+      targetPort: 24224
+    selector:
+      app: fluentd
+      deploymentconfig: fluentd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: fluentd
+      template: hogarama-fluentd
+    name: fluentd
+  spec:
+    replicas: 1
+    selector:
+      app: fluentd
+      deploymentconfig: fluentd
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/container.fluentd.image.entrypoint: '["/bin/bash"]'
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: fluentd
+          template: hogarama-fluentd
+          deploymentconfig: fluentd
+      spec:
+        containers:
+        - image: hogarama/fluentd
+          imagePullPolicy: Always
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - '-c'
+                - >-
+                  tail -1 /fluentd/log/fluent.log | grep -q
+                  Mongo::Auth::Unauthorized; test $? != 0
+            failureThreshold: 3
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: fluentd
+          ports:
+          - containerPort: 24224
+            protocol: TCP
+          - containerPort: 5140
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /fluentd/log
+            name: fluentd-log-volume
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: fluentd-log-volume
+          persistentVolumeClaim:
+            claimName: fluentd-log-claim
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - fluentd
+        from:
+          kind: ImageStreamTag
+          name: fluentd:latest
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+parameters:
+    - description: Branch for Builds
+      from: '[A-Z0-9]{8}'
+      value: master
+      name: BRANCH
