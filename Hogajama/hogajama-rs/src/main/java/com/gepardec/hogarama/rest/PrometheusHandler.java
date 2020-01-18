@@ -9,25 +9,22 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import com.gepardec.hogarama.domain.metrics.Metrics;
-import io.prometheus.client.Summary;
-import io.prometheus.client.hotspot.DefaultExports;
-import org.jboss.resteasy.annotations.GZIP;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gepardec.hogarama.domain.sensor.SensorMetrics;
+import com.gepardec.hogarama.domain.metrics.Metrics;
 
 import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.Summary;
 import io.prometheus.client.exporter.common.TextFormat;
+import io.prometheus.client.hotspot.DefaultExports;
 
 @Path("/metrics")
 //@GZIP
@@ -36,9 +33,6 @@ public class PrometheusHandler {
     private static final Logger logger = LoggerFactory.getLogger(PrometheusHandler.class);
 
     private CollectorRegistry prometheusRegistry;
-
-    @Inject
-    private SensorMetrics sensorMetrics;
     
     @PostConstruct
     public void init(){
@@ -51,8 +45,6 @@ public class PrometheusHandler {
     @Produces(TextFormat.CONTENT_TYPE_004)
     public Response getMetrics() throws IOException{
         
-        sensorMetrics.collect();
-
         Summary.Timer requestTimer = Metrics.requestLatency.labels("hogarama_monitoring", "get_metrics").startTimer();
         Metrics.requestsTotal.labels("hogarama_monitoring", "get_metrics").inc();
         HttpServletRequest request = ResteasyProviderFactory.getContextData(HttpServletRequest.class);

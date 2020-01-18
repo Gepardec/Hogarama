@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.domain.watering.WateringService;
 
 public class TestDataProducer {
 
@@ -56,6 +57,12 @@ public class TestDataProducer {
 
     public SensorData getNext() {
         return data.get(++index);
+    }
+
+    public void waterAll(WateringService watering) {
+        for (SensorData sensorData : data) {
+            watering.water(sensorData);
+        }  
     }	
 
 }
