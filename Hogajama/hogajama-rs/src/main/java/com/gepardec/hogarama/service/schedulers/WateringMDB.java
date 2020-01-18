@@ -9,13 +9,13 @@ import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.TextMessage;
 // import org.jboss.ejb3.annotation.ResourceAdapter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
 import com.gepardec.hogarama.domain.watering.WateringService;
@@ -46,9 +46,11 @@ public class WateringMDB implements MessageListener {
 		    msg.readBytes(b);
  
 		    ObjectMapper mapper = new ObjectMapper();
-            SensorData sensorData = mapper.readValue(b, SensorData.class);
+            SensorData sensorData = sensorNormalizer.normalize(mapper.readValue(b, SensorData.class));
 
-            wateringSvc.water(sensorNormalizer.normalize(sensorData));
+            Metrics.sensorValues.labels(sensorData.getSensorName(), sensorData.getLocation()).set(sensorData.getValue());
+
+            wateringSvc.water(sensorData);
             
 		} catch (JMSException | IOException e) {
 			throw new RuntimeException("Error handling sensor data!", e);
