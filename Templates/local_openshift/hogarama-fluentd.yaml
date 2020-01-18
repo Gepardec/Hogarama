@@ -1,7 +1,6 @@
 apiVersion: v1
 kind: Template
 metadata:
-  creationTimestamp: null
   name: hogarama-fluentd
 objects:
 - apiVersion: v1
@@ -26,8 +25,6 @@ objects:
       name: edge-debian
       referencePolicy:
         type: Source
-  status:
-    dockerImageRepository: ""
 - apiVersion: v1
   kind: ImageStream
   metadata:
@@ -41,7 +38,6 @@ objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    creationTimestamp: null
     labels:
       app: fluentd
       template: hogarama-fluentd
@@ -52,7 +48,6 @@ objects:
     resources:
       requests:
         storage: 1Gi
-  status: {}
 - apiVersion: v1
   kind: BuildConfig
   metadata:
@@ -91,14 +86,9 @@ objects:
     - type: ConfigChange
     - imageChange: {}
       type: ImageChange
-  status:
-    lastVersion: 0
 - apiVersion: v1
   kind: Service
   metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
     labels:
       app: fluentd
       template: hogarama-fluentd
@@ -118,15 +108,9 @@ objects:
       deploymentconfig: fluentd
     sessionAffinity: None
     type: ClusterIP
-  status:
-    loadBalancer: {}
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    generation: 1
     labels:
       app: fluentd
       template: hogarama-fluentd
@@ -150,8 +134,6 @@ objects:
       metadata:
         annotations:
           openshift.io/container.fluentd.image.entrypoint: '["/bin/bash"]'
-          openshift.io/generated-by: OpenShiftNewApp
-        creationTimestamp: null
         labels:
           app: fluentd
           template: hogarama-fluentd
@@ -203,13 +185,6 @@ objects:
           kind: ImageStreamTag
           name: fluentd:latest
       type: ImageChange
-  status:
-    availableReplicas: 0
-    latestVersion: 0
-    observedGeneration: 0
-    replicas: 0
-    unavailableReplicas: 0
-    updatedReplicas: 0
 parameters:
     - description: Branch for Builds
       from: '[A-Z0-9]{8}'
