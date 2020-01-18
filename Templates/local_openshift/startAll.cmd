@@ -5,9 +5,9 @@ oc create -f alltemplates.yaml -n openshift
 oc login -u developer
 oc new-project hogarama
 oc create is hogajama
-oc create is fluentd
 $OPENSHIFT_TOKEN=oc whoami -t
 oc process -f hogarama-amq.yaml | oc create -f -
+oc process -f hogarama-fluentd.yaml | oc create -f -
 oc process -f hogaramaOhneHost.yaml OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN | oc create -f -
 oc process -f ..\sso\sso-app-secret.yaml | oc create -f -
 oc process -f ..\sso\sso-service-account.yaml | oc create -f -

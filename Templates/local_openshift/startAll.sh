@@ -68,7 +68,6 @@ $EXEC oc create -f alltemplates.yaml -n openshift
 $EXEC oc login -u developer -p dev
 $EXEC oc new-project hogarama
 $EXEC oc create is hogajama
-$EXEC oc create is fluentd
 
 OPENSHIFT_TOKEN=$(oc whoami -t)
 HOGARAMA_VARS="OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN BRANCH=$BRANCH"
@@ -77,6 +76,7 @@ if [ x$DO_SSO != xTrue ]; then
   HOGARAMA_VARS="$HOGARAMA_VARS KEYCLOAK_AUTH_SERVER_URL=$KEYCLOAK_AUTH_SERVER_URL"
 fi
 $EXEC oc process -f hogarama-amq.yaml BRANCH=$BRANCH | $EXEC oc create -f -
+$EXEC oc process -f hogarama-fluentd.yaml BRANCH=$BRANCH | $EXEC oc create -f -
 $EXEC oc process -f hogaramaOhneHost.yaml $HOGARAMA_VARS | $EXEC oc create -f -
 
 if [ x$DO_SSO = xTrue ]; then
