@@ -15,13 +15,12 @@ do
   case "${option}"
   in
     s) source=${OPTARG};;
-    h) echo -e $help;;
     *) echo -e $help;;
   esac
 
 done
 
-echo $source
+echo "Using source directory: $source" >&2
 
 
 if [ -z $source ]
