@@ -1,7 +1,5 @@
 package com.gepardec.hogarama.domain.watering;
 
-import java.time.LocalDateTime;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -42,8 +40,6 @@ public class WateringService {
 
     private static final Logger log = LoggerFactory.getLogger(WateringService.class);
 
-	private LocalDateTime now;
-
 	public WateringService() {
 	}
 
@@ -52,13 +48,6 @@ public class WateringService {
 		this.actorSvc = actorSvc;
 		this.watering = watering;
 		this.configDao = configDao;
-	}
-
-	public void waterAll() {
-		for (String sensorName : sensorDao.getAllSensors()) {
-			WateringConfigData config = getConfig(sensorName);
-            invokeActorIfNeeded(config, watering.computeWateringDuration(config, getDate()));
-		}
 	}
 
     private void invokeActorIfNeeded(WateringConfigData config, int dur) {
@@ -82,17 +71,6 @@ public class WateringService {
 				Config.DEFAULT.lowWater, Config.DEFAULT.waterDuration);
 		configDao.save(wconfig);
 		return wconfig;
-	}
-
-	protected void setDate(LocalDateTime now) {
-		this.now = now;
-	}
-
-	private LocalDateTime getDate() {
-		if (null != now) {
-			return now;
-		}
-		return LocalDateTime.now();
 	}
 
     public void water(SensorData sensorData) {

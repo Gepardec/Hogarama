@@ -3,9 +3,7 @@ package com.gepardec.hogarama.service.dao;
 import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.watering.WateringDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
-import com.mongodb.client.MongoCollection;
 import org.apache.commons.lang.StringUtils;
-import org.bson.Document;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
@@ -20,10 +18,6 @@ public class WateringDAOImpl implements WateringDAO {
 
     @Inject
     private Datastore dataStore;
-    @Inject
-    private MongoCollection<Document> collection;
-    @Inject
-    private Metrics metrics;
 
     @Override
     public List<WateringData> getWateringData(Integer maxNumber, String actorName, Date from, Date to) {

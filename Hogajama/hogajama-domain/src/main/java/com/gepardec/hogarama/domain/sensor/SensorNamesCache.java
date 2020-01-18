@@ -3,7 +3,6 @@ package com.gepardec.hogarama.domain.sensor;
 import com.gepardec.hogarama.domain.sensor.SensorDAO;
 import org.slf4j.Logger;
 
-import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
