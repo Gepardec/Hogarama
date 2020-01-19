@@ -24,7 +24,6 @@
 
 		<!-- DEPENDENCY VERSIONS-->
 
-		<version.wildfly.swarm>2018.4.1</version.wildfly.swarm>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<org.json.version>20080701</org.json.version>
