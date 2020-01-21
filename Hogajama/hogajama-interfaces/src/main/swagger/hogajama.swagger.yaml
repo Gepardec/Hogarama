@@ -136,7 +136,7 @@ paths:
       parameters:
         - in: query
           name: sensorName
-          type: String
+          type: string
           required: true
           description: Name of the sensor
       produces:
@@ -153,12 +153,12 @@ paths:
       parameters:
         - in: query
           name: location
-          type: String
+          type: string
           required: true
           description: location of the sensor
         - in: query
           name: actorName
-          type: String
+          type: string
           required: true
           description: Name of the actor
         - in: query
