@@ -9,12 +9,14 @@ import org.apache.http.HttpStatus;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 @DetermineOwner
-public class UnitApiImpl implements UnitApi {
+@Path("v2/unit")
+public class UnitApi implements ApiBase<UnitDto> {
 
     @Inject
     private UnitService service;
@@ -22,29 +24,29 @@ public class UnitApiImpl implements UnitApi {
     private UnitDtoTranslator translator;
 
     @Override
-    public Response getAllUnits(SecurityContext securityContext) {
+    public Response getAll(SecurityContext securityContext) {
         List<UnitDto> units = translator.toDtoList(service.getAllUnits());
         return new BaseResponse<>(units, HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override
-    public Response getUnitsForOwner(SecurityContext securityContext) {
+    public Response getForOwner(SecurityContext securityContext) {
         List<UnitDto> dtoList = translator.toDtoList(service.getUnitsForOwner());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override
     @Transactional
-    public Response createUnit(SecurityContext securityContext, UnitDto unitDto) {
+    public Response create(SecurityContext securityContext, UnitDto unitDto) {
         Unit unit = translator.fromDto(unitDto);
-            service.createUnit(unit);
+        service.createUnit(unit);
 
         return new BaseResponse<>(HttpStatus.SC_CREATED).createRestResponse();
     }
 
     @Override
     @Transactional
-    public Response updateUnit(String id, SecurityContext securityContext, UnitDto unitDto) {
+    public Response update(String id, SecurityContext securityContext, UnitDto unitDto) {
         Unit sensor = translator.fromDto(unitDto);
         if (id == null || !id.equals(unitDto.getId().toString())) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
@@ -57,7 +59,7 @@ public class UnitApiImpl implements UnitApi {
 
     @Override
     @Transactional
-    public Response deleteUnit(String id, SecurityContext securityContext) {
+    public Response delete(String id, SecurityContext securityContext) {
         if (id == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
         } else {

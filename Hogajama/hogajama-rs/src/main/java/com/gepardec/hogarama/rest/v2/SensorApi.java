@@ -9,12 +9,14 @@ import org.apache.http.HttpStatus;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 @DetermineOwner
-public class SensorApiImpl implements SensorApi {
+@Path("v2/sensor")
+public class SensorApi implements ApiBase<SensorDto> {
 
     @Inject
     private SensorService service;
@@ -22,20 +24,20 @@ public class SensorApiImpl implements SensorApi {
     private SensorDtoTranslator translator;
 
     @Override
-    public Response getAllSensors(SecurityContext securityContext) {
+    public Response getAll(SecurityContext securityContext) {
         List<SensorDto> dtoList = translator.toDtoList(service.getAllSensors());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override
-    public Response getSensorsForOwner(SecurityContext securityContext) {
+    public Response getForOwner(SecurityContext securityContext) {
         List<SensorDto> dtoList = translator.toDtoList(service.getAllSensorForOwner());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override
     @Transactional
-    public Response createSensor(SecurityContext securityContext, SensorDto sensorDto) {
+    public Response create(SecurityContext securityContext, SensorDto sensorDto) {
         Sensor sensor = translator.fromDto(sensorDto);
         if (sensorDto.getUnitId() == null) {
             service.createSensorForDefaultUnit(sensor);
@@ -48,7 +50,7 @@ public class SensorApiImpl implements SensorApi {
 
     @Override
     @Transactional
-    public Response updateSensor(String id, SecurityContext securityContext, SensorDto sensorDto) {
+    public Response update(String id, SecurityContext securityContext, SensorDto sensorDto) {
         Sensor sensor = translator.fromDto(sensorDto);
         if (id == null || !id.equals(sensorDto.getId().toString()) || sensorDto.getUnitId() == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
@@ -61,7 +63,7 @@ public class SensorApiImpl implements SensorApi {
 
     @Override
     @Transactional
-    public Response deleteSensor(String id, SecurityContext securityContext) {
+    public Response delete(String id, SecurityContext securityContext) {
         if (id == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
         } else {
