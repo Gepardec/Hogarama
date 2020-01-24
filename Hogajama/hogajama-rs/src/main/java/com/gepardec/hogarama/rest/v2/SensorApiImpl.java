@@ -45,4 +45,36 @@ public class SensorApiImpl implements SensorApi {
 
         return new BaseResponse<>(HttpStatus.SC_CREATED).createRestResponse();
     }
+
+    @Override
+    @Transactional
+    public Response updateSensor(String id, SecurityContext securityContext, SensorDto sensorDto) {
+        Sensor sensor = translator.fromDto(sensorDto);
+        if (id == null || !id.equals(sensorDto.getId().toString()) || sensorDto.getUnitId() == null) {
+            return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        } else {
+            service.updateSensor(sensor);
+        }
+
+        return new BaseResponse<>(HttpStatus.SC_OK).createRestResponse();
+    }
+
+    @Override
+    @Transactional
+    public Response deleteSensor(String id, SecurityContext securityContext) {
+        if (id == null) {
+            return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        } else {
+            Long idNum;
+            try {
+                idNum = Long.parseLong(id);
+            } catch (NumberFormatException e) {
+                return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
+            }
+
+            service.deleteSensor(idNum);
+        }
+
+        return new BaseResponse<>(HttpStatus.SC_OK).createRestResponse();
+    }
 }

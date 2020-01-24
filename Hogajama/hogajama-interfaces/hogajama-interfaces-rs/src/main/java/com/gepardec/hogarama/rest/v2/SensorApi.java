@@ -22,8 +22,14 @@ public interface SensorApi {
     @GET
     Response getSensorsForOwner(@Context SecurityContext securityContext);
 
-    @POST
+    @PUT
     Response createSensor(@Context SecurityContext securityContext, SensorDto sensorDto);
 
+    @PATCH
+    @Path("/{id}")
+    Response updateSensor(@PathParam("id") String id, @Context SecurityContext securityContext, SensorDto sensorDto);
 
+    @DELETE
+    @Path("/{id}")
+    Response deleteSensor(@PathParam("id") String id, @Context SecurityContext securityContext);
 }

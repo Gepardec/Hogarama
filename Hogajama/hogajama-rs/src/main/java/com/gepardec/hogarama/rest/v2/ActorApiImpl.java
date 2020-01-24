@@ -22,6 +22,18 @@ public class ActorApiImpl implements ActorApi {
     private ActorDtoTranslator translator;
 
     @Override
+    public Response getAllActors(SecurityContext securityContext) {
+        List<ActorDto> actors = translator.toDtoList(service.getAllActors());
+        return new BaseResponse<>(actors, HttpStatus.SC_OK).createRestResponse();
+    }
+
+    @Override
+    public Response getActorsForOwner(SecurityContext securityContext) {
+        List<ActorDto> dtoList = translator.toDtoList(service.getActorsForOwner());
+        return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
+    }
+
+    @Override
     @Transactional
     public Response createActor(SecurityContext securityContext, ActorDto actorDto) {
         Actor actor = translator.fromDto(actorDto);
@@ -35,8 +47,34 @@ public class ActorApiImpl implements ActorApi {
     }
 
     @Override
-    public Response getActorsForOwner(SecurityContext securityContext) {
-        List<ActorDto> dtoList = translator.toDtoList(service.getActorsForOwner());
-        return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
+    @Transactional
+    public Response updateActor(String id, SecurityContext securityContext, ActorDto actorDto) {
+        Actor sensor = translator.fromDto(actorDto);
+        if (id == null || !id.equals(actorDto.getId().toString()) || actorDto.getUnitId() == null) {
+            return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        } else {
+            service.updateActor(sensor);
+        }
+
+        return new BaseResponse<>(HttpStatus.SC_OK).createRestResponse();
+    }
+
+    @Override
+    @Transactional
+    public Response deleteActor(String id, SecurityContext securityContext) {
+        if (id == null) {
+            return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        } else {
+            Long idNum;
+            try {
+                idNum = Long.parseLong(id);
+            } catch (NumberFormatException e) {
+                return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
+            }
+
+            service.deleteActor(idNum);
+        }
+
+        return new BaseResponse<>(HttpStatus.SC_OK).createRestResponse();
     }
 }

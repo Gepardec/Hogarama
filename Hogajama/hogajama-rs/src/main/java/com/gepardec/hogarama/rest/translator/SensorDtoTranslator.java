@@ -37,6 +37,7 @@ public class SensorDtoTranslator implements Translator<SensorDto, Sensor> {
     @Override
     public Sensor fromDto(SensorDto dto) {
         Sensor sensor = new Sensor();
+        sensor.setId(dto.getId());
         if (dto.getUnitId() != null) {
             Unit unit = TranslatorUtils.getUnitByUnitId(dto.getUnitId(), unitDao, ownerStore);
             sensor.setUnit(unit);
