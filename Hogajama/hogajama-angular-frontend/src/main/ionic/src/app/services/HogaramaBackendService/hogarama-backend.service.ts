@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
 import {UserData} from 'src/app/shared/models/UserData';
 import {Sensor} from "../../shared/models/Sensor";
 import {environment} from "../../../environments/environment";
@@ -17,7 +16,7 @@ export class HogaramaBackendService {
     public actors = new HogaramaBackendPath<Actor>(this.http, 'rest/v2/actor');
     public sensors = new HogaramaBackendPath<Sensor>(this.http, 'rest/v2/sensor');
     public units = new HogaramaBackendPath<Unit>(this.http, 'rest/v2/unit');
-    public users = new HogaramaBackendPath<UserData>(this.http, 'rest/user');
+    public users = new HogaramaBackendPath<UserData>(this.http, 'rest/user', false);
 
     constructor(private http: HttpClient) {
     }

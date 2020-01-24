@@ -30,10 +30,6 @@ public class UnitDto extends BaseDTO {
         return defaultUnit;
     }
 
-    public Boolean getDefaultUnit() {
-        return defaultUnit;
-    }
-
     public String getName() {
         return name;
     }
