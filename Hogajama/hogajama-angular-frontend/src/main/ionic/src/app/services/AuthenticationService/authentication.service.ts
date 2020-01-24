@@ -23,7 +23,10 @@ export class AuthenticationService {
                     try {
                         const updateSuccess = await this._keycloak.updateToken(environment.keycloakTokenMinValidity);
 
-                        console.log(updateSuccess);
+                        if(updateSuccess) {
+                            console.log('Token updated');
+                            this.saveKeycloakTokens();
+                        }
                     } catch (e) {
                         console.error('Token update failed', e);
                     }
@@ -44,11 +47,11 @@ export class AuthenticationService {
             promiseType: 'native',
             onLoad: 'check-sso',
             token, refreshToken
-        }).then((isAuthed) => {
-            console.log('Authentication Status: ', isAuthed);
-            this._isAuthenticated.next(isAuthed);
+        }).then(() => {
+            console.log('Authentication Status: ', this.isKeycloakAuthenticated());
+            this._isAuthenticated.next(this.isKeycloakAuthenticated());
 
-            return isAuthed;
+            return this.isKeycloakAuthenticated();
         }).catch((error) => {
             console.log('Error in init: ', error);
             this._isAuthenticated.next(false);
@@ -71,8 +74,7 @@ export class AuthenticationService {
 
     public loginUser(): Promise<boolean> {
         return this._keycloak.login().then(() => {
-            localStorage.setItem('kc_token', this.getToken());
-            localStorage.setItem('kc_refreshToken', this.getRefreshToken());
+            this.saveKeycloakTokens();
 
             this._isAuthenticated.next(true);
             return true;
@@ -83,8 +85,7 @@ export class AuthenticationService {
     }
 
     public logoutUser(): Promise<void> {
-        localStorage.setItem('kc_token', null);
-        localStorage.setItem('kc_refreshToken', null);
+        this.removeKeycloakTokens();
 
         return this._keycloak.logout().then(() => {
             this._isAuthenticated.next(false);
@@ -102,5 +103,15 @@ export class AuthenticationService {
 
     public isKeycloakAuthenticated(): boolean {
         return this._keycloak.authenticated;
+    }
+
+    private saveKeycloakTokens(): void {
+        localStorage.setItem('kc_token', this.getToken());
+        localStorage.setItem('kc_refreshToken', this.getRefreshToken());
+    }
+
+    private removeKeycloakTokens(): void {
+        localStorage.setItem('kc_token', null);
+        localStorage.setItem('kc_refreshToken', null);
     }
 }
