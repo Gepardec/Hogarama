@@ -2,9 +2,9 @@ package com.gepardec.hogarama.rest.translator;
 
 import com.gepardec.hogarama.domain.entity.Actor;
 import com.gepardec.hogarama.domain.entity.Unit;
-import com.gepardec.hogarama.domain.unit.UnitDao;
 import com.gepardec.hogarama.rest.v2.dto.ActorDto;
 import com.gepardec.hogarama.service.OwnerStore;
+import com.gepardec.hogarama.service.dao.UnitDao;
 
 import javax.inject.Inject;
 

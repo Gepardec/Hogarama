@@ -1,8 +1,8 @@
 package com.gepardec.hogarama.rest.translator;
 
 import com.gepardec.hogarama.domain.entity.Unit;
-import com.gepardec.hogarama.domain.unit.UnitDao;
 import com.gepardec.hogarama.service.OwnerStore;
+import com.gepardec.hogarama.service.dao.UnitDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

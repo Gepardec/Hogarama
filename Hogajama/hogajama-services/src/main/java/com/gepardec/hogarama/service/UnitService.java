@@ -1,14 +1,12 @@
 package com.gepardec.hogarama.service;
 
-import com.gepardec.hogarama.domain.unit.UnitDao;
-import com.gepardec.hogarama.domain.entity.Unit;
 import com.gepardec.hogarama.domain.entity.Unit;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
+import com.gepardec.hogarama.service.dao.UnitDao;
 
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UnitService {
 

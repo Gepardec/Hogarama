@@ -1,9 +1,9 @@
 package com.gepardec.hogarama.service;
 
-import com.gepardec.hogarama.domain.actor.ActorDao;
 import com.gepardec.hogarama.domain.entity.Actor;
 import com.gepardec.hogarama.domain.entity.Unit;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
+import com.gepardec.hogarama.service.dao.ActorDao;
 
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;

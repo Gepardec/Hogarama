@@ -5,11 +5,9 @@ import com.gepardec.hogarama.domain.entity.Sensor;
 import com.gepardec.hogarama.domain.entity.SensorType;
 import com.gepardec.hogarama.domain.entity.Unit;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
-import com.gepardec.hogarama.domain.unit.UnitDao;
 import com.gepardec.hogarama.rest.v2.dto.SensorDto;
 import com.gepardec.hogarama.service.OwnerStore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.gepardec.hogarama.service.dao.UnitDao;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
