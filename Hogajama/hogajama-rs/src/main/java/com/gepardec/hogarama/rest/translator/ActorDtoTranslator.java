@@ -26,6 +26,7 @@ public class ActorDtoTranslator implements Translator<ActorDto, Actor> {
     @Override
     public Actor fromDto(ActorDto dto) {
         Actor actor = new Actor();
+        actor.setId(dto.getId());
         if (dto.getUnitId() != null) {
             Unit unit = TranslatorUtils.getUnitByUnitId(dto.getUnitId(), unitDao, ownerStore);
             actor.setUnit(unit);

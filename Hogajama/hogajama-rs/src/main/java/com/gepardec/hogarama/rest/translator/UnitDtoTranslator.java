@@ -41,7 +41,7 @@ public class UnitDtoTranslator implements Translator<UnitDto, Unit> {
         }
         unit.setDescription(dto.getDescription());
         unit.setName(dto.getName());
-        unit.setDefaultUnit(dto.getDefault());
+        unit.setDefaultUnit(dto.isDefaultUnit());
 
         return unit;
     }

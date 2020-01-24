@@ -1,7 +1,7 @@
 export interface Unit {
-    id: number;
-    description: string;
-    isDefault: boolean;
-    name: string;
-    ownerId: number;
+    id?: number;
+    description?: string;
+    isDefault?: boolean;
+    name?: string;
+    ownerId?: number;
 }

@@ -7,6 +7,8 @@ import {HogaramaBackendService} from "../../services/HogaramaBackendService/hoga
 import {SensorDialogComponent} from "../shared/sensor-dialog/sensor-dialog.component";
 import {Unit} from "../../shared/models/Unit";
 import {Actor} from "../../shared/models/Actor";
+import {UnitDialogComponent} from "../shared/unit-dialog/unit-dialog.component";
+import {ActorDialogComponent} from "../shared/actor-dialog/actor-dialog.component";
 
 @Component({
   selector: 'app-testing-playground',
@@ -30,20 +32,32 @@ export class TestingPlaygroundPage implements OnInit {
     ) { }
 
     async ngOnInit() {
+        await this.reloadData();
+    }
+
+    private async reloadData() {
         await this.reloadSensors();
+        await this.reloadActors();
+        await this.reloadUnits();
+    }
+
+    private async reloadUnits() {
+        try {
+            this.unitsDataSource.data = await this.backend.units.getAll();
+        } catch (e) {
+        }
+    }
+
+    private async reloadActors() {
+        try {
+            this.actorsDataSource.data = await this.backend.actors.getAll();
+        } catch (e) {
+        }
     }
 
     private async reloadSensors() {
         try {
             this.sensorsDataSource.data = await this.backend.sensors.getAll();
-        } catch (e) {
-        }
-        try {
-            this.actorsDataSource.data = await this.backend.actors.getAll();
-        } catch (e) {
-        }
-        try {
-            this.unitsDataSource.data = await this.backend.units.getAll();
         } catch (e) {
         }
     }
@@ -75,6 +89,42 @@ export class TestingPlaygroundPage implements OnInit {
         this.presentToast('Copied to clipboard')
     }
 
+    async deleteSensor(id: number) {
+        try {
+            let result = await this.backend.sensors.delete(id);
+            console.log(result);
+            this.presentToast('Sensor deleted');
+            this.reloadSensors();
+        } catch (e) {
+            console.log(e);
+            this.presentToast('Sensor delete failed');
+        }
+    }
+
+    async deleteUnit(id: number) {
+        try {
+            let result = await this.backend.sensors.delete(id);
+            console.log(result);
+            this.presentToast('Unit deleted');
+            this.reloadUnits();
+        } catch (e) {
+            console.log(e);
+            this.presentToast('Unit delete failed');
+        }
+    }
+
+    async deleteActor(id: number) {
+        try {
+            let result = await this.backend.actors.delete(id);
+            console.log(result);
+            this.presentToast('Actor deleted');
+            this.reloadActors();
+        } catch (e) {
+            console.log(e);
+            this.presentToast('Actor delete failed');
+        }
+    }
+
     addNewSensor() {
         let dialogRef = this.dialog.open(SensorDialogComponent, {
             height: '500px',
@@ -85,6 +135,30 @@ export class TestingPlaygroundPage implements OnInit {
             this.presentToast('Sensor added');
             this.reloadSensors();
         })
+    }
+
+    addNewUnit() {
+        let dialogRef = this.dialog.open(UnitDialogComponent, {
+            height: '500px',
+            width: '400px',
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+            this.presentToast('Unit added');
+            this.reloadUnits();
+        });
+    }
+
+    addNewActor() {
+        let dialogRef = this.dialog.open(ActorDialogComponent, {
+            height: '500px',
+            width: '400px',
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+            this.presentToast('Actor added');
+            this.reloadActors();
+        });
     }
 
     editSensor(sensor: Sensor) {
@@ -100,38 +174,29 @@ export class TestingPlaygroundPage implements OnInit {
         })
     }
 
-    async deleteSensor(id: number) {
-        try {
-            let result = await this.backend.sensors.delete(id);
+    editUnit(unit: Unit) {
+        let dialogRef = this.dialog.open(UnitDialogComponent, {
+            height: '500px',
+            width: '400px',
+            data: unit
+        });
+        dialogRef.afterClosed().subscribe(result => {
             console.log(result);
-            this.presentToast('Sensor deleted');
-        } catch (e) {
-            console.log(e);
-            this.presentToast('Sensor delete failed');
-        }
+            this.presentToast('Unit edited');
+            this.reloadUnits();
+        })
     }
 
-    addNewUnit() {
-
-    }
-
-    editUnit(element: any) {
-
-    }
-
-    deleteUnit(id: any) {
-
-    }
-
-    deleteActor(id: any) {
-
-    }
-
-    editActor(element: any) {
-
-    }
-
-    addNewActor() {
-
+    editActor(actor: Actor) {
+        let dialogRef = this.dialog.open(ActorDialogComponent, {
+            height: '500px',
+            width: '400px',
+            data: actor
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+            this.presentToast('Unit edited');
+            this.reloadActors();
+        })
     }
 }
