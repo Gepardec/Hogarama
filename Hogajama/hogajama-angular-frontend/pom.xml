@@ -52,6 +52,12 @@
                         </goals>
                     </execution>
                     <execution>
+                        <id>npm update</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>npm install</id>
                         <goals>
                             <goal>npm</goal>

@@ -19,16 +19,14 @@ export class TestPrototypeComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const sensorData: { response: Sensor[] } = await this.rs.getAllSensors().toPromise();
-      this.allSensorArr = sensorData.response;
+      this.allSensorArr = await this.rs.sensors.getAll();
     } catch(error) {
       console.error(error);
       this.error = error.message;
     }
 
     try {
-      const sensorData: { response: Sensor[] } = await this.rs.getAllSensorsForOwner().toPromise();
-      this.ownerSensorArr = sensorData.response;
+      this.ownerSensorArr = await this.rs.sensors.getAllByBearer();
     } catch(error) {
       console.error(error);
       this.error = error.message;

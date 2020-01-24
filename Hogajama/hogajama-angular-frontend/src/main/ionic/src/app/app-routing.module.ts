@@ -16,6 +16,10 @@ const routes: Routes = [
   {
     path: 'testLoginRedirect',
     loadChildren: './modules/test-login-redirect/test-login-redirect.module#TestLoginRedirectModule',
+  },
+  {
+    path: 'playground',
+    loadChildren: './modules/testing-playground/testing-playground.module#TestingPlaygroundPageModule',
   }
 ];
 

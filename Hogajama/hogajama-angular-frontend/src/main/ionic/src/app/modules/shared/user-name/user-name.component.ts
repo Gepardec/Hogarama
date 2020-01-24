@@ -16,7 +16,7 @@ export class UserNameComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rs.getUser().subscribe((userData: UserData) => {
+    this.rs.users.getByBearer().then((userData: UserData) => {
       this.userData = userData;
       console.log(this.userData);
     });

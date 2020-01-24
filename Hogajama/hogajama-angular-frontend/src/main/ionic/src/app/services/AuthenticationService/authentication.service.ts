@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, interval, Observable} from 'rxjs';
 import {environment} from "../../../environments/environment";
 import * as Keycloak from "keycloak-js";
 import {PlatformInfoService} from "../PlatformInfoService/platform-info.service";
@@ -16,6 +16,20 @@ export class AuthenticationService {
     ) {
         this._keycloak = Keycloak(environment.keycloak);
         this._isAuthenticated.next(this.isKeycloakAuthenticated());
+
+        this.isAuthenticated().subscribe((authed: boolean) => {
+            if(authed) {
+                interval(5000).subscribe(async () => {
+                    try {
+                        const updateSuccess = await this._keycloak.updateToken(environment.keycloakTokenMinValidity);
+
+                        console.log(updateSuccess);
+                    } catch (e) {
+                        console.error('Token update failed', e);
+                    }
+                });
+            }
+        });
     }
 
     public async init(): Promise<boolean> {
@@ -68,12 +82,11 @@ export class AuthenticationService {
         });
     }
 
-
     public logoutUser(): Promise<void> {
-        return this._keycloak.logout().then(() => {
-            localStorage.setItem('kc_token', null);
-            localStorage.setItem('kc_refreshToken', null);
+        localStorage.setItem('kc_token', null);
+        localStorage.setItem('kc_refreshToken', null);
 
+        return this._keycloak.logout().then(() => {
             this._isAuthenticated.next(false);
             return;
         });

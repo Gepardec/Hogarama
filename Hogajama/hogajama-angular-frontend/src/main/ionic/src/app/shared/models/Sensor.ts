@@ -1,8 +1,7 @@
 export interface Sensor {
-    name: string;
-    deviceId: string;
-    unitId: string;
-    sensorTypeId: string;
-
-
+    id?: number;
+    name?: string;
+    deviceId?: string;
+    unitId?: number;
+    sensorTypeId?: number;
 }

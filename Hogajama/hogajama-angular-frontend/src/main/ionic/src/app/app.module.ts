@@ -14,10 +14,12 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {DeviceDetectorModule} from "ngx-device-detector";
 import { IonicStorageModule } from '@ionic/storage';
 import {MyHttpInterceptor} from "./services/HttpInterceptor/http-interceptor";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [
+
   ],
   imports: [
     BrowserModule,
@@ -25,7 +27,8 @@ import {MyHttpInterceptor} from "./services/HttpInterceptor/http-interceptor";
     AppRoutingModule,
     HttpClientModule,
     DeviceDetectorModule.forRoot(),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     {

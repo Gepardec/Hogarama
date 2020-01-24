@@ -21,6 +21,11 @@ export class AppComponent {
       title: 'Login',
       url: '/testLoginRedirect',
       icon: 'add-circle-outline'
+    },
+    {
+      title: 'Testing',
+      url: '/playground',
+      icon: 'bug'
     }
   ];
 
