@@ -97,21 +97,6 @@
             "kind": "ImageStream",
             "apiVersion": "v1",
             "metadata": {
-                "name": "jboss-amq-6",
-                "annotations": {
-                    "openshift.io/display-name": "Red Hat JBoss A-MQ 6.x"
-                }
-            },
-            "spec": {
-                "dockerImageRepository": "registry.access.redhat.com/jboss-amq-6/amq63-openshift",
-                "tags": [
-                ]
-            }
-        },
-        {
-            "kind": "ImageStream",
-            "apiVersion": "v1",
-            "metadata": {
                 "name": "redhat-openjdk18-openshift",
                 "annotations": {
                     "openshift.io/display-name": "Red Hat OpenJDK 8"

@@ -26,7 +26,7 @@ under the License.
    <core xmlns="urn:activemq:core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="urn:activemq:core ">
 
-      <name>0.0.0.0</name>
+      <name>broker</name>
 
 
       <persistence-enabled>true</persistence-enabled>
@@ -56,14 +56,14 @@ under the License.
       
       <!--
        This value was determined through a calculation.
-       Your system could perform 1,05 writes per millisecond
+       Your system could perform 1.85 writes per millisecond
        on the current journal configuration.
-       That translates as a sync write every 956000 nanoseconds.
+       That translates as a sync write every 540000 nanoseconds.
 
        Note: If you specify 0 the system will perform writes directly to the disk.
              We recommend this to be 0 if you are using journalType=MAPPED and journal-datasync=false.
       -->
-      <journal-buffer-timeout>956000</journal-buffer-timeout>
+      <journal-buffer-timeout>540000</journal-buffer-timeout>
 
 
       <!--
@@ -135,40 +135,29 @@ under the License.
                     "anycastPrefix=jms.queue.;multicastPrefix=jms.topic." to the acceptor url.
                     See https://issues.apache.org/jira/browse/ARTEMIS-1644 for more information. -->
 
-         <!-- Acceptor for every supported protocol -->
-         <acceptor name="artemis">tcp://0.0.0.0:61616?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=CORE,AMQP,STOMP,HORNETQ,MQTT,OPENWIRE;useEpoll=true;amqpCredits=1000;amqpLowCredits=300</acceptor>
-
-         <!-- AMQP Acceptor.  Listens on default AMQP port for AMQP traffic.-->
-         <acceptor name="amqp">tcp://0.0.0.0:5672?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=AMQP;useEpoll=true;amqpCredits=1000;amqpLowCredits=300</acceptor>
-
-         <!-- STOMP Acceptor. -->
-         <acceptor name="stomp">tcp://0.0.0.0:61613?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=STOMP;useEpoll=true</acceptor>
-
-         <!-- HornetQ Compatibility Acceptor.  Enables HornetQ Core and STOMP for legacy HornetQ clients. -->
-         <acceptor name="hornetq">tcp://0.0.0.0:5445?anycastPrefix=jms.queue.;multicastPrefix=jms.topic.;protocols=HORNETQ,STOMP;useEpoll=true</acceptor>
+         <acceptor name="netty-acceptor">tcp://0.0.0.0:61616?anycastPrefix=jms.queue.;multicastPrefix=jms.topic.</acceptor>
 
          <!-- MQTT Acceptor -->
-         <acceptor name="mqtt">tcp://0.0.0.0:1883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=true</acceptor>
-		 
-		 <!-- MQTT SSL Acceptor -->
-         <acceptor name="mqtt-ssl">tcp://0.0.0.0:8883?sslEnabled=true;keyStorePath=/home/jboss/broker/etc/broker.jks;keyStorePassword=keystore;tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=true</acceptor>
+         <acceptor name="mqtt">tcp://0.0.0.0:1883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=false</acceptor>
+
+            <acceptor name="mqtt-ssl">tcp://0.0.0.0:8883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=false;connectionsAllowed=1000;sslEnabled=true;keyStorePath=/etc/amq-secret-volume/broker.ks;keyStorePassword=765rjvb5rtzh8i7587fg</acceptor>
 
       </acceptors>
 
 
       <security-settings>
          <security-setting match="#">
-            <permission type="createNonDurableQueue" roles="amq"/>
-            <permission type="deleteNonDurableQueue" roles="amq"/>
-            <permission type="createDurableQueue" roles="amq"/>
-            <permission type="deleteDurableQueue" roles="amq"/>
-            <permission type="createAddress" roles="amq"/>
-            <permission type="deleteAddress" roles="amq"/>
-            <permission type="consume" roles="amq"/>
-            <permission type="browse" roles="amq"/>
-            <permission type="send" roles="amq"/>
+            <permission type="createNonDurableQueue" roles="admin"/>
+            <permission type="deleteNonDurableQueue" roles="admin"/>
+            <permission type="createDurableQueue" roles="admin"/>
+            <permission type="deleteDurableQueue" roles="admin"/>
+            <permission type="createAddress" roles="admin"/>
+            <permission type="deleteAddress" roles="admin"/>
+            <permission type="consume" roles="admin"/>
+            <permission type="browse" roles="admin"/>
+            <permission type="send" roles="admin"/>
             <!-- we need this otherwise ./artemis data imp wouldn't work -->
-            <permission type="manage" roles="amq"/>
+            <permission type="manage" roles="admin"/>
          </security-setting>
       </security-settings>
 
@@ -214,14 +203,14 @@ under the License.
                <queue name="ExpiryQueue" />
             </anycast>
          </address>
-		 <address name="TestTopic">
-            <multicast>
-               <queue name="TestTopic" />
-            </multicast>
-         </address>
+		<address name="habarama">
+			<multicast>
+				<queue name="fluentd"/>
+				<queue name="watering"/>
+			</multicast>
+		</address>
 
       </addresses>
-
 
       <!-- Uncomment the following if you want to use the Standard LoggingActiveMQServerPlugin pluging to log in events
       <broker-plugins>

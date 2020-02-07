@@ -8,47 +8,6 @@ objects:
   kind: BuildConfig
   metadata:
     annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    labels:
-      app: fluentd
-    name: fluentd
-  spec:
-    nodeSelector: null
-    output:
-      to:
-        kind: ImageStreamTag
-        name: fluentd:latest
-    postCommit: {}
-    resources: {}
-    runPolicy: Serial
-    source:
-      contextDir: Fluentd
-      git:
-        uri: https://github.com/Gepardec/Hogarama/
-      type: Git
-    strategy:
-      type: Docker
-      dockerStrategy:
-        from:
-          kind: ImageStreamTag
-          name: 'fluentd-onbuild:v1.1.0-debian-onbuild'
-    triggers:
-    - github:
-        secret: 4m9EY9lErQRrs8LJjudP
-      type: GitHub
-    - generic:
-        secret: A2YAGDWxu2zgCfjIyo25
-      type: Generic
-    - type: ConfigChange
-    - imageChange: {}
-      type: ImageChange
-  status:
-    lastVersion: 0
-- apiVersion: v1
-  kind: BuildConfig
-  metadata:
-    annotations:
       openshift.io/generated-by: OpenShiftWebConsole
     creationTimestamp: null
     labels:
@@ -66,7 +25,7 @@ objects:
     source:
       contextDir: Hogajama
       git:
-        ref: master
+        ref: ${BRANCH}
         uri: https://github.com/Gepardec/Hogarama.git
       type: Git
     strategy:
@@ -89,79 +48,6 @@ objects:
     - type: ConfigChange
   status:
     lastVersion: 0
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      description: The broker's MQTT port.
-      service.alpha.openshift.io/dependencies: '[{"name":"broker-amq-mqtt-ssl","namespace":"","kind":"Service"}]'
-    creationTimestamp: null
-    labels:
-      app: amq62-persistent-ssl
-      application: broker
-      template: amq62-persistent-ssl
-      xpaas: 1.3.1
-    name: broker-amq-mqtt
-  spec:
-    ports:
-    - port: 1883
-      protocol: TCP
-      targetPort: 1883
-    selector:
-      deploymentConfig: broker-amq
-    sessionAffinity: None
-    type: ClusterIP
-  status:
-    loadBalancer: {}
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      description: The broker's MQTT SSL port.
-    creationTimestamp: null
-    labels:
-      app: amq62-persistent-ssl
-      application: broker
-      template: amq62-persistent-ssl
-      xpaas: 1.3.1
-    name: broker-amq-mqtt-ssl
-  spec:
-    ports:
-    - port: 8883
-      protocol: TCP
-      targetPort: 8883
-    selector:
-      deploymentConfig: broker-amq
-    sessionAffinity: None
-    type: ClusterIP
-  status:
-    loadBalancer: {}
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    labels:
-      app: fluentd
-    name: fluentd
-  spec:
-    ports:
-    - name: 5140-tcp
-      port: 5140
-      protocol: TCP
-      targetPort: 5140
-    - name: 24224-tcp
-      port: 24224
-      protocol: TCP
-      targetPort: 24224
-    selector:
-      app: fluentd
-      deploymentconfig: fluentd
-    sessionAffinity: None
-    type: ClusterIP
-  status:
-    loadBalancer: {}
 - apiVersion: v1
   kind: Service
   metadata:
@@ -211,232 +97,6 @@ objects:
     type: ClusterIP
   status:
     loadBalancer: {}
-- apiVersion: v1
-  kind: DeploymentConfig
-  metadata:
-    creationTimestamp: null
-    generation: 1
-    labels:
-      app: amq62-persistent-ssl
-      application: broker
-      template: amq62-persistent-ssl
-      xpaas: 1.3.1
-    name: broker-amq
-  spec:
-    replicas: 1
-    selector:
-      deploymentConfig: broker-amq
-    strategy:
-      activeDeadlineSeconds: 21600
-      resources: {}
-      rollingParams:
-        intervalSeconds: 1
-        maxSurge: 0
-        maxUnavailable: 25%
-        timeoutSeconds: 600
-        updatePeriodSeconds: 1
-      type: Rolling
-    template:
-      metadata:
-        creationTimestamp: null
-        labels:
-          application: broker
-          deploymentConfig: broker-amq
-        name: broker-amq
-      spec:
-        containers:
-        - env:
-          - name: AMQ_USER
-            value: mq_habarama
-          - name: AMQ_PASSWORD
-            value: mq_habarama_pass
-          - name: AMQ_TRANSPORTS
-            value: mqtt
-          - name: AMQ_QUEUES
-          - name: AMQ_TOPICS
-            value: habarama
-          - name: MQ_SERIALIZABLE_PACKAGES
-          - name: AMQ_SPLIT
-            value: "false"
-          - name: AMQ_MESH_DISCOVERY_TYPE
-            value: kube
-          - name: AMQ_MESH_SERVICE_NAME
-            value: broker-amq-tcp
-          - name: AMQ_MESH_SERVICE_NAMESPACE
-            valueFrom:
-              fieldRef:
-                apiVersion: v1
-                fieldPath: metadata.namespace
-          - name: AMQ_KEYSTORE_TRUSTSTORE_DIR
-            value: /etc/amq-secret-volume
-          - name: AMQ_TRUSTSTORE
-            value: broker.ks
-          - name: AMQ_TRUSTSTORE_PASSWORD
-            value: L(o?cqGPtJ}7YiHu
-          - name: AMQ_KEYSTORE
-            value: broker.ks
-          - name: AMQ_KEYSTORE_PASSWORD
-            value: L(o?cqGPtJ}7YiHu
-          - name: AMQ_STORAGE_USAGE_LIMIT
-            value: 1 gb
-          image: registry.access.redhat.com/jboss-amq-6/amq62-openshift@sha256:cb16f56a2b4f3a65bd640e3033d342d0a63e785a779ed2b609d5ffa8ce39cc2b
-          imagePullPolicy: Always
-          name: broker-amq
-          ports:
-          - containerPort: 8778
-            name: jolokia
-            protocol: TCP
-          - containerPort: 5672
-            name: amqp
-            protocol: TCP
-          - containerPort: 5671
-            name: amqp-ssl
-            protocol: TCP
-          - containerPort: 1883
-            name: mqtt
-            protocol: TCP
-          - containerPort: 8883
-            name: mqtt-ssl
-            protocol: TCP
-          - containerPort: 61613
-            name: stomp
-            protocol: TCP
-          - containerPort: 61612
-            name: stomp-ssl
-            protocol: TCP
-          - containerPort: 61616
-            name: tcp
-            protocol: TCP
-          - containerPort: 61617
-            name: tcp-ssl
-            protocol: TCP
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          volumeMounts:
-          - mountPath: /etc/amq-secret-volume
-            name: broker-secret-volume
-            readOnly: true
-          - mountPath: /opt/amq/data
-            name: broker-amq-pvol
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        securityContext: {}
-        terminationGracePeriodSeconds: 60
-        volumes:
-        - name: broker-secret-volume
-          secret:
-            defaultMode: 420
-            secretName: amq-app-secret
-        - name: broker-amq-pvol
-          persistentVolumeClaim:
-            claimName: broker-amq-claim
-    test: false
-    triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - broker-amq
-        from:
-          kind: ImageStreamTag
-          name: jboss-amq-6:latest
-          namespace: openshift
-      type: ImageChange
-    - type: ConfigChange
-  status:
-    availableReplicas: 0
-    latestVersion: 0
-    observedGeneration: 0
-    replicas: 0
-    unavailableReplicas: 0
-    updatedReplicas: 0
-- apiVersion: v1
-  kind: DeploymentConfig
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    generation: 1
-    labels:
-      app: fluentd
-    name: fluentd
-  spec:
-    replicas: 1
-    selector:
-      app: fluentd
-      deploymentconfig: fluentd
-    strategy:
-      activeDeadlineSeconds: 21600
-      resources: {}
-      rollingParams:
-        intervalSeconds: 1
-        maxSurge: 25%
-        maxUnavailable: 25%
-        timeoutSeconds: 600
-        updatePeriodSeconds: 1
-      type: Rolling
-    template:
-      metadata:
-        annotations:
-          openshift.io/container.fluentd.image.entrypoint: '["/bin/bash"]'
-          openshift.io/generated-by: OpenShiftNewApp
-        creationTimestamp: null
-        labels:
-          app: fluentd
-          deploymentconfig: fluentd
-      spec:
-        containers:
-        - image: hogarama/fluentd
-          imagePullPolicy: Always
-          livenessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - '-c'
-                - >-
-                  tail -1 /fluentd/log/fluent.log | grep -q
-                  Mongo::Auth::Unauthorized; test $? != 0
-            failureThreshold: 3
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 5
-          name: fluentd
-          ports:
-          - containerPort: 24224
-            protocol: TCP
-          - containerPort: 5140
-            protocol: TCP
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          volumeMounts:
-          - mountPath: /fluentd/log
-            name: fluentd-log-volume
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
-        volumes:
-        - name: fluentd-log-volume
-          persistentVolumeClaim:
-            claimName: fluentd-log-claim
-    test: false
-    triggers:
-    - type: ConfigChange
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - fluentd
-        from:
-          kind: ImageStreamTag
-          name: fluentd:latest
-      type: ImageChange
-  status:
-    availableReplicas: 0
-    latestVersion: 0
-    observedGeneration: 0
-    replicas: 0
-    unavailableReplicas: 0
-    updatedReplicas: 0
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -638,35 +298,6 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: amq62-persistent-ssl
-      application: broker
-      template: amq62-persistent-ssl
-      xpaas: 1.3.1
-    name: broker-amq-claim
-  spec:
-    accessModes:
-    - ReadWriteMany
-    resources:
-      requests:
-        storage: 512Mi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    name: fluentd-log-claim
-  spec:
-    accessModes:
-    - ReadWriteMany
-    resources:
-      requests:
-        storage: 1Gi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
       app: mongodb-persistent
       template: mongodb-persistent-template
     name: mongodb
@@ -677,84 +308,6 @@ objects:
       requests:
         storage: 1Gi
   status: {}
-- apiVersion: v1
-  data:
-    broker.ks: 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
-  kind: Secret
-  metadata:
-    creationTimestamp: null
-    name: amq-app-secret
-  type: Opaque
-- apiVersion: v1
-  kind: Route
-  metadata:
-    annotations:
-      openshift.io/host.generated: "true"
-    creationTimestamp: null
-    labels:
-      app: amq62-persistent-ssl
-      application: broker
-      template: amq62-persistent-ssl
-      xpaas: 1.3.1
-    name: broker-amq-mqtt-ssl
-  spec:
-    tls:
-      termination: passthrough
-    to:
-      kind: Service
-      name: broker-amq-mqtt-ssl
-      weight: 100
-    wildcardPolicy: None
-  status:
-    ingress:
-    - conditions:
-      - lastTransitionTime: 2017-02-17T11:33:49Z
-        status: "True"
-        type: Admitted
-      routerName: prod-router
-      wildcardPolicy: None
-    - conditions:
-      - lastTransitionTime: 2017-04-20T16:55:50Z
-        status: "True"
-        type: Admitted
-      routerName: markusrouter
-      wildcardPolicy: None
-    - conditions:
-      - lastTransitionTime: 2017-04-21T12:02:36Z
-        status: "True"
-        type: Admitted
-      routerName: markusrouterpoi
-      wildcardPolicy: None
-    - conditions:
-      - lastTransitionTime: 2017-04-24T08:11:32Z
-        status: "True"
-        type: Admitted
-      routerName: router
-      wildcardPolicy: None
-    - conditions:
-      - lastTransitionTime: 2017-04-24T08:19:08Z
-        status: "True"
-        type: Admitted
-      routerName: router-poi
-      wildcardPolicy: None
-    - conditions:
-      - lastTransitionTime: 2017-04-25T09:55:14Z
-        status: "True"
-        type: Admitted
-      routerName: ha-router-poi
-      wildcardPolicy: None
-    - conditions:
-      - lastTransitionTime: 2017-04-25T10:21:11Z
-        status: "True"
-        type: Admitted
-      routerName: ha-router-poi1
-      wildcardPolicy: None
-    - conditions:
-      - lastTransitionTime: 2017-05-02T14:32:06Z
-        status: "True"
-        type: Admitted
-      routerName: router-poi-4
-      wildcardPolicy: None
 - apiVersion: v1
   kind: Route
   metadata:
@@ -912,33 +465,6 @@ objects:
       wildcardPolicy: None
       apiVersion: v1
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    annotations:
-      openshift.io/image.dockerRepositoryCheck: 2018-02-03T11:11:05Z
-    creationTimestamp: null
-    generation: 2
-    labels:
-      app: fluentd-onbuild
-    name: fluentd-onbuild
-  spec:
-    lookupPolicy:
-      local: false
-    tags:
-    - annotations:
-        openshift.io/generated-by: OpenShiftWebConsole
-        openshift.io/imported-from: fluent/fluentd:v1.1.0-debian-onbuild
-      from:
-        kind: DockerImage
-        name: fluent/fluentd:v1.1.0-debian-onbuild
-      generation: 2
-      importPolicy: {}
-      name: v1.1.0-debian-onbuild
-      referencePolicy:
-        type: Source
-  status:
-    dockerImageRepository: ""
-- apiVersion: v1
   kind: BuildConfig
   metadata:
     annotations:
@@ -959,7 +485,7 @@ objects:
     source:
       contextDir: Hogajama
       git:
-        ref: master
+        ref: ${BRANCH}
         uri: https://github.com/Gepardec/Hogarama.git
       type: Git
     strategy:
@@ -1015,11 +541,13 @@ objects:
         containers:
         - env:
           - name: AMQ_HOST
-            value: http://broker-amq-mqtt:1883
+            value: https://broker-amq-mqtt-ssl:8883
           - name: KEYCLOAK_AUTH_SERVER_URL
             value: ${KEYCLOAK_AUTH_SERVER_URL}
           - name: JAVA_OPTIONS
             value: -Djava.net.preferIPv4Stack=true
+          - name: GC_MAX_METASPACE_SIZE
+            value: "175"
           image: hogarama/mock-gui
           imagePullPolicy: Always
           name: mock-gui
@@ -1163,3 +691,7 @@ parameters:
     - description: Url of SSO authentication server
       value: https://secure-sso-57-hogarama.cloud.itandtel.at/auth/
       name: KEYCLOAK_AUTH_SERVER_URL
+    - description: Branch for Builds
+      from: '[A-Z0-9]{8}'
+      value: master
+      name: BRANCH

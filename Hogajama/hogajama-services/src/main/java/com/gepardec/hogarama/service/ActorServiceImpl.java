@@ -26,6 +26,7 @@ public class ActorServiceImpl implements ActorService {
     private Logger log;
 
 
+    @Override
     public void sendActorMessage(String location, String sensorName, Integer duration) {
 
         log.info("sendActorMessage: location: {}, actorName: {}, duration: {}", location, sensorName, duration);

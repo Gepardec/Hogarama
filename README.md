@@ -1,7 +1,8 @@
 [![Build Status](https://travis-ci.org/Gepardec/Hogarama.svg?branch=master)](https://travis-ci.org/Gepardec/Hogarama) [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.gepardec.hogajama:hogajama)](https://sonarcloud.io/dashboard/index/com.gepardec.hogajama:hogajama)
 
 # Hogarama
-Home and Garden Automation
+Home and Garden Automation.
+This is Gepardec's fun project to learn about IoT, OpenShift and various other technologies.
 
 ## Habarama
 Habarama is the OpenHab/Raspberry part of the Hogarama Project.

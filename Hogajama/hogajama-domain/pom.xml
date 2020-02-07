@@ -80,7 +80,7 @@
         <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient</artifactId>
-            <version>0.6.0</version>
+            <version>${prometheus.io.version}</version>
         </dependency>
         <dependency>
             <groupId>com.gepardec.hogajama</groupId>

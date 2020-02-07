@@ -1,8 +1,12 @@
-FROM fluent/fluentd:v1.1.0-debian-onbuild
+FROM fluent/fluentd:edge-debian
+
+COPY fluent.conf     /fluentd/etc/
+COPY plugins         /fluentd/plugins/
 
 LABEL maintainer Matthias Kapferer <matthias.kapferer@gepardec.com>
 LABEL Description="Fluentd docker image with mqtt and mongodb plugins" Vendor="Gepardec IT Services GmbH" Version="1.0"
 
+USER root 
 # Set Timezone
 ENV TZ=Europe/Vienna
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -31,8 +35,8 @@ RUN buildDeps="sudo make gcc g++ libc-dev ruby-dev" \
  && rm -rf /var/lib/apt/lists/* \
            /home/fluent/.gem/ruby/2.3.0/cache/*.gem
 
-RUN useradd fluent -d /home/fluent -m -U
-RUN chown -R fluent:fluent /home/fluent
+#RUN useradd fluent -d /home/fluent -m -U
+#RUN chown -R fluent:fluent /home/fluent
 
 # No longer needed (inherited from base image)
 # for log storage (maybe shared with host) 
@@ -47,7 +51,7 @@ RUN chmod +x /bin/entrypoint.sh
 RUN chown -R fluent:fluent /fluentd
 
 USER fluent
-WORKDIR /home/fluent
+#WORKDIR /home/fluent
 
 ENV FLUENTD_OPT="" 
 ENV FLUENTD_CONF="fluent.conf" 
@@ -55,4 +59,4 @@ ENV FLUENTD_CONF="fluent.conf"
 # Override from base image
 EXPOSE 24224 5140 
 ENTRYPOINT ["/bin/entrypoint.sh"]
-CMD exec fluentd -c /fluentd/etc/${FLUENTD_CONF} -p /fluentd/plugins $FLUENTD_OPT
+#CMD exec fluentd -c /fluentd/etc/${FLUENTD_CONF} -p /fluentd/plugins $FLUENTD_OPT

@@ -10,7 +10,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<io.thorntail.version>2.3.0.Final</io.thorntail.version>
+		<version.thorntail>2.3.0.Final</version.thorntail>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
@@ -22,7 +22,7 @@
 			<dependency>
 				<groupId>io.thorntail</groupId>
 				<artifactId>bom-all</artifactId>
-				<version>${io.thorntail.version}</version>
+				<version>${version.thorntail}</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
@@ -31,6 +31,20 @@
 
 	<build>
 		<finalName>raspberry-pi-mocks-gui</finalName>
+		<plugins>
+			<plugin>
+				<groupId>io.thorntail</groupId>
+				<artifactId>thorntail-maven-plugin</artifactId>
+				<version>${version.thorntail}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<profiles>
@@ -39,24 +53,12 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>io.thorntail</groupId>
-						<artifactId>thorntail-maven-plugin</artifactId>
-						<version>${io.thorntail.version}</version>
-
-						<executions>
-							<execution>
-								<goals>
-									<goal>package</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
 						<artifactId>maven-resources-plugin</artifactId>
 						<executions>
 							<execution>
+								<!-- The OpenShift SourceToImage Build expects the jar in the
+									target dir of the base directory -->
 								<id>copy-resources</id>
-								<!-- here the phase you need -->
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -67,7 +69,7 @@
 										<resource>
 											<directory>${project.basedir}/target</directory>
 											<includes>
-												<include>raspberry-pi-mocks-gui-swarm.jar</include>
+												<include>raspberry-pi-mocks-gui-thorntail.jar</include>
 											</includes>
 										</resource>
 									</resources>

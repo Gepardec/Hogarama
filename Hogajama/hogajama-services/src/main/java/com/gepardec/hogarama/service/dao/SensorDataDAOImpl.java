@@ -31,9 +31,6 @@ public class SensorDataDAOImpl implements SensorDataDAO {
     @Inject
     SensorNormalizer sensorNormalizer;
 
-    @Inject
-    private Metrics metrics;
-
     @Override
     public List<String> getAllSensors() {
 

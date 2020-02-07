@@ -1,10 +1,13 @@
 package com.gepardec.hogarama.domain.watering;
 
-import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
-
 import javax.inject.Inject;
-import java.time.LocalDateTime;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.gepardec.hogarama.domain.metrics.Metrics;
+import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorData;
 
 public class WateringService {
 
@@ -24,38 +27,39 @@ public class WateringService {
 	}
 
 	@Inject
-	public SensorDataDAO sensorDataDao;
+	public SensorDAO sensorDao;
 
 	@Inject
 	public WateringConfigDAO configDao;
 
 	@Inject
-	public ActorService actor;
+	public ActorService actorSvc;
 
 	@Inject
 	public WateringStrategy watering;
 
-	private LocalDateTime now;
+    private static final Logger log = LoggerFactory.getLogger(WateringService.class);
 
 	public WateringService() {
 	}
 
-	protected WateringService(SensorDataDAO sensorDataDao, ActorService actor, WateringStrategy watering, WateringConfigDAO configDao) {
-		this.sensorDataDao = sensorDataDao;
-		this.actor = actor;
+	protected WateringService(SensorDAO sensorDao, ActorService actorSvc, WateringStrategy watering, WateringConfigDAO configDao) {
+		this.sensorDao = sensorDao;
+		this.actorSvc = actorSvc;
 		this.watering = watering;
 		this.configDao = configDao;
 	}
 
-	public void waterAll() {
-		for (String sensorName : sensorDataDao.getAllSensors()) {
-			int dur = watering.water(getConfig(sensorName), getDate());
-			if (dur > 0) {
-				Metrics.wateringEventsFired.labels(sensorName).inc();
-				actor.sendActorMessage(sensorDataDao.getLocationBySensorName(sensorName), sensorName, dur);
-			}
-		}
-	}
+    private void invokeActorIfNeeded(WateringConfigData config, int dur) {
+        if (dur > 0) {
+        	Metrics.wateringEventsFired.labels(config.getSensorName()).inc();
+        	log.info("water " + config.getActorName() + " for " + dur);
+        	actorSvc.sendActorMessage(sensorDao.getLocationBySensorName(config.getSensorName()), config.getActorName(), dur);
+        }
+        else {
+            log.debug("Don't water " + config.getSensorName());            
+        }
+    }
 
 	private WateringConfigData getConfig(String sensorName) {
 		WateringConfigData wconfig = configDao.getBySensorName(sensorName);
@@ -69,15 +73,9 @@ public class WateringService {
 		return wconfig;
 	}
 
-	protected void setDate(LocalDateTime now) {
-		this.now = now;
-	}
-
-	private LocalDateTime getDate() {
-		if (null != now) {
-			return now;
-		}
-		return LocalDateTime.now();
-	}
+    public void water(SensorData sensorData) {
+        WateringConfigData config = getConfig(sensorData.getSensorName());
+        invokeActorIfNeeded(config, watering.computeWateringDuration(config, sensorData.getValue()));
+    }
 
 }
