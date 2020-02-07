@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 
 public class WateringService {
@@ -27,7 +27,7 @@ public class WateringService {
 	}
 
 	@Inject
-	public SensorDAO sensorDao;
+	public SensorDataDAO sensorDataDAO;
 
 	@Inject
 	public WateringConfigDAO configDao;
@@ -43,8 +43,8 @@ public class WateringService {
 	public WateringService() {
 	}
 
-	protected WateringService(SensorDAO sensorDao, ActorService actorSvc, WateringStrategy watering, WateringConfigDAO configDao) {
-		this.sensorDao = sensorDao;
+	protected WateringService(SensorDataDAO sensorDataDAO, ActorService actorSvc, WateringStrategy watering, WateringConfigDAO configDao) {
+		this.sensorDataDAO = sensorDataDAO;
 		this.actorSvc = actorSvc;
 		this.watering = watering;
 		this.configDao = configDao;
@@ -54,7 +54,7 @@ public class WateringService {
         if (dur > 0) {
         	Metrics.wateringEventsFired.labels(config.getSensorName()).inc();
         	log.info("water " + config.getActorName() + " for " + dur);
-        	actorSvc.sendActorMessage(sensorDao.getLocationBySensorName(config.getSensorName()), config.getActorName(), dur);
+        	actorSvc.sendActorMessage(sensorDataDAO.getLocationBySensorName(config.getSensorName()), config.getActorName(), dur);
         }
         else {
             log.debug("Don't water " + config.getSensorName());            

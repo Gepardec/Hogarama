@@ -100,7 +100,7 @@ public class SensorDataDAOImpl implements SensorDataDAO {
         if (!sensors.isEmpty()) {
             return sensors.get(0).getLocation();
         } else {
-            Metrics.exceptionsThrown.labels("hogarama_services", "NoResultException", "SensorDAOImple.getLocationBySensorName").inc();
+            Metrics.exceptionsThrown.labels("hogarama_services", "NoResultException", "SensorDataDAOImple.getLocationBySensorName").inc();
             throw new NoResultException("Could not find location by sensorName");
         }
     }

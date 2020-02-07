@@ -29,9 +29,9 @@ public class WateringServiceTest {
 		data.addValueMinusMinutes( 0.1, 10);
 		data.addValueAt(0.6, LocalDateTime.of(2019, Month.JUNE, 20, 14, 00));
 
-		DummySensorDataDAO sensorDao = new DummySensorDataDAO(data.getData());
+		DummySensorDataDAO sensorDataDAO = new DummySensorDataDAO(data.getData());
 
-		watering = new WateringService(sensorDao, actorSvc, new WateringStrategy(sensorDao), wateringConfigDao);
+		watering = new WateringService(sensorDataDAO, actorSvc, new WateringStrategy(sensorDataDAO), wateringConfigDao);
 		
 	}
     

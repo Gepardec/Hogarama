@@ -5,19 +5,19 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 
 public class WateringStrategy {
  
 	@Inject
-	private SensorDAO sensorDao;
+	private SensorDataDAO sensorDataDAO;
     private Map<String, Double> cache = new HashMap<String, Double>();
 	
 	public WateringStrategy() {
 	}
 	
-	protected WateringStrategy(SensorDAO dao) {
-		this.sensorDao = dao;
+	protected WateringStrategy(SensorDataDAO dao) {
+		this.sensorDataDAO = dao;
 	}
 
     private int waterDuration(WateringConfigData config, double avg) {

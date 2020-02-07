@@ -8,7 +8,7 @@ import javax.enterprise.context.Dependent;
 import java.util.List;
 
 @Dependent
-public class SensorDao extends BaseDao<Sensor> {
+public class SensorDataDAO extends BaseDao<Sensor> {
 
     @Override
     public Class<Sensor> getEntityClass() {

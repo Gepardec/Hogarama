@@ -3,7 +3,7 @@ package com.gepardec.hogarama.service;
 import com.gepardec.hogarama.domain.entity.Sensor;
 import com.gepardec.hogarama.domain.entity.Unit;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
-import com.gepardec.hogarama.service.dao.SensorDao;
+import com.gepardec.hogarama.service.dao.SensorDataDAO;
 
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class SensorService {
 
     @Inject
-    private SensorDao dao;
+    private SensorDataDAO dao;
     @Inject
     private OwnerStore store;
 
