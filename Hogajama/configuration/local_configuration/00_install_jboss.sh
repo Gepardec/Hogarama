@@ -1,5 +1,6 @@
 #!/bin/sh
 
+set -x
 error=0
 
 if [ -z "$JBossPackage" ]; then
@@ -18,7 +19,7 @@ fi
 
 if [ -e "$JBOSS_HOME" ]; then
     if [ X$JBOSS_FORCE_INSTALL = XTrue ]; then
-	rm -rf $JBOSS_HOME
+	    rm -rf $JBOSS_HOME/*
     else
         echo "$JBOSS_HOME exists, will not override it. Remove it manually!" 1>&2
         error=1
@@ -32,10 +33,10 @@ fi
 
 test $error = 0 || exit $error
 
-TmpInstall=${JBOSS_HOME}_Tmp$$
+TmpInstall=${JBOSS_HOME}/_Tmp$$
 
 unzip -qd $TmpInstall $JBossPackage
-mv $TmpInstall/* $JBOSS_HOME
+mv $TmpInstall/*/* $JBOSS_HOME
 rm -r $TmpInstall
 
 if [ -n "$JBossPatch" ]; then
