@@ -110,7 +110,7 @@
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
 				<artifactId>jackson-mapper-asl</artifactId>
-				<version>${org.codehaus.jackson.version}</version>
+				<version>${org.codehaus.jackson.version}</version> <!-- TODO: upgrade to new version as soon as security vulnerability gets fixed -->
 			</dependency>
 			<dependency>
 				<groupId>com.openshift</groupId>
