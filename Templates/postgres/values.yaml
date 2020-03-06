@@ -1,6 +1,5 @@
-database:
-  name: {{TBD}}
-  user: {{TBD}}
-  password: {{TBD}}
-images:
-  postgres: 'image-registry.openshift-image-registry.svc:5000/openshift/postgresql'
+global:
+  postgresql:
+    postgresqlDatabase: NAME_OF_DATABASE
+    postgresqlUsername: NAME_OF_DB_USER
+    postgresqlPassword: DATABABASE_PASSWORD
