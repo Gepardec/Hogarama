@@ -4,6 +4,8 @@ set JBOSS_RELEASE_NAME=jboss-eap-7.0.0
 set JBOSS_HOME=%CURRENT_DIRECTORY%/jboss/
 set DOWNLOADS=%USERPROFILE%/Downloads
 
+mkdir %CURRENT_DIRECTORY%\jboss
+
 docker run ^
     -v %JBOSS_HOME%:/install/jboss/ ^
     -v %HOGAJAMA_BASE%:/install/hogajama_base/ ^
