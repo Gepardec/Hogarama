@@ -3,4 +3,8 @@ global:
     postgresqlDatabase: NAME_OF_DATABASE
     postgresqlUsername: NAME_OF_DB_USER
     postgresqlPassword: DATABABASE_PASSWORD
-    imageRegistry: image-registry.openshift-image-registry.svc:5000/openshift/postgresql
+persistence:
+  storageClass: gp2
+  size: 1Gi
+securityContext:
+  enabled: false
