@@ -186,19 +186,32 @@ boolean restoreConfig() {
   Serial.println("Reading EEPROM...");
   String ssid = "";
   String pass = "";
+  String uid = "";
   if (EEPROM.read(0) != 255) {  // empty EEPROM is 255 instead of 0
     for (int i = 0; i < 32; ++i) {
       ssid += char(EEPROM.read(i));
     }
     Serial.print("SSID: ");
     Serial.println(ssid);
+
     for (int i = 32; i < 96; ++i) {
       pass += char(EEPROM.read(i));
     }
     Serial.print("Password: ");
     Serial.println(pass);
+
     WiFi.begin(ssid.c_str(), pass.c_str());
     delay(500);
+
+    
+    for (int i = 96; i < 128; ++i) {
+      uid += char(EEPROM.read(i));
+    }
+    Serial.print("User Id: ");
+    Serial.println(uid);
+
+    // Send one-time code to backend
+
     return true;
   }
   else {
@@ -225,18 +238,21 @@ boolean checkConnection() {
 }
 
 void startWebServer() {
+  Serial.print("Starting Web Server at ");
+
   if (settingMode) {
-    Serial.print("Starting Web Server at ");
     Serial.println(WiFi.softAPIP());
-    webServer.on("/settings", []() {
-      String s = "<h1>Wi-Fi Settings</h1><p>Please enter your password by selecting the SSID.</p>";
-      s += "<form method=\"get\" action=\"setap\"><label>SSID: </label><select name=\"ssid\">";
+    webServer.on("/", []() {
+      String s = "{";
+      s += "\"callback\": \"setap\",";
+      s += "\"ssids\": [";
       s += ssidList;
-      s += "</select><br>Password: <input name=\"pass\" length=64 type=\"password\"><input type=\"submit\"></form>";
-      webServer.send(200, "text/html", makePage("Wi-Fi Settings", s));
+      s += "]";
+      s += "}";
+      webServer.send(200, "application/json", s);
     });
     webServer.on("/setap", []() {
-      for (int i = 0; i < 96; ++i) {
+      for (int i = 0; i < 128; ++i) {
         EEPROM.write(i, 0);
       }
       String ssid = urlDecode(webServer.arg("ssid"));
@@ -245,6 +261,9 @@ void startWebServer() {
       String pass = urlDecode(webServer.arg("pass"));
       Serial.print("Password: ");
       Serial.println(pass);
+      String uid = urlDecode(webServer.arg("uid"));
+      Serial.print("User Id: ");
+      Serial.println(uid);
       Serial.println("Writing SSID to EEPROM...");
       for (int i = 0; i < ssid.length(); ++i) {
         EEPROM.write(i, ssid[i]);
@@ -253,33 +272,30 @@ void startWebServer() {
       for (int i = 0; i < pass.length(); ++i) {
         EEPROM.write(32 + i, pass[i]);
       }
+      Serial.println("Writing UserId to EEPROM...");
+      for (int i = 0; i < uid.length(); ++i) {
+        EEPROM.write(96 + i, uid[i]);
+      }
       EEPROM.commit();
       Serial.println("Write EEPROM done!");
-      String s = "<h1>Setup complete.</h1><p>device will be connected to \"";
-      s += ssid;
-      s += "\" after the restart.";
-      webServer.send(200, "text/html", makePage("Wi-Fi Settings", s));
+      webServer.send(200, "application/json", "{\"success\": \"true\"}");
       ESP.restart();
     });
     webServer.onNotFound([]() {
-      String s = "<h1>AP mode</h1><p><a href=\"/settings\">Wi-Fi Settings</a></p>";
-      webServer.send(200, "text/html", makePage("AP mode", s));
+      webServer.send(404, "application/json", "");
     });
   }
   else {
-    Serial.print("Starting Web Server at ");
     Serial.println(WiFi.localIP());
     webServer.on("/", []() {
-      String s = "<h1>STA mode</h1><p><a href=\"/reset\">Reset Wi-Fi Settings</a></p>";
-      webServer.send(200, "text/html", makePage("STA mode", s));
+      webServer.send(200, "application/json", "{\"mode\": \"STA\"}");
     });
     webServer.on("/reset", []() {
-      for (int i = 0; i < 96; ++i) {
+      for (int i = 0; i < 128; ++i) {
         EEPROM.write(i, 0);
       }
       EEPROM.commit();
-      String s = "<h1>Wi-Fi settings was reset.</h1><p>Please reset device.</p>";
-      webServer.send(200, "text/html", makePage("Reset Wi-Fi Settings", s));
+      webServer.send(200, "application/json", "{\"success\": \"true\"}");
     });
   }
   webServer.begin();
@@ -293,11 +309,9 @@ void setupMode() {
   delay(100);
   Serial.println("");
   for (int i = 0; i < n; ++i) {
-    ssidList += "<option value=\"";
+    ssidList += "\"";
     ssidList += WiFi.SSID(i);
-    ssidList += "\">";
-    ssidList += WiFi.SSID(i);
-    ssidList += "</option>";
+    ssidList += "\",";
   }
   delay(100);
   WiFi.mode(WIFI_AP);
@@ -308,17 +322,6 @@ void setupMode() {
   Serial.print("Starting Access Point at \"");
   Serial.print(apSSID);
   Serial.println("\"");
-}
-
-String makePage(String title, String contents) {
-  String s = "<!DOCTYPE html><html><head>";
-  s += "<meta name=\"viewport\" content=\"width=device-width,user-scalable=0\">";
-  s += "<title>";
-  s += title;
-  s += "</title></head><body>";
-  s += contents;
-  s += "</body></html>";
-  return s;
 }
 
 String urlDecode(String input) {
