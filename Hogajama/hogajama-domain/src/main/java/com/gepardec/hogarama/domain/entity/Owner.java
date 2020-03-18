@@ -17,8 +17,19 @@ public class Owner implements Serializable {
     @Column(name = "sso_user_id", nullable = false)
     private String ssoUserId;
 
+    @Column(name = "hardware_code", nullable = false)
+    private String currentHardwareRegisterCode;
+
     @OneToMany(mappedBy = "owner")
     private List<Unit> unitList;
+
+    public void setCurrentHardwareRegisterCode(String currentHardwareRegisterCode) {
+        this.currentHardwareRegisterCode = currentHardwareRegisterCode;
+    }
+
+    public String getCurrentHardwareRegisterCode() {
+        return currentHardwareRegisterCode;
+    }
 
     public Long getId() {
         return id;

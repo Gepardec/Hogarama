@@ -11,12 +11,15 @@ import java.util.Optional;
 
 @Dependent
 public class OwnerDao extends BaseDao<Owner> {
+    private static QOwner ownerRef = QOwner.owner;
 
     public Optional<Owner> getBySsoUserId(String ssoUserId) {
-        QOwner owner = QOwner.owner;
         JPAQuery<Owner> query = new JPAQuery<>(entityManager);
         try {
-            Owner result = query.select(owner).from(owner).where(owner.ssoUserId.eq(ssoUserId)).fetchOne();
+            Owner result = query.select(ownerRef)
+                    .from(ownerRef)
+                    .where(ownerRef.ssoUserId.eq(ssoUserId))
+                    .fetchOne();
             return Optional.ofNullable(result);
         } catch (NonUniqueResultException e) {
             throw new TechnicalException("Multiple results for owner with ssoUserId " + ssoUserId + " found.", e);
@@ -26,5 +29,14 @@ public class OwnerDao extends BaseDao<Owner> {
     @Override
     public Class<Owner> getEntityClass() {
         return Owner.class;
+    }
+
+    public Owner getOwnerOfCode(String oneTimeUseCode) {
+        JPAQuery<Owner> query = new JPAQuery<>(entityManager);
+
+        return query.select(ownerRef)
+                .from(ownerRef)
+                .where(ownerRef.currentHardwareRegisterCode.eq(oneTimeUseCode))
+                .fetchOne();
     }
 }
