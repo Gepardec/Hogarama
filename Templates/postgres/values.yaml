@@ -1,0 +1,10 @@
+global:
+  postgresql:
+    postgresqlDatabase: {{TBD}}
+    postgresqlUsername: {{TBD}}
+    postgresqlPassword: {{TBD}}
+persistence:
+  storageClass: gp2
+  size: 1Gi
+securityContext:
+  enabled: false
