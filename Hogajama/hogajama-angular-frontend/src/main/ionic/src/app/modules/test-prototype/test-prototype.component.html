@@ -1,23 +1,15 @@
-<ion-header>
-    <ion-toolbar color="primary">
-        <ion-buttons slot="start">
-            <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-        <ion-title>
-            All Sensors
-        </ion-title>
-    </ion-toolbar>
-</ion-header>
-<ion-content>
-    <h1>All Sensors</h1>
-    <ul *ngFor="let sensor of allSensorArr">
-        <li>{{ sensor.name }}, {{sensor.deviceId }}</li>
-    </ul>
-    <h1>Sensors for current owner</h1>
-    <ul *ngFor="let sensor of ownerSensorArr">
-        <li>{{ sensor.name }}, {{sensor.deviceId }}</li>
-    </ul>
-    <p>{{ error }}</p>
-    <app-user-name></app-user-name>
-    <button (click)="logout()">LOGOUT</button>
+<ion-content padding>
+    <span class="material-icons" id="settings" (click)="openSettings()">
+        settings
+    </span>
+    <div class="heading">
+        <h1>Hallo {{username}}!</h1>
+        <p *ngIf="units.length == 0">du hast noch keine Pflanzen in deinem Hogarama</p>
+    </div>
+    <button mat-raised-button id="add-unit" (click)="addUnit()" class="round">
+        <span class="material-icons">
+            add
+        </span>
+        <span>Neue Pflanze hinzufügen</span>
+    </button>
 </ion-content>

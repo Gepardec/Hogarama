@@ -15,11 +15,11 @@ import {DeviceDetectorModule} from "ngx-device-detector";
 import { IonicStorageModule } from '@ionic/storage';
 import {MyHttpInterceptor} from "./services/HttpInterceptor/http-interceptor";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SideMenuComponent } from './modules/shared/side-menu/side-menu.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SideMenuComponent],
   entryComponents: [
-
   ],
   imports: [
     BrowserModule,

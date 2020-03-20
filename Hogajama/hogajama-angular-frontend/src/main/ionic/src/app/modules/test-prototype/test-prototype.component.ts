@@ -3,6 +3,7 @@ import {HogaramaBackendService} from 'src/app/services/HogaramaBackendService/ho
 import {AuthenticationService} from "../../services/AuthenticationService/authentication.service";
 import {Router} from "@angular/router";
 import {Sensor} from "../../shared/models/Sensor";
+import { Unit } from 'src/app/shared/models/Unit';
 
 @Component({
   selector: 'app-test-prototype',
@@ -10,33 +11,30 @@ import {Sensor} from "../../shared/models/Sensor";
   styleUrls: ['./test-prototype.component.scss']
 })
 export class TestPrototypeComponent implements OnInit {
-  allSensorArr: Sensor[];
-  ownerSensorArr: Sensor[];
-  error: string;
+  units: Unit[] = [];
+  username: string = '';
 
   constructor(private rs: HogaramaBackendService, private authService: AuthenticationService, private router: Router) {
   }
 
   async ngOnInit() {
     try {
-      this.allSensorArr = await this.rs.sensors.getAll();
+      this.units = await this.rs.units.getAllByBearer();
     } catch(error) {
       console.error(error);
-      this.error = error.message;
     }
-
     try {
-      this.ownerSensorArr = await this.rs.sensors.getAllByBearer();
+      this.username = (await this.rs.users.getByBearer()).name;
     } catch(error) {
       console.error(error);
-      this.error = error.message;
     }
   }
 
-  logout() {
-    this.authService.logoutUser().then(
-      () => this.router.navigateByUrl('/testLoginRedirect'),
-      () => alert('Logout failure!')
-    )
+  openSettings() {
+
+  }
+
+  addUnit() {
+    
   }
 }

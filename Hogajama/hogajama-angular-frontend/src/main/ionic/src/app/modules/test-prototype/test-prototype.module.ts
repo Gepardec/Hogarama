@@ -4,6 +4,7 @@ import {TestPrototypeRoutingModule} from './test-prototype-routing.module';
 import {TestPrototypeComponent} from './test-prototype.component';
 import {SharedModule} from "../shared/shared.module";
 import {IonicModule} from "@ionic/angular";
+import { MatButtonModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {IonicModule} from "@ionic/angular";
         TestPrototypeRoutingModule,
         SharedModule,
         IonicModule,
+        MatButtonModule
     ]
 })
 export class TestPrototypeModule { }
