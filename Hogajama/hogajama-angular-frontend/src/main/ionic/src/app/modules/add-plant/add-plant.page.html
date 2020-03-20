@@ -1,0 +1,38 @@
+<ion-content padding>
+  
+  <button class="default-back" mat-button backButton>
+    <span class="material-icons">
+      arrow_back_ios
+    </span>
+    <span>Zurück</span>
+  </button>
+  <div class="center-container">
+    <h1>Pflanze hinzufügen</h1>
+
+    <div id="plant-image" class="horizontal-center"></div>
+
+    <button mat-raised-button id="add-image" class="round">
+      <span class="material-icons">
+        add
+      </span>
+      <span>Bild hochladen</span>
+    </button>
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Ort</mat-label>
+      <input matInput>
+    </mat-form-field>
+
+    <button mat-raised-button class="round" (click)="nextStep()">
+      <span>Weiter</span>
+      <span class="material-icons">
+        arrow_forward_ios
+      </span>
+    </button>
+  </div>
+</ion-content>

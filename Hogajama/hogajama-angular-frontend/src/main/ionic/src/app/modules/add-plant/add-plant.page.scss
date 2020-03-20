@@ -1,0 +1,21 @@
+.center-container {
+
+    #plant-image{
+        height: 200px;
+        width: 200px;
+        background-color: lightgray;
+        border-radius: 100px;
+
+        margin-top: 50px !important;
+    }
+
+    #add-image{
+        position: relative;
+        top: -20px;
+        background-color: lightskyblue;
+    }
+
+    mat-form-field{
+        width: 100%;
+    }
+}

@@ -14,7 +14,10 @@ export class TestPrototypeComponent implements OnInit {
   units: Unit[] = [];
   username: string = '';
 
-  constructor(private rs: HogaramaBackendService, private authService: AuthenticationService, private router: Router) {
+  constructor(
+    private rs: HogaramaBackendService, 
+    private authService: AuthenticationService, 
+    private router: Router) {
   }
 
   async ngOnInit() {
@@ -34,7 +37,7 @@ export class TestPrototypeComponent implements OnInit {
 
   }
 
-  addUnit() {
-    
+  addPlant() {
+    this.router.navigateByUrl('add-plant');
   }
 }
