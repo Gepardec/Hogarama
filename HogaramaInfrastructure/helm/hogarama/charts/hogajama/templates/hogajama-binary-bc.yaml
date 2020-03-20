@@ -1,0 +1,39 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: hogajama-binary
+  labels:
+    build: hogajama-binary
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'hogajama-binary:latest'
+  resources: {}
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 's2i-builder-maven:latest'
+      env:
+        - name: BUILDER_CONTEXT_DIR
+          value: Hogajama
+        - name: BUILDER_MVN_OPTIONS
+          value: '-P ocp-aws'
+  postCommit: {}
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/Gepardec/Hogarama'
+  triggers:
+    - type: GitHub
+      github:
+        secret: {{ .Values.trigger.secret.hogajama_binary.github }}
+    - type: Generic
+      generic:
+        secret: {{ .Values.trigger.secret.hogajama_binary.generic }}
+    - type: ConfigChange
+    - type: ImageChange
+  runPolicy: Serial

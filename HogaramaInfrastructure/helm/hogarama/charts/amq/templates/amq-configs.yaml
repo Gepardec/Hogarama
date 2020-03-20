@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: amq-configs
+data:
+{{ (.Files.Glob "files/entrypoint.sh").AsConfig | indent 2 }}
+{{ (.Files.Glob "files/broker.xml").AsConfig | indent 2 }}
+...

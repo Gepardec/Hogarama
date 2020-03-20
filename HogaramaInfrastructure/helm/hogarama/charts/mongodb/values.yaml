@@ -1,0 +1,11 @@
+---
+credentials:
+  admin:
+    password: "b64password"
+  database:
+    db: "mongo-db"
+    user: "mongo-user"
+    password: "mongo-password"
+    hogajama_db: "hogajama-db"
+    mongodb_pw: "hogajama-pw"
+...

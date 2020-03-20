@@ -1,0 +1,26 @@
+{
+  "roles": {
+    "realm": [
+      {
+        "name": "admins",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "hogarama",
+        "attributes": {}
+      }
+    ]
+  },
+  "groups": [
+    {
+      "name": "admins",
+      "path": "/admins",
+      "attributes": {},
+      "realmRoles": [
+        "admins"
+      ]
+    }
+  ],
+  "defaultGroups": [
+    "/admins"
+  ]
+}

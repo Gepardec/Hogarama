@@ -1,0 +1,15 @@
+#!/bin/bash
+
+function info () {
+  local text=${1}
+  local flag_dryrun=${3:-${FLAG_DRYRUN:-false}}
+  local flag_quiet=${4:-${FLAG_QUIET:-false}}
+  
+  if [[ "${flag_dryrun}" == false ]]; then
+    echo INFO: ${text}
+  fi
+}
+# readonly definition of a function throws an error if another function 
+# with the same name is defined a second time
+readonly -f info
+[ "$?" -eq "0" ] || return $?

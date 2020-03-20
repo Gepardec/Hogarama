@@ -1,0 +1,7 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: jboss-eap-7-patched
+spec:
+  lookupPolicy:
+    local: false

@@ -1,0 +1,8 @@
+#GRAFANA
+DataSource:
+  url: "grafana-url"
+crd:
+  initial:
+    admin:
+      password: "grafana-admin-password"
+      user: "grafana-admin-user"

@@ -1,0 +1,58 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: hogajama-run
+  labels:
+    build: hogajama-run
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'hogajama-run:latest'
+  resources: {}
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'jboss-eap-7-patched:latest'
+  postCommit: {}
+  source:
+    type: Dockerfile
+    dockerfile: |-
+      FROM jboss/wildfly
+      COPY target/* /opt/eap/standalone/deployments/
+      USER root
+      RUN echo -e "#!/bin/bash\nexit 0" > /opt/eap/bin/readinessProbe.sh && \
+          echo -e "#!/bin/bash\nexit 0" > /opt/eap/bin/livenessProbe.sh && \
+          chmod +x  /opt/eap/bin/*.sh && \
+          curl -fsSL https://downloads.jboss.org/keycloak/8.0.1/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-8.0.1.zip -o keycloak.zip && \
+          unzip -o keycloak.zip -d /opt/eap/ && \
+          rm keycloak.zip
+      USER jboss
+      ENV HOGAJAMA_DB={{ .Values.mongodb.credentials.database }} MONGODB_PW={{ .Values.mongodb.credentials.password }} STAGE=AWS-PROD TINYURL=https://tinyurl.com/hogajama-aws
+      ENTRYPOINT [ "/opt/eap/bin/entrypoint.sh" ]
+    images:
+      - from:
+          kind: ImageStreamTag
+          name: 'hogajama-binary:latest'
+        as: null
+        paths:
+          - sourcePath: /deployments/target/
+            destinationDir: target
+  triggers:
+    - type: GitHub
+      github:
+        secret: {{ .Values.trigger.secret.hogajama_run.github }}
+    - type: Generic
+      generic:
+        secret: {{ .Values.trigger.secret.hogajama_run.github }}
+    - type: ImageChange
+      imageChange:
+        from:
+          kind: ImageStreamTag
+          name: 'hogajama-binary:latest'
+    - type: ConfigChange
+    - type: ImageChange
+  runPolicy: Serial
