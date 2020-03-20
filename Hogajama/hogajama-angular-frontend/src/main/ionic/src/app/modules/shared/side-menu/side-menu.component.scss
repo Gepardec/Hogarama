@@ -1,0 +1,26 @@
+:host {
+    display: block;
+    width: 80px;
+    height: 100%;
+    transition: width .3s ease-in-out;
+
+    #passed-content {
+        display: none;
+    }
+
+    &.open {
+        width: 300px;
+        
+        #passed-content {
+            display: block;
+        }
+    }
+}
+
+#menu-button {
+    cursor: pointer;
+    font-size: 40px;
+    margin-top: 40px;
+    margin-left: 40px;
+    transform: translateX(-50%) translateY(-50%);
+}

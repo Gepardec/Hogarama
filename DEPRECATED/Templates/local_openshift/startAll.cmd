@@ -12,3 +12,4 @@ oc process -f hogaramaOhneHost.yaml OPENSHIFT_AUTH_TOKEN=$OPENSHIFT_TOKEN | oc c
 oc process -f ..\sso\sso-app-secret.yaml | oc create -f -
 oc process -f ..\sso\sso-service-account.yaml | oc create -f -
 oc process -f ..\sso\sso.yaml | oc create -f -
+CALL ../postgres/install-pg.cmd

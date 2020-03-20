@@ -16,7 +16,7 @@ usage: $PRG [-hSXD] [-s sso_url] [-b branch]
 
 Options:
     S: Don't install SSO-Server locally. Should be used together with option -s
-    s sso_url: URL for SSO authenticaton. Only used with option -S 
+    s sso_url: URL for SSO authenticaton. Only used with option -S
         Default: $KEYCLOAK_AUTH_SERVER_URL
     D: Use persistent data for etcd in $DEFAULT_DATA_DIR. Restart keeps configuration.
     X: Don't Execute, just echo commands
@@ -78,6 +78,7 @@ fi
 $EXEC oc process -f hogarama-amq.yaml BRANCH=$BRANCH | $EXEC oc create -f -
 $EXEC oc process -f hogarama-fluentd.yaml BRANCH=$BRANCH | $EXEC oc create -f -
 $EXEC oc process -f hogaramaOhneHost.yaml $HOGARAMA_VARS | $EXEC oc create -f -
+./install-pg.sh
 
 if [ x$DO_SSO = xTrue ]; then
 	$EXEC oc process -f ../sso/sso-app-secret.yaml | $EXEC oc create -f -
