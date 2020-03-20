@@ -1,0 +1,14 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: amq-console
+  labels:
+    app: amq
+spec:
+  to:
+    kind: Service
+    name: amq
+    weight: 100
+  port:
+    targetPort: 8161-tcp
+  wildcardPolicy: None

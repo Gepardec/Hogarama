@@ -1,0 +1,11 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: grafana-operator
+spec:
+  channel: alpha
+  name: grafana-operator
+  source: community-operators
+  sourceNamespace: openshift-marketplace
+  version: 2.0.0
+  startingCSV: grafana-operator.v2.0.0

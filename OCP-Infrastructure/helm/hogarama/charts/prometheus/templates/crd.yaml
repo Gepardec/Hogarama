@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: hogarama
+  labels:
+    prometheus: hogarama
+spec:
+  replicas: 1
+  serviceAccountName: prometheus-operator
+  serviceMonitorSelector:
+    matchLabels:
+      team: frontend
+  additionalScrapeConfigs:
+    name: prometheus-scrape-config
+    key: scrape-config.yaml

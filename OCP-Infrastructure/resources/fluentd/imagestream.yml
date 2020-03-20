@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: List
+metadata:
+  name: fluentd-imagestream
+items:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: fluentd-hogarama
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: fluentd
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - from:
+        kind: DockerImage
+        name: fluent/fluentd:edge-debian
+      generation: 1
+      importPolicy: {}
+      name: edge-debian
+      referencePolicy:
+        type: Source

@@ -1,0 +1,17 @@
+---
+trigger:
+  secret:
+    source_to_image:
+      github: {{ HOGAJAMA_GITHUB_S21_TRIGGER_SECRET }}
+      generic: {{ HOGAJAMA_GENERIC_S21_TRIGGER_SECRET }}
+    hogajama_run:
+      github: {{ HOGAJAMA_GITHUB_RUN_TRIGGER_SECRET }}
+      generic: {{ HOGAJAMA_GENERIC_RUN_TRIGGER_SECRET }}
+    hogajama_binary:
+      github: {{ HOGAJAMA_GITHUB_BINARY_TRIGGER_SECRET  }}
+      generic: {{ HOGAJAMA_GENERIC_BINARY_TRIGGER_SECRET  }}
+mongodb:
+  credentials:
+    database: {{ HOGAJAMA_DB }}
+    password: {{ MONGODB_PW }}
+...

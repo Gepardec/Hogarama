@@ -1,0 +1,18 @@
+apiVersion: wildfly.org/v1alpha1
+kind: WildFlyServer
+metadata:
+  name: hogajama
+spec:
+  applicationImage: 'image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/hogajama-run:latest'
+  #TODO: scheinbar kommt der eap operator nur mit der vollständigen Registry klar. Frage: wie gehen wir damit um, falls wir ihn in einem anderen Namespace verwenden wollen?
+  env:
+    - name: KEYCLOAK_AUTH_SERVER_URL
+      value: 'https://keycloak-gepardec.apps.p.aws.ocp.gepardec.com/auth/'
+#      value: 'https://secure-sso-57-hogarama.cloud.itandtel.at/auth/'
+  replicas: 1
+  serviceAccountName: hogajama-anyuid
+  disableHTTPRoute: true
+  standaloneConfigMap:
+    key: standalone-openshift.xml
+    name: hogajama-standalone
+  imagePullPolicy: always

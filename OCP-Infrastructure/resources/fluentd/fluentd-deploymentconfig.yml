@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: fluentd
+  name: fluentd
+spec:
+  replicas: 1
+  selector:
+    app: fluentd
+  strategy:
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: fluentd
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: Europe/Vienna
+          image: fluentd-hogarama:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - '-c'
+                - >-
+                  tail -1 /fluentd/log/fluent.log | grep -q
+                  Mongo::Auth::Unauthorized; test $? != 0
+            failureThreshold: 3
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: fluentd
+          ports:
+            - containerPort: 24224
+              protocol: TCP
+            - containerPort: 5140
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /fluentd/log
+              name: fluentd-log-volume
+            - mountPath: /fluentd/etc
+              name: fluentd-config-volume
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: fluentd-log-volume
+          emptyDir: {}
+          # persistentVolumeClaim:
+          #   claimName: fluentd-log-claim
+        - secret:
+            defaultMode: 420
+            secretName: fluentd-secret
+          name: fluentd-config-volume
+  test: false
+  triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - fluentd
+        from:
+          kind: ImageStreamTag
+          name: 'fluentd-hogarama:latest'
+      type: ImageChange
+    - type: ConfigChange

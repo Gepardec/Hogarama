@@ -1,0 +1,21 @@
+#!/bin/bash
+
+function oc-create-resource-from () {
+  local resource_type="${1}"
+  local resource="${2}"
+  local resource_options="${3}"
+
+  if oc get ${resource_type} ${resource} >/dev/null 2>&1 || [[ ${FLAG_FORCE} == true ]]; then
+    execute "oc delete ${resource_type} ${resource} \
+    --kubeconfig=/home/.admin \
+    -n ${namespace}"
+  fi
+  execute """ \
+    oc create ${resource_type} \
+        ${resource_options} \
+        ${resource} \
+        --kubeconfig=/home/.admin \
+        -n ${namespace}"""
+}
+readonly -f oc-create-resource-from
+[ "$?" -eq "0" ] || return $?
