@@ -41,7 +41,7 @@ main () {
 
   declare -a resourceArr=("commons"
                           "hogarama_commons"
-                          "keycloak"
+#                          "keycloak"
                           "amq"
                           "prometheus"
                           "grafana"

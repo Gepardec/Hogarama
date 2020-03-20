@@ -16,3 +16,5 @@
 /OCP-Infrastructure/resources/hogajama/s2i-builder-maven-bc.yml
 /OCP-Infrastructure/secrets/secrets.yml
 /OCP-Infrastructure/helm/hogarama/charts/hogajama/values.yaml
+/helm/hogarama/values.yaml
+/resources/hogarama_commons/operator-group.yml
