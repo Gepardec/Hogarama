@@ -59,7 +59,7 @@ shift `expr $OPTIND - 1`
 
 
 
-set -x
+# set -x
 
 $EXEC oc cluster up $CLUSTER_UP_OPTIONS
 $EXEC oc login -u system:admin
@@ -78,7 +78,9 @@ fi
 $EXEC oc process -f hogarama-amq.yaml BRANCH=$BRANCH | $EXEC oc create -f -
 $EXEC oc process -f hogarama-fluentd.yaml BRANCH=$BRANCH | $EXEC oc create -f -
 $EXEC oc process -f hogaramaOhneHost.yaml $HOGARAMA_VARS | $EXEC oc create -f -
-./install-pg.sh
+$EXEC oc process -f hogarama-jboss.yaml $HOGARAMA_VARS | $EXEC oc create -f -
+$EXEC oc process -f hogarama-postgres.yaml | $EXEC oc create -f -
+$EXEC ./install-pg.sh
 
 if [ x$DO_SSO = xTrue ]; then
 	$EXEC oc process -f ../sso/sso-app-secret.yaml | $EXEC oc create -f -
