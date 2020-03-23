@@ -1,0 +1,31 @@
+<ion-content padding>
+  <button class="default-back" mat-button backButton>
+    <span class="material-icons">
+      arrow_back_ios
+    </span>
+    <span>Zurück</span>
+  </button>
+
+  
+  <div class="center-container">
+    <h1>Verbinde dein Gerät mit dem Hogarama Controller</h1>
+
+    <p>Wähle das W-Lan mit dem Namen "hogarama_hotspot" in den Einstellungen</p>
+
+    <div>
+
+      <button mat-button class="round" style="margin-right: 20px">
+        <span class="material-icons">
+          help_outline
+        </span>
+        <span>Ich habe Probleme</span>
+      </button>
+      <button mat-raised-button class="round" (click)="nextStep()">
+        <span>Weiter</span>
+        <span class="material-icons">
+          arrow_forward_ios
+        </span>
+      </button>
+    </div>
+  </div>
+</ion-content>

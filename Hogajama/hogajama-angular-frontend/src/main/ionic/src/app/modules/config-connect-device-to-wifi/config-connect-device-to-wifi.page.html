@@ -1,0 +1,36 @@
+<ion-content padding>
+  <button class="default-back" mat-button backButton>
+    <mat-icon matPrefix>arrow_back_ios</mat-icon>
+    Zurück
+  </button>
+
+  
+  <div class="center-container">
+    <h1 style="margin-bottom: 50px">Wähle deinen W-Lan Router aus</h1>
+
+    <mat-form-field appearance="fill">
+      <mat-label>W-Lan Name</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let wifi of wifis" [value]="wifi.ssid">
+          {{wifi.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Passwort</mat-label>
+      <input matInput type="password">
+      <mat-icon matSuffix>remove_red_eye</mat-icon>
+    </mat-form-field>
+
+    <div>
+      <button mat-button class="round" style="margin-right: 20px">
+        <mat-icon matPrefix>help_outline</mat-icon>
+        Ich habe ein Probleme
+      </button>
+      <button mat-raised-button class="round" (click)="nextStep()">
+        Weiter
+        <mat-icon matSuffix>arrow_forward_ios</mat-icon>
+      </button>
+    </div>
+  </div>
+</ion-content>
