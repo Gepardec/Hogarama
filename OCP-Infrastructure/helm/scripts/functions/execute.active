@@ -2,7 +2,7 @@
 
 # execute $COMMAND [$ALT_TEXT] [$FLAG_DRYRUN=false]
 # if command and FLAG_DRYRUN=true are set the command will be execuded
-# if command and FLAG_DRYRUN=false (or no 3rd argument is provided) 
+# if command and FLAG_DRYRUN=false (or no 3rd argument is provided)
 # if FLAG_QUIET=true are the command will not be printed to stdout
 # if FLAG_QUIET=false (or no 4rd argument is provided) print command prefixed by "# "
 # if an ALT_TEXT is provided it will print the alt text instead of the command
@@ -23,7 +23,7 @@ function execute () {
     echo "${exec_command}" | awk '{$1=$1;print}'
   fi
 }
-# readonly definition of a function throws an error if another function 
+# readonly definition of a function throws an error if another function
 # with the same name is defined a second time
 readonly -f execute
 [ "$?" -eq "0" ] || return $?

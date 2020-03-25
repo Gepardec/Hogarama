@@ -1,9 +1,0 @@
-kind: ImageStream
-apiVersion: image.openshift.io/v1
-metadata:
-  name: s2i-builder-maven
-  labels:
-    build: s2i-builder-maven
-spec:
-  lookupPolicy:
-    local: false

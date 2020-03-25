@@ -20,7 +20,7 @@ FLAG_FORCE=false
 # SOURCE #
 ##########
 
-for functionFile in ${TOPLEVEL_DIR}/bootstrap/functions/*.active;
+for functionFile in ${TOPLEVEL_DIR}/scripts/functions/*.active;
   do source ${functionFile}
 done
 
