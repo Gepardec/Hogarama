@@ -11,6 +11,7 @@ defaultAddCapabilities: []
 fsGroup:
   type: RunAsAny
 groups:
+  - system:admins
   - system:cluster-admins
 kind: SecurityContextConstraints
 metadata:

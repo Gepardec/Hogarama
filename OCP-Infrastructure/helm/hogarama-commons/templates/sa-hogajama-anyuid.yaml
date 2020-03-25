@@ -2,4 +2,5 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: hogajama-anyuid
+  namespace: {{ .Release.Namespace }}
   

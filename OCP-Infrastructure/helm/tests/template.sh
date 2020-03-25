@@ -83,7 +83,7 @@ main () {
   execute "docker run --rm -it \
   -v ${TOPLEVEL_DIR}:/mnt/hogarama \
   fhochleitner/oc-helm:latest \
-  helm template /mnt/hogarama/helm/hogarama"
+  helm template /mnt/hogarama/hogarama"
 
 
 }

@@ -15,7 +15,8 @@ function j2-template () {
           --filters /opt/jinja/filters/base64.py \
           -o ${target_file_name} \
           ${item} \
-          ${resource_dir}/secrets/secrets.yml"
+          ${resource_dir}/helm/secrets/secrets.yaml"
+      execute "chmod 666 ${target_file_name}"
       info "${target_file_name#/mnt/} created"
     fi
   done;
