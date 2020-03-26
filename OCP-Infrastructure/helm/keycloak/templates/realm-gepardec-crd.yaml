@@ -1,0 +1,31 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakRealm
+metadata:
+  name: gepardec
+  labels:
+    app: sso
+spec:
+  realm:
+    id: hogarama
+    realm: hogarama
+    enabled: true
+    displayName: hogarama
+    identityProviders: [
+      {
+        "providerId": "google",
+        "displayName": "Google",
+        "enabled": true,
+        "webOrigins": "*",
+        "redirectUris" : "*",
+        "alias": "google",
+        "BrowserRedirectorIdentityProvider": "google",
+        "config": {
+          "alias": "google",
+          "clientId": "{{ .Values.keycloak.google.client.id }}",
+          "clientSecret": "{{ .Values.keycloak.google.client.secret }}"
+        }
+      }
+      ]
+  instanceSelector:
+    matchLabels:
+      app: sso

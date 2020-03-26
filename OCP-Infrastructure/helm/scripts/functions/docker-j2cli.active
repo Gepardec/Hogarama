@@ -2,7 +2,7 @@
 
 # docker-j2cli
 function docker-j2cli () {
-  execute "docker run --rm -it -e TZ=Europe/Vienna -v ${TOPLEVEL_DIR}:/mnt gepardec/j2cli $*"
+  execute "docker run --rm -it -e TZ=Europe/Vienna -v ${TOPLEVEL_DIR}:/mnt gepardec/hogarama-bootstrap:latest $*"
 }
 readonly -f docker-j2cli
 [ "$?" -eq "0" ] || return $?

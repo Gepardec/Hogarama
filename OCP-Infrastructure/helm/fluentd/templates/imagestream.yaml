@@ -1,0 +1,37 @@
+---
+apiVersion: image.openshift.io/v1
+kind: List
+metadata:
+  labels:
+    app: fluentd
+    helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    helm.sh/appVersion: "{{ .Chart.AppVersion }}"
+    helm.sh/revision: "{{ .Release.Revision }}"
+  name: fluentd
+items:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    app: fluentd
+    name: {{ .Values.imageStream.name }}
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    app: fluentd
+    name: {{ .Values.imageStream.base.name }}
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - from:
+        kind: {{ .Values.hogarama.fluentd.imageStream.base.kind }}
+        name: {{ .Values.hogarama.fluentd.imageStream.base.from }}
+      generation: 1
+      importPolicy: {}
+      name: {{ .Values.hogarama.fluentd.imageStream.base.tag }}
+      referencePolicy:
+        type: Source
+...

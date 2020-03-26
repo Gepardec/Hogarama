@@ -4,8 +4,7 @@ function j2-template () {
   local resource_dir="${1}"
   local resource="${2}"
   for item in $(find ${resource_dir} -name "*.j2" | grep "${resource}"); do
-    local target_file_name=${item%.j2}
-    local file_name=$(basename ${target_file_name})
+    local target_file_name=${resource_dir}/helm/secrets/$(basename ${item%.j2})
     if [[ -f ${target_file_name} && ${FLAG_FORCE} == false ]]; then
       info "${target_file_name#/mnt/} already exists - if you want to overwrite it use the --force flag"
     else
