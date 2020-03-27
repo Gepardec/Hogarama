@@ -31,7 +31,10 @@ if [ -n "$JBossPatch" -a ! -f "$JBossPatch" ]; then
     error=1
 fi
 
+
 test $error = 0 || exit $error
+
+mkdir -p $JBOSS_HOME
 
 TmpInstall=${JBOSS_HOME}/_Tmp$$
 

@@ -140,6 +140,14 @@
                         <password>sa</password>
                     </security>
                 </datasource>
+                <datasource jndi-name="java:jboss/datasources/Hogajama" pool-name="HogajamaDS" enabled="true">
+                    <connection-url>jdbc:postgresql://${env.POSTGRESQL_HOST:postgresql}:5432/${env.POSTGRESQL_DATABASE:management}</connection-url>
+                    <driver>postgresql</driver>
+                    <security>
+                        <user-name>hogajama</user-name>
+                        <password>${env.POSTGRESQL_PASSWORD:changepassword}</password>
+                    </security>
+                </datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
