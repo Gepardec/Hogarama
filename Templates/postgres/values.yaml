@@ -1,8 +1,8 @@
 global:
   postgresql:
-    postgresqlDatabase: {{TBD}}
-    postgresqlUsername: {{TBD}}
-    postgresqlPassword: {{TBD}}
+    postgresqlDatabase: units
+    postgresqlUsername: hogajama
+    postgresqlPassword: changepassword
 persistence:
   storageClass: gp2
   size: 1Gi
