@@ -145,7 +145,7 @@
                     <driver>postgresql</driver>
                     <security>
                         <user-name>hogajama</user-name>
-                        <password>${env.POSTGRESQL_PASSWORD}</password>
+                        <password>${env.POSTGRESQL_PASSWORD:changepassword}</password>
                     </security>
                 </datasource>
                 <drivers>

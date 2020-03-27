@@ -1,4 +1,4 @@
-SET search_path = "management";
+SET search_path = "hogajama";
 
 INSERT INTO sensor_type ("id", "name")
 VALUES
