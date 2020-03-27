@@ -6,6 +6,7 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,14 +23,19 @@ public class SensorService {
     }
 
     public void deleteSensor(Long sensorId) {
+        Sensor sensor = this.dao.getById(sensorId)
+                .orElseThrow(() -> new NotFoundException(String.format("Sensor with id [%d] not found", sensorId)));
+
+        dao.delete(sensor);
     }
 
     public void updateSensor(Sensor sensor) {
-
+        verifyUnitBelongsToOwner(sensor.getUnit());
+        dao.update(sensor);
     }
 
     public List<Sensor> getAllSensorForOwner() {
-        return dao.getAllSensorForOwner(store.getOwner().getId());
+        return dao.getAllSensorForOwner(store.getOwner());
     }
 
     private void verifyUnitBelongsToOwner(Unit unit) {

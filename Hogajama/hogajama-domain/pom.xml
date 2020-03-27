@@ -70,6 +70,20 @@
             <artifactId>simpleclient</artifactId>
             <version>${prometheus.io.version}</version>
         </dependency>
+		<dependency>
+			<groupId>com.gepardec.hogajama</groupId>
+			<artifactId>warpunit-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+		</dependency>
         <!-- Test End -->
 	</dependencies>
 
