@@ -1,0 +1,22 @@
+
+<ion-content padding>
+  <form #sensorForm="ngForm">
+    <mat-form-field *ngIf="this.isEditAction">
+      <mat-label>Id</mat-label>
+      <input matInput placeholder="1234" type="number" [(ngModel)]="actor.id" name="id" [readonly]="true">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="abcde" type="text" [(ngModel)]="actor.name" name="name">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Device Id</mat-label>
+      <input matInput placeholder="abcde" type="text" [(ngModel)]="actor.deviceId" name="deviceId">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Unit Id</mat-label>
+      <input matInput placeholder="abcde" type="text" [(ngModel)]="actor.unitId" name="ownerId">
+    </mat-form-field>
+    <button mat-raised-button (click)="save()" color="primary" style="margin-top: 10px">Save</button>
+  </form>
+</ion-content>

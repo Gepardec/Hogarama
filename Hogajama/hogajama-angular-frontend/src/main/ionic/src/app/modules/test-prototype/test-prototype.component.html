@@ -1,0 +1,15 @@
+<ion-content padding>
+    <span class="material-icons" id="settings" (click)="openSettings()">
+        settings
+    </span>
+    <div class="heading">
+        <h1>Hallo {{username}}!</h1>
+        <p *ngIf="units.length == 0">du hast noch keine Pflanzen in deinem Hogarama</p>
+    </div>
+    <button mat-raised-button id="add-unit" (click)="addPlant()" class="round">
+        <span class="material-icons">
+            add
+        </span>
+        <span>Neue Pflanze hinzufügen</span>
+    </button>
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "HogaramaIonicUserClient",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
