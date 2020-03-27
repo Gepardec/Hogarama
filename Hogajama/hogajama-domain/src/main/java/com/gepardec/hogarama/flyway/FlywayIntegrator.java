@@ -25,7 +25,7 @@ public class FlywayIntegrator implements Integrator {
         try {
             ctx = new InitialContext();
             DataSource datasource = (DataSource) ctx.lookup("java:jboss/datasources/Hogajama");
-            Flyway flyway = Flyway.configure().dataSource(datasource).schemas("management").load();
+            Flyway flyway = Flyway.configure().dataSource(datasource).schemas("hogajama").load();
             flyway.migrate();
             LOG.error("Flyway migration succeeded");
         } catch (Exception e) {

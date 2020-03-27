@@ -141,10 +141,10 @@
                     </security>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/Hogajama" pool-name="HogajamaDS" enabled="true">
-                    <connection-url>jdbc:postgresql://postgresql:5432/${env.POSTGRESQL_DATABASE}</connection-url>
+                    <connection-url>jdbc:postgresql://${env.POSTGRESQL_HOST:postgresql}:5432/${env.POSTGRESQL_DATABASE:management}</connection-url>
                     <driver>postgresql</driver>
                     <security>
-                        <user-name>${env.POSTGRESQL_USER}</user-name>
+                        <user-name>hogajama</user-name>
                         <password>${env.POSTGRESQL_PASSWORD}</password>
                     </security>
                 </datasource>
