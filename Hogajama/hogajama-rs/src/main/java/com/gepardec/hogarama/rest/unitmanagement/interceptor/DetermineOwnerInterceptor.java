@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.rest.interceptor;
+package com.gepardec.hogarama.rest.unitmanagement.interceptor;
 
 
 import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;

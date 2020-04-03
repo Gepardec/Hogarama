@@ -21,7 +21,7 @@ public class Owner implements Serializable {
     private String ssoUserId;
 
     @OneToMany(mappedBy = "owner")
-    private List<Unit> unitList = new ArrayList<>();
+    private List<Unit> unitList;
 
     public Long getId() {
         return id;
@@ -57,6 +57,10 @@ public class Owner implements Serializable {
 
     public void addUnit(Unit unit) {
         Preconditions.checkNotNull(unit, "Unit must not be null.");
+
+        if (getUnitList() == null) {
+            unitList = new ArrayList<>();
+        }
 
         unitList.add(unit);
     }

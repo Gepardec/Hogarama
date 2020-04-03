@@ -24,7 +24,7 @@ public class OwnerTest {
         owner.addUnit(null);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test(expected = NullPointerException.class)
     public void getDefaultUnit_EmptyUnitList() {
         Owner owner = new Owner();
         owner.getDefaultUnit();

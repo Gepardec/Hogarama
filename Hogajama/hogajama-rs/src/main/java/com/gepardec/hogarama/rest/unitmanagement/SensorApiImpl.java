@@ -2,8 +2,8 @@ package com.gepardec.hogarama.rest.unitmanagement;
 
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.service.SensorService;
-import com.gepardec.hogarama.rest.interceptor.DetermineOwner;
 import com.gepardec.hogarama.rest.unitmanagement.dto.SensorDto;
+import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
 import com.gepardec.hogarama.rest.unitmanagement.translator.SensorDtoTranslator;
 import org.apache.http.HttpStatus;
 

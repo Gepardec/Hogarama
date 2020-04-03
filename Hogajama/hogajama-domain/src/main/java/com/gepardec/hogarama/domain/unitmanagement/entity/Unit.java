@@ -2,7 +2,6 @@ package com.gepardec.hogarama.domain.unitmanagement.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,7 +25,7 @@ public class Unit implements Serializable {
     private Owner owner;
 
     @OneToMany(mappedBy = "unit")
-    private List<Sensor> sensorList = new ArrayList<>();
+    private List<Sensor> sensorList;
 
     public Long getId() {
         return id;

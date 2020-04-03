@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.rest.interceptor;
+package com.gepardec.hogarama.rest.unitmanagement.interceptor;
 
 import javax.interceptor.InterceptorBinding;
 import java.lang.annotation.Inherited;
@@ -15,3 +15,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({METHOD, TYPE})
 public @interface DetermineOwner {
 }
+
