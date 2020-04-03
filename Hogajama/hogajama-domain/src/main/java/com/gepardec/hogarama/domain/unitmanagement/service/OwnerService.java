@@ -29,7 +29,7 @@ public class OwnerService {
         ownerDao.save(owner);
         Unit defaultUnit = Unit.createDefault(owner);
         unitDao.save(defaultUnit);
-        owner.addToUnitList(defaultUnit);
+        owner.addUnit(defaultUnit);
         return owner;
     }
 

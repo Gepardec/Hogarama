@@ -1,7 +1,7 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
+import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.NotImplementedException;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,7 +21,7 @@ public class Owner implements Serializable {
     private String ssoUserId;
 
     @OneToMany(mappedBy = "owner")
-    private List<Unit> unitList;
+    private List<Unit> unitList = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -48,20 +48,16 @@ public class Owner implements Serializable {
     }
 
     public Unit getDefaultUnit() {
-        throw new NotImplementedException("add isDefault to unit first");
-//        return getUnitList().stream()
-////                .filter(Unit::isDefaultUnit)
-//                .findFirst()
-//                .orElseThrow(() ->
-//                        new RuntimeException(String.format("No Default unit given for user with id %s present.", getId())));
+        return unitList.stream()
+                .filter(Unit::isDefaultUnit)
+                .findFirst()
+                .orElseThrow(() ->
+                        new TechnicalException(String.format("No Default unit given for user with id %s present.", getId())));
     }
 
-    public void addToUnitList(Unit unit) {
+    public void addUnit(Unit unit) {
         Preconditions.checkNotNull(unit, "Unit must not be null.");
 
-        if (getUnitList() == null) {
-            unitList = new ArrayList<>();
-        }
         unitList.add(unit);
     }
 }
