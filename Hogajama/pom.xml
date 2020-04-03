@@ -17,7 +17,6 @@
 		<module>hogajama-rs</module>
         <module>raspberry-pi-mocks</module>
 		<module>hogajama-angular-frontend</module>
-		<module>warpunit-core</module>
 	</modules>
 
 	<properties>
