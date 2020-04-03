@@ -1,0 +1,20 @@
+<ion-content padding>
+  <button class="default-back" mat-button backButton>
+    <mat-icon matPrefix>arrow_back_ios</mat-icon>
+    Zurück
+  </button>
+
+  
+  <div class="center-container">
+    <h1 style="margin-bottom: 50px">Geschafft! <br>Dein Gerät ist eingerichtet</h1>
+
+    <button mat-raised-button class="round">
+      <mat-icon matPrefix>add</mat-icon>
+      Neues Gerät konfigurieren
+    </button>
+    <button mat-button class="round" (click)="backToHome()">
+      <mat-icon matPrefix>check</mat-icon>
+      Fertigstellen & Pflanze anzeigen
+    </button>
+  </div>
+</ion-content>

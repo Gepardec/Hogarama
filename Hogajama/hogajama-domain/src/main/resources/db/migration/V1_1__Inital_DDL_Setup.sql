@@ -1,4 +1,4 @@
-SET search_path = "management";
+SET search_path = "hogajama";
 
 create sequence seq_owner_id
     increment by 50;

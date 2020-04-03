@@ -16,6 +16,7 @@
 		<module>hogajama-services</module>
 		<module>hogajama-rs</module>
         <module>raspberry-pi-mocks</module>
+		<module>hogajama-angular-frontend</module>
 		<module>warpunit-core</module>
 	</modules>
 
@@ -176,6 +177,12 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
 					<version>${maven-war-plugin.version}</version>
 					<configuration>
@@ -269,6 +276,11 @@
 					<groupId>org.sonarsource.scanner.maven</groupId>
 					<artifactId>sonar-maven-plugin</artifactId>
 					<version>${sonar-maven-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>com.github.eirslett</groupId>
+					<artifactId>frontend-maven-plugin</artifactId>
+					<version>1.7.5</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

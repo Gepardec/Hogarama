@@ -1,0 +1,70 @@
+// http://ionicframework.com/docs/theming/
+@import '~@ionic/angular/css/core.css';
+@import '~@ionic/angular/css/normalize.css';
+@import '~@ionic/angular/css/structure.css';
+@import '~@ionic/angular/css/typography.css';
+@import '~@ionic/angular/css/display.css';
+@import '~@ionic/angular/css/padding.css';
+@import '~@ionic/angular/css/float-elements.css';
+@import '~@ionic/angular/css/text-alignment.css';
+@import '~@ionic/angular/css/text-transformation.css';
+@import '~@ionic/angular/css/flex-utils.css';
+
+
+.mat-raised-button.round, .mat-button.round {
+    border-radius: 20px;
+}
+
+button[mat-raised-button] {
+    background-color: transparent;
+
+    .mat-button-wrapper{
+        .material-icons {
+            font-size: 20px;
+        }
+        span {
+            height: 100%;
+            vertical-align: middle;
+        }
+        span:last-of-type {
+            margin-left: 10px;
+        }
+    }
+}
+button[mat-button] {
+    background-color: transparent;
+
+    .mat-button-wrapper{
+        .material-icons {
+            font-size: 20px;
+        }
+        span {
+            height: 100%;
+            vertical-align: middle;
+        }
+        span:last-of-type {
+            margin-left: 10px;
+        }
+    }
+}
+
+  
+div.center-container {
+    display: block !important;
+    margin: auto !important;
+    width: 400px;
+    height: 100px;
+    text-align: center;
+    padding-top: 100px;
+}
+
+button.default-back {
+    position: absolute;
+    left: 50px;
+    top: 100px;
+}
+
+.horizontal-center {
+  display: block !important;
+  margin: auto !important;
+}

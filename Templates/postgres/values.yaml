@@ -1,10 +1,9 @@
 global:
   postgresql:
-    postgresqlDatabase: {{TBD}}
-    postgresqlUsername: {{TBD}}
-    postgresqlPassword: {{TBD}}
+    postgresqlDatabase: management
+    postgresqlUsername: hogajama
+    postgresqlPassword: changepassword
 persistence:
-  storageClass: gp2
   size: 1Gi
 securityContext:
   enabled: false
