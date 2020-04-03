@@ -13,10 +13,10 @@ import {Unit} from "../../shared/models/Unit";
 export class HogaramaBackendService {
     public baseUrl = environment.backendUrl;
 
-    public actors = new HogaramaBackendPath<Actor>(this.http, 'rest/v2/actor');
-    public sensors = new HogaramaBackendPath<Sensor>(this.http, 'rest/v2/sensor');
-    public units = new HogaramaBackendPath<Unit>(this.http, 'rest/v2/unit');
-    public users = new HogaramaBackendPath<UserData>(this.http, 'rest/user', false);
+    public actors = new HogaramaBackendPath<Actor>(this.http, 'rest/unitmanagement/actor');
+    public sensors = new HogaramaBackendPath<Sensor>(this.http, 'rest/unitmanagement/sensor');
+    public units = new HogaramaBackendPath<Unit>(this.http, 'rest/unitmanagement/unit');
+    public users = new HogaramaBackendPath<UserData>(this.http, 'rest/unitmanagement/user', false);
 
     constructor(private http: HttpClient) {
     }

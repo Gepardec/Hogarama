@@ -5,9 +5,9 @@ import org.dcm4che.test.support.WarpUnitTestConfig;
 
 import java.io.Serializable;
 
-// TODO how to define baseRestUrl
+// TODO PH & EE how to define baseRestUrl
 @WarpUnitTestConfig(baseRestUrl = "http://localhost:8080/hogajama-rs/rest/")
 public class SensorServiceIT extends WarpUnitTest implements Serializable {
 
-    // TODO take over int tests
+    // TODO PH take over int tests as soon as CI process is defined
 }

@@ -1,10 +1,15 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.NotImplementedException;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Owner {
+public class Owner implements Serializable {
 
     @Id
     @GeneratedValue(generator = "OwnerIdGenerator", strategy = GenerationType.SEQUENCE)
@@ -40,5 +45,23 @@ public class Owner {
 
     public void setUnitList(List<Unit> unitList) {
         this.unitList = unitList;
+    }
+
+    public Unit getDefaultUnit() {
+        throw new NotImplementedException("add isDefault to unit first");
+//        return getUnitList().stream()
+////                .filter(Unit::isDefaultUnit)
+//                .findFirst()
+//                .orElseThrow(() ->
+//                        new RuntimeException(String.format("No Default unit given for user with id %s present.", getId())));
+    }
+
+    public void addToUnitList(Unit unit) {
+        Preconditions.checkNotNull(unit, "Unit must not be null.");
+
+        if (getUnitList() == null) {
+            unitList = new ArrayList<>();
+        }
+        unitList.add(unit);
     }
 }

@@ -1,10 +1,11 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Unit {
+public class Unit implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UnitIdGenerator", strategy = GenerationType.SEQUENCE)
@@ -61,6 +62,16 @@ public class Unit {
 
     public void setSensorList(List<Sensor> sensorList) {
         this.sensorList = sensorList;
+    }
+
+    // TODO default not possible anymore?
+    public static Unit createDefault(Owner owner) {
+        Unit unit = new Unit();
+//        unit.setDefaultUnit(true);
+        unit.setName("DEFAULT_UNIT");
+        unit.setDescription("Automatically created default unit.");
+        unit.setOwner(owner);
+        return unit;
     }
 
 }
