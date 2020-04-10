@@ -37,27 +37,27 @@ export class TestingPlaygroundPage implements OnInit {
 
     private async reloadData() {
         await this.reloadSensors();
-        await this.reloadActors();
+        // await this.reloadActors();
         await this.reloadUnits();
     }
 
     private async reloadUnits() {
         try {
-            this.unitsDataSource.data = await this.backend.units.getAll();
+            this.unitsDataSource.data = await this.backend.units.getAllForOwner();
         } catch (e) {
         }
     }
 
     private async reloadActors() {
         try {
-            this.actorsDataSource.data = await this.backend.actors.getAll();
+            this.actorsDataSource.data = await this.backend.actors.getAllForOwner();
         } catch (e) {
         }
     }
 
     private async reloadSensors() {
         try {
-            this.sensorsDataSource.data = await this.backend.sensors.getAll();
+            this.sensorsDataSource.data = await this.backend.sensors.getAllForOwner();
         } catch (e) {
         }
     }
@@ -118,7 +118,7 @@ export class TestingPlaygroundPage implements OnInit {
             let result = await this.backend.actors.delete(id);
             console.log(result);
             this.presentToast('Actor deleted');
-            this.reloadActors();
+            // this.reloadActors();
         } catch (e) {
             console.log(e);
             this.presentToast('Actor delete failed');
@@ -157,7 +157,7 @@ export class TestingPlaygroundPage implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log(result);
             this.presentToast('Actor added');
-            this.reloadActors();
+            // this.reloadActors();
         });
     }
 
@@ -196,7 +196,7 @@ export class TestingPlaygroundPage implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log(result);
             this.presentToast('Unit edited');
-            this.reloadActors();
+            // this.reloadActors();
         })
     }
 }

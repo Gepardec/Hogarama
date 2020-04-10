@@ -6,6 +6,8 @@ import com.gepardec.hogarama.domain.unitmanagement.service.OwnerService;
 import com.gepardec.hogarama.domain.unitmanagement.service.OwnerStore;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
@@ -15,9 +17,16 @@ import javax.ws.rs.core.SecurityContext;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * Intercepts all requests annotated with {@link DetermineOwner} and extracts logged in user
+ * by request's bearer token. <br />
+ * The extracted user will be stored in the {@link OwnerStore}.
+ */
 @DetermineOwner
 @Interceptor
 public class DetermineOwnerInterceptor {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DetermineOwnerInterceptor.class);
 
     @Inject
     private OwnerService service;
@@ -45,6 +54,7 @@ public class DetermineOwnerInterceptor {
             return service.register(ssoUserId);
         } catch (Exception e) {
             if (e.getCause().getMessage().contains("ConstraintViolationException")) {
+                LOG.warn("Tried to register owner twice.");
                 return service.getRegisteredOwner(ssoUserId).orElse(null);
             }
             throw e;
