@@ -18,41 +18,54 @@
 		<div ng-controller="MockController">
 			<div class="container-fluid">
 
-				<img src="img/logo-hogarama-gepardec.png" class="gepardec-logo" alt="gepardec logo"/>
+				<img src="img/logo-hogarama-gepardec.png" class="gepardec-logo"
+					alt="gepardec logo" />
 				<h2 align="center">Raspberry PI Mock Console</h2>
 				<div class="card">
 					<div class="card-body">
-									<img src="img/ajax-loader.gif" class="spinner" ng-hide="!running" alt="application loading icon"/>
-				<h3 align="center">Sent <span class="badge badge-secondary">{{nrOfSentMessages}}</span> messages</h3>
-				<div class="row">
-					<div class="col-md-12 text-center">
-						<form role="form">
-							<table>
-							<div class="form-group">
-								<label for="brokerUrl">Current value</label><br/>
-								<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-									<button type="button" class="btn btn-secondary" ng-click="changeCurrentValue(-10)">-</button>
-									<input id="currentValue" type="text" ng-model="currentValue" />
-									<button type="button" class="btn btn-secondary" ng-click="changeCurrentValue(10)">+</button>
-								</div>
+						<img src="img/ajax-loader.gif" class="spinner" ng-hide="!running"
+							alt="application loading icon" />
+						<h3 align="center">
+							Sent <span class="badge badge-secondary">{{nrOfSentMessages}}</span>
+							messages
+						</h3>
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<form role="form">
+									<table>
+										<div class="form-group">
+											<label for="brokerUrl">Current value</label><br />
+											<div class="btn-group btn-group-sm" role="group"
+												aria-label="Basic example">
+												<button type="button" class="btn btn-secondary"
+													ng-click="changeCurrentValue(-10)">-</button>
+												<input id="currentValue" type="text" ng-model="currentValue" />
+												<button type="button" class="btn btn-secondary"
+													ng-click="changeCurrentValue(10)">+</button>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="brokerUrl">Sensor type</label><br />
+											<div class="btn-group btn-group-sm" role="group"
+												aria-label="Basic example">
+												<input id="sensorType" type="text" ng-model="sensorType" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="brokerUrl">Sensor name</label><br />
+											<div class="btn-group btn-group-sm" role="group"
+												aria-label="Basic example">
+												<input id="sensorName" type="text" ng-model="sensorName" />
+											</div>
+										</div>
+										<button class="btn btn-success" ng-hide="running"
+											ng-click="start()">Run</button>
+										<button class="btn btn-danger" ng-hide="!running"
+											ng-click="stop()">Stop</button>
+									</table>
+								</form>
 							</div>
-							<div class="form-group">
-								<label for="brokerUrl">Sensor type</label><br/>
-								<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-									<input id="sensorType" type="text" ng-model="sensorType" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="brokerUrl">Sensor name</label><br/>
-								<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-									<input id="sensorName" type="text" ng-model="sensorName" />
-								</div>
-							</div>
-							<button class="btn btn-success" ng-hide="running" ng-click="start()">Run</button>
-							<button class="btn btn-danger" ng-hide="!running" ng-click="stop()">Stop</button>
-						</form>
-					</div>
-				</div>
+						</div>
 					</div>
 				</div>
 
