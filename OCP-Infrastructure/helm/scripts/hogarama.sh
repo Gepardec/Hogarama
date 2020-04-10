@@ -61,6 +61,8 @@ main() {
     local input=($@)
     local all_opts=(${input[@]:1})
     local extravars=""
+    local namespace=""
+    local print_output=false
 
     local namespace_hogarama=hogarama
     local namespace_keycloak=gepardec
@@ -70,7 +72,7 @@ main() {
     fi
 
      # getopts
-    local opts=`getopt -o fqdr:e: --long force,dryrun,quiet,resource:,ns-hogarama:,ns-keycloak: -- "${all_opts[@]}"`
+    local opts=`getopt -o fqdr:e:w --long force,dryrun,quiet,resource:,ns-hogarama:,ns-keycloak,write-template: -- "${all_opts[@]}"`
     local opts_return=$?
     if [[ ${opts_return} != 0 ]]; then
         echo
@@ -81,8 +83,8 @@ main() {
     eval set -- "$opts"
     while true ; do
         case "$1" in
-        --resource)
-            resource=${2,,}
+        --resource | -r)
+            resources+=${2,,}
             shift 2
             ;;
         -d | --dryrun)
@@ -109,16 +111,17 @@ main() {
             namespace_keycloak="${2,,}"
             shift 2
             ;;
+        --write-template | -w)
+            print_output=true
+            shift 1
+            ;;
         *)
           break
           ;;
         esac
     done
 
-    #####
-    ### CHECK FOR SECRETS FILE
-    #####
-
+    ## CHECK FOR SECRETS FILE
     FILE=${TOPLEVEL_DIR}/helm/secrets/secrets.yaml
     if [[ ! -f "$FILE" ]]; then
         echo "#########################################################################"
@@ -129,16 +132,44 @@ main() {
         exit 1
     fi
 
+    ## CHECK LOGGED-IN STATUS ON CLUSTER
     rc="$(oc whoami > /dev/null 2>&1  ;echo $?)"
     if [[ rc -gt 0 ]]; then
         echo "You are not logged in to the OpenShift Cluster, please login and try again"
         exit 1
     fi
 
+    ## REPLACE SECRETS
     if [[ ${command} == "replace-secrets" ]];then
+        # überlegen, ob auch für einzelne Resourcen zu ermöglichen?
         j2-template "${TOPLEVEL_DIR}" "helm" "${extravars}"
         exit 0
     fi
+
+    ## INSTALL
+    if [[ ${command} == "install" ]];then
+        helm-install install resources[@]
+        exit 0
+    fi
+
+    ## UPGRADE
+    if [[ ${command} == "upgrade" ]];then
+        helm-install upgrade resources[@]
+        exit 0
+    fi
+
+    if [[ "${command}" == "template" ]]; then
+        helm-template resources[@] ${print_output}
+        exit 0
+    fi
+
+    if [[ "${command}" == "uninstall" ]]; then
+        helm-uninstall resources[@]
+    fi
+
+    echo ""
+    echo "reached end of script"
+    exit 0
 }
 readonly -f main
 [ "$?" -eq "0" ] || return $?

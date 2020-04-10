@@ -1,0 +1,57 @@
+#!/bin/bash
+## Function that provides helm installation and upgrade mechanism!
+function helm-install () {
+    local command="${1}"
+    local resources=("${!2}")
+    local flag_dryrun=${FLAG_DRYRUN:-false}}
+    local flag_quiet=${FLAG_QUIET:-false}}
+    local flag_force=${FLAG_FORCE:-false}}
+    local secrets_file=${TOPLEVEL_DIR}/helm/secrets/values.yaml
+
+    ## CHECK SPECIAL RESOURCES COMMANDS
+    if [[ " ${resources[@]} " =~ "hogarama-all" ]]; then
+        resources=("hogarama-commons" "amq" "fluentd" "prometheus" "grafana" "mongodb" "hogajama")
+    elif [[ " ${resources[@]} " =~ "keycloak-all" ]]; then
+        resources=("keycloak-commons" "commons")
+    elif  [[ " ${resources[@]} " =~ "all" ]]; then
+        resources=${RESOURCE_ORDER[@]}
+    fi
+
+    if [[ "${#resources}" -eq 0 ]]; then
+        echo "no resources for ${command} operation provided"
+        echo ""
+        usage_message
+        exit 1
+    fi
+
+    ## INSTALL
+    for item in ${RESOURCE_ORDER[@]}; do
+        if [[ " ${resources[@]} " =~ "${item}" ]]; then
+            # use correct namespace
+            if [[ "${item}" == "keycloak-commons" ]] || [[ "${item}" == "keycloak" ]]; then
+                namespace="${namespace_keycloak}"
+            else
+                namespace="${namespace_hogarama}"
+            fi
+
+            exec_command="helm ${command} helm-${item} ${TOPLEVEL_DIR}/helm/${item} -n ${namespace} ${extravars} -f ${secrets_file}"
+            exec_command_force="helm upgrade helm-${item} ${TOPLEVEL_DIR}/helm/${item} -n ${namespace} ${extravars} -f ${secrets_file}"
+
+            if [[ ${FLAG_FORCE} == "true" ]] && [[ "${command}" == "install" ]]; then
+                execute "${exec_command}" 2>/dev/null || execute "${exec_command_force}"
+            else
+                execute "${exec_command}"
+            fi
+
+            rc="$(echo $?)"
+            if [[ "${rc}" -gt 0 ]]; then
+                echo "Something went wrong trying to ${command} resource ${item} in namespace ${namespace}"
+                exit 1
+            fi
+        fi
+    done
+}
+# readonly definition of a function throws an error if another function
+# with the same name is defined a second time
+readonly -f helm-install
+[ "$?" -eq "0" ] || return $?

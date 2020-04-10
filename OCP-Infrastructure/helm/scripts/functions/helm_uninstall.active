@@ -1,0 +1,112 @@
+#!/bin/bash
+
+function helm-uninstall () {
+    local resources=("${!1}")
+    local flag_dryrun=${FLAG_DRYRUN:-false}}
+    local flag_quiet=${FLAG_QUIET:-false}}
+    local secrets_file=${TOPLEVEL_DIR}/helm/secrets/values.yaml
+
+    ## CHECK SPECIAL RESOURCES COMMANDS
+    if [[ " ${resources[@]} " =~ "hogarama-all" ]]; then
+        resources=("hogarama-commons" "amq" "fluentd" "prometheus" "grafana" "mongodb" "hogajama")
+    elif [[ " ${resources[@]} " =~ "keycloak-all" ]]; then
+        resources=("keycloak-commons" "commons")
+    elif  [[ " ${resources[@]} " =~ "all" ]]; then
+        resources=${RESOURCE_ORDER[@]}
+    fi
+
+    if [[ "${#resources}" -eq 0 ]]; then
+        echo "no resources marked for deinstallation"
+        echo ""
+        usage_message
+        exit 1
+    fi
+
+    ## INSTALL
+    for item in ${RESOURCE_ORDER[@]}; do
+        if [[ " ${resources[@]} " =~ "${item}" ]]; then
+            # use correct namespace
+            if [[ "${item}" == "keycloak-commons" ]] || [[ "${item}" == "keycloak" ]]; then
+                namespace="${namespace_keycloak}"
+            else
+                namespace="${namespace_hogarama}"
+            fi
+            exec_command="helm uninstall helm-${item} -n ${namespace}"
+            eval remove-${item} "${exec_command}"
+
+            rc="$(echo $?)"
+            if [[ "${rc}" -gt 0 ]]; then
+                echo "Something went wrong trying to install resource ${item} in namespace ${namespace}"
+                exit 1
+            fi
+        fi
+    done
+}
+# readonly definition of a function throws an error if another function
+# with the same name is defined a second time
+readonly -f helm-uninstall
+[ "$?" -eq "0" ] || return $?
+
+
+## SPECIAL FUNCTIONS TO HANDLE CUSTOM RESOURCES, SUBSCRIPTIONS, etc.
+function remove-default() {
+    command="${@}"
+    execute "${command}"
+}
+readonly -f remove-default
+[ "$?" -eq "0" ] || return $?
+
+function remove-keycloak-commons() {
+    remove-default "${@}"
+}
+readonly -f remove-keycloak-commons
+[ "$?" -eq "0" ] || return $?
+
+function remove-keycloak() {
+    remove-default "${@}"
+}
+readonly -f remove-keycloak
+[ "$?" -eq "0" ] || return $?
+
+function remove-hogarama-commons() {
+    remove-default "${@}"
+}
+readonly -f remove-hogarama-commons
+[ "$?" -eq "0" ] || return $?
+
+function remove-amq() {
+    remove-default "${@}"
+}
+readonly -f remove-amq
+[ "$?" -eq "0" ] || return $?
+
+function remove-fluentd() {
+    remove-default "${@}"
+}
+readonly -f remove-fluentd
+[ "$?" -eq "0" ] || return $?
+
+function remove-prometheus() {
+    remove-default "${@}"
+}
+readonly -f remove-prometheus
+[ "$?" -eq "0" ] || return $?
+
+function remove-grafana() {
+    remove-default "${@}"
+}
+readonly -f remove-grafana
+[ "$?" -eq "0" ] || return $?
+
+function remove-mongodb() {
+    remove-default "${@}"
+}
+readonly -f remove-mongodb
+[ "$?" -eq "0" ] || return $?
+
+function remove-hogajama() {
+    remove-default "${@}"
+}
+readonly -f remove-hogajama
+[ "$?" -eq "0" ] || return $?
+

@@ -54,7 +54,7 @@ hogarama:
         mongodb_pw: {{ MONGODB_PW | b64encode }}
   hogajama:
     keycloak:
-      server-url: {{ HOGAJAMA_KEYCLOAK_SERVER_URL }}
+      server_url: {{ HOGAJAMA_KEYCLOAK_SERVER_URL }}
     trigger:
       secret:
         source_to_image:

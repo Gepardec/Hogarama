@@ -7,7 +7,7 @@ spec:
   #TODO: scheinbar kommt der eap operator nur mit der vollständigen Registry klar. Frage: wie gehen wir damit um, falls wir ihn in einem anderen Namespace verwenden wollen?
   env:
     - name: KEYCLOAK_AUTH_SERVER_URL
-      value: {{ .Values.hogarama.hogajama.keycloak.server-url }}
+      value: {{ .Values.hogarama.hogajama.keycloak.server_url }}
 #      value: 'https://secure-sso-57-hogarama.cloud.itandtel.at/auth/'
   replicas: 1
   serviceAccountName: hogajama-anyuid

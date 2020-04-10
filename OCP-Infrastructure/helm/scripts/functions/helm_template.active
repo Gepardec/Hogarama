@@ -1,0 +1,49 @@
+#!/bin/bash
+## Function that provides helm installation and upgrade mechanism!
+function helm-template () {
+    local resources=("${!1}")
+    local output="${2:-false}"
+    local flag_dryrun=${FLAG_DRYRUN:-false}}
+    local flag_quiet=${FLAG_QUIET:-false}}
+    local flag_force=${FLAG_FORCE:-false}}
+    local secrets_file=${TOPLEVEL_DIR}/helm/secrets/values.yaml
+
+    ## CHECK SPECIAL RESOURCES COMMANDS
+    if [[ " ${resources[@]} " =~ "hogarama-all" ]]; then
+        resources=("hogarama-commons" "amq" "fluentd" "prometheus" "grafana" "mongodb" "hogajama")
+    elif [[ " ${resources[@]} " =~ "keycloak-all" ]]; then
+        resources=("keycloak-commons" "commons")
+    elif  [[ " ${resources[@]} " =~ "all" ]] || [[ "${#resources}" -eq 0 ]]; then
+        resources=${RESOURCE_ORDER[@]}
+    fi
+
+    if [[ "${#resources}" -eq 0 ]]; then
+        echo "no resources for installation provided"
+        echo ""
+        usage_message
+        exit 1
+    fi
+
+    ## INSTALL
+    for item in ${RESOURCE_ORDER[@]}; do
+        if [[ " ${resources[@]} " =~ "${item}" ]]; then
+            exec_command="helm template ${TOPLEVEL_DIR}/helm/${item} -f ${secrets_file}"
+
+            if [[ "${output}" == "false" ]];then
+                execute "${exec_command}"
+            else
+                execute "${exec_command} --output-dir ${TOPLEVEL_DIR}/helm/secrets"
+            fi
+
+            rc="$(echo $?)"
+            if [[ "${rc}" -gt 0 ]]; then
+                echo "Something went wrong trying to template resource ${item} check previous messages for more information"
+                exit 1
+            fi
+        fi
+    done
+}
+# readonly definition of a function throws an error if another function
+# with the same name is defined a second time
+readonly -f helm-template
+[ "$?" -eq "0" ] || return $?
