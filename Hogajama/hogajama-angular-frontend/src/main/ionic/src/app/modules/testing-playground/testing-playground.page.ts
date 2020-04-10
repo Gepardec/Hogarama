@@ -43,21 +43,21 @@ export class TestingPlaygroundPage implements OnInit {
 
     private async reloadUnits() {
         try {
-            this.unitsDataSource.data = await this.backend.units.getAll();
+            this.unitsDataSource.data = await this.backend.units.getAllForOwner();
         } catch (e) {
         }
     }
 
     private async reloadActors() {
         try {
-            this.actorsDataSource.data = await this.backend.actors.getAll();
+            this.actorsDataSource.data = await this.backend.actors.getAllForOwner();
         } catch (e) {
         }
     }
 
     private async reloadSensors() {
         try {
-            this.sensorsDataSource.data = await this.backend.sensors.getAll();
+            this.sensorsDataSource.data = await this.backend.sensors.getAllForOwner();
         } catch (e) {
         }
     }

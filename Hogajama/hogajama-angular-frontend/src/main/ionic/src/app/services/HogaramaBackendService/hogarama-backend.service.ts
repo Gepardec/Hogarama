@@ -16,7 +16,7 @@ export class HogaramaBackendService {
     public actors = new HogaramaBackendPath<Actor>(this.http, 'rest/unitmanagement/actor');
     public sensors = new HogaramaBackendPath<Sensor>(this.http, 'rest/unitmanagement/sensor');
     public units = new HogaramaBackendPath<Unit>(this.http, 'rest/unitmanagement/unit');
-    public users = new HogaramaBackendPath<UserData>(this.http, 'rest/unitmanagement/user', false);
+    public users = new HogaramaBackendPath<UserData>(this.http, 'rest/unitmanagement/user');
 
     constructor(private http: HttpClient) {
     }
