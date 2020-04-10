@@ -6,6 +6,8 @@ import com.gepardec.hogarama.rest.unitmanagement.dto.SensorDto;
 import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
 import com.gepardec.hogarama.rest.unitmanagement.translator.SensorDtoTranslator;
 import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -16,6 +18,8 @@ import java.util.List;
 @DetermineOwner
 public class SensorApiImpl implements SensorApi {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SensorApiImpl.class);
+
     @Inject
     private SensorService service;
     @Inject
@@ -23,6 +27,7 @@ public class SensorApiImpl implements SensorApi {
 
     @Override
     public Response getForOwner(SecurityContext securityContext) {
+        LOG.info("Get sensors for current owner.");
         List<SensorDto> dtoList = translator.toDtoList(service.getAllSensorForOwner());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
@@ -30,6 +35,7 @@ public class SensorApiImpl implements SensorApi {
     @Override
     @Transactional
     public Response create(SecurityContext securityContext, SensorDto sensorDto) {
+        LOG.info("Create sensor.");
         Sensor sensor = translator.fromDto(sensorDto);
         service.createSensor(sensor);
 
@@ -39,6 +45,7 @@ public class SensorApiImpl implements SensorApi {
     @Override
     @Transactional
     public Response update(String id, SecurityContext securityContext, SensorDto sensorDto) {
+        LOG.info("Updating sensor with id {}.", id);
         Sensor sensor = translator.fromDto(sensorDto);
         if (id == null || !id.equals(sensorDto.getId().toString()) || sensorDto.getUnitId() == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
@@ -52,6 +59,7 @@ public class SensorApiImpl implements SensorApi {
     @Override
     @Transactional
     public Response delete(String id, SecurityContext securityContext) {
+        LOG.info("Deleting sensor with id {}.", id);
         if (id == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
         } else {
