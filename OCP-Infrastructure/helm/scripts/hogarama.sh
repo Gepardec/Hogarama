@@ -69,6 +69,7 @@ main() {
 
     if [[ ! " ${COMMANDS[@]} " =~ " ${command} " ]] || [[ ${command} == "help" ]]; then
        usage_message
+       exit 0
     fi
 
      # getopts
