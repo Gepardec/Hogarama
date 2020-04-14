@@ -81,10 +81,13 @@ main () {
   ####
   # CORE LOGIC
   execute "docker run --rm -it \
-  -v ${TOPLEVEL_DIR}:/mnt/hogarama \
-  fhochleitner/oc-helm:latest \
-  helm template /mnt/hogarama/hogarama"
-
+    -v ${TOPLEVEL_DIR}:/mnt/hogarama \
+    fhochleitner/oc-helm:latest \
+    helm lint /mnt/hogarama/hogarama"
+  execute "docker run --rm -it \
+    -v ${TOPLEVEL_DIR}:/mnt/hogarama \
+    fhochleitner/oc-helm:latest \
+    helm template /mnt/hogarama/hogarama"
 
 }
 readonly -f main

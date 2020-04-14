@@ -1,6 +1,8 @@
 #Helm
 OCP-Infrastructure/secrets/
 
+# MacOS
+.DS_Store
 
 # Eclipse
 .metadata/

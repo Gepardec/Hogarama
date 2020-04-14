@@ -21,7 +21,6 @@
    :alt: maintenance badge
    :align: left
 
-
 .. image:: https://www.gepardec.com/files/gepardec_logo_light_background@2000w.png
    :width: 100px
    :alt: gepardec
@@ -38,6 +37,9 @@ Welcome to Hogarama's documentation!
    :caption: Contents
 
    gettingstarted
+   habarama
+   hogajama
+   documentation
 
 First steps
 ----------------
@@ -45,3 +47,8 @@ First steps
 We use our *Home and Garden Automation* to water our office plants. As all good applications have a catchy name, we came up with an abbreviation and started to call our application "Hogarama". Hogarama is a distributed application consisting of multiple components. Managing all the components can be cumbersome, hence we use a few tools to make managing Hogarama a breeze. With *Helm* we orchestrate our infrastructure resources on Openshift, with *docker* we abstract the required packages a developer or sysadmin needs installed on his workstation and with *Bash* we provide a cli interface for our users to simplify application lifecycle management.
 
 Next up you can take a look at our :doc:`Getting started <gettingstarted>` guide on how to install Hogarama on OpenShift
+
+Documentation
+-----------------
+
+We need to be able to understand the application, its components, lifecycle management, cicd and much more. In addition to the general awareness we want to make it simple for new colleagues to get started with Hogarama. Hence documentation is key. Here is how we do :doc:`Documentation <documentation>` for Hogarama.

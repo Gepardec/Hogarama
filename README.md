@@ -1,25 +1,3 @@
 [![Build Status](https://travis-ci.org/Gepardec/Hogarama.svg?branch=master)](https://travis-ci.org/Gepardec/Hogarama) [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.gepardec.hogajama:hogajama)](https://sonarcloud.io/dashboard/index/com.gepardec.hogajama:hogajama)
 
-# Hogarama
-Home and Garden Automation.
-This is Gepardec's fun project to learn about IoT, OpenShift and various other technologies.
-
-## Habarama
-Habarama is the OpenHab/Raspberry part of the Hogarama Project.
-It uses OpenHab to connect the Raspberry with each other and for collecting data from the sensors.
-
-[More...](Habarama/README.md)
-
-## Hogajama
-Hogajama is the Java/Maven part of the Hogarama Project. It is a Java EE application supposed to be deployed in Openshift(r) environment that provides backend services for R3.14 and frontend for end user.
-
-[More...](Hogajama/README.md)
-
-## Hogarama-Jenkins
-Jenkins docker image project. This docker image containing Jenkins for building and deployment of Hogarama project. The image provides Docker inside itself, which allows to run any Docker container in your Jenkins build script.
-
-[More...](Infrastructure/Jenkins/README.md)
-
-For this project, the following RedHat products are used which require at least a RedHat developer subscription:
-* JBoss EAP
-* JBoss A-MQ
+We use our *Home and Garden Automation* to water our office plants. As all good applications have a catchy name, we came up with an abbreviation and started to call our application "Hogarama". Hogarama is a distributed application consisting of multiple components. Managing all the components can be cumbersome, hence we use a few tools to make managing Hogarama a breeze. To find out more about Hogaram check out our documentation at [https://gepardec.github.io/Hogarama](https://gepardec.github.io/Hogarama)
