@@ -11,7 +11,7 @@ import {HogaramaBackendService} from "../../../services/HogaramaBackendService/h
 export class SensorDialogComponent implements OnInit {
 
   public sensor: Sensor;
-  private isEditAction = false;
+  public isEditAction = false;
 
   constructor(
       public dialogRef: MatDialogRef<SensorDialogComponent>,

@@ -11,7 +11,7 @@ import {Unit} from "../../../shared/models/Unit";
 export class UnitDialogComponent implements OnInit {
 
   public unit: Unit;
-  private isEditAction = false;
+  public isEditAction = false;
 
   constructor(
       public dialogRef: MatDialogRef<UnitDialogComponent>,

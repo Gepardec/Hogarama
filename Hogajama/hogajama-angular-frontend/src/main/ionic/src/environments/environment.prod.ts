@@ -10,5 +10,6 @@ export const environment = {
   production: true,
   keycloak: keycloakConfig,
   keycloakLibrarySubUrl: 'js/keycloak.js',
+  keycloakTokenMinValidity: 30,
   backendUrl: 'hogajama-rs'
 };

@@ -11,7 +11,7 @@ import {Actor} from "../../../shared/models/Actor";
 export class ActorDialogComponent implements OnInit {
 
   public actor: Actor;
-  private isEditAction = false;
+  public isEditAction = false;
 
   constructor(
       public dialogRef: MatDialogRef<ActorDialogComponent>,

@@ -25,7 +25,7 @@ export class TestingPlaygroundPage implements OnInit {
     unitsDisplayedColumns: string[] = ['id', 'name', 'description', 'isDefault', 'ownerId', 'actions'];
     unitsDataSource: MatTableDataSource<Unit>= new MatTableDataSource<Unit>();
     constructor(
-      private authService: AuthenticationService,
+      public authService: AuthenticationService,
       public toastController: ToastController,
       private backend: HogaramaBackendService,
       public dialog: MatDialog
