@@ -14,8 +14,8 @@
 
 	<dependencies>
 		<dependency>
-			<artifactId>hogajama-domain</artifactId>
 			<groupId>com.gepardec.hogajama</groupId>
+			<artifactId>hogajama-domain</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mongodb.morphia</groupId>

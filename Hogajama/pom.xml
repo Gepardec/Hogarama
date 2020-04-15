@@ -53,6 +53,8 @@
 		<build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
 		<sonar-maven-plugin.version>3.3.0.603</sonar-maven-plugin.version>
+		<com.querydsl.version>4.2.1</com.querydsl.version>
+		<org.assertj.version>3.15.0</org.assertj.version>
 	</properties>
 
 	<dependencies>
@@ -167,6 +169,12 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-bundle-jaxrs</artifactId>
 				<version>${org.apache.cxf.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-core</artifactId>
+				<version>${org.assertj.version}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>

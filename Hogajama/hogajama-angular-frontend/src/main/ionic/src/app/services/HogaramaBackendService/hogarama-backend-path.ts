@@ -24,9 +24,9 @@ export class HogaramaBackendPath<responseType> {
       this.http.get<WrappedDto<responseType[]>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`).toPromise()
     );
   }
-  public getAll(): Promise<responseType[]> {
+  public getAllForOwner(): Promise<responseType[]> {
     return this.mapPromiseResult(
-      this.http.get<WrappedDto<responseType[]>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}/all`).toPromise()
+      this.http.get<WrappedDto<responseType[]>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`).toPromise()
     );
   }
   public put(data: responseType): Promise<responseType> {

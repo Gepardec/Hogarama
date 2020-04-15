@@ -1,10 +1,11 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Unit {
+public class Unit implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UnitIdGenerator", strategy = GenerationType.SEQUENCE)
@@ -15,6 +16,9 @@ public class Unit {
     private String name;
 
     private String description;
+
+    @Column(columnDefinition = "boolean default false", name = "is_default", nullable = false)
+    private Boolean defaultUnit;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -61,6 +65,27 @@ public class Unit {
 
     public void setSensorList(List<Sensor> sensorList) {
         this.sensorList = sensorList;
+    }
+
+    public Boolean getDefaultUnit() {
+        return defaultUnit;
+    }
+
+    public void setDefaultUnit(Boolean defaultUnit) {
+        this.defaultUnit = defaultUnit;
+    }
+
+    public Boolean isDefaultUnit() {
+        return defaultUnit;
+    }
+
+    public static Unit createDefault(Owner owner) {
+        Unit unit = new Unit();
+        unit.setDefaultUnit(true);
+        unit.setName("DEFAULT_UNIT");
+        unit.setDescription("Automatically created default unit.");
+        unit.setOwner(owner);
+        return unit;
     }
 
 }
