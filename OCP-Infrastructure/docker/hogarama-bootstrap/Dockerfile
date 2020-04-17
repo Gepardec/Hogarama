@@ -26,5 +26,5 @@ RUN yum install -y https://centos7.iuscommunity.org/ius-release.rpm && \
     yum clean all -y
 
 RUN pip3 install j2cli j2cli[yaml] pyyaml pybase64 --upgrade
-COPY jinja-filter/ /opt/jinja/filters/
+COPY jinja-filter /opt/jinja/filters/
 WORKDIR /mnt
