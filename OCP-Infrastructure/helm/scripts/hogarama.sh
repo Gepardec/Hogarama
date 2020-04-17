@@ -43,14 +43,27 @@ done
 
 usage_message () {
   echo """Usage:
-    $PROGNAME --resource RESOURCE [--resource RESOURCE] [OPT ..]
-      -r | --resource) ... multiple definitions possible
+    $PROGNAME COMMAND --resource RESOURCE [--resource RESOURCE] [OPT ..]
+        available commands:
+            install)                ... installs selected resource(s) in chosen namespace
+            upgrade)                ... upgrades selected resource(s) in chosen namespace
+            uninstall)              ... uninstalls selected resource(s) in chosen namespace
+            template)               ... executes helm template for selected resource(s)
+            replace-secrets)        ... creates values.yaml file with secrets provided in secrets/secrets.yaml
+            help)                   ... this help menu
 
-      -f | --force)    ... process template even if target file exists
-      -d | --dryrun)   ... dryrun
-      -q | --quiet)    ... quiet
-
-      -h | --help)     ... help"""
+        availaible options:
+            -r | --resource)        ... multiple definitions possible
+            -f | --force)           ... overwrites existing resources/executes helm upgrade if installation fails
+            -d | --dryrun)          ... dryrun
+            -q | --quiet)           ... quiet
+            -e | --extravars)       ... multiple definitions possible. Add additional/overwrite variabls in values.yaml or secret.yaml\
+            -w | --write-template)  ... helm template output will be written to secrets working directory
+            --ns-hogarama)          ... namespace to/from which hogarama resources will be installed/uninstalled
+                                        default-value: hogarama
+            --ns-keycloak)          ... namespace to/from which keycloak resources will be installed/uninstalled
+                                        default-value: gepardec
+        """
 }
 readonly -f usage_message
 [ "$?" -eq "0" ] || return $?
@@ -142,7 +155,6 @@ main() {
 
     ## REPLACE SECRETS
     if [[ ${command} == "replace-secrets" ]];then
-        # überlegen, ob auch für einzelne Resourcen zu ermöglichen?
         j2-template "${TOPLEVEL_DIR}" "helm" "${extravars}"
         exit 0
     fi
@@ -159,18 +171,20 @@ main() {
         exit 0
     fi
 
+    ## TEMPLATE
     if [[ "${command}" == "template" ]]; then
         helm-template resources[@] ${print_output}
         exit 0
     fi
 
+    ## UNINSTALL
     if [[ "${command}" == "uninstall" ]]; then
         helm-uninstall resources[@]
+        exit 0
     fi
 
-    echo ""
-    echo "reached end of script"
-    exit 0
+    echo "unexpectedly reached end of script."
+    exit 1
 }
 readonly -f main
 [ "$?" -eq "0" ] || return $?
