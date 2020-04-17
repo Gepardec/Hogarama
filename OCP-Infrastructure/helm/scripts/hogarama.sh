@@ -147,6 +147,10 @@ main() {
         exit 1
     fi
 
+    if [[ ! -f "${HOME}/.kube/config" ]]; then
+        export KUBECONFIG=/.kube/config
+    fi
+
     ## CHECK LOGGED-IN STATUS ON CLUSTER
     rc="$(oc whoami > /dev/null 2>&1  ;echo $?)"
     if [[ rc -gt 0 ]]; then
@@ -156,7 +160,7 @@ main() {
 
     ## REPLACE SECRETS
     if [[ ${command} == "replace-secrets" ]];then
-        j2-template "${TOPLEVEL_DIR}" "helm" "${extravars}"
+        execute "j2-template ${TOPLEVEL_DIR} helm ${extravars}"
         exit 0
     fi
 
