@@ -54,6 +54,7 @@ usage_message () {
 
         availaible options:
             -r | --resource)        ... multiple definitions possible
+                                        special resources: hogarama-all, keycloak-all, all
             -f | --force)           ... overwrites existing resources/executes helm upgrade if installation fails
             -d | --dryrun)          ... dryrun
             -q | --quiet)           ... quiet
