@@ -69,17 +69,21 @@ readonly -f remove-keycloak-commons
 [ "$?" -eq "0" ] || return $?
 
 function remove-keycloak() {
-    execute "oc delete Subscription/keycloak-operator -n ${namespace}"
+    local csvkeycloak=$(oc get subscription keycloak-operator -n ${namespace} -o yaml | grep currentCSV | cut -d ":" -f2 | awk '{$1=$1;print}')
     remove-default "${@}"
+    rexecute "oc delete clusterserviceversion ${csvkeycloak} -n ${namespace}"
 }
 readonly -f remove-keycloak
 [ "$?" -eq "0" ] || return $?
 
 function remove-hogarama-commons() {
-    execute "oc delete Subscription/eap-operator -n ${namespace}"
-    execute "oc delete Subscription/grafana-operator -n ${namespace}"
-    execute "oc delete Subscription/prometheus-operator -n ${namespace}"
+    local csveap=$(oc get subscription eap-operator -n ${namespace} -o yaml | grep currentCSV | cut -d ":" -f2 | awk '{$1=$1;print}') && echo "found clusterserviceversion: ${csveap}"
+    local csvgrafana=$(oc get subscription grafana-operator -n ${namespace} -o yaml | grep currentCSV | cut -d ":" -f2 | awk '{$1=$1;print}') && echo "found clusterserviceversion: ${csvgrafana}"
+    local csvprometheus=$(oc get subscription prometheus-operator -n ${namespace} -o yaml | grep currentCSV | cut -d ":" -f2 | awk '{$1=$1;print}') && echo "found clusterserviceversion: ${csvprometheus}"
     remove-default "${@}"
+    execute "oc delete clusterserviceversion ${csveap} -n ${namespace}"
+    execute "oc delete clusterserviceversion ${csvgrafana} -n ${namespace}"
+    execute "oc delete clusterserviceversion ${csvprometheus} -n ${namespace}"
 }
 readonly -f remove-hogarama-commons
 [ "$?" -eq "0" ] || return $?

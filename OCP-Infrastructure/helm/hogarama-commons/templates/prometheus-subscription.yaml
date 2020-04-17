@@ -7,4 +7,3 @@ spec:
   name: prometheus 
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: prometheusoperator.0.32.0
