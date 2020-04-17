@@ -5,6 +5,7 @@ function helm-uninstall () {
     local flag_dryrun=${FLAG_DRYRUN:-false}}
     local flag_quiet=${FLAG_QUIET:-false}}
     local secrets_file=${TOPLEVEL_DIR}/helm/secrets/values.yaml
+    local rc_overall=0
 
     ## CHECK SPECIAL RESOURCES COMMANDS
     if [[ " ${resources[@]} " =~ "hogarama-all" ]]; then
@@ -22,7 +23,7 @@ function helm-uninstall () {
         exit 1
     fi
 
-    ## INSTALL
+    ## UNINSTALL
     for item in ${RESOURCE_ORDER[@]}; do
         if [[ " ${resources[@]} " =~ "${item}" ]]; then
             # use correct namespace
@@ -36,11 +37,16 @@ function helm-uninstall () {
 
             rc="$(echo $?)"
             if [[ "${rc}" -gt 0 ]]; then
-                echo "Something went wrong trying to install resource ${item} in namespace ${namespace}"
-                exit 1
+                rc_overall=1
+                echo "Something went wrong trying to uninstall resource ${item} in namespace ${namespace}"
             fi
         fi
     done
+
+    if [[ "${rc_overall}" -gt 0 ]];then
+        echo "There was an error trying to uninstall a provided resource. Please check previous log messages for more information"
+        exit 1
+    fi
 }
 # readonly definition of a function throws an error if another function
 # with the same name is defined a second time
@@ -63,12 +69,16 @@ readonly -f remove-keycloak-commons
 [ "$?" -eq "0" ] || return $?
 
 function remove-keycloak() {
+    execute "oc delete Subscription/keycloak-operator -n ${namespace}"
     remove-default "${@}"
 }
 readonly -f remove-keycloak
 [ "$?" -eq "0" ] || return $?
 
 function remove-hogarama-commons() {
+    execute "oc delete Subscription/eap-operator -n ${namespace}"
+    execute "oc delete Subscription/grafana-operator -n ${namespace}"
+    execute "oc delete Subscription/prometheus-operator -n ${namespace}"
     remove-default "${@}"
 }
 readonly -f remove-hogarama-commons
@@ -93,6 +103,7 @@ readonly -f remove-prometheus
 [ "$?" -eq "0" ] || return $?
 
 function remove-grafana() {
+    execute "oc delete GrafanaDashboard/grafana-dashboard -n ${namespace}"
     remove-default "${@}"
 }
 readonly -f remove-grafana
@@ -109,4 +120,3 @@ function remove-hogajama() {
 }
 readonly -f remove-hogajama
 [ "$?" -eq "0" ] || return $?
-
