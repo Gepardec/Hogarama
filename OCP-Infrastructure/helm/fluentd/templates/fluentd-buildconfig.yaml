@@ -10,9 +10,6 @@ metadata:
   name: fluentd
 spec:
   serviceAccount: builder
-  resources:
-    requests:
-      memory: 400Mi
   output:
     to:
       kind: ImageStreamTag
