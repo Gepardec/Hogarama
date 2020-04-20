@@ -26,23 +26,20 @@ spec:
               value: {{ .Values.global.timezone }}
           image: "{{ .Values.hogarama.fluentd.imageStream.name }}:latest"
           imagePullPolicy: Always
-          livenessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - '-c'
-                - >-
-                  tail -1 /fluentd/log/fluent.log | grep -q
-                  Mongo::Auth::Unauthorized; test $? != 0
-            failureThreshold: 3
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 5
+#          livenessProbe:
+#            exec:
+#              command:
+#                - /bin/sh
+#                - '-c'
+#                - >-
+#                  tail -1 /fluentd/log/fluent.log | grep -q
+#                  Mongo::Auth::Unauthorized; test $? != 0
+#            failureThreshold: 3
+#            initialDelaySeconds: 60
+#            periodSeconds: 10
+#            successThreshold: 1
+#            timeoutSeconds: 5
           name: fluentd
-          resources:
-            requests:
-              memory: 128Mi
           ports:
             - containerPort: 24224
               protocol: TCP
