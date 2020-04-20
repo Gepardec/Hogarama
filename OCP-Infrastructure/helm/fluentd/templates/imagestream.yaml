@@ -13,7 +13,7 @@ items:
   kind: ImageStream
   metadata:
     app: fluentd
-    name: {{ .Values.imageStream.name }}
+    name: {{ .Values.hogarama.fluentd.imageStream.name }}
   spec:
     lookupPolicy:
       local: false
@@ -21,7 +21,7 @@ items:
   kind: ImageStream
   metadata:
     app: fluentd
-    name: {{ .Values.imageStream.base.name }}
+    name: {{ .Values.hogarama.fluentd.imageStream.base.name }}
   spec:
     lookupPolicy:
       local: false
