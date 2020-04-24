@@ -7,13 +7,15 @@ function helm-uninstall () {
     local secrets_file=${TOPLEVEL_DIR}/helm/secrets/values.yaml
     local rc_overall=0
 
+
+
     ## CHECK SPECIAL RESOURCES COMMANDS
     if [[ " ${resources[@]} " =~ "hogarama-all" ]]; then
-        resources=("hogarama-commons" "amq" "fluentd" "prometheus" "grafana" "mongodb" "hogajama")
+        resources=("hogajama" "mongodb" "grafana" "prometheus" "fluentd" "amq" "hogarama-commons")
     elif [[ " ${resources[@]} " =~ "keycloak-all" ]]; then
-        resources=("keycloak-commons" "commons")
+        resources=("keycloak" "keycloak-commons")
     elif  [[ " ${resources[@]} " =~ "all" ]]; then
-        resources=${RESOURCE_ORDER[@]}
+        resources=${REVERSE_RESOURCE_ORDER[@]}
     fi
 
     if [[ "${#resources}" -eq 0 ]]; then
@@ -24,7 +26,7 @@ function helm-uninstall () {
     fi
 
     ## UNINSTALL
-    for item in ${RESOURCE_ORDER[@]}; do
+    for item in ${REVERSE_RESOURCE_ORDER[@]}; do
         if [[ " ${resources[@]} " =~ "${item}" ]]; then
             # use correct namespace
             if [[ "${item}" == "keycloak-commons" ]] || [[ "${item}" == "keycloak" ]]; then
