@@ -22,12 +22,13 @@ public class FlywayIntegrator implements Integrator {
     @Override
     public void integrate(Metadata metadata, SessionFactoryImplementor sessionFactoryImplementor, SessionFactoryServiceRegistry sessionFactoryServiceRegistry) {
         InitialContext ctx = null;
+        LOG.info("Starting flyway migration");
         try {
             ctx = new InitialContext();
             DataSource datasource = (DataSource) ctx.lookup("java:jboss/datasources/Hogajama");
             Flyway flyway = Flyway.configure().dataSource(datasource).schemas("hogajama").load();
             flyway.migrate();
-            LOG.error("Flyway migration succeeded");
+            LOG.info("Flyway migration succeeded");
         } catch (Exception e) {
             LOG.error("Flyway migration failed", e);
         }
