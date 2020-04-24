@@ -21,7 +21,7 @@ spec:
         - name: BUILDER_CONTEXT_DIR
           value: Hogajama
         - name: BUILDER_MVN_OPTIONS
-          value: '-P ocp-aws'
+          value: '-P ocp-aws -Dfrontend.build.environment=prod'
   postCommit: {}
   source:
     type: Git
