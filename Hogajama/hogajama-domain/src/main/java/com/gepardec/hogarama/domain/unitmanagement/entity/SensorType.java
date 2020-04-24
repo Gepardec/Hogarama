@@ -1,11 +1,33 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
-import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashMap;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.gepardec.hogarama.domain.sensor.MappingType;
 
 @Entity
 @Table(name = "sensor_type")
-public class SensorType {
+public class SensorType implements Serializable{
 
+    private static final long serialVersionUID = 1L;
+
+    public SensorType() {
+    }
+    
+    public SensorType(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    
     @Id
     @GeneratedValue(generator = "SensorTypeGenerator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "SensorTypeGenerator", sequenceName = "seq_sensor_type_id")
@@ -29,4 +51,23 @@ public class SensorType {
     public void setName(String name) {
         this.name = name;
     }
+    
+    @SuppressWarnings("serial")
+    private static final HashMap<String, MappingType> SENSORS = new HashMap<String, MappingType>() {{
+        put("IDENTITY", MappingType.IDENTITY);
+        put("LINEAR100", MappingType.LINEAR100);
+        put("LINEAR1024", MappingType.LINEAR1024);
+        put("INVERSE_LINEAR1024", MappingType.INVERSE_LINEAR1024);
+        put("Chinese Water Sensor", MappingType.INVERSE_LINEAR1024);
+        put("sparkfun", MappingType.LINEAR1024);
+    }};
+
+    public static MappingType getMappingType(String type) {
+        return SENSORS.getOrDefault(type, MappingType.LINEAR100);
+    }
+
+    public MappingType getMappingType() {
+        return getMappingType(name);
+    }
+
 }

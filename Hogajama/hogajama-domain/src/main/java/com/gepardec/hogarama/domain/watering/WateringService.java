@@ -50,11 +50,11 @@ public class WateringService {
 		this.configDao = configDao;
 	}
 
-    private void invokeActorIfNeeded(WateringConfigData config, int dur) {
+    private void invokeActorIfNeeded(WateringConfigData config, int dur, String location) {
         if (dur > 0) {
         	Metrics.wateringEventsFired.labels(config.getSensorName()).inc();
         	log.info("water " + config.getActorName() + " for " + dur);
-        	actorSvc.sendActorMessage(sensorDao.getLocationBySensorName(config.getSensorName()), config.getActorName(), dur);
+        	actorSvc.sendActorMessage(location, config.getActorName(), dur);
         }
         else {
             log.debug("Don't water " + config.getSensorName());            
@@ -75,7 +75,7 @@ public class WateringService {
 
     public void water(SensorData sensorData) {
         WateringConfigData config = getConfig(sensorData.getSensorName());
-        invokeActorIfNeeded(config, watering.computeWateringDuration(config, sensorData.getValue()));
+        invokeActorIfNeeded(config, watering.computeWateringDuration(config, sensorData.getValue()), sensorData.getLocation());
     }
 
 }

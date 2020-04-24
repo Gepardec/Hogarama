@@ -7,15 +7,20 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.mockito.Mockito;
 
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
+import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
+
+import static org.mockito.Mockito.mock;
 
 @RunWith(Parameterized.class)
 public class SensorNormalizerTest {
@@ -26,7 +31,9 @@ public class SensorNormalizerTest {
 	private Double expectedValue;
 	private String type;
 	private Double value;
-	
+    private static final String DEVICE_ID = "My Plant";
+
+	SensorCache sensorCache;
 
 	@Parameters
 	public static Collection<Object[]> data() {
@@ -53,6 +60,9 @@ public class SensorNormalizerTest {
 	@Before
 	public void setUpMethod() throws Exception {
 		sn = new SensorNormalizer();
+		sensorCache = mock(SensorCache.class);
+		Mockito.when(sensorCache.getByDeviceId(DEVICE_ID)).thenReturn(Optional.empty());
+		sn.setSensorCache(sensorCache);
 	}
 	
 	
