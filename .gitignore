@@ -1,6 +1,7 @@
 #Helm
 OCP-Infrastructure/secrets/
 requirements.lock
+*.tgz
 
 # MacOS
 .DS_Store
