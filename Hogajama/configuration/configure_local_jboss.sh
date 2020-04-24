@@ -8,5 +8,5 @@ docker run \
     -v $HOGAJAMA_BASE:/install/hogajama_base/ \
     -v $DOWNLOADS:/install/Downloads \
     -e JBOSS_RELEASE_NAME=$JBOSS_RELEASE_NAME \
-    -it erhardsiegl/jbss:java8 jbss configure /install/hogajama_base/configuration/local_configuration
+    -it gepardec/jbss:java8 jbss configure /install/hogajama_base/configuration/local_configuration
 
