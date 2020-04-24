@@ -20,11 +20,12 @@ Options:
         Default: $KEYCLOAK_AUTH_SERVER_URL
     X: Don't Execute, just echo commands
     b branch: Use branch for builds. Default is $BRANCH
-	c: Do a "cluster up"
-	j: Install JBoss
-	a: Install AMQ
-	f: Install Fluentd
-	p: Install Postgres
+    c: Do a "cluster up"
+    j: Install JBoss
+    a: Install AMQ
+    f: Install Fluentd
+    m: Install MongoDB
+    p: Install Postgres
     s: Install SSO-Server locally. See also -S
     h: This help
 
@@ -41,7 +42,7 @@ DO_CLUSTER_UP=False
 DO_JBOSS=False
 DO_AMQ=False
 DO_MONGO=False
-DO_FLUENT=False
+DO_FLUENTD=False
 DO_POSTGRES=False
 DO_SSO=False
 
@@ -63,7 +64,7 @@ do
       c)
 		DO_CLUSTER_UP=True; ALL=False;;
       f)
-		DO_FLUENT=True; ALL=False;;
+		DO_FLUENTD=True; ALL=False;;
       j)
 		DO_JBOSS=True; ALL=False;;
       m)
@@ -109,7 +110,7 @@ if [ x$DO_FLUENTD = xTrue ] || [ x$ALL = xTrue ]; then
   $EXEC oc process -f hogarama-fluentd.yaml BRANCH=$BRANCH | $EXEC oc create -f -
 fi
 
-if [ x$DO_MOCK = xTrue ] || [ x$ALL = xTrue ]; then
+if [ x$DO_MONGO = xTrue ] || [ x$ALL = xTrue ]; then
   $EXEC oc process -f hogaramaOhneHost.yaml $HOGARAMA_VARS | $EXEC oc create -f -
 fi
 
