@@ -18,6 +18,18 @@ spec:
         secretKeyRef:
           name: helm-hogajama-postgresql
           key: postgresql-password
+    - name: AMQ_HOST
+      value: "https://amq:8883"
+    - name: AMQ_USER
+      valueFrom:
+        secretKeyRef:
+          name: amq-credentials
+          key: AMQ_USER
+    - name: AMQ_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: amq-credentials
+          key: AMQ_PASSWORD
   replicas: 1
   serviceAccountName: hogajama-anyuid
   disableHTTPRoute: true
