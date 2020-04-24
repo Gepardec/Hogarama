@@ -9,7 +9,7 @@ function helm-install () {
     local secrets_file=${TOPLEVEL_DIR}/helm/secrets/values.yaml
 
     ## CHECK SPECIAL RESOURCES COMMANDS
-    if [[ " ${resources[@]} " =~ "hogarama-all" ]]; then
+    if [[ " ${resources[@]} " =~ "hogarama-all" ]] || [[ " ${resources[@]} " =~ "hogajama-all" ]]; then
         resources=("hogarama-commons" "amq" "fluentd" "prometheus" "grafana" "mongodb" "hogajama")
     elif [[ " ${resources[@]} " =~ "keycloak-all" ]]; then
         resources=("keycloak-commons" "commons")
@@ -33,6 +33,8 @@ function helm-install () {
             else
                 namespace="${namespace_hogarama}"
             fi
+
+            execute "helm dep update ${TOPLEVEL_DIR}/helm/${item}" 2>&1 > /dev/null
 
             exec_command="helm ${command} helm-${item} ${TOPLEVEL_DIR}/helm/${item} -n ${namespace} ${extravars} -f ${secrets_file}"
             exec_command_force="helm upgrade helm-${item} ${TOPLEVEL_DIR}/helm/${item} -n ${namespace} ${extravars} -f ${secrets_file}"

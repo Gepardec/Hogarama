@@ -10,7 +10,7 @@ function helm-uninstall () {
 
 
     ## CHECK SPECIAL RESOURCES COMMANDS
-    if [[ " ${resources[@]} " =~ "hogarama-all" ]]; then
+    if [[ " ${resources[@]} " =~ "hogarama-all" ]] || [[ " ${resources[@]} " =~ "hogajama-all" ]]; then
         resources=("hogajama" "mongodb" "grafana" "prometheus" "fluentd" "amq" "hogarama-commons")
     elif [[ " ${resources[@]} " =~ "keycloak-all" ]]; then
         resources=("keycloak" "keycloak-commons")
@@ -65,15 +65,15 @@ readonly -f remove-default
 [ "$?" -eq "0" ] || return $?
 
 function remove-keycloak-commons() {
+    local csvkeycloak=$(oc get subscription keycloak-operator -n ${namespace} -o yaml | grep currentCSV | cut -d ":" -f2 | awk '{$1=$1;print}')
     remove-default "${@}"
+    execute "oc delete clusterserviceversion ${csvkeycloak} -n ${namespace}"
 }
 readonly -f remove-keycloak-commons
 [ "$?" -eq "0" ] || return $?
 
 function remove-keycloak() {
-    local csvkeycloak=$(oc get subscription keycloak-operator -n ${namespace} -o yaml | grep currentCSV | cut -d ":" -f2 | awk '{$1=$1;print}')
     remove-default "${@}"
-    rexecute "oc delete clusterserviceversion ${csvkeycloak} -n ${namespace}"
 }
 readonly -f remove-keycloak
 [ "$?" -eq "0" ] || return $?

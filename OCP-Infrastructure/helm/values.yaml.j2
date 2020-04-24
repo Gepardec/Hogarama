@@ -1,6 +1,10 @@
 ---
 global:
   timezone: "Europe/Vienna"
+  postgresql:
+    postgresqlDatabase: {{ POSTGRESQL_DATABASE }}
+    postgresqlUsername: {{ POSTGRESQL_USERNAME }}
+    postgresqlPassword: {{ POSTGRESQL_PASSWORD}}
 keycloak:
   client:
     secret: {{ KEYCLOAK_OPERATOR_CLIENT_SECRET }}
@@ -70,5 +74,11 @@ hogarama:
       credentials:
         database: {{ HOGAJAMA_DB }}
         password: {{ MONGODB_PW }}
-
+postgresql:
+  image:
+    tag: 11.7.0
+  persistence:
+    size: 1Gi
+  securityContext:
+    enabled: false
 ...

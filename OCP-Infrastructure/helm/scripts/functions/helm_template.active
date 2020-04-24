@@ -33,6 +33,7 @@ function helm-template () {
                 execute "${exec_command}"
             else
                 execute "${exec_command} --output-dir ${TOPLEVEL_DIR}/helm/secrets"
+                chmod -R 0777 ${TOPLEVEL_DIR}/helm/secrets/${item} 2>&1 > /dev/null
             fi
 
             rc="$(echo $?)"

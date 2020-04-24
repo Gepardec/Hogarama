@@ -8,7 +8,14 @@ spec:
   env:
     - name: KEYCLOAK_AUTH_SERVER_URL
       value: {{ .Values.hogarama.hogajama.keycloak.server_url }}
-#      value: 'https://secure-sso-57-hogarama.cloud.itandtel.at/auth/'
+    - name: POSTGRESQL_HOST
+      value: helm-hogajama-postgresql
+    - name: POSTGRESQL_DATABASE
+      value: {{.Values.global.postgresql.postgresqlDatabase}}
+    - name: POSTGRESQL_USERNAME
+      value: {{ .Values.global.postgresql.postgresqlUsername }}
+    - name: POSTGRESQL_PASSWORD
+      value: {{ .Values.global.postgresql.postgresqlPassword }}
   replicas: 1
   serviceAccountName: hogajama-anyuid
   disableHTTPRoute: true

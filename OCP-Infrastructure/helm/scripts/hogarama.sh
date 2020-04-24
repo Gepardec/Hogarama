@@ -174,8 +174,13 @@ main() {
         exit 0
     fi
 
+    ## ADD REQUIRED HELM REPOSITORIES
+    if [[ ${command} == "install" ]] || [[ ${command} == "upgrade" ]]; then
+        execute "helm repo add bitnami https://charts.bitnami.com/bitnami" 2>&1 > /dev/null
+    fi
+
     ## INSTALL
-    if [[ ${command} == "install" ]];then
+    if [[ ${command} == "install" ]]; then
         helm-install install resources[@]
         exit 0
     fi
