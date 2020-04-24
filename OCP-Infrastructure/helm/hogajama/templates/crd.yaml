@@ -10,11 +10,14 @@ spec:
     - name: POSTGRESQL_HOST
       value: helm-hogajama-postgresql
     - name: POSTGRESQL_DATABASE
-      value: {{.Values.global.postgresql.postgresqlDatabase}}
+      value: {{ .Values.global.postgresql.postgresqlDatabase }}
     - name: POSTGRESQL_USERNAME
       value: {{ .Values.global.postgresql.postgresqlUsername }}
     - name: POSTGRESQL_PASSWORD
-      value: {{ .Values.global.postgresql.postgresqlPassword }}
+      valueFrom:
+        secretKeyRef:
+          name: helm-hogajama-postgresql
+          key: postgresql-password
   replicas: 1
   serviceAccountName: hogajama-anyuid
   disableHTTPRoute: true
