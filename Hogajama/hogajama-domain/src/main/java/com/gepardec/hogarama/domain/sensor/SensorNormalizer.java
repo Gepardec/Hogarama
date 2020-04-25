@@ -15,10 +15,9 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.SensorType;
 
 @ApplicationScoped
 public class SensorNormalizer {
-    private static final Logger LOG = LoggerFactory.getLogger(SensorNormalizer.class);
 
     @Inject
-    private SensorCache sensors;
+    private SensorCache sensorDao;
     
 	public SensorData normalize(SensorData data) {
 			data.setValue(
@@ -28,14 +27,8 @@ public class SensorNormalizer {
 			return data;
 	}
 
-	private MappingType mappingTypeOf(SensorData data) {
-	    Optional<Sensor> sensor = sensors.getByDeviceId(data.getSensorName());
-	    if (sensor.isPresent()) {
-	        return sensor.get().getSensorType().getMappingType();
-	    }
-	    LOG.warn("Sensor {} not found in database. We use MappingType from data. "
-	    + "You should create the sensor in database!", data.getSensorName());
-		return SensorType.getMappingType(data.getType());
+	private MappingType mappingTypeOf(SensorData data) {	    
+        return new SensorProperties(data, sensorDao).getMappingType();
 	}
 
 	public List<SensorData> normalize(List<SensorData> data) {
@@ -46,7 +39,7 @@ public class SensorNormalizer {
 	}
 
     public void setSensorCache(SensorCache sensorCache) {
-        this.sensors = sensorCache;
+        this.sensorDao = sensorCache;
         
     }
 }

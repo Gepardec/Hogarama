@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 
 @Entity

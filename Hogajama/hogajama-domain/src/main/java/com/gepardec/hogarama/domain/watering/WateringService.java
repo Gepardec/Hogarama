@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 
 public class WateringService {
@@ -27,7 +27,7 @@ public class WateringService {
 	}
 
 	@Inject
-	public SensorDAO sensorDao;
+	public SensorDataDAO sensorDao;
 
 	@Inject
 	public WateringConfigDAO configDao;
@@ -43,7 +43,7 @@ public class WateringService {
 	public WateringService() {
 	}
 
-	protected WateringService(SensorDAO sensorDao, ActorService actorSvc, WateringStrategy watering, WateringConfigDAO configDao) {
+	protected WateringService(SensorDataDAO sensorDao, ActorService actorSvc, WateringStrategy watering, WateringConfigDAO configDao) {
 		this.sensorDao = sensorDao;
 		this.actorSvc = actorSvc;
 		this.watering = watering;

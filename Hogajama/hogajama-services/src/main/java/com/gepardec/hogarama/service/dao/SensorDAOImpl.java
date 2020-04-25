@@ -1,7 +1,7 @@
 package com.gepardec.hogarama.service.dao;
 
 import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
 import com.mongodb.client.DistinctIterable;
@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @RequestScoped
-public class SensorDAOImpl implements SensorDAO {
+public class SensorDAOImpl implements SensorDataDAO {
 
     @Inject
     private Datastore datastore;

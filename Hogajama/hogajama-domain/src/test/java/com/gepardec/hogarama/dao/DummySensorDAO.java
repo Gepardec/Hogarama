@@ -10,13 +10,13 @@ import javax.inject.Named;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.testdata.DummyData;
 
 @Named("dummyHabaramaDao")
 @RequestScoped
-public class DummySensorDAO implements SensorDAO {
+public class DummySensorDAO implements SensorDataDAO {
 
 	private static final int MAX_NUMBER_OF_SENSORS = 10;
 	private static final int MAX_NUMBER_OF_DATA = 10000;

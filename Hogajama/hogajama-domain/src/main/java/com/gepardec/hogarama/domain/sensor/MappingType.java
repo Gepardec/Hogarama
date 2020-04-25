@@ -1,5 +1,7 @@
 package com.gepardec.hogarama.domain.sensor;
 
+import com.gepardec.hogarama.domain.unitmanagement.entity.SensorType;
+
 /**
  * Defines how sensor Values are mapped to a [0..1] interval.
  * See {@link SensorType} for configuration of sensor types
