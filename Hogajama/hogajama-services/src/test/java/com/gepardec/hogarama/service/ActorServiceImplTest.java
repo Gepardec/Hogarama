@@ -1,15 +1,12 @@
 package com.gepardec.hogarama.service;
 
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import static org.junit.Assert.fail;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.junit.Assert.fail;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ActorServiceImplTest {

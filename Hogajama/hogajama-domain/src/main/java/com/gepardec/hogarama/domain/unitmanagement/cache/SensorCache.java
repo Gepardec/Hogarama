@@ -31,9 +31,11 @@ public class SensorCache {
             LOG.info("Sensor not found in cache, read from database with deviceId: " + deviceId);
             sensor = dao.getByDeviceId(deviceId);
             if ( sensor.isPresent() ) {
-                // touch SensorType
+                // touch SensorType and Unit
                 SensorType type = sensor.get().getSensorType();
-                LOG.info("Sensor {} found in cache. SensorType: {}", sensor.get().getName(), type.getName());
+                String unitName = sensor.get().getUnit().getName();
+                LOG.info("Sensor {} found in cache. SensorType: {}, UnitName: {}", 
+                        sensor.get().getName(), type.getName(), unitName);
             }
             cache.put(deviceId, sensor);
         }

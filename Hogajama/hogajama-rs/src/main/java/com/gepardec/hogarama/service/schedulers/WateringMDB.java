@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.service.schedulers;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
@@ -18,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
+import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
+import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.watering.WateringService;
 
 // @ResourceAdapter("activemq-ext")
@@ -38,6 +41,9 @@ public class WateringMDB implements MessageListener {
     @Inject
     SensorNormalizer sensorNormalizer;
 
+    @Inject
+    SensorCache sensors;
+    
 	public void onMessage(Message message) {
 	    log.debug("Receive message of type " + message.getClass().getName());
 	    BytesMessage msg = (BytesMessage) message;
@@ -48,7 +54,12 @@ public class WateringMDB implements MessageListener {
 		    ObjectMapper mapper = new ObjectMapper();
             SensorData sensorData = sensorNormalizer.normalize(mapper.readValue(b, SensorData.class));
 
-            Metrics.sensorValues.labels(sensorData.getSensorName(), sensorData.getLocation()).set(sensorData.getValue());
+            Optional<Sensor> sensor = sensors.getByDeviceId(sensorData.getSensorName());
+            Metrics.sensorValues.labels(
+                    sensorName(sensorData, sensor), 
+                    deviceId(sensorData, sensor), 
+                    unitName(sensorData, sensor)
+                    ).set(sensorData.getValue());
 
             wateringSvc.water(sensorData);
             
@@ -56,4 +67,16 @@ public class WateringMDB implements MessageListener {
 			throw new RuntimeException("Error handling sensor data!", e);
 		}
 	}
+
+    private String sensorName(SensorData sensorData, Optional<Sensor> sensor) {
+        return sensor.isPresent() ? sensor.get().getName() : sensorData.getSensorName();
+    }
+
+    private String deviceId(SensorData sensorData, Optional<Sensor> sensor) {
+        return sensor.isPresent() ? sensor.get().getDeviceId() : sensorData.getSensorName();
+    }
+
+    private String unitName(SensorData sensorData, Optional<Sensor> sensor) {
+        return sensor.isPresent() ? sensor.get().getUnit().getName() : sensorData.getLocation();
+    }
 }

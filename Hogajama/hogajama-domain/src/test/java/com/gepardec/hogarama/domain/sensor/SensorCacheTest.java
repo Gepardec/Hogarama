@@ -18,6 +18,7 @@ import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.SensorType;
+import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -52,25 +53,22 @@ public class SensorCacheTest {
         assertThat(sensor.get().getSensorType().getMappingType().name()).isEqualTo(LINEAR1024);
     }
             
-    private Map<Long, SensorType> sensorTypeMap() {
-        Map<Long, SensorType> map = new HashedMap<Long, SensorType>();
-        map.put(1L, new SensorType(1L, "IDENTITY"));
-        map.put(2L, new SensorType(2L, "LINEAR100"));
-        map.put(3L, new SensorType(3L, LINEAR1024));
-        map.put(4L, new SensorType(4L, "INVERSE_LINEAR1024"));
-        map.put(5L, new SensorType(5L, "Chinese Water Sensor"));
-        map.put(SPARKFUN_ID, new SensorType(SPARKFUN_ID, SPARKFUN));
-
-        return map;
-    }
-    
     private Optional<Sensor> sensor() {
         Sensor sensor = new Sensor();
         sensor.setId(99L);
         sensor.setDeviceId(DEVICE_GRUENER_GEPARD);
         sensor.setName("Grüner Gepard");
         sensor.setSensorType( new SensorType(SPARKFUN_ID, SPARKFUN));
+        sensor.setUnit(unit());
         return Optional.ofNullable(sensor);
+    }
+
+    private Unit unit() {
+        Unit unit = new Unit();
+        unit.setId(1L);
+        unit.setDescription("Unit Description");
+        unit.setName("My Unit");
+        return unit;
     }
 
 

@@ -52,12 +52,12 @@ public class WateringService {
 
     private void invokeActorIfNeeded(WateringConfigData config, int dur, String location) {
         if (dur > 0) {
-        	Metrics.wateringEventsFired.labels(config.getSensorName()).inc();
+        	Metrics.wateringEventsFired.labels(config.getActorName()).inc();
         	log.info("water " + config.getActorName() + " for " + dur);
         	actorSvc.sendActorMessage(location, config.getActorName(), dur);
         }
         else {
-            log.debug("Don't water " + config.getSensorName());            
+            log.debug("Don't water " + config.getActorName());            
         }
     }
 
