@@ -17,19 +17,19 @@ Docker helps abstracts the packages need for our developers and sysadmins to man
 Install Hogarama
 -----------------
 
-Our infrastructure code is capable of deploying individual resource :code:`amq, hogajama, fluentd, ...` or resource groups such as :code:`hogarama-all` and :code:`keycloak-all`.
+Our infrastructure code is capable of deploying individual resource :code:`amq, hogajama, fluentd, ...` or resource groups such as :code:`hogarama-all`, :code:`keycloak-all` or  :code:`all`.
 
 To install Hogarama we will use the group for simplicity. You can however do a deployment of individual resources to e.g. upgrade only this particular resource as well. If in doubt use the :code:`--help` flag to get the latest usage messages for the script.
 
 .. code-block:: bash
 
-  OCP-Infrastructure/helm/scripts/hogarama.sh install --resource hogarama-all
+  OCP-Infrastructure/wrapper/hogarama_wrapper.sh install --resource hogarama-all
 
 If you need to install keycloak as well you can run
 
 .. code-block:: bash
 
-  OCP-Infrastructure/helm/scripts/hogarama.sh install --resource keycloak-all
+  OCP-Infrastructure/wrapper/hogarama_wrapper.sh install --resource keycloak-all
 
 
 Upgrade Hogarama
@@ -37,12 +37,48 @@ Upgrade Hogarama
 
 .. code-block:: bash
 
-  OCP-Infrastructure/helm/scripts/hogarama.sh upgrade --resource hogarama-all
+  OCP-Infrastructure/helm/wrapper/hogarama_wrapper.sh upgrade --resource hogarama-all
 
 Uninstall Hogarama
 --------------------
 
 .. code-block:: bash
 
-  OCP-Infrastructure/helm/scripts/hogarama.sh uninstall --resource hogarama-all
+  OCP-Infrastructure/wrapper/hogarama_wrapper.sh uninstall --resource hogarama-all
 
+Additional Commmands
+-----------------------
+
+Additional commands can be found in the help of your shell script. Simply run the command without any options or with the :code:`--help` flag to generate the latest usage message similar to the following
+
+.. code-block:: none
+
+  OCP-Infrastructure/wrapper/hogarama_wrapper.sh --help
+  Usage:
+     hogarama.sh COMMAND --resource RESOURCE [--resource RESOURCE] [OPT ..]
+        available commands:
+            install)                ... installs selected resource(s) in chosen namespace
+            upgrade)                ... upgrades selected resource(s) in chosen namespace
+            uninstall)              ... uninstalls selected resource(s) in chosen namespace
+            template)               ... executes helm template for selected resource(s)
+            replace-secrets)        ... creates values.yaml file with secrets provided in 
+                                        secrets/secrets.yaml
+            help)                   ... this help menu
+
+        availaible options:
+            -r | --resource)        ... multiple definitions possible
+                                        special resources: hogarama-all, keycloak-all, all
+            -f | --force)           ... overwrites existing resources/executes helm upgrade 
+                                        if installation fails
+            -d | --dryrun)          ... dryrun
+            -q | --quiet)           ... quiet
+            -e | --extravars)       ... multiple definitions possible. Add additional/overwrite
+                                        variables in values.yaml or secret.yaml
+            -w | --write-template)  ... helm template output will be written to secrets 
+                                        working directory
+            --ns-hogarama)          ... namespace to/from which hogarama resources will be 
+                                        installed/uninstalled
+                                        default-value: hogarama
+            --ns-keycloak)          ... namespace to/from which keycloak resources will be 
+                                        installed/uninstalled
+                                        default-value: gepardec

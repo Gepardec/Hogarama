@@ -4,7 +4,7 @@ Documentation
 How to contribute
 ---------------------------------
 
-Our Documentation is contained in the :code:`/docs` folder and available as github page https://gepardec.github.com/hogarama. We use the make file to generate html code via 
+Our Documentation is contained in the :code:`/docs` folder and available as github page https://gepardec.github.com/Hogarama. We use the make file to generate html code via 
 
 .. code-block:: bash
    

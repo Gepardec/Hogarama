@@ -85,8 +85,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-hogarama">Install Hogarama</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#upgarde-hogarama">Upgarde Hogarama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrade-hogarama">Upgrade Hogarama</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#uninstall-hogarama">Uninstall Hogarama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-commmands">Additional Commmands</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="habarama.html">Habarama</a></li>
@@ -143,7 +144,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/gettingstarted.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/gepardec/Hogarama/blob/master/docs/source/gettingstarted.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -171,25 +174,60 @@
 </div>
 <div class="section" id="install-hogarama">
 <h2>Install Hogarama<a class="headerlink" href="#install-hogarama" title="Permalink to this headline">¶</a></h2>
-<p>Our infrastructure code is capable of deploying individual resource <code class="code docutils literal notranslate"><span class="pre">amq,</span> <span class="pre">hogajama,</span> <span class="pre">fluentd,</span> <span class="pre">...</span></code> or resource groups such as <code class="code docutils literal notranslate"><span class="pre">hogarama-all</span></code> and <code class="code docutils literal notranslate"><span class="pre">keycloak-all</span></code>.</p>
+<p>Our infrastructure code is capable of deploying individual resource <code class="code docutils literal notranslate"><span class="pre">amq,</span> <span class="pre">hogajama,</span> <span class="pre">fluentd,</span> <span class="pre">...</span></code> or resource groups such as <code class="code docutils literal notranslate"><span class="pre">hogarama-all</span></code>, <code class="code docutils literal notranslate"><span class="pre">keycloak-all</span></code> or  <code class="code docutils literal notranslate"><span class="pre">all</span></code>.</p>
 <p>To install Hogarama we will use the group for simplicity. You can however do a deployment of individual resources to e.g. upgrade only this particular resource as well. If in doubt use the <code class="code docutils literal notranslate"><span class="pre">--help</span></code> flag to get the latest usage messages for the script.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>OCP-Infrastructure/helm/scripts/hogarama.sh install --resource hogarama-all
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>OCP-Infrastructure/wrapper/hogarama_wrapper.sh install --resource hogarama-all
 </pre></div>
 </div>
 <p>If you need to install keycloak as well you can run</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>OCP-Infrastructure/helm/scripts/hogarama.sh install --resource keycloak-all
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>OCP-Infrastructure/wrapper/hogarama_wrapper.sh install --resource keycloak-all
 </pre></div>
 </div>
 </div>
-<div class="section" id="upgarde-hogarama">
-<h2>Upgarde Hogarama<a class="headerlink" href="#upgarde-hogarama" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>OCP-Infrastructure/helm/scripts/hogarama.sh upgrade --resource hogarama-all
+<div class="section" id="upgrade-hogarama">
+<h2>Upgrade Hogarama<a class="headerlink" href="#upgrade-hogarama" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>OCP-Infrastructure/helm/wrapper/hogarama_wrapper.sh upgrade --resource hogarama-all
 </pre></div>
 </div>
 </div>
 <div class="section" id="uninstall-hogarama">
 <h2>Uninstall Hogarama<a class="headerlink" href="#uninstall-hogarama" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>OCP-Infrastructure/helm/scripts/hogarama.sh uninstall --resource hogarama-all
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>OCP-Infrastructure/wrapper/hogarama_wrapper.sh uninstall --resource hogarama-all
+</pre></div>
+</div>
+</div>
+<div class="section" id="additional-commmands">
+<h2>Additional Commmands<a class="headerlink" href="#additional-commmands" title="Permalink to this headline">¶</a></h2>
+<p>Additional commands can be found in the help of your shell script. Simply run the command without any options or with the <code class="code docutils literal notranslate"><span class="pre">--help</span></code> flag to generate the latest usage message similar to the following</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>OCP-Infrastructure/wrapper/hogarama_wrapper.sh --help
+Usage:
+   hogarama.sh COMMAND --resource RESOURCE [--resource RESOURCE] [OPT ..]
+      available commands:
+          install)                ... installs selected resource(s) in chosen namespace
+          upgrade)                ... upgrades selected resource(s) in chosen namespace
+          uninstall)              ... uninstalls selected resource(s) in chosen namespace
+          template)               ... executes helm template for selected resource(s)
+          replace-secrets)        ... creates values.yaml file with secrets provided in
+                                      secrets/secrets.yaml
+          help)                   ... this help menu
+
+      availaible options:
+          -r | --resource)        ... multiple definitions possible
+                                      special resources: hogarama-all, keycloak-all, all
+          -f | --force)           ... overwrites existing resources/executes helm upgrade
+                                      if installation fails
+          -d | --dryrun)          ... dryrun
+          -q | --quiet)           ... quiet
+          -e | --extravars)       ... multiple definitions possible. Add additional/overwrite
+                                      variables in values.yaml or secret.yaml
+          -w | --write-template)  ... helm template output will be written to secrets
+                                      working directory
+          --ns-hogarama)          ... namespace to/from which hogarama resources will be
+                                      installed/uninstalled
+                                      default-value: hogarama
+          --ns-keycloak)          ... namespace to/from which keycloak resources will be
+                                      installed/uninstalled
+                                      default-value: gepardec
 </pre></div>
 </div>
 </div>
