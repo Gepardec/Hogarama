@@ -1,11 +1,10 @@
 package com.gepardec.hogarama.domain.sensor;
 
+import static com.gepardec.hogarama.testdata.TestSensors.DEVICE_GRUENER_GEPARD;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.collections4.map.HashedMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +17,6 @@ import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.testdata.TestSensors;
-import static com.gepardec.hogarama.testdata.TestSensors.DEVICE_GRUENER_GEPARD;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SensorCacheTest{

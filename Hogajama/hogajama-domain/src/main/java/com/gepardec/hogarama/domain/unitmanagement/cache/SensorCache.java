@@ -22,23 +22,40 @@ public class SensorCache {
     @Inject
     private SensorDAO dao;
     
-    private Map<String, Optional<Sensor>> cache = new HashMap<>();
+    private Map<String, Sensor> cache = new HashMap<>();
 
 
     public Optional<Sensor> getByDeviceId(String deviceId) {
-        Optional<Sensor> sensor = cache.get(deviceId);
-        if ( null == cache.get(deviceId) || !sensor.isPresent()) {
-            LOG.info("Sensor not found in cache, read from database with deviceId: " + deviceId);
-            sensor = dao.getByDeviceId(deviceId);
-            if ( sensor.isPresent() ) {
-                // touch SensorType and Unit
-                SensorType type = sensor.get().getSensorType();
-                String unitName = sensor.get().getUnit().getName();
-                LOG.info("Sensor {} found in cache. SensorType: {}, UnitName: {}", 
-                        sensor.get().getName(), type.getName(), unitName);
-            }
-            cache.put(deviceId, sensor);
+        Optional<Sensor> sensor = getCachedSensor(deviceId);
+        if ( sensor.isPresent()) {
+            return sensor;
+        }
+        return loadSensor(deviceId);
+    }
+
+    private synchronized Optional<Sensor> loadSensor(String deviceId) {
+        Optional<Sensor> sensor = getCachedSensor(deviceId);
+        if (sensor.isPresent()) {
+            return sensor;
+        }
+
+        LOG.info("Sensor not found in cache, read from database with deviceId: " + deviceId);
+        sensor = dao.getByDeviceId(deviceId);
+        if (sensor.isPresent()) {
+            touchSensorTypeAndUnit(sensor);
+            cache.put(deviceId, sensor.get());
         }
         return sensor;
+    }
+
+    private Optional<Sensor> getCachedSensor(String deviceId) {
+        return Optional.ofNullable(cache.get(deviceId));
+    }
+
+    private void touchSensorTypeAndUnit(Optional<Sensor> sensor) {
+        SensorType type = sensor.get().getSensorType();
+        String unitName = sensor.get().getUnit().getName();
+        LOG.info("Sensor {} found. SensorType: {}, UnitName: {}", 
+                sensor.get().getName(), type.getName(), unitName);
     }
 }
