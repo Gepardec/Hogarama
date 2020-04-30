@@ -33,7 +33,7 @@ public class WateringServiceTest {
 
 		DummySensorDAO sensorDao = new DummySensorDAO(data.getData());
 
-		watering = new WateringService(sensorDao, actorSvc, new WateringStrategy(sensorDao), wateringConfigDao);
+		watering = new WateringService(sensorDao, actorSvc, new WateringStrategy(), wateringConfigDao);
 		
 	}
     
