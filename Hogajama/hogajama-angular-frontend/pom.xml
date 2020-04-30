@@ -33,6 +33,19 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>ocp-aws</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <outputDirectory>${project.parent.basedir}/target</outputDirectory>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>
