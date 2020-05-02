@@ -38,6 +38,31 @@ public class SensorCacheTest{
         Optional<Sensor> sensor = sensorCache.getByDeviceId(DEVICE_GRUENER_GEPARD);
         assertThat(sensor.isPresent());
         assertThat(sensor.get().getName()).isEqualTo("Grüner Gepard");
+        Mockito.verify(sensorDAO).getByDeviceId(DEVICE_GRUENER_GEPARD);
+    }
+    
+    @Test
+    public void sensorCacheCaches() throws Exception {
+        Optional<Sensor> sensor = sensorCache.getByDeviceId(DEVICE_GRUENER_GEPARD);
+        assertThat(sensor.isPresent());
+        assertThat(sensor.get().getName()).isEqualTo("Grüner Gepard");
+        sensor = sensorCache.getByDeviceId(DEVICE_GRUENER_GEPARD);
+        assertThat(sensor.isPresent());
+        assertThat(sensor.get().getName()).isEqualTo("Grüner Gepard");
+        Mockito.verify(sensorDAO).getByDeviceId(DEVICE_GRUENER_GEPARD);
+        Mockito.verifyNoMoreInteractions(sensorDAO);
+    }
+    
+    @Test
+    public void invalidateRemovesCachedValue() throws Exception {
+        Optional<Sensor> sensor = sensorCache.getByDeviceId(DEVICE_GRUENER_GEPARD);
+        assertThat(sensor.isPresent());
+        assertThat(sensor.get().getName()).isEqualTo("Grüner Gepard");
+        sensorCache.invalidateCache(sensor.get());
+        sensor = sensorCache.getByDeviceId(DEVICE_GRUENER_GEPARD);
+        assertThat(sensor.isPresent());
+        assertThat(sensor.get().getName()).isEqualTo("Grüner Gepard");
+        Mockito.verify(sensorDAO, Mockito.times(2)).getByDeviceId(DEVICE_GRUENER_GEPARD);
     }
     
     @Test

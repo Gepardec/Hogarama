@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -24,7 +25,11 @@ public class SensorCache {
     
     private Map<String, Sensor> cache = new HashMap<>();
 
-
+    public void invalidateCache(@Observes Sensor sensor) {
+        LOG.info("Invalidate sensor cache.");
+        cache = new HashMap<>();
+    }
+    
     public Optional<Sensor> getByDeviceId(String deviceId) {
         Optional<Sensor> sensor = getCachedSensor(deviceId);
         if ( sensor.isPresent()) {
