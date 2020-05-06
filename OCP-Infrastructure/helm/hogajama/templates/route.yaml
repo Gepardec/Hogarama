@@ -1,0 +1,16 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: hogajama
+  name: app
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: hogajama-loadbalancer
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

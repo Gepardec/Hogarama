@@ -1,0 +1,84 @@
+---
+global:
+  timezone: "Europe/Vienna"
+  postgresql:
+    postgresqlDatabase: {{ POSTGRESQL_DATABASE }}
+    postgresqlUsername: {{ POSTGRESQL_USERNAME }}
+    postgresqlPassword: {{ POSTGRESQL_PASSWORD}}
+keycloak:
+  client:
+    secret: {{ KEYCLOAK_OPERATOR_CLIENT_SECRET }}
+  google:
+    client:
+      secret: {{ KEYCLOAK_GOOGLE_CLIENT_SECRET }}
+      id: {{ KEYCLOAK_GOOGLE_CLIENT_ID }}
+hogarama:
+  amq:
+    credentials:
+      amq_password: "{{ AMQ_PASSWORD | b64encode }}"
+      amq_user: "{{ AMQ_USER | b64encode }}"
+    deploymentconfig:
+      amq_truststore_password: "{{ AMQ_TRUSTSTORE_PASSWORD }}"
+      amq_keystore_password: "{{ AMQ_KEYSTORE_PASSWORD }}"
+      timezone: "Europe/Vienna"
+      imageStream:
+        name: "amq-broker-72-openshift"
+  fluentd:
+    credentials:
+      amq:
+        username: "{{ FLUENTD_USERNAME }}"
+        password: "{{ FLUENTD_PASSWORD }}"
+      db:
+        username: "{{ FLUENTD_MONGO_USERNAME }}"
+        password: "{{ FLUENTD_MONGO_PASSWORD }}"
+    imageStream:
+      name: "fluentd-hogarama"
+      base:
+        name: fluentd-elasticsearch
+        tag: "v2.4.0"
+        kind: "DockerImage"
+        from: "gcr.io/google-containers/fluentd-elasticsearch:v2.4.0"
+  grafana:
+    DataSource:
+      url: {{ GRAFANA_PROMETHEUS_DATASOURCE_URL }}
+    crd:
+      initial:
+        admin:
+          password: {{ GRAFANA_OPERATOR_ADMIN_PASSWORD }}
+          user: {{ GRAFANA_INITIAL_ADMIN_USER}}
+  mongodb:
+    credentials:
+      admin:
+        password: {{ MONGODB_ADMIN_PASSWORD | b64encode }}
+      database:
+        db: {{ MONGODB_DATABASE | b64encode }}
+        user: {{ MONGODB_USER | b64encode }}
+        password: {{ MONGODB_PASSWORD | b64encode }}
+        hogajama_db: {{ HOGAJAMA_DB | b64encode }}
+        mongodb_pw: {{ MONGODB_PW | b64encode }}
+  hogajama:
+    keycloak:
+      server_url: {{ HOGAJAMA_KEYCLOAK_SERVER_URL }}
+    trigger:
+      secret:
+        source_to_image:
+          github: {{ HOGAJAMA_GITHUB_S21_TRIGGER_SECRET }}
+          generic: {{ HOGAJAMA_GENERIC_S21_TRIGGER_SECRET }}
+        hogajama_run:
+          github: {{ HOGAJAMA_GITHUB_RUN_TRIGGER_SECRET }}
+          generic: {{ HOGAJAMA_GENERIC_RUN_TRIGGER_SECRET }}
+        hogajama_binary:
+          github: {{ HOGAJAMA_GITHUB_BINARY_TRIGGER_SECRET  }}
+          generic: {{ HOGAJAMA_GENERIC_BINARY_TRIGGER_SECRET  }}
+    mongodb:
+      credentials:
+        database: {{ HOGAJAMA_DB }}
+        password: {{ MONGODB_PW }}
+postgresql:
+  image:
+    tag: 11.7.0
+  persistence:
+    size: 1Gi
+  securityContext:
+    enabled: false
+...

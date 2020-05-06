@@ -1,0 +1,128 @@
+#!/bin/bash
+
+function helm-uninstall () {
+    local resources=("${!1}")
+    local flag_dryrun=${FLAG_DRYRUN:-false}}
+    local flag_quiet=${FLAG_QUIET:-false}}
+    local secrets_file=${TOPLEVEL_DIR}/helm/secrets/values.yaml
+    local rc_overall=0
+
+
+
+    ## CHECK SPECIAL RESOURCES COMMANDS
+    if [[ " ${resources[@]} " =~ "hogarama-all" ]] || [[ " ${resources[@]} " =~ "hogajama-all" ]]; then
+        resources=("hogajama" "mongodb" "grafana" "prometheus" "fluentd" "amq" "hogarama-commons")
+    elif [[ " ${resources[@]} " =~ "keycloak-all" ]]; then
+        resources=("keycloak" "keycloak-commons")
+    elif  [[ " ${resources[@]} " =~ "all" ]]; then
+        resources=${REVERSE_RESOURCE_ORDER[@]}
+    fi
+
+    if [[ "${#resources}" -eq 0 ]]; then
+        echo "no resources marked for deinstallation"
+        echo ""
+        usage_message
+        exit 1
+    fi
+
+    ## UNINSTALL
+    for item in ${REVERSE_RESOURCE_ORDER[@]}; do
+        if [[ " ${resources[@]} " =~ "${item}" ]]; then
+            # use correct namespace
+            if [[ "${item}" == "keycloak-commons" ]] || [[ "${item}" == "keycloak" ]]; then
+                namespace="${namespace_keycloak}"
+            else
+                namespace="${namespace_hogarama}"
+            fi
+            exec_command="helm uninstall helm-${item} -n ${namespace}"
+            eval remove-${item} "${exec_command}"
+
+            rc="$(echo $?)"
+            if [[ "${rc}" -gt 0 ]]; then
+                rc_overall=1
+                echo "Something went wrong trying to uninstall resource ${item} in namespace ${namespace}"
+            fi
+        fi
+    done
+
+    if [[ "${rc_overall}" -gt 0 ]];then
+        echo "There was an error trying to uninstall a provided resource. Please check previous log messages for more information"
+        exit 1
+    fi
+}
+# readonly definition of a function throws an error if another function
+# with the same name is defined a second time
+readonly -f helm-uninstall
+[ "$?" -eq "0" ] || return $?
+
+
+## SPECIAL FUNCTIONS TO HANDLE CUSTOM RESOURCES, SUBSCRIPTIONS, etc.
+function remove-default() {
+    command="${@}"
+    execute "${command}"
+}
+readonly -f remove-default
+[ "$?" -eq "0" ] || return $?
+
+function remove-keycloak-commons() {
+    local csvkeycloak=$(oc get subscription keycloak-operator -n ${namespace} -o yaml | grep currentCSV | cut -d ":" -f2 | awk '{$1=$1;print}')
+    remove-default "${@}"
+    execute "oc delete clusterserviceversion ${csvkeycloak} -n ${namespace}"
+}
+readonly -f remove-keycloak-commons
+[ "$?" -eq "0" ] || return $?
+
+function remove-keycloak() {
+    remove-default "${@}"
+}
+readonly -f remove-keycloak
+[ "$?" -eq "0" ] || return $?
+
+function remove-hogarama-commons() {
+    local csveap=$(oc get subscription eap-operator -n ${namespace} -o yaml | grep currentCSV | cut -d ":" -f2 | awk '{$1=$1;print}') && echo "found clusterserviceversion: ${csveap}"
+    local csvgrafana=$(oc get subscription grafana-operator -n ${namespace} -o yaml | grep currentCSV | cut -d ":" -f2 | awk '{$1=$1;print}') && echo "found clusterserviceversion: ${csvgrafana}"
+    local csvprometheus=$(oc get subscription prometheus-operator -n ${namespace} -o yaml | grep currentCSV | cut -d ":" -f2 | awk '{$1=$1;print}') && echo "found clusterserviceversion: ${csvprometheus}"
+    remove-default "${@}"
+    execute "oc delete clusterserviceversion ${csveap} -n ${namespace}"
+    execute "oc delete clusterserviceversion ${csvgrafana} -n ${namespace}"
+    execute "oc delete clusterserviceversion ${csvprometheus} -n ${namespace}"
+}
+readonly -f remove-hogarama-commons
+[ "$?" -eq "0" ] || return $?
+
+function remove-amq() {
+    remove-default "${@}"
+}
+readonly -f remove-amq
+[ "$?" -eq "0" ] || return $?
+
+function remove-fluentd() {
+    remove-default "${@}"
+}
+readonly -f remove-fluentd
+[ "$?" -eq "0" ] || return $?
+
+function remove-prometheus() {
+    remove-default "${@}"
+}
+readonly -f remove-prometheus
+[ "$?" -eq "0" ] || return $?
+
+function remove-grafana() {
+    execute "oc delete GrafanaDashboard/grafana-dashboard -n ${namespace}"
+    remove-default "${@}"
+}
+readonly -f remove-grafana
+[ "$?" -eq "0" ] || return $?
+
+function remove-mongodb() {
+    remove-default "${@}"
+}
+readonly -f remove-mongodb
+[ "$?" -eq "0" ] || return $?
+
+function remove-hogajama() {
+    remove-default "${@}"
+}
+readonly -f remove-hogajama
+[ "$?" -eq "0" ] || return $?

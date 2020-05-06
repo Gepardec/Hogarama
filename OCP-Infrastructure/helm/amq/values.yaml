@@ -1,0 +1,11 @@
+---
+credentials:
+  amq_password: "amq_password"
+  amq_user: "amq_user"
+deploymentconfig:
+  amq_truststore_password: "amq_truststore_password"
+  amq_keystore_password: "amq_keystore_password"
+  timezone: "Europe/Vienna"
+  imageStream:
+    name: "amq-broker-72-openshift"
+...

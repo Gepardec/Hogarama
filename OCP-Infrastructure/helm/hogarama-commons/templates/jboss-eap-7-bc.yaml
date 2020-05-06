@@ -1,0 +1,41 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: jboss-eap-7-bc
+  labels:
+    build: jboss-eap-7-build
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'jboss-eap-7-patched:latest'
+  resources: {}
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'jboss-eap71-openshift:1.3'
+  postCommit: {}
+  source:
+    type: Dockerfile
+    dockerfile: |-
+      FROM jboss-eap71-openshift:1.3
+      USER jboss
+      RUN mkdir -p /opt/eap/bin && \
+        echo -e "#!/bin/bash \
+        \ncp -f /opt/eap/standalone/configuration/standalone.xml \
+        /opt/eap/standalone/configuration/standalone-openshift.xml \
+        \n/opt/eap/bin/openshift-launch.sh" > /opt/eap/bin/entrypoint.sh && \
+        chmod +x /opt/eap/bin/entrypoint.sh
+  triggers:
+    - type: GitHub
+      github:
+        secret: MNfeGmgT-jG6IcM_Qu9y
+    - type: Generic
+      generic:
+        secret: hE40E6tz5Ujmrje231eA
+    - type: ConfigChange
+    - type: ImageChange
+  runPolicy: Serial

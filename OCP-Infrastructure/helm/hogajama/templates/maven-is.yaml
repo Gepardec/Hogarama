@@ -1,0 +1,22 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: maven
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: 3-jdk-11
+      from:
+        kind: DockerImage
+        name: 'maven:3-jdk-11'
+      importPolicy: {}
+      referencePolicy:
+        type: Source
+    - name: 3-jdk-8
+      from:
+        kind: DockerImage
+        name: 'docker.io/maven:3-jdk-8'
+      importPolicy: {}
+      referencePolicy:
+        type: Source

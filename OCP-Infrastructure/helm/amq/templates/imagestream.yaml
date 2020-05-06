@@ -1,0 +1,36 @@
+---
+kind: List
+apiVersion: image.openshift.io/v1
+metadata:
+  name: amq
+items:
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: amq-broker-72-openshift
+    labels:
+      app: amq
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+      - name: latest
+        annotations:
+          openshift.io/imported-from: registry.access.redhat.com/amq-broker-7/amq-broker-72-openshift
+        from:
+          kind: DockerImage
+          name: registry.access.redhat.com/amq-broker-7/amq-broker-72-openshift
+        generation: 1
+        importPolicy: {}
+        referencePolicy:
+          type: Source
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: amq
+    labels:
+      app: amq
+  spec:
+    lookupPolicy:
+      local: false
+...

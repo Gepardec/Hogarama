@@ -1,0 +1,10 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: eap-operator
+spec:
+  channel: alpha
+  name: eap
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  version: 1.0.0

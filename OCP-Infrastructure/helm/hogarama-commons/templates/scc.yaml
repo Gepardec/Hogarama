@@ -1,0 +1,41 @@
+apiVersion: security.openshift.io/v1
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: false
+allowedCapabilities: []
+defaultAddCapabilities: []
+fsGroup:
+  type: RunAsAny
+groups:
+  - system:admins
+  - system:cluster-admins
+kind: SecurityContextConstraints
+metadata:
+  annotations:
+    kubernetes.io/description: anyuid provides all features of the restricted SCC
+      but allows users to run with any UID and any GID.
+  name: hogarama-anyuid
+priority: 10
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+  - MKNOD
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: RunAsAny
+users:
+  - system:serviceaccount:{{ .Release.Namespace }}:anyuid-builder
+  - system:serviceaccount:{{ .Release.Namespace }}:hogajama-anyuid
+volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret

@@ -1,0 +1,39 @@
+apiVersion: wildfly.org/v1alpha1
+kind: WildFlyServer
+metadata:
+  name: hogajama
+spec:
+  applicationImage: 'image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/hogajama-run:latest'
+  env:
+    - name: KEYCLOAK_AUTH_SERVER_URL
+      value: {{ .Values.hogarama.hogajama.keycloak.server_url }}
+    - name: POSTGRESQL_HOST
+      value: helm-hogajama-postgresql
+    - name: POSTGRESQL_DATABASE
+      value: {{ .Values.global.postgresql.postgresqlDatabase }}
+    - name: POSTGRESQL_USERNAME
+      value: {{ .Values.global.postgresql.postgresqlUsername }}
+    - name: POSTGRESQL_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: helm-hogajama-postgresql
+          key: postgresql-password
+    - name: AMQ_HOST
+      value: "https://amq:8883"
+    - name: AMQ_USER
+      valueFrom:
+        secretKeyRef:
+          name: amq-credentials
+          key: AMQ_USER
+    - name: AMQ_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: amq-credentials
+          key: AMQ_PASSWORD
+  replicas: 1
+  serviceAccountName: hogajama-anyuid
+  disableHTTPRoute: true
+  standaloneConfigMap:
+    key: standalone-openshift.xml
+    name: hogajama-standalone
+  imagePullPolicy: always
