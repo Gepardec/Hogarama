@@ -25,11 +25,11 @@ public class Metrics {
     public static final Counter wateringEventsFired = Counter.build()
             .name("hogarama_watering_events_fired")
             .help("Number of times a watering event has been fired")
-            .labelNames("Sensor_Name").register();
+            .labelNames("sensor_name").register();
 
     public static final Gauge sensorValues = Gauge.build()
             .name("hogarama_sensor_value")
             .help("Water Sensor Values.")
-            .labelNames("sensor_name", "sensor_location").register();
+            .labelNames("sensor_name", "device_id", "unit_name").register();
 
 }

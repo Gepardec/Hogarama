@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.domain.sensor;
 
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import org.slf4j.Logger;
 
 import javax.ejb.Singleton;
@@ -20,7 +20,7 @@ public class SensorNamesCache {
 	private Logger log;
 	
 	@Inject
-	private SensorDAO habaramaDao;
+	private SensorDataDAO habaramaDao;
 	
 	private List<String> sensorNames = new ArrayList<>();
 

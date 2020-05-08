@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.rest;
 
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.sensor.SensorNamesCache;
 import com.gepardec.hogarama.domain.watering.WateringDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
@@ -23,7 +23,7 @@ public class SensorApiImpl implements SensorApi, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private SensorDAO habaramaDAO;
+	private SensorDataDAO habaramaDAO;
 
 	@Inject
 	private WateringDAO wateringDAO;

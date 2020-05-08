@@ -5,24 +5,24 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import com.gepardec.hogarama.domain.sensor.SensorDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 
 public class WateringStrategy {
+    private static final Logger log = LoggerFactory.getLogger(WateringStrategy.class);
  
-	@Inject
-	private SensorDAO sensorDao;
     private Map<String, Double> cache = new HashMap<String, Double>();
 	
 	public WateringStrategy() {
 	}
 	
-	protected WateringStrategy(SensorDAO dao) {
-		this.sensorDao = dao;
-	}
-
     private int waterDuration(WateringConfigData config, double avg) {
         if ( avg < config.getLowWater() ) {
-			return config.getWaterDuration();
+            int dur = config.getWaterDuration();
+            log.info("water " + config.getActorName() + " for " + dur + " because water value " + avg + " < " + config.getLowWater());
+			return dur;
 		}
 		else return 0;
     }

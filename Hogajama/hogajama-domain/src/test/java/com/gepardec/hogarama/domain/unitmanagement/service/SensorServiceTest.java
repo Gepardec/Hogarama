@@ -16,6 +16,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Collections;
 import java.util.Optional;
 
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
+
 @RunWith(MockitoJUnitRunner.class)
 public class SensorServiceTest {
 
@@ -23,8 +26,13 @@ public class SensorServiceTest {
 
     @Mock
     private SensorDAO dao;
+ 
     @Mock
     private OwnerStore store;
+
+    @Mock
+    Event<Sensor> sensorChanged;
+
     @InjectMocks
     private SensorService service;
 
@@ -62,6 +70,7 @@ public class SensorServiceTest {
         service.deleteSensor(SENSOR_ID);
 
         Mockito.verify(dao).delete(sensor);
+        Mockito.verify(sensorChanged).fire(sensor);
     }
 
     @Test
@@ -72,6 +81,7 @@ public class SensorServiceTest {
 
         Mockito.verify(dao).update(sensor);
         Mockito.verifyNoMoreInteractions(dao);
+        Mockito.verify(sensorChanged).fire(sensor);
     }
 
     @Test(expected = TechnicalException.class)
@@ -79,6 +89,7 @@ public class SensorServiceTest {
         Sensor sensor = newSensorWithNotBelongingUnit();
 
         service.updateSensor(sensor);
+        Mockito.verifyNoMoreInteractions(sensorChanged);
     }
 
     @Test

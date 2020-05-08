@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.service.schedulers;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
@@ -18,6 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
+import com.gepardec.hogarama.domain.sensor.SensorProperties;
+import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
+import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.watering.WateringService;
 
 // @ResourceAdapter("activemq-ext")
@@ -37,7 +41,10 @@ public class WateringMDB implements MessageListener {
 
     @Inject
     SensorNormalizer sensorNormalizer;
-
+    
+    @Inject
+    SensorCache sensors;
+    
 	public void onMessage(Message message) {
 	    log.debug("Receive message of type " + message.getClass().getName());
 	    BytesMessage msg = (BytesMessage) message;
@@ -48,7 +55,13 @@ public class WateringMDB implements MessageListener {
 		    ObjectMapper mapper = new ObjectMapper();
             SensorData sensorData = sensorNormalizer.normalize(mapper.readValue(b, SensorData.class));
 
-            Metrics.sensorValues.labels(sensorData.getSensorName(), sensorData.getLocation()).set(sensorData.getValue());
+            SensorProperties sensorProps = new SensorProperties(sensorData, sensors);
+ 
+            Metrics.sensorValues.labels(
+                    sensorProps.getSensorName(), 
+                    sensorProps.getDeviceId(), 
+                    sensorProps.getUnitName()
+                    ).set(sensorData.getValue());
 
             wateringSvc.water(sensorData);
             
