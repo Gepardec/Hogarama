@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.domain.unitmanagement.service;
 
 import com.gepardec.hogarama.domain.exception.TechnicalException;
+import com.gepardec.hogarama.domain.unitmanagement.context.UnitManagementContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
@@ -17,7 +18,7 @@ public class SensorService {
     private SensorDAO dao;
 
     @Inject
-    private OwnerStore store;
+    private UnitManagementContext store;
 
     @Inject
     Event<Sensor> sensorChanged;

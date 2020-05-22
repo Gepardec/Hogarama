@@ -6,7 +6,7 @@ import com.gepardec.hogarama.domain.unitmanagement.dao.UnitDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.SensorType;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
-import com.gepardec.hogarama.domain.unitmanagement.service.OwnerStore;
+import com.gepardec.hogarama.domain.unitmanagement.context.UnitManagementContext;
 import com.gepardec.hogarama.rest.unitmanagement.dto.SensorDto;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class SensorDtoTranslator implements Translator<SensorDto, Sensor> {
     @Inject
     private UnitDAO unitDAO;
     @Inject
-    private OwnerStore ownerStore;
+    private UnitManagementContext unitManagementContext;
     @Inject
     private SensorTypeCache sensorTypeCache;
 
@@ -62,12 +62,12 @@ public class SensorDtoTranslator implements Translator<SensorDto, Sensor> {
     private Unit getUnitByUnitIdOrDefaultUnit(Long unitId) {
         if (unitId == null) {
             LOG.debug("No unitId supplied - Use default unit.");
-            return ownerStore.getOwner().getDefaultUnit();
+            return unitManagementContext.getOwner().getDefaultUnit();
         }
 
         return unitDAO.getById(unitId).orElseGet(() -> {
             LOG.warn("No unit with id {} found.", unitId);
-            return ownerStore.getOwner().getDefaultUnit();
+            return unitManagementContext.getOwner().getDefaultUnit();
         });
     }
 }
