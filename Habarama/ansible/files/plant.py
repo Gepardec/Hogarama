@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import paho.mqtt.client as paho
 import time
 import os
@@ -29,7 +31,7 @@ def on_message(client, userdata, message):
 
             if actor['type'] == "gpio":
                 # set actor in different thread to not block the main thread
-                thread = Thread(target = set_gpio_actor, args =(actor, payload['duration']))
+                thread = Thread(target = do_water, args =(actor, actorStati, payload['duration']))
                 thread.start()
             elif actor['type'] == "console":
                 log("Turning console actor {} on for {}s".format(actor['name'], payload['duration']))
@@ -51,12 +53,18 @@ def reconnect(client):
         except Exception as ex:
             log("error on reconnect: " + str(ex))
 
-def set_gpio_actor(actor, duration):
+def do_water(actor, actorStati, duration):
+    isActive = actorStati[actor['name']]
+    if isActive:
+        log("Status for {} is {} ignore message!".format(actor['name'], isActive))
+        return
     try:
+        actorStati[actor['name']] = True
         log("Turning {} on".format(actor['name']))
         GPIO.output(actor['pin'], 0)
         time.sleep(duration)
     finally:
+        actorStati[actor['name']] = False
         GPIO.output(actor['pin'], 1)
         log("{} turned off".format(actor['name']))
 
@@ -69,6 +77,13 @@ def on_disconnect(client, userdata, rc):
         log("{0} subscribe to {1}".format (brokerUrl, topicName))
         (result, mid) = client.subscribe(topicName, 0)
 
+def initialize_stati(actors):
+    actorStati = {}
+    for actor in actors:
+        actorStati[actor['name']] = False
+    return actorStati
+
+
 # Hardware SPI configuration:
 SPI_PORT   = 0
 SPI_DEVICE = 0
@@ -80,7 +95,8 @@ with open('habarama.json') as data_file:
 brokerUrls = data['brokerUrls']
 sensors = data['sensors']
 actors = data['actors']
-waitInterval = 15
+actorStati = initialize_stati(actors)
+waitInterval = 60
 sampleInterval = 2
 
 # Setup pins
@@ -131,7 +147,7 @@ while True:
             time.sleep(sampleInterval)
             waterLevel = mcp.read_adc(sensor['channel'])
             percent = int(round(waterLevel/10.24))
-            log("ADC Output: {0:4d} Percentage: {1:3}%".format (waterLevel,percent))
+            log("ADC Sensor: '{2}' Output: {0:4d} Percentage: {1:3}%".format (waterLevel,percent,sensor['name']))
             payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
             payload = payload.format(sensor['name'],sensor['type'],waterLevel,sensor['location'])
             for client in clients:
