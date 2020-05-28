@@ -65,7 +65,7 @@ objects:
     resources: {}
     runPolicy: Serial
     source:
-      contextDir: Fluentd
+      contextDir: OpenShift3/Fluentd
       git:
         ref: ${BRANCH}
         uri: https://github.com/Gepardec/Hogarama/
