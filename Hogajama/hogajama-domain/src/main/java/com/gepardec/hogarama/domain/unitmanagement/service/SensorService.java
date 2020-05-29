@@ -1,7 +1,7 @@
 package com.gepardec.hogarama.domain.unitmanagement.service;
 
 import com.gepardec.hogarama.domain.exception.TechnicalException;
-import com.gepardec.hogarama.domain.unitmanagement.context.UnitManagementContext;
+import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
@@ -18,7 +18,7 @@ public class SensorService {
     private SensorDAO dao;
 
     @Inject
-    private UnitManagementContext store;
+    private UserContext userContext;
 
     @Inject
     Event<Sensor> sensorChanged;
@@ -43,7 +43,7 @@ public class SensorService {
     }
 
     public List<Sensor> getAllSensorForOwner() {
-        return dao.getAllSensorForOwner(store.getOwner());
+        return dao.getAllSensorForOwner(userContext.getOwner());
     }
 
     private void verifyUnitBelongsToOwner(Unit unit) {
@@ -53,6 +53,6 @@ public class SensorService {
     }
 
     private boolean unitBelongsToOwner(Unit unit) {
-        return store.getOwner().getUnitList().stream().map(Unit::getId).collect(Collectors.toSet()).contains(unit.getId());
+        return userContext.getOwner().getUnitList().stream().map(Unit::getId).collect(Collectors.toSet()).contains(unit.getId());
     }
 }

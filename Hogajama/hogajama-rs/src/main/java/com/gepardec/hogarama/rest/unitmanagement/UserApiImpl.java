@@ -1,6 +1,5 @@
 package com.gepardec.hogarama.rest.unitmanagement;
 
-import com.gepardec.hogarama.domain.unitmanagement.context.UnitManagementContext;
 import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 import com.gepardec.hogarama.domain.unitmanagement.service.UserProfileService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.UserDto;

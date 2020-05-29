@@ -4,7 +4,7 @@ package com.gepardec.hogarama.rest.unitmanagement.interceptor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
 import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 import com.gepardec.hogarama.domain.unitmanagement.service.OwnerService;
-import com.gepardec.hogarama.domain.unitmanagement.context.UnitManagementContext;
+import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.representations.AccessToken;
@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * Intercepts all requests annotated with {@link DetermineOwner} and extracts logged in user
  * by request's bearer token. <br />
- * The extracted user will be stored in the {@link UnitManagementContext}.
+ * The extracted user will be stored in the {@link UserContext}.
  */
 @DetermineOwner
 @Interceptor
@@ -33,7 +33,7 @@ public class DetermineOwnerInterceptor {
     @Inject
     private OwnerService service;
     @Inject
-    private UnitManagementContext unitManagementContext;
+    private UserContext userContext;
 
     @AroundInvoke
     public Object aroundInvoke(InvocationContext ctx) throws Exception {
@@ -45,7 +45,7 @@ public class DetermineOwnerInterceptor {
             String ssoUserId = kp.getName();
             Optional<Owner> optionalOwner = service.getRegisteredOwner(ssoUserId);
             Owner owner = optionalOwner.orElseGet(() -> registerOwnerAndHandleDuplicates(ssoUserId));
-            unitManagementContext.setOwner(owner);
+            userContext.setOwner(owner);
 
             final AccessToken token = kp.getKeycloakSecurityContext().getToken();
             UserProfile userProfile = new UserProfile();
@@ -53,7 +53,7 @@ public class DetermineOwnerInterceptor {
             userProfile.setEmail(token.getEmail());
             userProfile.setFamilyName(token.getFamilyName());
             userProfile.setGivenName(token.getGivenName());
-            unitManagementContext.setUserProfile(userProfile);
+            userContext.setUserProfile(userProfile);
         }
 
         return ctx.proceed();

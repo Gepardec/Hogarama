@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.domain.unitmanagement.service;
 
-import com.gepardec.hogarama.domain.unitmanagement.context.UnitManagementContext;
+import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.UnitDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 
@@ -12,10 +12,10 @@ public class UnitService {
     @Inject
     private UnitDAO dao;
     @Inject
-    private UnitManagementContext store;
+    private UserContext userContext;
 
     public List<Unit> getUnitsForOwner() {
-        return dao.getUnitsForOwner(store.getOwner().getId());
+        return dao.getUnitsForOwner(userContext.getOwner().getId());
     }
 
     public void createUnit(Unit unit) {

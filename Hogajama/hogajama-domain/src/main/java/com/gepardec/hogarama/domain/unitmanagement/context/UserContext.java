@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
-public class UnitManagementContext {
+public class UserContext {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UnitManagementContext.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserContext.class);
 
     private Owner owner;
     private UserProfile userProfile;
