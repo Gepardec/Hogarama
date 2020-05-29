@@ -15,48 +15,59 @@ from threading import Thread
 def log(message):
     sys.stderr.write(message+"\n")
 
-def on_publish(client, userdata, mid):
-    log(("Publish returned result: {} {} {}".format(client, userdata, mid)))
+class Client(paho.Client):
 
-def on_message(client, userdata, message):
-    log(("Message received\r\n  Topic: {}\r\n  Payload: {}".format(message.topic, message.payload)))
+    def init(client, brokerUrl):
+        client.brokerUrl = brokerUrl
+        client.isConnected = False
+        client.on_publish = client.handle_on_publish
+        client.on_message = client.handle_on_message
+        client.on_disconnect = client.handle_on_disconnect
+        client.on_connect = client.handle_on_connect
+        ssl_ctx = ssl.create_default_context(cafile='broker.pem')
+        ssl_ctx.check_hostname = False
+        client.tls_set_context(ssl_ctx)
+        client.username_pw_set("mq_habarama", "mq_habarama_pass")
 
-    payload = json.loads(message.payload)
+    def handle_on_publish(self, client, userdata, mid):
+        log(("Publish to {} returned result: {} {}".format(self.brokerUrl, userdata, mid)))
 
-    actorFound = False
-    for actor in actors:
-        if actor.has_topic(message.topic):
+    def handle_on_message(self, client, userdata, message):
+        log(("Message received from {}\r\n  Topic: {}\r\n  Payload: {}".format(self.brokerUrl, message.topic, message.payload)))
 
-            if actor.type == "gpio":
-                # set actor in different thread to not block the main thread
-                thread = Thread(target = actor.do_water, args =(payload['duration'],))
-                thread.start()
-            elif actor.type == "console":
-                log("Turning console actor {} on for {}s".format(actor.name, payload['duration']))
-            else:
-                log("Actor type {} of {} is not supported".format(actor.type, actor.name))
+        actorFound = False
+        for actor in actors:
+            if ( actor.nonblocking_handle(message) ):
+                actorFound = True
+                break
+        if not actorFound:
+            log("ERROR: No actor found for topic {}!".format(message.topic))
 
-            actorFound = True
-            break
-    if not actorFound:
-        log("ERROR: No actor found for topic {}!".format(message.topic))
+    def nonblocking_reconnect(client):
+        thread = Thread(target = client.blocking_reconnect, args =())
+        thread.start()
 
-def reconnect(client):
-    while True:
-        log("Try connect again in a few seconds")
-        time.sleep(5)
-        try:
-            client.reconnect()
-            return True
-        except Exception as ex:
-            log("error on reconnect: " + str(ex))
+    def blocking_reconnect(client):
+        while True:
+            log("Try connect to {} again in a few seconds".format(client.brokerUrl))
+            time.sleep(5)
+            try:
+                client.reconnect()
+                return True
+            except Exception as ex:
+                log("error on reconnect to {}: {}".format(client.brokerUrl, str(ex)))
 
-def on_disconnect(client, userdata, rc):
-    log(("Disconnect event occured: {} {} {}".format(client, userdata, rc)))
-    reconnect(client)
+    def handle_on_connect(self, client, userdata, flags, rc):
+        log("Connected to {}".format(self.brokerUrl))
+        self.isConnected = True
 
-    for actor in actors:
-        actor.subscribe_to_topic(client)
+    def handle_on_disconnect(self, client, userdata, rc):
+        log(("Disconnect event occured: {} {} {}".format(client, userdata, rc)))
+        self.isConnected = False
+        self.nonblocking_reconnect()
+
+        for actor in actors:
+            actor.subscribe_to_topic(client)
 
 def initialize_actors(actorConfigs):
     actors = []
@@ -75,6 +86,22 @@ class Actor:
 
     def has_topic(self, topicName):
         return topicName == self.topicName or topicName == self.topicName2
+
+    def nonblocking_handle(self, message):
+        if not self.has_topic(message.topic):
+            return False
+
+        payload = json.loads(message.payload)
+
+        if actor.type == "gpio":
+            # set actor in different thread to not block the main thread
+            thread = Thread(target = actor.do_water, args =(payload['duration'],))
+            thread.start()
+        elif actor.type == "console":
+            log("Turning console actor {} on for {}s".format(actor.name, payload['duration']))
+        else:
+            log("Actor type {} of {} is not supported".format(actor.type, actor.name))
+        return True
 
     def do_water(self, duration):
         pin = self.config['pin']
@@ -133,15 +160,9 @@ for actor in actors:
 # Setup Hogarama connection
 clients = []
 for index,brokerUrl in enumerate(brokerUrls):
-    client = paho.Client(clean_session=True)
-    client.on_publish = on_publish
-    client.on_message = on_message
-    client.on_disconnect = on_disconnect
-    ssl_ctx = ssl.create_default_context(cafile='broker.pem')
-    ssl_ctx.check_hostname = False
-    client.tls_set_context(ssl_ctx)
-    client.username_pw_set("mq_habarama", "mq_habarama_pass")
 
+    client = Client(clean_session=True)
+    client.init(brokerUrl)
     client.connect(brokerUrl, 443, 60)
 
     for actor in actors:
@@ -159,14 +180,15 @@ while True:
             GPIO.output(sensor['pin'], 1)
             time.sleep(sampleInterval)
             waterLevel = mcp.read_adc(sensor['channel'])
-            percent = int(round(waterLevel/10.24))
-            log("ADC Sensor: '{2}' Output: {0:4d} Percentage: {1:3}%".format (waterLevel,percent,sensor['name']))
+            GPIO.output(sensor['pin'], 0)
+            log("ADC Sensor: '{1}' Output: {0:4d} ".format (waterLevel,sensor['name']))
             payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
             payload = payload.format(sensor['name'],sensor['type'],waterLevel,sensor['location'])
             for client in clients:
-
-                client.publish("habarama", payload=payload, qos=0, retain=False)
-            GPIO.output(sensor['pin'], 0)
+                if client.isConnected:
+                    client.publish("habarama", payload=payload, qos=0, retain=False)
+                else:
+                    log("Client for {} is not connected, skipping publishing!".format(client.brokerUrl))
     except Exception as e:
         log("ERROR: " +str(e))
         log("Oops! Something went terribly wrong, let us attempt exactly the same thing again!")
