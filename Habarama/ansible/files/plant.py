@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import paho.mqtt.client as paho
 import time
 import os
@@ -21,20 +23,18 @@ def on_message(client, userdata, message):
 
     payload = json.loads(message.payload)
 
-
     actorFound = False
     for actor in actors:
-        if ( message.topic == "actor.{}.{}".format (actor['location'], actor['name']) ) or (
-           message.topic == "actor/{}/{}".format (actor['location'], actor['name']) ):
+        if actor.has_topic(message.topic):
 
-            if actor['type'] == "gpio":
+            if actor.type == "gpio":
                 # set actor in different thread to not block the main thread
-                thread = Thread(target = set_gpio_actor, args =(actor, payload['duration']))
+                thread = Thread(target = actor.do_water, args =(payload['duration'],))
                 thread.start()
-            elif actor['type'] == "console":
-                log("Turning console actor {} on for {}s".format(actor['name'], payload['duration']))
+            elif actor.type == "console":
+                log("Turning console actor {} on for {}s".format(actor.name, payload['duration']))
             else:
-                log("Actor type {} of {} is not supported".format(actor['type'], actor['name']))
+                log("Actor type {} of {} is not supported".format(actor.type, actor.name))
 
             actorFound = True
             break
@@ -51,23 +51,60 @@ def reconnect(client):
         except Exception as ex:
             log("error on reconnect: " + str(ex))
 
-def set_gpio_actor(actor, duration):
-    try:
-        log("Turning {} on".format(actor['name']))
-        GPIO.output(actor['pin'], 0)
-        time.sleep(duration)
-    finally:
-        GPIO.output(actor['pin'], 1)
-        log("{} turned off".format(actor['name']))
-
 def on_disconnect(client, userdata, rc):
     log(("Disconnect event occured: {} {} {}".format(client, userdata, rc)))
     reconnect(client)
 
     for actor in actors:
-        topicName = "actor.{}.{}".format (actor['location'], actor['name'])
-        log("{0} subscribe to {1}".format (brokerUrl, topicName))
-        (result, mid) = client.subscribe(topicName, 0)
+        actor.subscribe_to_topic(client)
+
+def initialize_actors(actorConfigs):
+    actors = []
+    for config in actorConfigs:
+        actors.append(Actor(config))
+    return actors
+
+class Actor:
+    def __init__(self, config):
+        self.name = config['name']
+        self.type = config['type']
+        self.topicName  = "actor.{}.{}".format (config['location'], config['name'])
+        self.topicName2 = "actor/{}/{}".format (config['location'], config['name'])
+        self.config = config
+        self.active = False
+
+    def has_topic(self, topicName):
+        return topicName == self.topicName or topicName == self.topicName2
+
+    def do_water(self, duration):
+        pin = self.config['pin']
+        if self.active:
+            log("Actor {} is active. Ignore message!".format(self.name))
+            return
+        try:
+            self.active = True
+            log("Turning actor {} on for duration {}!".format(self.name, duration))
+            GPIO.output(pin, 0)
+            time.sleep(duration)
+        finally:
+            self.active = False
+            GPIO.output(pin, 1)
+            log("{} turned off".format(actor.name))
+
+    def setup_pin(self):
+        pin = self.config['pin']
+        if actor.type == "gpio":
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, 1)
+        elif actor.type == "console":
+            log("Setting up actor {} as console actor".format(actor.name))
+        else:
+            log("Actor type {} of {} is not supported!".format(actor.type, actor.name))
+
+    def subscribe_to_topic(self, client):
+        log("subscribe to {}".format (self.topicName))
+        (result, mid) = client.subscribe(self.topicName, 0)
+
 
 # Hardware SPI configuration:
 SPI_PORT   = 0
@@ -79,7 +116,8 @@ with open('habarama.json') as data_file:
     data = json.load(data_file)
 brokerUrls = data['brokerUrls']
 sensors = data['sensors']
-actors = data['actors']
+actors = initialize_actors(data['actors'])
+
 waitInterval = 15
 sampleInterval = 2
 
@@ -89,13 +127,7 @@ for sensor in sensors:
     GPIO.setup(sensor['pin'], GPIO.OUT)
 
 for actor in actors:
-    if actor['type'] == "gpio":
-        GPIO.setup(actor['pin'], GPIO.OUT)
-        GPIO.output(actor['pin'], 1)
-    elif actor['type'] == "console":
-        log("Setting up actor {} as console actor".format(actor['name']))
-    else:
-        log("Actor type {} of {} is not supported!".format(actor['type'], actor['name']))
+    actor.setup_pin()
 
 
 # Setup Hogarama connection
@@ -113,9 +145,7 @@ for index,brokerUrl in enumerate(brokerUrls):
     client.connect(brokerUrl, 443, 60)
 
     for actor in actors:
-        topicName = "actor.{}.{}".format (actor['location'], actor['name'])
-        log("{0} subscribe to {1}".format (brokerUrl, topicName))
-        (result, mid) = client.subscribe(topicName, 0)
+        actor.subscribe_to_topic(client)
 
     clients.append(client)
 
@@ -125,13 +155,12 @@ while True:
         client.loop()
 
     try:
-        # client.connect(brokerUrl, 443, 60)
         for sensor in sensors:
             GPIO.output(sensor['pin'], 1)
             time.sleep(sampleInterval)
             waterLevel = mcp.read_adc(sensor['channel'])
             percent = int(round(waterLevel/10.24))
-            log("ADC Output: {0:4d} Percentage: {1:3}%".format (waterLevel,percent))
+            log("ADC Sensor: '{2}' Output: {0:4d} Percentage: {1:3}%".format (waterLevel,percent,sensor['name']))
             payload = '{{"sensorName": "{}", "type": "{}", "value": {}, "location": "{}", "version": 1 }}'
             payload = payload.format(sensor['name'],sensor['type'],waterLevel,sensor['location'])
             for client in clients:
