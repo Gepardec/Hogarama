@@ -4,7 +4,7 @@
     </span>
     <div class="heading">
         <h1>Hallo {{username}}!</h1>
-        <p *ngIf="units.length == 0">du hast noch keine Pflanzen in deinem Hogarama</p>
+        <p *ngIf="sensors.length == 0">Du hast noch keine Pflanzen in deinem Hogarama</p>
     </div>
     <button mat-raised-button id="add-unit" (click)="addPlant()" class="round">
         <span class="material-icons">

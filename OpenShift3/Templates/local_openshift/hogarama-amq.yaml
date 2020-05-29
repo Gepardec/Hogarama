@@ -57,7 +57,7 @@ objects:
     resources: {}
     runPolicy: Serial
     source:
-      contextDir: AMQ
+      contextDir: OpenShift3/AMQ
       git:
         ref: ${BRANCH}
         uri: https://github.com/Gepardec/Hogarama.git
