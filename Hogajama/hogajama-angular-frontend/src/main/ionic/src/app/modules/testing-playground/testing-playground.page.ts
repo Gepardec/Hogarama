@@ -22,7 +22,7 @@ export class TestingPlaygroundPage implements OnInit {
     actorsDisplayedColumns: string[] = ['id', 'name', 'deviceId', 'unitId', 'actions'];
     actorsDataSource: MatTableDataSource<Actor>= new MatTableDataSource<Actor>();
 
-    unitsDisplayedColumns: string[] = ['id', 'name', 'description', 'isDefaultUnit', 'ownerId', 'actions'];
+    unitsDisplayedColumns: string[] = ['id', 'name', 'description', 'isDefault', 'ownerId', 'actions'];
     unitsDataSource: MatTableDataSource<Unit>= new MatTableDataSource<Unit>();
     constructor(
       public authService: AuthenticationService,
