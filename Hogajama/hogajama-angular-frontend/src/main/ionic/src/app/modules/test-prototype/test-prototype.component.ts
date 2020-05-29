@@ -12,6 +12,7 @@ import { Unit } from 'src/app/shared/models/Unit';
 })
 export class TestPrototypeComponent implements OnInit {
   units: Unit[] = [];
+  sensors : Sensor[] = [];
   username: string = '';
 
   constructor(
@@ -23,6 +24,11 @@ export class TestPrototypeComponent implements OnInit {
   async ngOnInit() {
     try {
       this.units = await this.rs.units.getAllByBearer();
+    } catch(error) {
+      console.error(error);
+    }
+    try {
+      this.sensors = await this.rs.sensors.getAllByBearer();
     } catch(error) {
       console.error(error);
     }

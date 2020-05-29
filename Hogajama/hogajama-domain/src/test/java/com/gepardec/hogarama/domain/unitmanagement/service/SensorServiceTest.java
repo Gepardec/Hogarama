@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.domain.unitmanagement.service;
 
 import com.gepardec.hogarama.domain.exception.TechnicalException;
+import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
@@ -17,7 +18,6 @@ import java.util.Collections;
 import java.util.Optional;
 
 import javax.enterprise.event.Event;
-import javax.inject.Inject;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SensorServiceTest {
@@ -28,7 +28,7 @@ public class SensorServiceTest {
     private SensorDAO dao;
  
     @Mock
-    private OwnerStore store;
+    private UserContext userContext;
 
     @Mock
     Event<Sensor> sensorChanged;
@@ -42,7 +42,7 @@ public class SensorServiceTest {
     @Before
     public void setUp() {
         owner = newOwner();
-        Mockito.when(store.getOwner()).thenReturn(owner);
+        Mockito.when(userContext.getOwner()).thenReturn(owner);
     }
 
     @Test

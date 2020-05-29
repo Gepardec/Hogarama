@@ -2,10 +2,12 @@ package com.gepardec.hogarama.rest.unitmanagement.interceptor;
 
 
 import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
+import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 import com.gepardec.hogarama.domain.unitmanagement.service.OwnerService;
-import com.gepardec.hogarama.domain.unitmanagement.service.OwnerStore;
+import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.representations.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +22,7 @@ import java.util.Optional;
 /**
  * Intercepts all requests annotated with {@link DetermineOwner} and extracts logged in user
  * by request's bearer token. <br />
- * The extracted user will be stored in the {@link OwnerStore}.
+ * The extracted user will be stored in the {@link UserContext}.
  */
 @DetermineOwner
 @Interceptor
@@ -31,7 +33,7 @@ public class DetermineOwnerInterceptor {
     @Inject
     private OwnerService service;
     @Inject
-    private OwnerStore store;
+    private UserContext userContext;
 
     @AroundInvoke
     public Object aroundInvoke(InvocationContext ctx) throws Exception {
@@ -43,7 +45,15 @@ public class DetermineOwnerInterceptor {
             String ssoUserId = kp.getName();
             Optional<Owner> optionalOwner = service.getRegisteredOwner(ssoUserId);
             Owner owner = optionalOwner.orElseGet(() -> registerOwnerAndHandleDuplicates(ssoUserId));
-            store.setOwner(owner);
+            userContext.setOwner(owner);
+
+            final AccessToken token = kp.getKeycloakSecurityContext().getToken();
+            UserProfile userProfile = new UserProfile();
+            userProfile.setName(token.getName());
+            userProfile.setEmail(token.getEmail());
+            userProfile.setFamilyName(token.getFamilyName());
+            userProfile.setGivenName(token.getGivenName());
+            userContext.setUserProfile(userProfile);
         }
 
         return ctx.proceed();
