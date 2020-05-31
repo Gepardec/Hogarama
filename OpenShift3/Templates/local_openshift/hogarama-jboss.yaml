@@ -119,10 +119,6 @@ objects:
             value: ${TINYURL}
           - name: KEYCLOAK_AUTH_SERVER_URL
             value: ${KEYCLOAK_AUTH_SERVER_URL}
-          - name: POSTGRESQL_DATABASE
-            value: units
-          - name: POSTGRESQL_USER
-            value: hogarama
           - name: POSTGRESQL_PASSWORD
             value: changepassword
           - name: CURRENT_NAMESPACE

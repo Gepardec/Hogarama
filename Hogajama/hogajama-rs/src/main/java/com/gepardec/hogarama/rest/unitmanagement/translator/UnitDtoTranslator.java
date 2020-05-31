@@ -1,16 +1,15 @@
 package com.gepardec.hogarama.rest.unitmanagement.translator;
 
-import com.gepardec.hogarama.domain.unitmanagement.dao.OwnerDAO;
+import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.rest.unitmanagement.dto.UnitDto;
-import org.apache.commons.lang3.NotImplementedException;
 
 import javax.inject.Inject;
 
 public class UnitDtoTranslator implements Translator<UnitDto, Unit> {
 
     @Inject
-    private OwnerDAO ownerDAO;
+    private UserContext userContext;
 
     @Override
     public UnitDto toDto(Unit unit) {
@@ -23,6 +22,12 @@ public class UnitDtoTranslator implements Translator<UnitDto, Unit> {
 
     @Override
     public Unit fromDto(UnitDto dto) {
-        throw new NotImplementedException("Not necessary yet.");
-    }
+        Unit unit = new Unit();
+        unit.setDescription(dto.getDescription());
+        unit.setName(dto.getName());
+        unit.setId(dto.getId());
+        unit.setOwner(userContext.getOwner()); // We always use the current Owner? Should OwnerId be in Dto?
+        unit.setDefaultUnit(dto.isDefaultUnit());
+        return unit;
+     }
 }
