@@ -161,13 +161,6 @@ main() {
         export KUBECONFIG=/.kube/config
     fi
 
-    ## CHECK LOGGED-IN STATUS ON CLUSTER
-    rc="$(oc whoami > /dev/null 2>&1  ;echo $?)"
-    if [[ rc -gt 0 ]]; then
-        echo "You are not logged in to the OpenShift Cluster, please login and try again"
-        exit 1
-    fi
-
     ## REPLACE SECRETS
     if [[ ${command} == "replace-secrets" ]];then
         execute "j2-template ${TOPLEVEL_DIR} helm ${extravars}"
@@ -177,6 +170,13 @@ main() {
     ## ADD REQUIRED HELM REPOSITORIES
     if [[ ${command} == "install" ]] || [[ ${command} == "upgrade" ]]; then
         execute "helm repo add bitnami https://charts.bitnami.com/bitnami" 2>&1 > /dev/null
+    fi
+
+    ## CHECK LOGGED-IN STATUS ON CLUSTER
+    rc="$(oc whoami > /dev/null 2>&1  ;echo $?)"
+    if [[ rc -gt 0 ]]; then
+        echo "You are not logged in to the OpenShift Cluster, please login and try again"
+        exit 1
     fi
 
     ## INSTALL
