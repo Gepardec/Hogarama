@@ -82,3 +82,9 @@ Additional commands can be found in the help of your shell script. Simply run th
             --ns-keycloak)          ... namespace to/from which keycloak resources will be 
                                         installed/uninstalled
                                         default-value: gepardec
+
+Troubelshooting
+-----------------------
+
+Sometimes it happens that you are deleting a project which still has Kubernetes resources containing a finalizer that is no longer
+able to succeed. In these cases the following resources has already helped us out tremendously in the past: `Stackoverflow Thread <https://stackoverflow.com/questions/58638297/project-deletion-struck-in-terminating>`
