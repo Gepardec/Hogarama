@@ -14,9 +14,8 @@ import {Actor} from "../../../shared/models/Actor";
 })
 export class UnassignedDevicesComponent implements OnInit {
     units: Unit[] = [];
-    sensors: Sensor[] = [];
-    actors: Actor[] = [];
-
+    unassignedSensors: Sensor[] = [];
+    unassignedActors: Actor[] = [];
 
     constructor(
         private rs: HogaramaBackendService,
@@ -27,17 +26,11 @@ export class UnassignedDevicesComponent implements OnInit {
     async ngOnInit() {
         try {
             this.units = await this.rs.units.getAllByBearer();
-        } catch (error) {
-            console.error(error);
-        }
-        try {
-            this.sensors = await this.rs.sensors.getAllByBearer();
-        } catch (error) {
-            console.error(error);
-        }
-        try {
-            // TODO something else
-            // this.username = (await this.rs.users.getByBearer()).name;
+            let defaultUnit = this.units.filter(unit => unit.isDefault)[0];
+            let allSensors = await this.rs.sensors.getAllByBearer();
+            this.unassignedSensors = allSensors.filter(sensor => sensor.unitId == defaultUnit.id);
+            let allActors = await this.rs.actors.getAllByBearer();
+            this.unassignedActors = allActors.filter(actor => actor.unitId == defaultUnit.id)
         } catch (error) {
             console.error(error);
         }

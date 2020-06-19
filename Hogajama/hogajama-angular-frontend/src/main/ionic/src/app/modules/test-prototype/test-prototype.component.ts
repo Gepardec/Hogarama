@@ -37,6 +37,15 @@ export class TestPrototypeComponent implements OnInit {
     } catch(error) {
       console.error(error);
     }
+
+    // TODO do we want to redirect to the dashboard if we already have some sensors, units and actors?
+    // this.redirectToDashboardIfNecessary();
+  }
+
+  private redirectToDashboardIfNecessary() {
+    if (this.units.length != 0 || this.sensors.length != 0) {
+      this.router.navigateByUrl("/dashboard");
+    }
   }
 
   openSettings() {
