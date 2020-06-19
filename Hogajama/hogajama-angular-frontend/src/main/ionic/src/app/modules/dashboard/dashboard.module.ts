@@ -5,6 +5,7 @@ import {CommonModule} from "@angular/common";
 import {SharedModule} from "../shared/shared.module";
 import {MatButtonModule} from "@angular/material/button";
 import {DashboardComponent} from "./dashboard.component";
+import {DashboardRoutingModule} from "./dashboard-routing.module";
 
 @NgModule({
     declarations: [
@@ -14,7 +15,7 @@ import {DashboardComponent} from "./dashboard.component";
     exports: [],
     imports: [
         CommonModule,
-        // TestPrototypeRoutingModule,
+        DashboardRoutingModule,
         SharedModule,
         IonicModule,
         MatButtonModule
