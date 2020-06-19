@@ -70,7 +70,7 @@ usage_message () {
             -f | --force)           ... overwrites existing resources/executes helm upgrade if installation fails
             -d | --dryrun)          ... dryrun
             -q | --quiet)           ... quiet
-            -e | --extravars)       ... multiple definitions possible. Add additional/overwrite variabls in values.yaml or secret.yaml\
+            -e | --extravars)       ... multiple definitions possible. Add additional/overwrite variabls in values.yaml or secret.yaml
             -w | --write-template)  ... helm template output will be written to secrets working directory
             --ns-hogarama)          ... namespace to/from which hogarama resources will be installed/uninstalled
                                         default-value: hogarama
