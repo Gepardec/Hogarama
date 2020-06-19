@@ -20,7 +20,12 @@ const routes: Routes = [
   {
     path: 'playground',
     loadChildren: './modules/testing-playground/testing-playground.module#TestingPlaygroundPageModule',
-  },  { path: 'add-plant', loadChildren: './modules/add-plant/add-plant.module#AddPlantPageModule' },
+  },
+  {
+    path: 'dashboard',
+    loadChildren: './modules/dashboard/dashboard.module#DashboardModule',
+  },
+  { path: 'add-plant', loadChildren: './modules/add-plant/add-plant.module#AddPlantPageModule' },
   { path: 'config-start-info', loadChildren: './modules/config-start-info/config-start-info.module#ConfigStartInfoPageModule' },
   { path: 'config-connect-to-device-info', loadChildren: './modules/config-connect-to-device-info/config-connect-to-device-info.module#ConfigConnectToDeviceInfoPageModule' },
   { path: 'config-connect-device-to-wifi', loadChildren: './modules/config-connect-device-to-wifi/config-connect-device-to-wifi.module#ConfigConnectDeviceToWifiPageModule' },
