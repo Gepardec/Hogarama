@@ -74,6 +74,9 @@ hogarama:
       credentials:
         database: {{ HOGAJAMA_DB }}
         password: {{ MONGODB_PW }}
+  prometheus:
+      storage:
+          size: {{ PROMETHEUS_STORAGE_SIZE | default("32Gi") }}
 postgresql:
   image:
     tag: 11.7.0
