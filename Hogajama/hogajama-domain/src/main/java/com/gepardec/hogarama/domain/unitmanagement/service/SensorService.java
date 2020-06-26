@@ -42,8 +42,8 @@ public class SensorService {
         dao.update(sensor);
     }
 
-    public List<Sensor> getAllSensorForOwner() {
-        return dao.getAllSensorForOwner(userContext.getOwner());
+    public List<Sensor> getAllSensorsForOwner() {
+        return dao.getAllSensorsForOwner(userContext.getOwner());
     }
 
     private void verifyUnitBelongsToOwner(Unit unit) {

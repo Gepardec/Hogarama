@@ -70,37 +70,37 @@
           <tr mat-row *matRowDef="let row; columns: unitsDisplayedColumns;"></tr>
       </table>
     </mat-tab>
-<!--    <mat-tab label="Actors">-->
-<!--      <button mat-raised-button (click)="addNewActor()" color="primary" style="margin-top: 10px">Add new Actor</button>-->
-<!--      <table matSort mat-table [dataSource]="actorsDataSource">-->
-<!--          <ng-container matColumnDef="id">-->
-<!--              <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>-->
-<!--              <td mat-cell *matCellDef="let element"> {{element.id}} </td>-->
-<!--          </ng-container>-->
-<!--          <ng-container matColumnDef="name">-->
-<!--              <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>-->
-<!--              <td mat-cell *matCellDef="let element"> {{element.name}} </td>-->
-<!--          </ng-container>-->
-<!--          <ng-container matColumnDef="deviceId">-->
-<!--              <th mat-header-cell mat-sort-header *matHeaderCellDef> Device Id </th>-->
-<!--              <td mat-cell *matCellDef="let element"> {{element.deviceId}} </td>-->
-<!--          </ng-container>-->
-<!--          <ng-container matColumnDef="unitId">-->
-<!--              <th mat-header-cell mat-sort-header *matHeaderCellDef> Unit Id </th>-->
-<!--              <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>-->
-<!--          </ng-container>-->
-<!--          <ng-container matColumnDef="actions">-->
-<!--              <th mat-header-cell *matHeaderCellDef> Actions </th>-->
-<!--              <td mat-cell *matCellDef="let element">-->
-<!--                  <button mat-button (click)="editActor(element)">Edit</button>-->
-<!--                  <button mat-raised-button color="warn" (click)="deleteActor(element.id)">Delete</button>-->
-<!--              </td>-->
-<!--          </ng-container>-->
+    <mat-tab label="Actors">
+      <button mat-raised-button (click)="addNewActor()" color="primary" style="margin-top: 10px">Add new Actor</button>
+      <table matSort mat-table [dataSource]="actorsDataSource">
+          <ng-container matColumnDef="id">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>
+              <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+          <ng-container matColumnDef="deviceId">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Device Id </th>
+              <td mat-cell *matCellDef="let element"> {{element.deviceId}} </td>
+          </ng-container>
+          <ng-container matColumnDef="unitId">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Unit Id </th>
+              <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let element">
+                  <button mat-button (click)="editActor(element)">Edit</button>
+                  <button mat-raised-button color="warn" (click)="deleteActor(element.id)">Delete</button>
+              </td>
+          </ng-container>
 
-<!--          <tr mat-header-row *matHeaderRowDef="actorsDisplayedColumns"></tr>-->
-<!--          <tr mat-row *matRowDef="let row; columns: actorsDisplayedColumns;"></tr>-->
-<!--      </table>-->
-<!--    </mat-tab>-->
+          <tr mat-header-row *matHeaderRowDef="actorsDisplayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: actorsDisplayedColumns;"></tr>
+      </table>
+    </mat-tab>
     <mat-tab label="Sensors">
       <button mat-raised-button (click)="addNewSensor()" color="primary" style="margin-top: 10px">Add new Sensor</button>
       <table matSort mat-table [dataSource]="sensorsDataSource">

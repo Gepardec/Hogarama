@@ -10,11 +10,11 @@ import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
 
 import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.watering.ActorService;
+import com.gepardec.hogarama.domain.watering.SendActorMessageService;
 import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.mocks.cli.MqttClient;
 
-public class ActorServiceImpl implements ActorService {
+public class SendActorMessageServiceImpl implements SendActorMessageService {
 
     @Inject
     private Datastore db;

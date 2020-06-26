@@ -94,9 +94,9 @@ public class SensorServiceTest {
 
     @Test
     public void getAllSensorForOwner() {
-        service.getAllSensorForOwner();
+        service.getAllSensorsForOwner();
 
-        Mockito.verify(dao).getAllSensorForOwner(owner);
+        Mockito.verify(dao).getAllSensorsForOwner(owner);
     }
 
     private Owner newOwner() {
