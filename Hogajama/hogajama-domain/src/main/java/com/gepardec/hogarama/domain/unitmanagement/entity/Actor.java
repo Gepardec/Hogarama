@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-public class Actor implements Serializable {
+public class Actor implements Serializable, Owned {
 
     @Id
     @GeneratedValue(generator = "ActorIdGenerator", strategy = GenerationType.SEQUENCE)

@@ -24,7 +24,7 @@ public class SensorService {
     Event<Sensor> sensorChanged;
     
     public void createSensor(Sensor sensor) {
-        verifyUnitBelongsToOwner(sensor.getUnit());
+        sensor.verifyIsOwned(userContext.getOwner());
         dao.save(sensor);
     }
 
@@ -37,7 +37,7 @@ public class SensorService {
     }
 
     public void updateSensor(Sensor sensor) {
-        verifyUnitBelongsToOwner(sensor.getUnit());
+        sensor.verifyIsOwned(userContext.getOwner());
         sensorChanged.fire(sensor);
         dao.update(sensor);
     }
@@ -46,13 +46,4 @@ public class SensorService {
         return dao.getAllSensorsForOwner(userContext.getOwner());
     }
 
-    private void verifyUnitBelongsToOwner(Unit unit) {
-        if (!unitBelongsToOwner(unit)) {
-            throw new TechnicalException("Unit doesn't belong to owner");
-        }
-    }
-
-    private boolean unitBelongsToOwner(Unit unit) {
-        return userContext.getOwner().getUnitList().stream().map(Unit::getId).collect(Collectors.toSet()).contains(unit.getId());
-    }
 }

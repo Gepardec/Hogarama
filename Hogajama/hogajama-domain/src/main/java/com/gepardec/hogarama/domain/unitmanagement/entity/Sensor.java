@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-public class Sensor implements Serializable {
+public class Sensor implements Serializable, Owned {
 
     @Id
     @GeneratedValue(generator = "SensorIdGenerator", strategy = GenerationType.SEQUENCE)

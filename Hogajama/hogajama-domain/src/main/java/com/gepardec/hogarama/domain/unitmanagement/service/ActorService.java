@@ -20,7 +20,7 @@ public class ActorService {
     private UserContext userContext;
 
     public void createActor(Actor actor) {
-        verifyUnitBelongsToOwner(actor.getUnit());
+        actor.verifyIsOwned(userContext.getOwner());
         dao.save(actor);
     }
 
@@ -32,7 +32,7 @@ public class ActorService {
     }
 
     public void updateActor(Actor actor) {
-        verifyUnitBelongsToOwner(actor.getUnit());
+        actor.verifyIsOwned(userContext.getOwner());
         dao.update(actor);
     }
 
@@ -40,13 +40,4 @@ public class ActorService {
         return dao.getAllActorsForOwner(userContext.getOwner());
     }
 
-    private void verifyUnitBelongsToOwner(Unit unit) {
-        if (!unitBelongsToOwner(unit)) {
-            throw new TechnicalException("Unit doesn't belong to owner");
-        }
-    }
-
-    private boolean unitBelongsToOwner(Unit unit) {
-        return userContext.getOwner().getUnitList().stream().map(Unit::getId).collect(Collectors.toSet()).contains(unit.getId());
-    }
 }
