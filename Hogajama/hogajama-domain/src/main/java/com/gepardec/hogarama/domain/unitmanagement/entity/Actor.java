@@ -21,6 +21,9 @@ public class Actor implements Serializable {
     @JoinColumn(name = "unit_id")
     private Unit unit;
 
+    @Column(name = "queue_name")
+    private String queueName;
+
     public Long getId() {
         return id;
     }
@@ -52,4 +55,8 @@ public class Actor implements Serializable {
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
+
+    public String getQueueName() { return queueName; }
+
+    public void setQueueName(String queueName) { this.queueName = queueName; }
 }
