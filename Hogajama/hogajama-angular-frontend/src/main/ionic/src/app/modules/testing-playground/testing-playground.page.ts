@@ -19,7 +19,7 @@ export class TestingPlaygroundPage implements OnInit {
     sensorsDisplayedColumns: string[] = ['id', 'name', 'deviceId', 'unitId', 'sensorTypeId', 'actions'];
     sensorsDataSource: MatTableDataSource<Sensor>= new MatTableDataSource<Sensor>();
 
-    actorsDisplayedColumns: string[] = ['id', 'name', 'deviceId', 'unitId', 'actions'];
+    actorsDisplayedColumns: string[] = ['id', 'name', 'deviceId', 'unitId', 'queueName', 'actions'];
     actorsDataSource: MatTableDataSource<Actor>= new MatTableDataSource<Actor>();
 
     unitsDisplayedColumns: string[] = ['id', 'name', 'description', 'isDefault', 'ownerId', 'actions'];

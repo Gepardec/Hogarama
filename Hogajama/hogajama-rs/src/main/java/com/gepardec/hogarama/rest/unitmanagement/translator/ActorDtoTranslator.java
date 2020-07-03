@@ -29,7 +29,8 @@ public class ActorDtoTranslator implements Translator<ActorDto, Actor> {
         return ActorDto.of(actor.getId(),
                 actor.getName(),
                 actor.getDeviceId(),
-                actor.getUnit().getId());
+                actor.getUnit().getId(),
+                actor.getQueueName());
     }
 
     @Override
@@ -42,6 +43,7 @@ public class ActorDtoTranslator implements Translator<ActorDto, Actor> {
         actor.setUnit(unit);
         actor.setDeviceId(dto.getDeviceId());
         actor.setName(dto.getName());
+        actor.setQueueName(dto.getQueueName());
 
         return actor;
     }

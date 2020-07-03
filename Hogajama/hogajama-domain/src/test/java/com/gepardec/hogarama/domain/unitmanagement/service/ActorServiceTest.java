@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SendActorMessageServiceTest {
+public class ActorServiceTest {
 
     private static final Long ACTOR_ID = 3537L;
 

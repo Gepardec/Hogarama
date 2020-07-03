@@ -5,19 +5,21 @@ public class ActorDto extends BaseDto {
     private String name;
     private String deviceId;
     private Long unitId;
+    private String queueName;
 
     public ActorDto() {
     }
 
-    private ActorDto(Long id, String name, String deviceId, Long unitId) {
+    private ActorDto(Long id, String name, String deviceId, Long unitId, String queueName) {
         super(id);
         this.name = name;
         this.deviceId = deviceId;
         this.unitId = unitId;
+        this.queueName = queueName;
     }
 
-    public static ActorDto of(Long id, String name, String deviceId, Long unitId) {
-        return new ActorDto(id, name, deviceId, unitId);
+    public static ActorDto of(Long id, String name, String deviceId, Long unitId, String queueName) {
+        return new ActorDto(id, name, deviceId, unitId, queueName);
     }
 
     public String getName() {
@@ -43,4 +45,8 @@ public class ActorDto extends BaseDto {
     public void setUnitId(Long unitId) {
         this.unitId = unitId;
     }
+
+    public String getQueueName() { return queueName; }
+
+    public void setQueueName(String queueName) { this.queueName = queueName; }
 }

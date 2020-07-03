@@ -33,7 +33,7 @@ public class WateringService {
 	public WateringConfigDAO configDao;
 
 	@Inject
-	public SendActorMessageService actorSvc;
+	public ActorControlService actorSvc;
 
 	@Inject
 	public WateringStrategy watering;
@@ -43,7 +43,7 @@ public class WateringService {
 	public WateringService() {
 	}
 
-	protected WateringService(SensorDataDAO sensorDao, SendActorMessageService actorSvc, WateringStrategy watering, WateringConfigDAO configDao) {
+	protected WateringService(SensorDataDAO sensorDao, ActorControlService actorSvc, WateringStrategy watering, WateringConfigDAO configDao) {
 		this.sensorDao = sensorDao;
 		this.actorSvc = actorSvc;
 		this.watering = watering;

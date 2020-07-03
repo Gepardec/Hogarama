@@ -89,6 +89,10 @@
               <th mat-header-cell mat-sort-header *matHeaderCellDef> Unit Id </th>
               <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
           </ng-container>
+          <ng-container matColumnDef="queueName">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Queue Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.queueName}} </td>
+          </ng-container>
           <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef> Actions </th>
               <td mat-cell *matCellDef="let element">

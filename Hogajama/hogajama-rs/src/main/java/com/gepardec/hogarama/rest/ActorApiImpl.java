@@ -4,12 +4,12 @@ import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-import com.gepardec.hogarama.domain.watering.SendActorMessageService;
+import com.gepardec.hogarama.domain.watering.ActorControlService;
 
 public class ActorApiImpl implements ActorApi {
 
 	@Inject
-    SendActorMessageService pumpService;
+	ActorControlService pumpService;
 
 	@Override
 	public Response sendActorMessage(String location, String actorName, Integer duration,

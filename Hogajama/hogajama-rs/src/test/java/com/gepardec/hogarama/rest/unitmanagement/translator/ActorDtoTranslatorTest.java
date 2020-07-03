@@ -22,6 +22,8 @@ public class ActorDtoTranslatorTest {
     private static final String DEVICE_ID = "DEVICE_ID";
     private static final String NAME = "MY_ACTOR";
     private static final long UNIT_ID = 2L;
+    public static final String QNAME = "QNAME";
+
 
     @Mock
     private UnitDAO unitDAO;
@@ -40,7 +42,7 @@ public class ActorDtoTranslatorTest {
         actor.setDeviceId(DEVICE_ID);
         actor.setName(NAME);
         actor.setUnit(newUnit());
-
+        actor.setQueueName(QNAME);
         ActorDto result = translator.toDto(actor);
 
         assertThat(result).isNotNull();
@@ -48,6 +50,8 @@ public class ActorDtoTranslatorTest {
         assertThat(result.getDeviceId()).isEqualTo(DEVICE_ID);
         assertThat(result.getName()).isEqualTo(NAME);
         assertThat(result.getUnitId()).isEqualTo(UNIT_ID);
+        assertThat(result.getQueueName()).isEqualTo(QNAME);
+
     }
 
     @Test(expected = NullPointerException.class)
@@ -65,6 +69,7 @@ public class ActorDtoTranslatorTest {
         dto.setDeviceId(DEVICE_ID);
         dto.setName(NAME);
         dto.setUnitId(UNIT_ID);
+        dto.setQueueName(QNAME);
 
         Actor result = translator.fromDto(dto);
 
@@ -73,6 +78,8 @@ public class ActorDtoTranslatorTest {
         assertThat(result.getDeviceId()).isEqualTo(DEVICE_ID);
         assertThat(result.getName()).isEqualTo(NAME);
         assertThat(result.getUnit()).isEqualTo(unit);
+        assertThat(result.getQueueName()).isEqualTo(QNAME);
+
     }
 
     private Unit newUnit() {
