@@ -49,25 +49,39 @@ class Client(paho.Client):
 
     def blocking_reconnect(client):
         while True:
-            log("Try connect to {} again in a few seconds".format(client.brokerUrl))
-            time.sleep(5)
             try:
                 client.reconnect()
                 return True
             except Exception as ex:
                 log("error on reconnect to {}: {}".format(client.brokerUrl, str(ex)))
+            log("Try connect to {} again in 15 seconds".format(client.brokerUrl))
+            time.sleep(15)
+
+    def nonblocking_connect(client):
+        thread = Thread(target = client.blocking_connect, args =())
+        thread.start()
+
+    def blocking_connect(client):
+        while True:
+            try:
+                client.connect(client.brokerUrl, 443, 60)
+                return True
+            except Exception as ex:
+                log("error on connect to {}: {}".format(client.brokerUrl, str(ex)))
+            log("Try connect to {} again in 60 seconds".format(client.brokerUrl))
+            time.sleep(60)
 
     def handle_on_connect(self, client, userdata, flags, rc):
         log("Connected to {}".format(self.brokerUrl))
         self.isConnected = True
 
+        for actor in actors:
+            actor.subscribe_to_topic(client)
+
     def handle_on_disconnect(self, client, userdata, rc):
         log(("Disconnect event occured: {} {} {}".format(client, userdata, rc)))
         self.isConnected = False
         self.nonblocking_reconnect()
-
-        for actor in actors:
-            actor.subscribe_to_topic(client)
 
 def initialize_actors(actorConfigs):
     actors = []
@@ -162,13 +176,9 @@ clients = []
 for index,brokerUrl in enumerate(brokerUrls):
 
     client = Client(clean_session=True)
-    client.init(brokerUrl)
-    client.connect(brokerUrl, 443, 60)
-
-    for actor in actors:
-        actor.subscribe_to_topic(client)
-
     clients.append(client)
+    client.init(brokerUrl)
+    client.nonblocking_connect()
 
 # Main program loop.
 while True:
