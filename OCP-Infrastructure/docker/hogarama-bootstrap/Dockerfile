@@ -20,9 +20,8 @@ RUN curl -o /tmp/$FILENAME ${HELM_URL} \
   && mv /tmp/linux-amd64/helm /usr/bin/helm \
   && rm -rf /tmp
 
-RUN yum install -y https://centos7.iuscommunity.org/ius-release.rpm && \
-    yum update -y && \
-    yum install -y python36u python36u-libs python36u-devel python36u-pip && \
+RUN yum update -y && \
+    yum install -y python3 python3-libs python3-devel python3-pip && \
     yum clean all -y
 
 RUN pip3 install j2cli j2cli[yaml] pyyaml pybase64 --upgrade
