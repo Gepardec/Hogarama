@@ -16,7 +16,8 @@ create table actor
     name      varchar(255),
     unit_id   bigint       not null
         constraint fk_actor_unit
-            references unit
+            references unit,
+    queue_name      varchar(255)
 );
 
 alter table actor
