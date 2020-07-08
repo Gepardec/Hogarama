@@ -53,6 +53,13 @@ public class WateringService {
     private void invokeActorIfNeeded(WateringConfigData config, int dur, String location) {
         if (dur > 0) {
         	Metrics.wateringEventsFired.labels(config.getActorName()).inc();
+
+        	Metrics.actorValues.labels(
+					config.getActorName(),
+					config.getSensorName(),
+					location
+					).set(dur);
+
         	actorSvc.sendActorMessage(location, config.getActorName(), dur);
         }
         else {

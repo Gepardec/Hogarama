@@ -32,4 +32,9 @@ public class Metrics {
             .help("Water Sensor Values.")
             .labelNames("sensor_name", "device_id", "unit_name").register();
 
+    public static final Gauge actorValues = Gauge.build()
+            .name("hogarama_actor_value")
+            .help("Actor Values.")
+            .labelNames("actor_name", "device_id", "unit_name").register();
+
 }
