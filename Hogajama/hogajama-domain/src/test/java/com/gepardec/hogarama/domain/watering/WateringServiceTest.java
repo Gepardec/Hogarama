@@ -11,13 +11,12 @@ import org.junit.Test;
 
 import com.gepardec.hogarama.dao.DummySensorDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
-import com.gepardec.hogarama.domain.watering.WateringStrategy;
 import com.gepardec.hogarama.testdata.TestDataProducer;
 
 public class WateringServiceTest {
 
 	private WateringService watering;
-    private MockActorService actorSvc;
+    private MockActorControlService actorSvc;
     private InMemoryWateringConfigDAO wateringConfigDao;
     private TestDataProducer data;
 
@@ -25,7 +24,7 @@ public class WateringServiceTest {
 	public void setUp() throws Exception {		
 	}
 
-	private void setupWatering(MockActorService actorSvc, InMemoryWateringConfigDAO wateringConfigDao) {
+	private void setupWatering(MockActorControlService actorSvc, InMemoryWateringConfigDAO wateringConfigDao) {
 		data = new TestDataProducer(startSensorData());
 		data.addValueMinusMinutes( 0.1, 10);
 		data.addValueMinusMinutes( 0.1, 10);
@@ -38,7 +37,7 @@ public class WateringServiceTest {
 	}
     
     private void setupWatering() {
-        actorSvc = new MockActorService("Vienna", "My Plant", WateringService.Config.DEFAULT.waterDuration);
+        actorSvc = new MockActorControlService("Vienna", "My Plant", WateringService.Config.DEFAULT.waterDuration);
         wateringConfigDao = new InMemoryWateringConfigDAO();
         setupWatering(actorSvc, wateringConfigDao);
     }
@@ -56,7 +55,7 @@ public class WateringServiceTest {
 		InMemoryWateringConfigDAO wateringConfigDao = new InMemoryWateringConfigDAO();
 		WateringConfigData wconfig = new WateringConfigData("My Plant", "My Plant", 60, 0.2, 6);
 		wateringConfigDao.save(wconfig);
-		MockActorService actor = new MockActorService("Vienna", "My Plant", 6);
+		MockActorControlService actor = new MockActorControlService("Vienna", "My Plant", 6);
 		
 		setupWatering(actor, wateringConfigDao);
 		waterAll();
@@ -69,7 +68,7 @@ public class WateringServiceTest {
         InMemoryWateringConfigDAO wateringConfigDao = new InMemoryWateringConfigDAO();
         WateringConfigData wconfig = new WateringConfigData("My Plant", "My Actor", 60, 0.2, 6);
         wateringConfigDao.save(wconfig);
-        MockActorService actor = new MockActorService("Vienna", "My Actor", 6);
+        MockActorControlService actor = new MockActorControlService("Vienna", "My Actor", 6);
         
         setupWatering(actor, wateringConfigDao);
         waterAll();
@@ -133,14 +132,14 @@ public class WateringServiceTest {
 	    data.waterAll(watering);
 	}
 
-	private class MockActorService implements ActorService {
+	private class MockActorControlService implements ActorControlService {
 
 		private String location;
 		private String actorName;
 		private Integer duration;
 		private boolean wasCalled = false;
 
-		public MockActorService(String location, String actorName, Integer duration) {
+		public MockActorControlService(String location, String actorName, Integer duration) {
 			this.location = location;
 			this.actorName = actorName;
 			this.duration = duration;

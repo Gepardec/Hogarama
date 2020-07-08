@@ -17,7 +17,7 @@ public class SensorDAO extends BaseDAO<Sensor> {
         return Sensor.class;
     }
 
-    public List<Sensor> getAllSensorForOwner(Owner owner) {
+    public List<Sensor> getAllSensorsForOwner(Owner owner) {
         JPAQuery<Sensor> query = new JPAQuery<>(entityManager);
         QSensor sensor = QSensor.sensor;
         return query.select(sensor).from(sensor).where(sensor.unit.owner.id.eq(owner.getId())).fetch();

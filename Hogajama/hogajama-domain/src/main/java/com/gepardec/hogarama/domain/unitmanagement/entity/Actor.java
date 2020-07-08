@@ -1,21 +1,16 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 
 @Entity
-public class Sensor implements Serializable, Owned {
+public class Actor implements Serializable, Owned {
 
     @Id
-    @GeneratedValue(generator = "SensorIdGenerator", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "SensorIdGenerator", sequenceName = "seq_sensor_id")
+    @GeneratedValue(generator = "ActorIdGenerator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "ActorIdGenerator", sequenceName = "seq_actor_id")
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "sensor_type_id")
-    private SensorType sensorType;
 
     private String name;
 
@@ -26,20 +21,15 @@ public class Sensor implements Serializable, Owned {
     @JoinColumn(name = "unit_id")
     private Unit unit;
 
+    @Column(name = "queue_name")
+    private String queueName;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public SensorType getSensorType() {
-        return sensorType;
-    }
-
-    public void setSensorType(SensorType sensorType) {
-        this.sensorType = sensorType;
     }
 
     public String getName() {
@@ -65,4 +55,8 @@ public class Sensor implements Serializable, Owned {
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
+
+    public String getQueueName() { return queueName; }
+
+    public void setQueueName(String queueName) { this.queueName = queueName; }
 }

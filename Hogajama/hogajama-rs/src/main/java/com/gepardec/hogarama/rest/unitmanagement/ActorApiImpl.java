@@ -1,10 +1,10 @@
 package com.gepardec.hogarama.rest.unitmanagement;
 
-import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
-import com.gepardec.hogarama.domain.unitmanagement.service.SensorService;
-import com.gepardec.hogarama.rest.unitmanagement.dto.SensorDto;
+import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
+import com.gepardec.hogarama.domain.unitmanagement.service.ActorService;
+import com.gepardec.hogarama.rest.unitmanagement.dto.ActorDto;
 import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
-import com.gepardec.hogarama.rest.unitmanagement.translator.SensorDtoTranslator;
+import com.gepardec.hogarama.rest.unitmanagement.translator.ActorDtoTranslator;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,41 +17,41 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @DetermineOwner
-public class SensorApiImpl implements SensorApi {
+public class ActorApiImpl implements ActorApi {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SensorApiImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActorApiImpl.class);
 
     @Inject
-    private SensorService service;
+    private ActorService service;
     @Inject
-    private SensorDtoTranslator translator;
+    private ActorDtoTranslator translator;
 
     @Override
     public Response getForOwner(SecurityContext securityContext) {
-        LOG.info("Get sensors for current owner.");
-        List<SensorDto> dtoList = translator.toDtoList(service.getAllSensorsForOwner());
+        LOG.info("Get actors for current owner.");
+        List<ActorDto> dtoList = translator.toDtoList(service.getAllActorsForOwner());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override
     @Transactional
-    public Response create(SecurityContext securityContext, SensorDto sensorDto) {
-        LOG.info("Create sensor.");
-        Sensor sensor = translator.fromDto(sensorDto);
-        service.createSensor(sensor);
+    public Response create(SecurityContext securityContext, ActorDto actorDto) {
+        LOG.info("Create actor.");
+        Actor actor = translator.fromDto(actorDto);
+        service.createActor(actor);
 
         return new BaseResponse<>(HttpStatus.SC_CREATED).createRestResponse();
     }
 
     @Override
     @Transactional
-    public Response update(String id, SecurityContext securityContext, SensorDto sensorDto) {
-        LOG.info("Updating sensor with id {}.", id);
-        Sensor sensor = translator.fromDto(sensorDto);
-        if (id == null || !id.equals(sensorDto.getId().toString()) || sensorDto.getUnitId() == null) {
+    public Response update(String id, SecurityContext securityContext, ActorDto actorDto) {
+        LOG.info("Updating actor with id {}.", id);
+        Actor actor = translator.fromDto(actorDto);
+        if (id == null || !id.equals(actorDto.getId().toString()) || actorDto.getUnitId() == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
         } else {
-            service.updateSensor(sensor);
+            service.updateActor(actor);
         }
 
         return new BaseResponse<>(HttpStatus.SC_OK).createRestResponse();
@@ -60,7 +60,7 @@ public class SensorApiImpl implements SensorApi {
     @Override
     @Transactional
     public Response delete(String id, SecurityContext securityContext) {
-        LOG.info("Deleting sensor with id {}.", id);
+        LOG.info("Deleting actor with id {}.", id);
         if (id == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
         } else {
@@ -71,7 +71,7 @@ public class SensorApiImpl implements SensorApi {
                 return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
             }
 
-            service.deleteSensor(idNum);
+            service.deleteActor(idNum);
         }
 
         return new BaseResponse<>(HttpStatus.SC_OK).createRestResponse();

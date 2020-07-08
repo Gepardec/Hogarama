@@ -9,10 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ActorServiceImplTest {
+public class ActorControlServiceImplTest {
 
   @InjectMocks
-  private ActorServiceImpl actorService;
+  private ActorControlServiceImpl actorService;
 
   @Test
   public void testCheckParametersOrFailOk() {
