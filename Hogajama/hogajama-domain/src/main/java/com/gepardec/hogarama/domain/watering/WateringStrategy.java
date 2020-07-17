@@ -3,12 +3,8 @@ package com.gepardec.hogarama.domain.watering;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 
 public class WateringStrategy {
     private static final Logger log = LoggerFactory.getLogger(WateringStrategy.class);

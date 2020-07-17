@@ -1,12 +1,14 @@
 package com.gepardec.hogarama.domain.unitmanagement.service;
 
 import com.gepardec.hogarama.domain.exception.TechnicalException;
+import com.gepardec.hogarama.domain.unitmanagement.cache.ActorCache;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.ActorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.enterprise.event.Event;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -28,6 +31,8 @@ public class ActorServiceTest {
     private UserContext userContext;
     @InjectMocks
     private ActorService service;
+    @Mock
+    Event<Actor> actorChanged;
 
     private Unit unit;
     private Owner owner;

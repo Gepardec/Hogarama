@@ -2,12 +2,18 @@ package com.gepardec.hogarama.domain.watering;
 
 import javax.inject.Inject;
 
+import com.gepardec.hogarama.domain.unitmanagement.cache.ActorCache;
+import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
+import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
+import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
+
+import java.util.Optional;
 
 public class WateringService {
 
@@ -27,7 +33,7 @@ public class WateringService {
 	}
 
 	@Inject
-	public SensorDataDAO sensorDao;
+	public SensorDataDAO sensorDataDAO;
 
 	@Inject
 	public WateringConfigDAO configDao;
@@ -38,31 +44,45 @@ public class WateringService {
 	@Inject
 	public WateringStrategy watering;
 
+	@Inject
+	private ActorCache actorCache;
+
+	@Inject
+	private SensorCache sensorCache;
+
     private static final Logger log = LoggerFactory.getLogger(WateringService.class);
 
 	public WateringService() {
 	}
 
-	protected WateringService(SensorDataDAO sensorDao, ActorControlService actorSvc, WateringStrategy watering, WateringConfigDAO configDao) {
-		this.sensorDao = sensorDao;
+	protected WateringService(SensorDataDAO sensorDataDAO, ActorControlService actorSvc, WateringStrategy watering, WateringConfigDAO configDao, ActorCache actorCache, SensorCache sensorCache) {
+		this.sensorDataDAO = sensorDataDAO;
 		this.actorSvc = actorSvc;
 		this.watering = watering;
 		this.configDao = configDao;
+		this.actorCache = actorCache;
+		this.sensorCache = sensorCache;
 	}
 
     private void invokeActorIfNeeded(WateringConfigData config, int dur, String location) {
         if (dur > 0) {
-        	Metrics.wateringEventsFired.labels(config.getActorName()).inc();
-        	Metrics.actorValues.labels(
-					config.getActorName(),
-					config.getSensorName(),
+
+			Optional<Actor> optionalActor = actorCache.getByDeviceId(config.getActorName());
+			String actorName = optionalActor.isPresent() ? optionalActor.get().getName() : config.getActorName();
+			Optional<Sensor> optionalSensor = sensorCache.getByDeviceId(config.getSensorName());
+			String sensorName = optionalSensor.isPresent() ? optionalSensor.get().getName() : config.getSensorName();
+
+			Metrics.wateringEventsFired.labels(sensorName, actorName).inc();
+			Metrics.actorValues.labels(
+					actorName,
+					sensorName,
 					location
 					).set(dur);
 
         	actorSvc.sendActorMessage(location, config.getActorName(), dur);
         }
         else {
-            log.debug("Don't water " + config.getActorName());            
+            log.debug("Don't water {}", config.getActorName());
         }
     }
 

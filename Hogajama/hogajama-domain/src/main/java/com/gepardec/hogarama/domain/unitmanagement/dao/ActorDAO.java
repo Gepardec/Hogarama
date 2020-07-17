@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 
 import javax.enterprise.context.Dependent;
 import java.util.List;
+import java.util.Optional;
 
 @Dependent
 public class ActorDAO extends BaseDAO<Actor> {
@@ -22,4 +23,9 @@ public class ActorDAO extends BaseDAO<Actor> {
         return query.select(actor).from(actor).where(actor.unit.owner.id.eq(owner.getId())).fetch();
     }
 
+    public Optional<Actor> getByDeviceId(String id) {
+        JPAQuery<Actor> query = new JPAQuery<>(entityManager);
+        QActor actor = QActor.actor;
+        return Optional.ofNullable(query.select(actor).from(actor).where(actor.deviceId.eq(id)).fetchOne());
+    }
 }
