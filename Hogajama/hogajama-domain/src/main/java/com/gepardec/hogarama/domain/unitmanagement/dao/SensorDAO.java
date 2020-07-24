@@ -26,6 +26,6 @@ public class SensorDAO extends BaseDAO<Sensor> {
     public Optional<Sensor> getByDeviceId(String deviceId) {
         JPAQuery<Sensor> query = new JPAQuery<>(entityManager);
         QSensor sensor = QSensor.sensor;
-        return Optional.ofNullable(query.select(sensor).from(sensor).where(sensor.deviceId.eq(deviceId)).fetchFirst());
+        return Optional.ofNullable(query.select(sensor).from(sensor).where(sensor.deviceId.eq(deviceId)).fetchOne());
     }
 }

@@ -15,7 +15,7 @@ public class SensorProperties {
     private static final Logger LOG = LoggerFactory.getLogger(SensorProperties.class);
 
     private SensorData data;
-     private String deviceId;
+    private String deviceId;
     Optional<Sensor> sensor;
 
     public SensorProperties(SensorData data, SensorCache dao) {

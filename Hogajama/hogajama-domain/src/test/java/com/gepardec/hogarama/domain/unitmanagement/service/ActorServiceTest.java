@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.enterprise.event.Event;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -28,6 +29,8 @@ public class ActorServiceTest {
     private UserContext userContext;
     @InjectMocks
     private ActorService service;
+    @Mock
+    Event<Actor> actorChanged;
 
     private Unit unit;
     private Owner owner;
