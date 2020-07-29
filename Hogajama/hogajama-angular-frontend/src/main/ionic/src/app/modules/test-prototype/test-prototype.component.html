@@ -2,14 +2,60 @@
     <span class="material-icons" id="settings" (click)="openSettings()">
         settings
     </span>
-    <div class="heading">
-        <h1>Hallo {{username}}!</h1>
-        <p *ngIf="sensors.length == 0">Du hast noch keine Pflanzen in deinem Hogarama</p>
+    <div id="content-container">
+        <div id="no-plants-container" *ngIf="!plantsExist()">
+            <div class="heading">
+                <h1>Hallo {{username}}!</h1>
+                <p>Du hast noch keine Pflanzen in deinem Hogarama</p>
+            </div>
+            <button mat-raised-button id="add-unit" (click)="addPlant()" class="round">
+                <span class="material-icons">
+                    add
+                </span>
+                <span>Neue Pflanze hinzufügen</span>
+            </button>
+        </div>
+
+        <div id="yes-plants-container" *ngIf="plantsExist()">
+            <div class="section">
+                <div class="heading">
+                    <h1>Meine Pflanzen</h1>
+                </div>
+
+                <div class="single-unit" *ngFor="let unit of complUnits">
+                    <div class="name">{{unit.name}}</div>
+                    <div class="image-base"></div>
+                    <div class="sensor-count">{{unit.sensors.length}} Sensoren</div>
+                    <div class="actor-count">{{unit.actors.length}} Pumpen</div>
+                </div>
+
+                <div class="single-unit">
+                    <div class="name"></div>
+                    <div class="image-base-add">
+                        <span class="material-icons">
+                            add
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="heading">
+                    <h1>Nicht zugeordnete Geräte</h1>
+                </div>
+
+                <div class="single-device" *ngFor="let sensor of defaultUnit.sensors">
+                    <div class="image-base"></div>
+                    <div class="status">10%</div>
+                    <div class="name">{{sensor.name}}</div>
+                </div>
+                <div class="single-device" *ngFor="let actor of defaultUnit.actors">
+                    <div class="image-base"></div>
+                    <div class="status">20%</div>
+                    <div class="name">{{actor.name}}</div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <button mat-raised-button id="add-unit" (click)="addPlant()" class="round">
-        <span class="material-icons">
-            add
-        </span>
-        <span>Neue Pflanze hinzufügen</span>
-    </button>
 </ion-content>
