@@ -3,4 +3,5 @@ export interface Actor {
     deviceId?: string;
     name?: string;
     unitId?: number;
+    queueName?: string;
 }

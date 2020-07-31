@@ -27,6 +27,9 @@ public class Unit implements Serializable {
     @OneToMany(mappedBy = "unit")
     private List<Sensor> sensorList;
 
+    @OneToMany(mappedBy = "unit")
+    private List<Actor> actorList;
+
     public Long getId() {
         return id;
     }
@@ -77,6 +80,14 @@ public class Unit implements Serializable {
 
     public Boolean isDefaultUnit() {
         return defaultUnit;
+    }
+
+    public List<Actor> getActorList() {
+        return actorList;
+    }
+
+    public void setActorList(List<Actor> actorList) {
+        this.actorList = actorList;
     }
 
     public static Unit createDefault(Owner owner) {

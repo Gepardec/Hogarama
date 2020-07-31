@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @RequestScoped
-public class SensorDAOImpl implements SensorDataDAO {
+public class SensorDataDAOImpl implements SensorDataDAO {
 
     @Inject
     private Datastore datastore;
