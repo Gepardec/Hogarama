@@ -4,6 +4,7 @@ import {AuthenticationService} from "../../services/AuthenticationService/authen
 import {Router} from "@angular/router";
 import {Sensor} from "../../shared/models/Sensor";
 import { Unit } from 'src/app/shared/models/Unit';
+import {getCompleteUnits, UnitWithSensorsAndActors} from "../../shared/models/UnitWithSensorsAndActors";
 
 @Component({
   selector: 'app-test-prototype',
@@ -13,6 +14,9 @@ import { Unit } from 'src/app/shared/models/Unit';
 export class TestPrototypeComponent implements OnInit {
   units: Unit[] = [];
   sensors : Sensor[] = [];
+
+  defaultUnit: UnitWithSensorsAndActors;
+  complUnits : UnitWithSensorsAndActors[] = [];
   username: string = '';
 
   constructor(
@@ -32,6 +36,9 @@ export class TestPrototypeComponent implements OnInit {
     } catch(error) {
       console.error(error);
     }
+
+    [this.defaultUnit, ...this.complUnits] = getCompleteUnits(this.units, this.sensors, []);
+
     try {
       this.username = (await this.rs.users.getByBearer()).name;
     } catch(error) {
@@ -45,5 +52,9 @@ export class TestPrototypeComponent implements OnInit {
 
   addPlant() {
     this.router.navigateByUrl('add-plant');
+  }
+
+  plantsExist() {
+    return this.defaultUnit != null;
   }
 }
