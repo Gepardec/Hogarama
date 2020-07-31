@@ -17,5 +17,5 @@ export const getCompleteUnits = (units: Unit[], sensors: Sensor[], actors: Actor
             actors: actors.filter(a => a.unitId == u.id)
         } as UnitWithSensorsAndActors))
         // Sort by isDefault, so that the default unit is always first in the result array
-        .sort((u1, u2) => (u2.isDefault?1:0) - (u1.isDefault?1:0));
-};
+        .sort((u1, u2) => (u2.defaultUnit?1:0) - (u1.defaultUnit?1:0));
+}
