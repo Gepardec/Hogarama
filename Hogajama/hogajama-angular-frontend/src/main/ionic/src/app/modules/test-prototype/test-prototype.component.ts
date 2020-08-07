@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {HogaramaBackendService} from 'src/app/services/HogaramaBackendService/hogarama-backend.service';
-import {AuthenticationService} from "../../services/AuthenticationService/authentication.service";
-import {Router} from "@angular/router";
-import {Sensor} from "../../shared/models/Sensor";
+import {AuthenticationService} from '../../services/AuthenticationService/authentication.service';
+import {Router} from '@angular/router';
+import {Sensor} from '../../shared/models/Sensor';
+import {Actor} from '../../shared/models/Actor';
 import { Unit } from 'src/app/shared/models/Unit';
-import {getCompleteUnits, UnitWithSensorsAndActors} from "../../shared/models/UnitWithSensorsAndActors";
+import {getCompleteUnits, UnitWithSensorsAndActors} from '../../shared/models/UnitWithSensorsAndActors';
 
 @Component({
   selector: 'app-test-prototype',
@@ -13,37 +14,37 @@ import {getCompleteUnits, UnitWithSensorsAndActors} from "../../shared/models/Un
 })
 export class TestPrototypeComponent implements OnInit {
   units: Unit[] = [];
-  sensors : Sensor[] = [];
+  sensors: Sensor[] = [];
+  actors: Actor[] = [];
 
   defaultUnit: UnitWithSensorsAndActors;
-  complUnits : UnitWithSensorsAndActors[] = [];
-  username: string = '';
+  complUnits: UnitWithSensorsAndActors[] = [];
+  username = '';
 
   constructor(
-    private rs: HogaramaBackendService, 
-    private authService: AuthenticationService, 
+    private rs: HogaramaBackendService,
+    private authService: AuthenticationService,
     private router: Router) {
   }
 
   async ngOnInit() {
-    try {
-      this.units = await this.rs.units.getAllByBearer();
-    } catch(error) {
-      console.error(error);
-    }
-    try {
-      this.sensors = await this.rs.sensors.getAllByBearer();
-    } catch(error) {
-      console.error(error);
-    }
+    const unitsPromise = this.rs.units.getAllByBearer()
+        .then(units => {this.units = units; })
+        .catch(e => console.error(e));
+    const sensorsPromise = this.rs.sensors.getAllByBearer()
+        .then(sensors => {this.sensors = sensors; })
+        .catch(e => console.error(e));
+    const actorsPromise = this.rs.actors.getAllByBearer()
+        .then(actors => {this.actors = actors; })
+        .catch(e => console.error(e));
 
-    [this.defaultUnit, ...this.complUnits] = getCompleteUnits(this.units, this.sensors, []);
+    this.rs.users.getByBearer()
+        .then(user => {this.username = user.name; })
+        .catch(e => console.error(e));
 
-    try {
-      this.username = (await this.rs.users.getByBearer()).name;
-    } catch(error) {
-      console.error(error);
-    }
+    await Promise.all([unitsPromise, sensorsPromise, actorsPromise]);
+
+    [this.defaultUnit, ...this.complUnits] = getCompleteUnits(this.units, this.sensors, this.actors);
   }
 
   openSettings() {
