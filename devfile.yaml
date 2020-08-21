@@ -24,9 +24,11 @@ components:
       - name: CODE_READY_WORKSPACE
         value: 'true'
       - name: CODE_READY_JBOSS
-        value: '${CHE_PROJECTS_ROOT}/JBoss/wildfly-14.0.0.Final'
+        value: '/projects/JBoss/wildfly-14.0.0.Final'
       - name: JBOSS_HOME
-        value: '${CHE_PROJECTS_ROOT}/JBoss/work'
+        value: '/projects/JBoss/work'
+      - name: JBOSS_RELEASE_NAME
+        value: 'jboss-eap-7.2.0'
     mountSources: true
     endpoints:
       - name: hogajama
@@ -40,7 +42,7 @@ components:
     image: 'fhochleitner/kube-tools:dev'
     env:
       - name: ENV_FILE
-        value: '${CHE_PROJECTS_ROOT}/Hogarama/codereadyworkspace/hogarama_dev.env'
+        value: '/projects/Hogarama/codereadyworkspace/hogarama_dev.env'
     mountSources: true
     command:
       - sleep
