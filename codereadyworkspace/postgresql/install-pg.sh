@@ -3,7 +3,7 @@
 source ${ENV_FILE}
 
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm upgrade -i postgresql bitnami/postgresql --version=9.3.2 \
+helm upgrade -i postgresql bitnami/postgresql --version=9.3.2 --wait \
     --set global.postgresql.postgresqlDatabase=management \
     --set global.postgresql.postgresqlUsername=hogajama \
     --set global.postgresql.postgresqlPassword=${POSTGRESQL_PASSWORD} \
