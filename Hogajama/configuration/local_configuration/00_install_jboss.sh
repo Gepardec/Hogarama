@@ -3,6 +3,11 @@
 set -x
 error=0
 
+if [ -n "$CODE_READY_WORKSPACE" ]; then
+    echo "Don't unpack JBoss on Code Ready Workspace" 1>&2
+    exit 0
+fi
+
 if [ -z "$JBossPackage" ]; then
 	JBossPackage=$1
 fi
