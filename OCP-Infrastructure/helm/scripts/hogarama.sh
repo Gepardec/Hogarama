@@ -58,6 +58,8 @@ usage_message () {
             install)                ... installs selected resource(s) in chosen namespace
             upgrade)                ... upgrades selected resource(s) in chosen namespace
             uninstall)              ... uninstalls selected resource(s) in chosen namespace
+                                        be careful, this will also REMOVE persistent volume claims and their data. Be sure
+                                        so have a backup ready of all data you need.
             template)               ... executes helm template for selected resource(s)
             replace-secrets)        ... creates values.yaml file with secrets provided in secrets/secrets.yaml
             help)                   ... this help menu
@@ -68,7 +70,7 @@ usage_message () {
             -f | --force)           ... overwrites existing resources/executes helm upgrade if installation fails
             -d | --dryrun)          ... dryrun
             -q | --quiet)           ... quiet
-            -e | --extravars)       ... multiple definitions possible. Add additional/overwrite variabls in values.yaml or secret.yaml\
+            -e | --extravars)       ... multiple definitions possible. Add additional/overwrite variabls in values.yaml or secret.yaml
             -w | --write-template)  ... helm template output will be written to secrets working directory
             --ns-hogarama)          ... namespace to/from which hogarama resources will be installed/uninstalled
                                         default-value: hogarama
