@@ -1,0 +1,34 @@
+metadata:
+  name: Hogarama_Workspace
+projects:
+  - name: Hogarama
+    source:
+      location: 'https://github.com/Gepardec/Hogarama.git'
+      type: git
+      branch: codereadyws
+  - name: JBoss
+    source:
+      location: 'http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip'
+      type: zip
+components:
+  - id: redhat/java8/latest
+    type: chePlugin
+  - id: redhat/vscode-openshift-connector/latest
+    type: chePlugin
+  - mountSources: true
+    endpoints:
+      - name: eap
+        port: 8080
+    command:
+      - sleep
+      - infinity
+    memoryLimit: 2048Mi
+    type: dockerimage
+    image: 'gepardec/jbss:java8'
+    alias: jbss
+    env:
+      - value: /root
+        name: HOME
+      - value: 'true'
+        name: CODE_READY_WORKSPACE
+apiVersion: 1.0.0
