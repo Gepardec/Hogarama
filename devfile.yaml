@@ -1,3 +1,4 @@
+apiVersion: 1.0.0
 metadata:
   name: Hogarama_Workspace
 projects:
@@ -8,31 +9,86 @@ projects:
       branch: codereadyws
   - name: JBoss
     source:
-      location: 'http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip'
+      location: 'http://download.jboss.org/wildfly/14.0.0.Final/wildfly-14.0.0.Final.zip'
       type: zip
 components:
   - id: redhat/java8/latest
     type: chePlugin
-  - id: redhat/vscode-openshift-connector/latest
+  - id: redhat/vscode-yaml/latest
     type: chePlugin
-  - mountSources: true
+  - alias: jbss
+    image: 'gepardec/jbss:java8'
+    env:
+      - name: HOME
+        value: /
+      - name: CODE_READY_WORKSPACE
+        value: 'true'
+      - name: CODE_READY_JBOSS
+        value: '${CHE_PROJECTS_ROOT}/JBoss/wildfly-14.0.0.Final'
+      - name: JBOSS_HOME
+        value: '${CHE_PROJECTS_ROOT}/JBoss/work'
+    mountSources: true
     endpoints:
-      - name: eap
+      - name: hogajama
         port: 8080
     command:
       - sleep
       - infinity
     memoryLimit: 2048Mi
     type: dockerimage
-    image: 'gepardec/jbss:java8'
-    alias: jbss
+  - alias: kube-tools
+    image: 'fhochleitner/kube-tools:dev'
     env:
-      - value: /root
-        name: HOME
-      - value: 'true'
-        name: CODE_READY_WORKSPACE
-      - value: /projects/JBoss/wildfly-10.0.0.Final
-        name: CODE_READY_JBOSS
-      - value: /projects/JBoss/work
-        name: JBOSS_HOME
-apiVersion: 1.0.0
+      - name: ENV_FILE
+        value: '${CHE_PROJECTS_ROOT}/Hogarama/codereadyworkspace/hogarama_dev.env'
+    mountSources: true
+    command:
+      - sleep
+      - infinity
+    memoryLimit: 512Mi
+    type: dockerimage
+  - alias: maven
+    image: 'fhochleitner/maven:3.6.3-jdk8-ocp'
+    mountSources: true
+    env:
+      - name: MAVEN_OPTS
+        value: >-
+          -Xmx1000m -XX:+UseParallelGC -Xms500m
+          -Djava.security.egd=file:/dev/./urandom
+    volumes:
+      - name: m2
+        containerPath: /root/.m2
+    command:
+      - sleep
+      - infinity
+    memoryLimit: 2024Mi
+    type: dockerimage
+commands:
+  - name: Install Postgres
+    actions:
+      - component: kube-tools
+        command: './install-pg.sh'
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/codereadyworkspace/postgresql/'
+        type: exec
+  - name: Install MongoDB
+    actions:
+      - component: kube-tools
+        command: './install-mongodb.sh'
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/codereadyworkspace/mongodb/'
+        type: exec
+  - name: Tear-Down Postgres
+    actions:
+      - component: kube-tools
+        command: 'helm uninstall postgresql'
+        type: exec
+  - name: Tear-Down MongoDB
+    actions:
+      - component: kube-tools
+        command: 'helm uninstall mongodb'
+        type: exec
+  - name: Clean Install
+    actions:
+      - component: maven
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: mvn clean install
