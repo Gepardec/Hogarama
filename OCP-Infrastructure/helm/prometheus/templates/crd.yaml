@@ -13,3 +13,8 @@ spec:
   additionalScrapeConfigs:
     name: prometheus-scrape-config
     key: scrape-config.yaml
+  volumes:
+    - name: prometheus-persistence
+      persistentVolumeClaim:
+        claimName: prometheus-pvc
+        readOnly: false
