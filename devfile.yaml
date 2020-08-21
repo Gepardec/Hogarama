@@ -78,12 +78,12 @@ commands:
         command: './install-mongodb.sh'
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/codereadyworkspace/mongodb/'
         type: exec
-  - name: Tear-Down Postgres
+  - name: Uninstall Postgres
     actions:
       - component: kube-tools
         command: 'helm uninstall postgresql'
         type: exec
-  - name: Tear-Down MongoDB
+  - name: Uninstall MongoDB
     actions:
       - component: kube-tools
         command: 'helm uninstall mongodb'
