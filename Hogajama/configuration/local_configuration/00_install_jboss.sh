@@ -5,7 +5,8 @@ error=0
 
 if [ -n "$CODE_READY_WORKSPACE" ]; then
     echo "Don't unpack JBoss on Code Ready Workspace" 1>&2
-    exit 0
+    rm -rf $JBOSS_HOME; mkdir -p $JBOSS_HOME && cp -r $CODE_READY_JBOSS/* $JBOSS_HOME
+    exit $?
 fi
 
 if [ -z "$JBossPackage" ]; then

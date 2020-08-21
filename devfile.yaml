@@ -31,4 +31,8 @@ components:
         name: HOME
       - value: 'true'
         name: CODE_READY_WORKSPACE
+      - value: /projects/JBoss/wildfly-10.0.0.Final
+        name: CODE_READY_JBOSS
+      - value: /projects/JBoss/work
+        name: JBOSS_HOME
 apiVersion: 1.0.0
