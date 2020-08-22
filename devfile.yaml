@@ -101,20 +101,20 @@ commands:
   - name: Uninstall ActiveMQ
     actions:
       - component: kube-tools
-        command: 'helm uninstall activemq'
+        command: 'helm uninstall amq'
         type: exec
   - name: Clean Install
     actions:
       - component: maven
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
-        command: mvn clean install
+        command: mvn clean install -Dfrontend.build.environment=prod
   - name: Configure Hogajama JBoss
     actions:
       - component: jbss
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
-        command: jbss configure /projects/Hogarama/Hogajama/configuration/local_configuration && jbss log
+        command: jbss stop; jbss configure /projects/Hogarama/Hogajama/configuration/local_configuration && jbss log
   - name: Restart Hogajama JBoss
     actions:
       - component: jbss
