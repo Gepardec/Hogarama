@@ -63,7 +63,7 @@ components:
           -Djava.security.egd=file:/dev/./urandom
     volumes:
       - name: m2
-        containerPath: /root/.m2
+        containerPath: /home/.m2
     command:
       - sleep
       - infinity
