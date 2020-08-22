@@ -36,9 +36,9 @@ public class MqttClient {
 	private String topic;
 
 	public MqttClient defaultConnection() {
-		return withURL(Optional.ofNullable(System.getenv("AMQ_HOST")).orElse("https://broker-amq-mqtt-ssl:8883")).
-	      withUser(Optional.ofNullable(System.getenv("AMQ_USER")).orElse("mq_habarama")).
-	      withPassword(Optional.ofNullable(System.getenv("AMQ_PASSWDORD")).orElse("mq_habarama_pass"));
+		return withURL(Optional.ofNullable(System.getenv("AMQ_URL")).orElse("https://broker-amq-mqtt-ssl:8883")).
+	      withUser(Optional.ofNullable(System.getenv("AMQ_USERNAME")).orElse("mq_habarama")).
+	      withPassword(Optional.ofNullable(System.getenv("AMQ_PASSWORD")).orElse("mq_habarama_pass"));
 	}	
 
 	/**

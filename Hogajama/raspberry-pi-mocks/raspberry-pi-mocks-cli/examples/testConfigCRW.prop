@@ -1,0 +1,4 @@
+brokerHost=ssl://amq:8883
+brokerUser=amq
+brokerPassword=amq
+brokerTopic=habarama
