@@ -101,7 +101,13 @@ commands:
       - component: jbss
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
-        command: jbss configure /projects/Hogarama/Hogajama/configuration/local_configuration
+        command: jbss configure /projects/Hogarama/Hogajama/configuration/local_configuration && jbss log
+  - name: Rest Hogajama JBoss
+    actions:
+      - component: jbss
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: jbss restart && jbss log
   - name: Deploy All Hogarama
     actions:
       - component: jbss
