@@ -142,6 +142,14 @@ commands:
               "name": "Debug JBoss",
               "hostName": "localhost",
               "port": 8787
+          },
+          {
+              "type": "java",
+              "name": "MockCli",
+              "request": "launch",
+              "mainClass": "com.gepardec.hogarama.mocks.cli.MockCli",
+              "projectName": "raspberry-pi-mocks-cli",
+              "args": "-t /projects/Hogarama/Hogajama/raspberry-pi-mocks/raspberry-pi-mocks-cli/examples/testData.json -c /projects/Hogarama/Hogajama/raspberry-pi-mocks/raspberry-pi-mocks-cli/examples/testConfigCRW.prop --delayMs 5000"
           }
           ]
           }
