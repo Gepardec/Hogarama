@@ -15,8 +15,8 @@ keycloak:
 hogarama:
   amq:
     credentials:
-      amq_password: "{{ AMQ_PASSWORD | b64encode }}"
-      amq_user: "{{ AMQ_USER | b64encode }}"
+      amq_password: "{{ AMQ_PASSWORD }}"
+      amq_user: "{{ AMQ_USER }}"
     deploymentconfig:
       amq_truststore_password: "{{ AMQ_TRUSTSTORE_PASSWORD }}"
       amq_keystore_password: "{{ AMQ_KEYSTORE_PASSWORD }}"
