@@ -3,7 +3,7 @@
 # source ${ENV_FILE}
 
 if [[ "x$CHARTLOCATION" == "x" ]]; then
-  CHARTLOCATION=/projects/Hogarama/OCP-Infrastructure/
+  CHARTLOCATION=/projects/Hogarama/OCP-Infrastructure/helm
 fi
 
 helm upgrade -i amq ${CHARTLOCATION}/amq --wait   \
