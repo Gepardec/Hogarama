@@ -35,6 +35,8 @@ components:
     endpoints:
       - name: hogajama
         port: 8080
+      - name: hogajama-admin
+        port: 9990
     command:
       - sleep
       - infinity
@@ -102,7 +104,7 @@ commands:
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
         command: jbss configure /projects/Hogarama/Hogajama/configuration/local_configuration && jbss log
-  - name: Rest Hogajama JBoss
+  - name: Restart Hogajama JBoss
     actions:
       - component: jbss
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
@@ -114,19 +116,7 @@ commands:
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
         command: >-
-                 jbss deploy hogajama-angular-frontend/target/hogajama-angular-frontend.war ;
-                 jbss deploy hogajama-frontend/target/hogajama-frontend.war ;
-                 jbss deploy hogajama-rs/target/hogajama-rs.war
-  - name: JBoss Start
-    actions:
-      - component: jbss
-        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
-        type: exec
-        command: jbss start
-  - name: JBoss Stop
-    actions:
-      - component: jbss
-        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
-        type: exec
-        command: jbss stop
+                 jbss deploy hogajama-angular-frontend/target/hogajama-angular-frontend*.war ;
+                 jbss deploy hogajama-frontend/target/hogajama-frontend*.war ;
+                 jbss deploy hogajama-rs/target/hogajama-rs*.war
   
