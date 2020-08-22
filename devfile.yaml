@@ -52,7 +52,7 @@ components:
     memoryLimit: 512Mi
     type: dockerimage
   - alias: maven
-    image: 'fhochleitner/maven:3.6.3-jdk8-ocp'
+    image: 'fhochleitner/maven:3.6.3-jdk8-ocp4'
     mountSources: true
     env:
       - name: MAVEN_OPTS
