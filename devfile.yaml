@@ -80,6 +80,12 @@ commands:
         command: './install-mongodb.sh'
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/codereadyworkspace/mongodb/'
         type: exec
+  - name: Install ActiveMQ
+    actions:
+      - component: kube-tools
+        command: './install-amq.sh'
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/codereadyworkspace/amq/'
+        type: exec
   - name: Uninstall Postgres
     actions:
       - component: kube-tools
@@ -89,6 +95,11 @@ commands:
     actions:
       - component: kube-tools
         command: 'helm uninstall mongodb'
+        type: exec
+  - name: Uninstall ActiveMQ
+    actions:
+      - component: kube-tools
+        command: 'helm uninstall activemq'
         type: exec
   - name: Clean Install
     actions:
