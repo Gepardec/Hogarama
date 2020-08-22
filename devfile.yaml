@@ -4,7 +4,7 @@ metadata:
 projects:
   - name: Hogarama
     source:
-      location: 'https://github.com/Gepardec/Hogarama.git'
+      location: 'git@github.com:Gepardec/Hogarama.git'
       type: git
       branch: codereadyws
   - name: JBoss
