@@ -107,3 +107,37 @@ commands:
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
         command: mvn clean install
+  - name: Configure Hogajama JBoss
+    actions:
+      - component: jbss
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: jbss configure /projects/Hogarama/Hogajama/configuration/local_configuration && jbss log
+  - name: Rest Hogajama JBoss
+    actions:
+      - component: jbss
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: jbss restart && jbss log
+  - name: Deploy All Hogarama
+    actions:
+      - component: jbss
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: >-
+                 jbss deploy hogajama-angular-frontend/target/hogajama-angular-frontend.war ;
+                 jbss deploy hogajama-frontend/target/hogajama-frontend.war ;
+                 jbss deploy hogajama-rs/target/hogajama-rs.war
+  - name: JBoss Start
+    actions:
+      - component: jbss
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: jbss start
+  - name: JBoss Stop
+    actions:
+      - component: jbss
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: jbss stop
+  
