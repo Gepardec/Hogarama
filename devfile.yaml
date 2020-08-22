@@ -101,7 +101,7 @@ commands:
   - name: Uninstall ActiveMQ
     actions:
       - component: kube-tools
-        command: 'helm uninstall activemq'
+        command: 'helm uninstall amq'
         type: exec
   - name: Clean Install
     actions:
