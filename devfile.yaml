@@ -74,8 +74,6 @@ components:
     env:
       - name: ENV_FILE
         value: '/projects/Hogarama/codereadyworkspace/hogarama_dev.env'
-      - name: PGPASSWORD
-        value: changepassword
     mountSources: true
     command:
       - sleep
