@@ -1,7 +1,6 @@
 package com.gepardec.hogarama.service.schedulers;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
@@ -12,17 +11,16 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 // import org.jboss.ejb3.annotation.ResourceAdapter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
 import com.gepardec.hogarama.domain.sensor.SensorProperties;
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.watering.WateringService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // @ResourceAdapter("activemq-ext")
 @MessageDriven(

@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.domain.sensor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,18 +10,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.mockito.Mockito;
-
-import com.gepardec.hogarama.domain.sensor.SensorData;
-import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
-import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
-
-import static org.mockito.Mockito.mock;
 
 @RunWith(Parameterized.class)
 public class SensorNormalizerTest {

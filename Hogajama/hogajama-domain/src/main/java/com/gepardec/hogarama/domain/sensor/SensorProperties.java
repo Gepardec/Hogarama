@@ -1,14 +1,13 @@
 package com.gepardec.hogarama.domain.sensor;
 
 import java.util.Optional;
-import java.util.function.IntPredicate;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.SensorType;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SensorProperties {
 

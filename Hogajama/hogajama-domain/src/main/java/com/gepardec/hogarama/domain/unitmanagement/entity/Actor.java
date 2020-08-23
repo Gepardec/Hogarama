@@ -6,6 +6,8 @@ import java.io.Serializable;
 @Entity
 public class Actor implements Serializable, Owned {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(generator = "ActorIdGenerator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "ActorIdGenerator", sequenceName = "seq_actor_id")
