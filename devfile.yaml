@@ -106,7 +106,7 @@ commands:
   - name: Clean Install
     actions:
       - component: maven
-        command: 'mvn clean install -Dfrontend.build.environment=prod'
+        command: 'mvn clean install'
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
   - name: Clean Install (ohne Frontend)
