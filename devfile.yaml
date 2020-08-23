@@ -16,7 +16,7 @@ components:
     type: chePlugin
   - id: redhat/vscode-yaml/latest
     type: chePlugin
-  - alias: jbss
+  - alias: jboss-setup
     image: 'gepardec/jbss:java8'
     env:
       - name: HOME
@@ -130,19 +130,19 @@ commands:
         type: exec
   - name: Configure Hogajama JBoss
     actions:
-      - component: jbss
+      - component: jboss-setup
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
         command: jbss stop; jbss configure /projects/Hogarama/Hogajama/configuration/local_configuration && jbss log
   - name: Restart Hogajama JBoss
     actions:
-      - component: jbss
+      - component: jboss-setup
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
         command: jbss restart && jbss log
   - name: Deploy All Hogarama
     actions:
-      - component: jbss
+      - component: jboss-setup
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
         command: >-
