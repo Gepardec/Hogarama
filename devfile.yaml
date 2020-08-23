@@ -106,9 +106,15 @@ commands:
   - name: Clean Install
     actions:
       - component: maven
+        command: 'mvn clean install -Dfrontend.build.environment=prod'
         workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
         type: exec
-        command: mvn clean install -Dfrontend.build.environment=prod
+  - name: Clean Install (ohne Frontend/Mocks)
+    actions:
+      - component: maven
+        command: 'mvn clean install -P!full-build'
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
   - name: Configure Hogajama JBoss
     actions:
       - component: jbss
