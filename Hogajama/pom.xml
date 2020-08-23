@@ -14,6 +14,7 @@
 		<module>hogajama-frontend</module>
 		<module>hogajama-interfaces</module>
 		<module>hogajama-services</module>
+        <module>raspberry-pi-mocks</module>
 		<module>hogajama-rs</module>
 	</modules>
 
@@ -186,7 +187,6 @@
             </activation>
             <modules>
                 <module>hogajama-angular-frontend</module>
-                <module>raspberry-pi-mocks</module>
             </modules>
         </profile>
     </profiles>
