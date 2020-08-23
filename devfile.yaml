@@ -69,6 +69,19 @@ components:
       - infinity
     memoryLimit: 2024Mi
     type: dockerimage
+  - alias: postgres
+    image: 'docker.io/bitnami/postgresql:11.9.0-debian-10-r1'
+    env:
+      - name: ENV_FILE
+        value: '/projects/Hogarama/codereadyworkspace/hogarama_dev.env'
+      - name: PGPASSWORD
+        value: changepassword
+    mountSources: true
+    command:
+      - sleep
+      - infinity
+    memoryLimit: 512Mi
+    type: dockerimage
 commands:
   - name: Install Postgres
     actions:
@@ -136,6 +149,15 @@ commands:
                  jbss deploy hogajama-angular-frontend/target/hogajama-angular-frontend*.war ;
                  jbss deploy hogajama-frontend/target/hogajama-frontend*.war ;
                  jbss deploy hogajama-rs/target/hogajama-rs*.war
+  - name: Connect to Habarama DB
+    actions:
+      - component: postgres
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: >-
+                 . $ENV_FILE && 
+                 export PGPASSWORD=$POSTGRESQL_PASSWORD &&  
+                 psql --host $POSTGRESQL_HOST -U hogajama -d management -p 5432
   - name: Debug JBoss
     actions:
       - referenceContent: |
