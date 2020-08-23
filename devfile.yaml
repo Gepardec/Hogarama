@@ -136,4 +136,28 @@ commands:
                  jbss deploy hogajama-angular-frontend/target/hogajama-angular-frontend*.war ;
                  jbss deploy hogajama-frontend/target/hogajama-frontend*.war ;
                  jbss deploy hogajama-rs/target/hogajama-rs*.war
+  - name: Debug JBoss
+    actions:
+      - referenceContent: |
+          {
+          "version": "0.2.0",
+          "configurations": [
+          {
+              "type": "java",
+              "request": "attach",
+              "name": "Debug JBoss",
+              "hostName": "localhost",
+              "port": 8787
+          },
+          {
+              "type": "java",
+              "name": "MockCli",
+              "request": "launch",
+              "mainClass": "com.gepardec.hogarama.mocks.cli.MockCli",
+              "projectName": "raspberry-pi-mocks-cli",
+              "args": "-t /projects/Hogarama/Hogajama/raspberry-pi-mocks/raspberry-pi-mocks-cli/examples/testData.json -c /projects/Hogarama/Hogajama/raspberry-pi-mocks/raspberry-pi-mocks-cli/examples/testConfigCRW.prop --delayMs 5000"
+          }
+          ]
+          }
+        type: vscode-launch
   
