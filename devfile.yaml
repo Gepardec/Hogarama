@@ -81,6 +81,11 @@ components:
     memoryLimit: 512Mi
     type: dockerimage
 commands:
+  - name: List Helm Releases
+    actions:
+      - component: kube-tools
+        command: 'helm ls'
+        type: exec
   - name: Install Postgres
     actions:
       - component: kube-tools
