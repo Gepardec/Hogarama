@@ -1,0 +1,30 @@
+apiVersion: org.eclipse.che/v1
+kind: CheCluster
+metadata:
+  name: chepardec-workspaces
+spec:
+  auth:
+    externalIdentityProvider: false
+    openShiftoAuth: true
+    database:
+      externalDb: false
+  metrics:
+    enable: true
+  server:
+    allowUserDefinedWorkspaceNamespaces: true
+    cheDebug: "false"
+    cheFlavor: codeready
+    cheImagePullPolicy: IfNotPresent
+    cheLogLevel: INFO
+    customCheProperties:
+      CHE_INFRA_KUBERNETES_WORKSPACE__SA__CLUSTER__ROLES: edit
+      CHE_WORKSPACE_SIDECAR_IMAGE__PULL__POLICY: IfNotPresent
+    pluginRegistryImage: gepardec/che-plugin-registry:1.0.4
+    serverMemoryLimit: 2G
+    serverMemoryRequest: 1G
+    tlsSupport: true
+    workspaceNamespaceDefault: chepardec-<workspaceid>
+  storage:
+    preCreateSubPaths: true
+    pvcClaimSize: 3Gi
+    pvcStrategy: per-workspace
