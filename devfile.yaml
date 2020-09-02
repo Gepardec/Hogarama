@@ -7,10 +7,6 @@ projects:
       location: 'git@github.com:Gepardec/Hogarama.git'
       type: git
       branch: codereadyws
-  - name: JBoss
-    source:
-      location: 'http://download.jboss.org/wildfly/14.0.0.Final/wildfly-14.0.0.Final.zip'
-      type: zip
 components:
   - id: redhat/java8/latest
     type: chePlugin
