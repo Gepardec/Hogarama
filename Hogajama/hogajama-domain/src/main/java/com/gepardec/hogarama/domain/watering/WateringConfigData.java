@@ -9,7 +9,6 @@ public class WateringConfigData {
 	@Id
 	private String sensorName;
 	private String actorName;
-	private int measureInterval;
 	private double lowWater;
 	private int waterDuration;
 
@@ -17,11 +16,10 @@ public class WateringConfigData {
 		
 	}
 	
-	public WateringConfigData(String id, String actorName, int measureInterval, double lowWater, int waterDuration) {
+	public WateringConfigData(String id, String actorName, double lowWater, int waterDuration) {
 		super();
 		this.sensorName = id;
 		this.actorName = actorName;
-		this.measureInterval = measureInterval;
 		this.lowWater = lowWater;
 		this.waterDuration = waterDuration;
 	}
@@ -32,10 +30,6 @@ public class WateringConfigData {
 
 	public String getActorName() {
 		return actorName;
-	}
-
-	public long getMeasureInterval() {
-		return measureInterval;
 	}
 
 	public double getLowWater() {

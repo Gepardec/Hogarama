@@ -21,13 +21,11 @@ public class WateringService {
 
 		DEFAULT(1, 0.2, 5);
 		
-		protected int measureInterval;
 		protected double lowWater;
 		protected int waterDuration;
 		
 		Config( int measureInterval, double lowWater, int waterDuration) {
 			this.waterDuration = waterDuration;
-			this.measureInterval = measureInterval;
 			this.lowWater = lowWater;
 		}
 	}
@@ -92,7 +90,7 @@ public class WateringService {
 			return wconfig;
 		}
 		
-		wconfig = new WateringConfigData(sensorName, sensorName, Config.DEFAULT.measureInterval,
+		wconfig = new WateringConfigData(sensorName, sensorName,
 				Config.DEFAULT.lowWater, Config.DEFAULT.waterDuration);
 		configDao.save(wconfig);
 		return wconfig;

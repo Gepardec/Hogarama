@@ -84,7 +84,7 @@ public class WateringServiceTest {
 	public void testChangeDefaultConfiguration() {
 		
 		InMemoryWateringConfigDAO wateringConfigDao = new InMemoryWateringConfigDAO();
-		WateringConfigData wconfig = new WateringConfigData("My Plant", "My Plant", 60, 0.2, 6);
+		WateringConfigData wconfig = new WateringConfigData("My Plant", "My Plant", 0.2, 6);
 		wateringConfigDao.save(wconfig);
 		MockActorControlService actor = new MockActorControlService("Vienna", "My Plant", 6);
 		
@@ -97,7 +97,7 @@ public class WateringServiceTest {
     public void testUseDifferentActorNameThanSensorName() {
         
         InMemoryWateringConfigDAO wateringConfigDao = new InMemoryWateringConfigDAO();
-        WateringConfigData wconfig = new WateringConfigData("My Plant", "My Actor", 60, 0.2, 6);
+        WateringConfigData wconfig = new WateringConfigData("My Plant", "My Actor", 0.2, 6);
         wateringConfigDao.save(wconfig);
         MockActorControlService actor = new MockActorControlService("Vienna", "My Actor", 6);
         
