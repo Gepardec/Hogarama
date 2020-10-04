@@ -23,7 +23,7 @@ public class DaoTest  {
 		dao.save(wconf);
 		
 		String id = "sensor";
-		WateringConfigData c1 = dao.getBySensorName(id);
+		WateringRule c1 = dao.getBySensorName(id);
 		assertEquals("sensor", c1.getSensorName());
 		assertEquals("actor", c1.getActorName());
 		

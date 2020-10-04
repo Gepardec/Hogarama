@@ -34,7 +34,7 @@ public class WateringService {
 	public SensorDataDAO sensorDataDAO;
 
 	@Inject
-	public WateringConfigDAO configDao;
+	public WateringRuleDAO configDao;
 
 	@Inject
 	public ActorControlService actorSvc;
@@ -53,7 +53,7 @@ public class WateringService {
 	public WateringService() {
 	}
 
-	protected WateringService(SensorDataDAO sensorDataDAO, ActorControlService actorSvc, WateringStrategy watering, WateringConfigDAO configDao, ActorCache actorCache, SensorCache sensorCache) {
+	protected WateringService(SensorDataDAO sensorDataDAO, ActorControlService actorSvc, WateringStrategy watering, WateringRuleDAO configDao, ActorCache actorCache, SensorCache sensorCache) {
 		this.sensorDataDAO = sensorDataDAO;
 		this.actorSvc = actorSvc;
 		this.watering = watering;
@@ -62,7 +62,7 @@ public class WateringService {
 		this.sensorCache = sensorCache;
 	}
 
-    private void invokeActorIfNeeded(WateringConfigData config, int dur, String location) {
+    private void invokeActorIfNeeded(WateringRule config, int dur, String location) {
         if (dur > 0) {
 
 			Optional<Actor> optionalActor = actorCache.getByDeviceId(config.getActorName());
@@ -84,20 +84,20 @@ public class WateringService {
         }
     }
 
-	private WateringConfigData getConfig(String sensorName) {
-		WateringConfigData wconfig = configDao.getBySensorName(sensorName);
+	private WateringRule getConfig(String sensorName) {
+	    WateringRule wconfig = configDao.getBySensorName(sensorName);
 		if ( null != wconfig ) {
 			return wconfig;
 		}
 		
-		wconfig = new WateringConfigData(sensorName, sensorName,
+		wconfig = configDao.createWateringRule(sensorName, sensorName,
 				Config.DEFAULT.lowWater, Config.DEFAULT.waterDuration);
 		configDao.save(wconfig);
 		return wconfig;
 	}
 
     public void water(SensorData sensorData) {
-        WateringConfigData config = getConfig(sensorData.getSensorName());
+        WateringRule config = getConfig(sensorData.getSensorName());
         invokeActorIfNeeded(config, watering.computeWateringDuration(config, sensorData.getValue()), sensorData.getLocation());
     }
 

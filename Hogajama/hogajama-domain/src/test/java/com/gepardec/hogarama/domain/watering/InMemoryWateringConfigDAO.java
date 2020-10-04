@@ -2,20 +2,20 @@ package com.gepardec.hogarama.domain.watering;
 
 import java.util.HashMap;
 
-import com.gepardec.hogarama.domain.watering.WateringConfigDAO;
+import com.gepardec.hogarama.domain.watering.WateringRuleDAO;
 import com.gepardec.hogarama.domain.watering.WateringConfigData;
 
-public class InMemoryWateringConfigDAO implements WateringConfigDAO {
+public class InMemoryWateringConfigDAO implements WateringRuleDAO {
 
-	private HashMap<String, WateringConfigData> store = new HashMap<>();
+	private HashMap<String, WateringRule> store = new HashMap<>();
 
 	@Override
-	public void save(WateringConfigData wconf) {
+	public void save(WateringRule wconf) {
 		store.put(wconf.getSensorName(), wconf);
 	}
 
 	@Override
-	public WateringConfigData getBySensorName(String id) {
+	public WateringRule getBySensorName(String id) {
 		return store.get(id);
 	}
 
@@ -23,5 +23,10 @@ public class InMemoryWateringConfigDAO implements WateringConfigDAO {
 		// TODO Auto-generated method stub
 		
 	}
+
+    @Override
+    public WateringRule createWateringRule(String sensorName, String actorName, double lowWater, int waterDuration) {
+          return new WateringConfigData(sensorName, actorName, lowWater, waterDuration);
+    }
 
 }

@@ -4,7 +4,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 @Entity("wateringConfig")
-public class WateringConfigData {
+public class WateringConfigData implements WateringRule {
 	
 	@Id
 	private String sensorName;
@@ -24,19 +24,23 @@ public class WateringConfigData {
 		this.waterDuration = waterDuration;
 	}
 
-	public String getSensorName() {
+	@Override
+    public String getSensorName() {
 		return sensorName;
 	}
 
-	public String getActorName() {
+	@Override
+    public String getActorName() {
 		return actorName;
 	}
 
-	public double getLowWater() {
+	@Override
+    public double getLowWater() {
 		return lowWater;
 	}	
 	
-	public int getWaterDuration() {
+	@Override
+    public int getWaterDuration() {
 		return waterDuration;
 	}	
 }
