@@ -15,8 +15,7 @@ import com.gepardec.hogarama.domain.watering.WateringConfigData;
 import com.gepardec.hogarama.domain.watering.WateringRule;
 import com.gepardec.hogarama.service.MongoDbProducer;
 
-@Alternative @MongoDAO
-@Priority(Interceptor.Priority.APPLICATION-10)
+@MongoDAO
 public class MongoWateringRuleDAO implements WateringRuleDAO{
 	
 	@Inject
