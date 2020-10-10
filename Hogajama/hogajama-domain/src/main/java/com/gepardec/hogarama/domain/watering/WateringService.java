@@ -9,7 +9,6 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gepardec.hogarama.annotations.ConfiguredDAO;
 import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
@@ -34,7 +33,7 @@ public class WateringService {
 	@Inject
 	public SensorDataDAO sensorDataDAO;
 
-	@Inject @ConfiguredDAO
+	@Inject
 	public WateringRuleDAO configDao;
 
 	@Inject

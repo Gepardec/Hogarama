@@ -1,0 +1,15 @@
+[
+{
+    "sensorName" : "Pflanze",
+    "type" : "wasser",
+    "value" : 55.3,
+    "location" : "Wien",
+    "version" : 0
+},
+{
+    "sensorName" : "Pflanze",
+    "type" : "wasser",
+    "value" : 75.3,
+    "location" : "Wien",
+    "version" : 0
+}]

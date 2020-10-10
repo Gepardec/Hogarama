@@ -2,12 +2,11 @@ package com.gepardec.hogarama.service.dao;
 
 import java.util.List;
 
-import javax.annotation.Priority;
-import javax.interceptor.Interceptor;
-import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 
 import org.mongodb.morphia.Datastore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.gepardec.hogarama.domain.watering.WateringRuleDAO;
 import com.gepardec.hogarama.annotations.MongoDAO;
@@ -17,7 +16,9 @@ import com.gepardec.hogarama.service.MongoDbProducer;
 
 @MongoDAO
 public class MongoWateringRuleDAO implements WateringRuleDAO{
-	
+
+    private static final Logger LOG = LoggerFactory.getLogger(MongoWateringRuleDAO.class);
+
 	@Inject
 	public Datastore db;
 
@@ -31,6 +32,7 @@ public class MongoWateringRuleDAO implements WateringRuleDAO{
 
 	@Override
 	public WateringRule getBySensorName(String sensorName) {
+	    LOG.debug("getBySensorName " + sensorName);
 		List<WateringConfigData> configs = db.createQuery(WateringConfigData.class).field("sensorName").equal(sensorName).asList();
 		if (configs.isEmpty()){
 			return null;
