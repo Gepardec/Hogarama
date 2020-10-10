@@ -57,7 +57,7 @@ public class LowWaterWateringRule implements WateringRule, Serializable {
     private boolean isValid;
 
 	public LowWaterWateringRule() {
-		
+		this.isValid = true;
 	}
 	
     public LowWaterWateringRule(Sensor sensor, Actor actor, Unit unit, String name, double lowWater, int waterDuration) {
