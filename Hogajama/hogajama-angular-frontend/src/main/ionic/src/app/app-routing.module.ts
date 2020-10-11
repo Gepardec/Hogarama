@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: './modules/test-prototype/test-prototype.module#TestPrototypeModule',
+    loadChildren: './modules/home/home.module#HomeModule',
     canLoad: [AuthGuard]
   },
   {

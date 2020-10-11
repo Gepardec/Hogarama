@@ -8,11 +8,11 @@ import { Unit } from 'src/app/shared/models/Unit';
 import {getCompleteUnits, UnitWithSensorsAndActors} from '../../shared/models/UnitWithSensorsAndActors';
 
 @Component({
-  selector: 'app-test-prototype',
-  templateUrl: './test-prototype.component.html',
-  styleUrls: ['./test-prototype.component.scss']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
-export class TestPrototypeComponent implements OnInit {
+export class HomeComponent implements OnInit {
   units: Unit[] = [];
   sensors: Sensor[] = [];
   actors: Actor[] = [];

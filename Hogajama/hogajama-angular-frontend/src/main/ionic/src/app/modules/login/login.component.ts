@@ -20,14 +20,14 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  onLoginClickTest(): void {
+  loginClick(): void {
     this.authService.loginUser().then(
       () => this.router.navigateByUrl('/home'),
       (reason) => console.log(reason)
     );
   }
 
-  onLogoutClickTest(): void {
+  logoutClick(): void {
     this.authService.logoutUser().then(
       () => alert('Logged out!'),
       () => alert('Logout failure!')
