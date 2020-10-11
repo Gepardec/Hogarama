@@ -3,11 +3,11 @@ import {AuthenticationService} from 'src/app/services/AuthenticationService/auth
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-test-login-redirect',
-  templateUrl: './test-login-redirect.component.html',
-  styleUrls: ['./test-login-redirect.component.scss']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class TestLoginRedirectComponent implements OnInit {
+export class LoginComponent implements OnInit {
   isAuthenticated: boolean;
 
   constructor(public authService: AuthenticationService, private router: Router) {

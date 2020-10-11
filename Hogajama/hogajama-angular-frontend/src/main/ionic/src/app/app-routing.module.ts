@@ -14,8 +14,8 @@ const routes: Routes = [
     canLoad: [AuthGuard]
   },
   {
-    path: 'testLoginRedirect',
-    loadChildren: './modules/test-login-redirect/test-login-redirect.module#TestLoginRedirectModule',
+    path: 'login',
+    loadChildren: './modules/login/login.module#LoginModule',
   },
   {
     path: 'playground',
