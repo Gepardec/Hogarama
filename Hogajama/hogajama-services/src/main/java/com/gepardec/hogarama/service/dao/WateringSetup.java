@@ -6,7 +6,6 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gepardec.hogarama.annotations.ConfiguredDAO;
 import com.gepardec.hogarama.annotations.MongoDAO;
 import com.gepardec.hogarama.annotations.PostgresDAO;
 import com.gepardec.hogarama.domain.watering.WateringRuleDAO;

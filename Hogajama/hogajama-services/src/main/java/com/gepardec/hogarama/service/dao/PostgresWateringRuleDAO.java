@@ -13,14 +13,14 @@ import com.gepardec.hogarama.domain.unitmanagement.cache.ActorCache;
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.unitmanagement.dao.BaseDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
+import com.gepardec.hogarama.domain.unitmanagement.entity.Rule;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
-import com.gepardec.hogarama.domain.watering.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.watering.WateringRule;
 import com.gepardec.hogarama.domain.watering.WateringRuleDAO;
 
 @PostgresDAO
-public class PostgresWateringRuleDAO extends BaseDAO<LowWaterWateringRule> implements WateringRuleDAO{
+public class PostgresWateringRuleDAO extends BaseDAO<Rule> implements WateringRuleDAO{
 	
     private static final Logger LOG = LoggerFactory.getLogger(PostgresWateringRuleDAO.class);
 
@@ -35,7 +35,7 @@ public class PostgresWateringRuleDAO extends BaseDAO<LowWaterWateringRule> imple
 	
 	@Override
 	public void save(WateringRule rule) {
-	    LowWaterWateringRule r = (LowWaterWateringRule)rule;
+	    Rule r = (Rule)rule;
 	    if ( !r.isValid() ) {
 		    LOG.warn("Watering rule is not valid. Probably sensor or actor doesn't exist in database. Won't persist rule to database!");
 		    return;
@@ -46,7 +46,7 @@ public class PostgresWateringRuleDAO extends BaseDAO<LowWaterWateringRule> imple
 	@Override
 	public WateringRule getBySensorName(String sensorName) {
         LOG.debug("getBySensorName " + sensorName);
-		List<LowWaterWateringRule> configs = 
+		List<Rule> configs = 
 		        entityManager.createQuery("from LowWaterWateringRule r where r.sensor.deviceId=:sensorName")
 		        .setParameter("sensorName", sensorName)
 		        .getResultList();
@@ -59,12 +59,12 @@ public class PostgresWateringRuleDAO extends BaseDAO<LowWaterWateringRule> imple
     @Override
     public WateringRule createWateringRule(String sensorName, String actorName, double lowWater, int waterDuration) {
         Sensor sensor = getSensor(sensorName);
-        return new LowWaterWateringRule(sensor, getActor(actorName), getUnit(sensor), sensorName + "_" + actorName, lowWater, waterDuration);
+        return new Rule(sensor, getActor(actorName), getUnit(sensor), sensorName + "_" + actorName, lowWater, waterDuration);
     }
 
     @Override
-    public Class<LowWaterWateringRule> getEntityClass() {
-        return LowWaterWateringRule.class;
+    public Class<Rule> getEntityClass() {
+        return Rule.class;
     }
     
     private Sensor getSensor(String sensorName) {
