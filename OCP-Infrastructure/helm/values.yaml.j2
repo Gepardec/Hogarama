@@ -23,6 +23,8 @@ hogarama:
       timezone: "Europe/Vienna"
       imageStream:
         name: "amq-broker-72-openshift"
+      storage:
+        size: "32Gi"
   fluentd:
     credentials:
       amq:
@@ -74,6 +76,11 @@ hogarama:
       credentials:
         database: {{ HOGAJAMA_DB }}
         password: {{ MONGODB_PW }}
+      storage:
+        size: {{ HOGAJAMA_MONGODB_STORAGE_SIZE | default("32Gi") }}
+  prometheus:
+      storage:
+          size: {{ PROMETHEUS_STORAGE_SIZE | default("32Gi") }}
 postgresql:
   image:
     tag: 11.7.0

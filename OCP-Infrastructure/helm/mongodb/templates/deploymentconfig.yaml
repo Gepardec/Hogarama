@@ -62,9 +62,8 @@ spec:
       terminationGracePeriodSeconds: 30
       volumes:
       - name: mongodb-data
-        emptyDir: {}
-        # persistentVolumeClaim:
-        #   claimName: mongodb-2
+        persistentVolumeClaim:
+          claimName: mongodb-pvc
   test: false
   triggers:
   - imageChangeParams:
