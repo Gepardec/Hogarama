@@ -13,14 +13,14 @@ export class BackButtonDirective {
 ) {
 }
 
-@HostListener('click')
-onClick() {
-    if (this.platform.is('cordova')) {
-        this.location.back();
-    }
-    else {
-        this.nav.back();
-    }
-}
+  @HostListener('click')
+  onClick() {
+      if (this.platform.is('cordova')) {
+          this.location.back();
+      }
+      else {
+          this.nav.back();
+      }
+  }
 
 }

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ConfigConnectToDeviceInfoPage } from './config-connect-to-device-info.page';
 import { MatButtonModule } from '@angular/material';
+import { BackButtonModule } from 'src/app/directives/back-button/back-button.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
+    BackButtonModule,
     MatButtonModule
   ],
   declarations: [ConfigConnectToDeviceInfoPage]
