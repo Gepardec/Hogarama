@@ -38,14 +38,20 @@ public class DetermineOwnerInterceptor {
     @AroundInvoke
     public Object aroundInvoke(InvocationContext ctx) throws Exception {
         SecurityContext sc = extractSecurityContext(ctx);
+        
+        if ( null == sc ) {
+            LOG.error("SecurityContext is null. This probably doesn't end well, since we need a configured user.");
+            return ctx.proceed();
+        }
 
-        if (sc != null && sc.getUserPrincipal() instanceof KeycloakPrincipal) {
+        String ssoUserId = sc.getUserPrincipal().getName();
+        Optional<Owner> optionalOwner = service.getRegisteredOwner(ssoUserId);
+        Owner owner = optionalOwner.orElseGet(() -> registerOwnerAndHandleDuplicates(ssoUserId));
+        userContext.setOwner(owner);
+
+        if (sc.getUserPrincipal() instanceof KeycloakPrincipal) {
             @SuppressWarnings("unchecked")
             KeycloakPrincipal<KeycloakSecurityContext> kp = (KeycloakPrincipal<KeycloakSecurityContext>) sc.getUserPrincipal();
-            String ssoUserId = kp.getName();
-            Optional<Owner> optionalOwner = service.getRegisteredOwner(ssoUserId);
-            Owner owner = optionalOwner.orElseGet(() -> registerOwnerAndHandleDuplicates(ssoUserId));
-            userContext.setOwner(owner);
 
             final AccessToken token = kp.getKeycloakSecurityContext().getToken();
             UserProfile userProfile = new UserProfile();
@@ -54,6 +60,8 @@ public class DetermineOwnerInterceptor {
             userProfile.setFamilyName(token.getFamilyName());
             userProfile.setGivenName(token.getGivenName());
             userContext.setUserProfile(userProfile);
+        } else {
+            LOG.warn("System is not configured for Keycloak. Using login name as user id. Some information might be missing.");
         }
 
         return ctx.proceed();

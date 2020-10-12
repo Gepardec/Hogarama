@@ -1,16 +1,14 @@
 package com.gepardec.hogarama.domain.unitmanagement.service;
 
-import com.gepardec.hogarama.domain.exception.TechnicalException;
-import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
-import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
+import java.util.List;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
+import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
+import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 
 public class SensorService {
 

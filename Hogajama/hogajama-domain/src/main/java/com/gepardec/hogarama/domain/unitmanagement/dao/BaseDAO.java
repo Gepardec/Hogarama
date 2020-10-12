@@ -1,10 +1,13 @@
 package com.gepardec.hogarama.domain.unitmanagement.dao;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import com.gepardec.hogarama.domain.unitmanagement.entity.EntityNotFoundException;
 
 public abstract class BaseDAO<T extends Serializable> {
 
@@ -15,6 +18,10 @@ public abstract class BaseDAO<T extends Serializable> {
 
     public Optional<T> getById(Long id) {
         return Optional.ofNullable(entityManager.find(getEntityClass(), id));
+    }
+
+    public T getByIdNonOpt(Long id) {
+        return getById(id).orElseThrow(() -> new EntityNotFoundException(id, getEntityClass()));
     }
 
     public List<T> findAll() {
