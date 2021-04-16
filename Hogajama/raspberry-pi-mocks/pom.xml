@@ -18,6 +18,7 @@
 	<modules>
 		<module>raspberry-pi-mocks-cli</module>
 		<module>raspberry-pi-mocks-gui</module>
+		<module>raspberry-pi-mocks-cli-kafka</module>
 	</modules>
 
 	<properties>
