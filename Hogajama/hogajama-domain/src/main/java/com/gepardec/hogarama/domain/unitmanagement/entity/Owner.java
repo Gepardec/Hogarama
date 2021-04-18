@@ -11,6 +11,8 @@ import java.util.List;
 @Entity
 public class Owner implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(generator = "OwnerIdGenerator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "OwnerIdGenerator", sequenceName = "seq_owner_id")

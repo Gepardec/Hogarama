@@ -4,5 +4,5 @@
 
 /subsystem=datasources/data-source=HogajamaDS:add(\
     jndi-name="java:jboss/datasources/Hogajama", \
-    connection-url="jdbc:postgresql://${env.POSTGRESQL_HOST:postgresql}:5432/${env.POSTGRESQL_DATABASE:management}", \
+    connection-url="jdbc:postgresql://${env.POSTGRESQL_HOST:postgresql}:5432/management", \
     driver-name=postgres, user-name=hogajama, password=${env.POSTGRESQL_PASSWORD:changepassword})

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-helm repo add postgresql https://charts.bitnami.com/bitnami
-helm install postgresql postgresql/postgresql -f values.yaml || helm upgrade postgresql postgresql/postgresql -f values.yaml
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm upgrade -i postgresql bitnami/postgresql --version=9.3.2 -f values.yaml
