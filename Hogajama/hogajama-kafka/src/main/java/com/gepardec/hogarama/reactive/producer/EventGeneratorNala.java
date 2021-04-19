@@ -7,15 +7,15 @@ import javax.inject.Inject;
 import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped
-public class EventGenerator {
+public class EventGeneratorNala {
 
   @Inject
   private MockExternalAsyncResource externalAsyncResource;
 
-  @Outgoing("event")
+  @Outgoing("sensor-events")
   @SuppressWarnings("unused")
   public CompletionStage<String> generate() {
-    return externalAsyncResource.getNextValue();
+    return externalAsyncResource.getNextValue("nala");
   }
 
 }

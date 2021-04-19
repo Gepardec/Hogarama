@@ -1,6 +1,8 @@
 package com.gepardec.hogarama.reactive.processor;
 
 import com.gepardec.hogarama.reactive.vo.Event;
+import io.smallrye.reactive.messaging.annotations.Broadcast;
+import io.smallrye.reactive.messaging.annotations.Merge;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.slf4j.Logger;
@@ -15,22 +17,24 @@ import java.util.*;
 import static java.lang.Math.round;
 
 @ApplicationScoped
-public class EventConverter {
+public class EventConverterAlpha {
 
   private HashMap<String, List<Double>> values;
 
-  private static final Logger LOG = LoggerFactory.getLogger(EventConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(EventConverterAlpha.class);
 
   @PostConstruct
   public void init() {
     values = new HashMap<>();
   }
 
-  @Incoming("events")
-  @Outgoing("transformedevent")
+  @Incoming("sensor-events")
+  @Merge(Merge.Mode.MERGE)
+  @Outgoing("transformed-sensor-events")
+  @Broadcast
   @SuppressWarnings("unused")
   public String newValue(String valueJson) {
-    LOG.info("Received event on converter one: {}", valueJson);
+    LOG.info("Received event on converter: {}", valueJson);
     Jsonb jsonb = JsonbBuilder.create();
 
     Event event = jsonb.fromJson(valueJson, Event.class);
