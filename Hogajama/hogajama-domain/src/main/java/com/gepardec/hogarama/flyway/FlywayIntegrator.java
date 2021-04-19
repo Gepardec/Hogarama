@@ -1,8 +1,6 @@
 package com.gepardec.hogarama.flyway;
 
 import org.flywaydb.core.Flyway;
-import org.flywaydb.core.api.configuration.Configuration;
-import org.flywaydb.core.internal.jdbc.DriverDataSource;
 import org.hibernate.boot.Metadata;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.integrator.spi.Integrator;
@@ -11,9 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.Driver;
 
 public class FlywayIntegrator implements Integrator {
 

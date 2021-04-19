@@ -22,7 +22,7 @@ spec:
             - /home/jboss/cfg/entrypoint.sh
           env:
             - name: TZ
-              value: {{ .Values.global.timezone }}
+              value: {{ .Values.hogarama.amq.deploymentconfig.timezone }}
             - name: AMQ_TRUSTSTORE
               value: broker.ks
             - name: AMQ_TRUSTSTORE_PASSWORD

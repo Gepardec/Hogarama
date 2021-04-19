@@ -3,6 +3,8 @@ package com.gepardec.hogarama.domain.unitmanagement.entity;
 import java.io.Serializable;
 
 public class UserProfile implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private String givenName;
     private String familyName;
     private String name;

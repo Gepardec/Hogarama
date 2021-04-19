@@ -14,11 +14,11 @@
 		<module>hogajama-frontend</module>
 		<module>hogajama-interfaces</module>
 		<module>hogajama-services</module>
-		<module>hogajama-rs</module>
         <module>raspberry-pi-mocks</module>
 		<module>hogajama-angular-frontend</module>
         <module>hogajama-kafka</module>
-    </modules>
+		<module>hogajama-rs</module>
+	</modules>
 
 	<properties>
 
@@ -180,6 +180,19 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>full-build</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>hogajama-angular-frontend</module>
+            </modules>
+        </profile>
+    </profiles>
+
 	<build>
 		<pluginManagement>
 			<plugins>

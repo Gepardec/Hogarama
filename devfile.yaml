@@ -1,0 +1,183 @@
+apiVersion: 1.0.0
+metadata:
+  name: Hogarama_Workspace
+projects:
+  - name: Hogarama
+    source:
+      location: 'git@github.com:Gepardec/Hogarama.git'
+      type: git
+      branch: codereadyws
+  - name: JBoss
+    source:
+      location: 'http://download.jboss.org/wildfly/14.0.0.Final/wildfly-14.0.0.Final.zip'
+      type: zip
+components:
+  - id: redhat/java8/latest
+    type: chePlugin
+  - id: redhat/vscode-yaml/latest
+    type: chePlugin
+  - alias: jboss-setup
+    image: 'gepardec/jbss:java8'
+    env:
+      - name: HOME
+        value: /
+      - name: CODE_READY_WORKSPACE
+        value: 'true'
+      - name: CODE_READY_JBOSS
+        value: '/projects/JBoss/wildfly-14.0.0.Final'
+      - name: JBOSS_HOME
+        value: '/projects/JBoss/work'
+      - name: JBOSS_RELEASE_NAME
+        value: 'jboss-eap-7.2.0'
+      - name: ENV_FILE
+        value: '/projects/Hogarama/codereadyworkspace/hogarama_dev.env'
+    mountSources: true
+    endpoints:
+      - name: hogajama
+        port: 8080
+      - name: hogajama-admin
+        port: 9990
+    command:
+      - sleep
+      - infinity
+    memoryLimit: 2048Mi
+    type: dockerimage
+  - alias: kube-tools
+    image: 'fhochleitner/kube-tools:dev'
+    env:
+      - name: ENV_FILE
+        value: '/projects/Hogarama/codereadyworkspace/hogarama_dev.env'
+    mountSources: true
+    command:
+      - sleep
+      - infinity
+    memoryLimit: 512Mi
+    type: dockerimage
+  - alias: maven
+    image: 'fhochleitner/maven:3.6.3-jdk8-ocp4'
+    mountSources: true
+    env:
+      - name: MAVEN_OPTS
+        value: >-
+          -Xmx1000m -XX:+UseParallelGC -Xms500m
+          -Djava.security.egd=file:/dev/./urandom
+    volumes:
+      - name: m2
+        containerPath: /home/.m2
+    command:
+      - sleep
+      - infinity
+    memoryLimit: 2024Mi
+    type: dockerimage
+  - alias: postgres
+    image: 'docker.io/bitnami/postgresql:11.9.0-debian-10-r1'
+    env:
+      - name: ENV_FILE
+        value: '/projects/Hogarama/codereadyworkspace/hogarama_dev.env'
+    mountSources: true
+    command:
+      - sleep
+      - infinity
+    memoryLimit: 512Mi
+    type: dockerimage
+commands:
+  - name: Install Postgres
+    actions:
+      - component: kube-tools
+        command: './install-pg.sh'
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/codereadyworkspace/postgresql/'
+        type: exec
+  - name: Install MongoDB
+    actions:
+      - component: kube-tools
+        command: './install-mongodb.sh'
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/codereadyworkspace/mongodb/'
+        type: exec
+  - name: Install ActiveMQ
+    actions:
+      - component: kube-tools
+        command: './install-amq.sh'
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/codereadyworkspace/amq/'
+        type: exec
+  - name: Uninstall Postgres
+    actions:
+      - component: kube-tools
+        command: 'helm uninstall postgresql'
+        type: exec
+  - name: Uninstall MongoDB
+    actions:
+      - component: kube-tools
+        command: 'helm uninstall mongodb'
+        type: exec
+  - name: Uninstall ActiveMQ
+    actions:
+      - component: kube-tools
+        command: 'helm uninstall amq'
+        type: exec
+  - name: Clean Install
+    actions:
+      - component: maven
+        command: 'mvn clean install'
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+  - name: Clean Install (ohne Frontend)
+    actions:
+      - component: maven
+        command: 'mvn clean install -P!full-build'
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+  - name: Configure Hogajama JBoss
+    actions:
+      - component: jboss-setup
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: jbss stop; jbss configure /projects/Hogarama/Hogajama/configuration/local_configuration && jbss log
+  - name: Restart Hogajama JBoss
+    actions:
+      - component: jboss-setup
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: jbss restart && jbss log
+  - name: Deploy All Hogarama
+    actions:
+      - component: jboss-setup
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: >-
+                 jbss deploy hogajama-angular-frontend/target/hogajama-angular-frontend*.war ;
+                 jbss deploy hogajama-frontend/target/hogajama-frontend*.war ;
+                 jbss deploy hogajama-rs/target/hogajama-rs*.war
+  - name: Connect to Hogajama DB
+    actions:
+      - component: postgres
+        workdir: '${CHE_PROJECTS_ROOT}/Hogarama/Hogajama'
+        type: exec
+        command: >-
+                 . $ENV_FILE && 
+                 export PGPASSWORD=$POSTGRESQL_PASSWORD &&  
+                 psql --host $POSTGRESQL_HOST -U hogajama -d management -p 5432
+  - name: Debug JBoss
+    actions:
+      - referenceContent: |
+          {
+          "version": "0.2.0",
+          "configurations": [
+          {
+              "type": "java",
+              "request": "attach",
+              "name": "Debug JBoss",
+              "hostName": "localhost",
+              "port": 8787
+          },
+          {
+              "type": "java",
+              "name": "MockCli",
+              "request": "launch",
+              "mainClass": "com.gepardec.hogarama.mocks.cli.MockCli",
+              "projectName": "raspberry-pi-mocks-cli",
+              "args": "-t /projects/Hogarama/Hogajama/raspberry-pi-mocks/raspberry-pi-mocks-cli/examples/testData.json -c /projects/Hogarama/Hogajama/raspberry-pi-mocks/raspberry-pi-mocks-cli/examples/testConfigCRW.prop --delayMs 5000"
+          }
+          ]
+          }
+        type: vscode-launch
+  

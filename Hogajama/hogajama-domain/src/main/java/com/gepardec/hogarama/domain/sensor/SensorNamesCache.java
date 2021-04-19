@@ -1,6 +1,5 @@
 package com.gepardec.hogarama.domain.sensor;
 
-import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import org.slf4j.Logger;
 
 import javax.ejb.Singleton;
