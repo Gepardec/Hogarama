@@ -1,0 +1,50 @@
+#!/bin/sh
+
+if [ -z "$ENV_FILE" ]; then
+	ENV_FILE=$1
+fi
+
+if [ ! -f "$ENV_FILE" ]; then
+    echo "WARN: File $ENV_FILE doesn't exist! Set ENV_FILE or use argument" 1>&2
+    echo "WARN: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    ENV_FILE=../environments/fm/example.env
+    echo "WARN: Example values from $ENV_FILE will be used!" 1>&2
+    echo "WARN: Change this code in real-world environments" 1>&2
+    echo "WARN: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    # exit 1
+fi
+
+. $ENV_FILE
+
+###########################
+# Remove file parts defined in FEATURES
+###########################
+handle_features() {
+
+	ENV_SUFF=""
+
+	if [ -n "$FEATURES" ]; then
+    	for feature in $FEATURES; do
+        	ENV_SUFF="$ENV_SUFF .${feature}"
+    	done
+	fi
+    dir=.
+    if [ -z "$ENV_SUFF" ]; then
+        echo "No features defined in FEATURES"
+        return
+    fi
+    echo "Active features: $ENV_SUFF"
+    for file in $dir/*; do
+        target_file=$file
+        for feature in $ENV_SUFF; do
+            target_file=`echo $target_file | sed -e "s/$feature//"`
+        done
+        if [ "$file" != "$target_file" ]; then
+            echo "Feature copy $file to $target_file"
+            cp $file $target_file || exit 1
+        fi
+    done
+}
+
+handle_features || exit 2
+

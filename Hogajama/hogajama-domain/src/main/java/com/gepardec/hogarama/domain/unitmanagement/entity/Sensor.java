@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Entity
 public class Sensor implements Serializable, Owned {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(generator = "SensorIdGenerator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "SensorIdGenerator", sequenceName = "seq_sensor_id")

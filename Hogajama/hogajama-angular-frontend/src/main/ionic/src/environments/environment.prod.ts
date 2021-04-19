@@ -1,4 +1,3 @@
-
 const keycloakConfig = {
   url: 'https://keycloak-gepardec.apps.p.aws.ocp.gepardec.com/auth/',
   realm: 'hogarama',

@@ -13,7 +13,10 @@ spec:
     baseUrl: "/auth/realms/gepardec/hogarama"
     secret: "{{ .Values.keycloak.client.secret }}"
     redirectUris: ["*"]
+    webOrigins: ["*"]
     identityProvider: google
+    standardFlowEnabled: true
+    directAccessGrantsEnabled: true
   realmSelector:
     matchLabels:
       app: sso
