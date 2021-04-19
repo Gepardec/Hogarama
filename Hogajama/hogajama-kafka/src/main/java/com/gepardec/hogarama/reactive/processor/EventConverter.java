@@ -17,11 +17,11 @@ import java.util.*;
 import static java.lang.Math.round;
 
 @ApplicationScoped
-public class EventConverterAlpha {
+public class EventConverter {
 
   private HashMap<String, List<Double>> values;
 
-  private static final Logger LOG = LoggerFactory.getLogger(EventConverterAlpha.class);
+  private static final Logger LOG = LoggerFactory.getLogger(EventConverter.class);
 
   @PostConstruct
   public void init() {
@@ -34,7 +34,7 @@ public class EventConverterAlpha {
   @Broadcast
   @SuppressWarnings("unused")
   public String newValue(String valueJson) {
-    LOG.info("Received event on converter: {}", valueJson);
+    LOG.info("Received event on event converter: {}", valueJson);
     Jsonb jsonb = JsonbBuilder.create();
 
     Event event = jsonb.fromJson(valueJson, Event.class);
