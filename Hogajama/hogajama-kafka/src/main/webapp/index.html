@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WildFly Reactive - Kafka messaging</title>
+    <style>
+        div.blueTable {
+            border: 1px solid #1C6EA4;
+            background-color: #EEEEEE;
+            width: 50%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        .divTable.blueTable .divTableCell, .divTable.blueTable .divTableHead {
+            border: 1px solid #AAAAAA;
+            padding: 3px 2px;
+        }
+        .divTable.blueTable .divTableBody .divTableCell {
+            font-size: 13px;
+        }
+        .divTable.blueTable .divTableRow:nth-child(even) {
+            background: #D0E4F5;
+        }
+        .divTable.blueTable .divTableHeading {
+            background: #1C6EA4;
+            background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+            background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+            background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+            border-bottom: 2px solid #444444;
+        }
+        .divTable.blueTable .divTableHeading .divTableHead {
+            font-size: 15px;
+            font-weight: bold;
+            color: #FFFFFF;
+            border-left: 2px solid #D0E4F5;
+        }
+        .divTable.blueTable .divTableHeading .divTableHead:first-child {
+            border-left: none;
+        }
+        .blueTable .tableFootStyle .links a{
+            display: inline-block;
+            background: #1C6EA4;
+            color: #FFFFFF;
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+        /* DivTable.com */
+        .divTable{ display: table; }
+        .divTableRow { display: table-row; }
+        .divTableHeading { display: table-header-group;}
+        .divTableCell, .divTableHead { display: table-cell;}
+        .divTableHeading { display: table-header-group;}
+        .divTableBody { display: table-row-group;}
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>WildFly Reactive - Kafka messaging</h2>
+    <h3>Sensor Overview</h3>
+
+    <div class="divTable blueTable">
+        <div class="divTableHeading">
+            <div class="divTableRow">
+                <div class="divTableHead">Event</div>
+                <div class="divTableHead">Voting</div>
+
+            </div>
+        </div>
+        <div class="divTableBody">
+            <div class="divTableRow">
+                <div class="divTableCell">Simba</div>
+                <div class="divTableCell"><span id="simba">N/A</span></div>
+
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">Nala</div>
+                <div class="divTableCell"><span id="nala">N/A</span></div>
+
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">Tote Gazelle</div>
+                <div class="divTableCell"><span id="toteGazelle">N/A</span></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    let source = new EventSource("/reactive/rest/events/stream");
+    source.onmessage = function (event) {
+        let data = JSON.parse(event.data);
+        document.getElementById(data['key']).innerHTML = data['value'];
+    };
+</script>
+</html>
