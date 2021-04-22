@@ -1,4 +1,5 @@
 deploy --force ../../hogajama-rs/target/hogajama-rs-0.0.1-SNAPSHOT.war
 deploy --force ../../hogajama-frontend/target/hogajama-frontend-0.0.1-SNAPSHOT.war
 deploy --force ../../hogajama-angular-frontend/target/hogajama-angular-frontend-0.0.1-SNAPSHOT.war
+deploy --force ../..//hogajama-kafka/target/hogajama-kafka-0.0.1-SNAPSHOT.war
 
