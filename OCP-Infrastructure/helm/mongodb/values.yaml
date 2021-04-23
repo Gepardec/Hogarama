@@ -8,4 +8,5 @@ credentials:
     password: "mongo-password"
     hogajama_db: "hogajama-db"
     mongodb_pw: "hogajama-pw"
+    mongodb_host: "mongodb"
 ...
