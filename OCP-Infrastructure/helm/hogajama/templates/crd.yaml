@@ -30,6 +30,9 @@ spec:
         secretKeyRef:
           name: amq-credentials
           key: AMQ_PASSWORD
+  envFrom:
+    - secretRef:
+        name: mongodb-credentials
   replicas: 1
   serviceAccountName: hogajama-anyuid
   disableHTTPRoute: true

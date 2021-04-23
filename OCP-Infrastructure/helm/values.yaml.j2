@@ -58,6 +58,7 @@ hogarama:
         password: {{ MONGODB_PASSWORD | b64encode }}
         hogajama_db: {{ HOGAJAMA_DB | b64encode }}
         mongodb_pw: {{ MONGODB_PW | b64encode }}
+        mongodb_host: {{ MONGODB_HOST | b64encode }}
   hogajama:
     keycloak:
       server_url: {{ HOGAJAMA_KEYCLOAK_SERVER_URL }}
