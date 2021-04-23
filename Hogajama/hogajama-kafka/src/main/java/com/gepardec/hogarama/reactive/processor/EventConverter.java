@@ -28,9 +28,9 @@ public class EventConverter {
     values = new HashMap<>();
   }
 
-  @Incoming("sensor-events")
+  @Incoming("sensor-events-in")
   @Merge(Merge.Mode.MERGE)
-  @Outgoing("transformed-sensor-events")
+  @Outgoing("transformed-sensor-events-out")
   @Broadcast
   @SuppressWarnings("unused")
   public String newValue(String valueJson) {

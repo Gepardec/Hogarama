@@ -14,7 +14,7 @@ public class TransformedEventConsumerBeta {
 
   private static final Logger LOG = LoggerFactory.getLogger(TransformedEventConsumerBeta.class);
 
-  @Incoming("transformed-sensor-events")
+  @Incoming("transformed-sensor-events-in")
   @SuppressWarnings("unused")
   public String newValue(String valueJson) {
     LOG.info("Received transformed event on consumer beta: {}", valueJson);
