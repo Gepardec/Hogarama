@@ -12,7 +12,7 @@ public class EventGeneratorToteGazelle {
   @Inject
   private MockExternalAsyncResource externalAsyncResource;
 
-  @Outgoing("sensor-events")
+  @Outgoing("sensor-events-out")
   @SuppressWarnings("unused")
   public CompletionStage<String> generate() {
     return externalAsyncResource.getNextValue("toteGazelle");

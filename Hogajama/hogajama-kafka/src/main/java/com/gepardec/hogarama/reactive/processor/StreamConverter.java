@@ -13,7 +13,7 @@ public class StreamConverter {
 
   private static final Logger LOG = LoggerFactory.getLogger(StreamConverter.class);
 
-  @Incoming("transformed-sensor-events")
+  @Incoming("transformed-sensor-events-in")
   @Outgoing("rest-stream")
   @Broadcast
   @SuppressWarnings("unused")
