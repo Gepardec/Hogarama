@@ -1,0 +1,31 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: wildfly-bc
+  labels:
+    build: wildfly-build
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'wildfly:23.0.1-custom'
+  resources: {}
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'wildfly:23.0.1.Final'
+  postCommit: {}
+  source:
+    type: Dockerfile
+    dockerfile: |-
+      FROM wildfly:23.0.1.Final
+      USER jboss
+      RUN mkdir -p /opt/jboss/wildfly/bin && \
+        echo -e "#!/bin/bash \
+        \ncp -f /opt/jboss/wildfly/standalone/configuration/standalone.xml \
+        /opt/jboss/wildfly/standalone/configuration/standalone-openshift.xml \
+        \n/opt/jboss/wildfly/bin/openshift-launch.sh" > /opt/jboss/wildfly/bin/entrypoint.sh && \
+        chmod +x /opt/jboss/wildfly/bin/entrypoint.sh

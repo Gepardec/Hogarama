@@ -3,7 +3,7 @@ kind: WildFlyServer
 metadata:
   name: hogajama
 spec:
-  applicationImage: 'image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/hogajama-run:latest'
+  applicationImage: 'image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/hogajama-run-kafka:latest'
   env:
     - name: KEYCLOAK_AUTH_SERVER_URL
       value: {{ .Values.hogarama.hogajama.keycloak.server_url }}
@@ -38,5 +38,5 @@ spec:
   disableHTTPRoute: true
   standaloneConfigMap:
     key: standalone-openshift.xml
-    name: hogajama-standalone
+    name: hogajama-standalone-kafka
   imagePullPolicy: always
