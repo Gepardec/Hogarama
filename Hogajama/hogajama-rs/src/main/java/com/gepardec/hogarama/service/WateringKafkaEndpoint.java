@@ -1,9 +1,10 @@
-package com.gepardec.hogarama.service.schedulers;
+package com.gepardec.hogarama.service;
 
 import java.io.IOException;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
@@ -19,23 +20,20 @@ import com.gepardec.hogarama.domain.sensor.SensorProperties;
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.watering.WateringService;
 
+import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// @ResourceAdapter("activemq-ext")
-@MessageDriven(
-    activationConfig = {
-        @ActivationConfigProperty(propertyName = "destination", propertyValue = "habarama::watering"),
-        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
-    }
-)
-public class WateringMDB implements MessageListener {
+@ApplicationScoped
+public class WateringKafkaEndpoint {
 
-    private static final Logger log = LoggerFactory.getLogger(WateringMDB.class);
+    private static final Logger log = LoggerFactory.getLogger(WateringKafkaEndpoint.class);
 
     @Inject
     WateringService wateringSvc;
+
+    @Inject
+    HogaramaServiceConfiguration config;
 
     @Inject
     SensorNormalizer sensorNormalizer;
@@ -43,15 +41,16 @@ public class WateringMDB implements MessageListener {
     @Inject
     SensorCache sensors;
     
-	public void onMessage(Message message) {
-	    log.debug("Receive message of type " + message.getClass().getName());
-	    BytesMessage msg = (BytesMessage) message;
+    @Incoming("habarama-in")
+	public void onMessage(String message) {
+        if ( !config.useKafkaWatering() ) {
+            return;
+        }
+	    log.info("Receive message from habarama-in: " + message);
 		try {
-		    byte[] b = new byte[(int) msg.getBodyLength()];
-		    msg.readBytes(b);
- 
+		    
 		    ObjectMapper mapper = new ObjectMapper();
-            SensorData sensorData = sensorNormalizer.normalize(mapper.readValue(b, SensorData.class));
+            SensorData sensorData = sensorNormalizer.normalize(mapper.readValue(message, SensorData.class));
 
             SensorProperties sensorProps = new SensorProperties(sensorData, sensors);
  
@@ -63,7 +62,7 @@ public class WateringMDB implements MessageListener {
 
             wateringSvc.water(sensorData);
             
-		} catch (JMSException | IOException e) {
+		} catch ( IOException e) {
 			throw new RuntimeException("Error handling sensor data!", e);
 		}
 	}
