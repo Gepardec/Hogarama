@@ -16,7 +16,6 @@
 		<module>hogajama-services</module>
         <module>raspberry-pi-mocks</module>
 		<module>hogajama-angular-frontend</module>
-        <module>hogajama-kafka</module>
 		<module>hogajama-rs</module>
 	</modules>
 
