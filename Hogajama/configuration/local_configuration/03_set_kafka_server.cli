@@ -1,2 +1,4 @@
 /system-property=kafka.bootstrap.servers:add(value="${env.KAFKA_CONNECTION:KAFKA_CONNECTION_not_set}")
 /system-property=kafka.topic.prefix:add(value="${env.KAFKA_TOPIC_PREFIX}")
+
+/system-property=jboss.as.reactive.messaging.experimental:add(value="true")
