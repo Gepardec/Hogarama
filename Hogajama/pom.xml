@@ -56,7 +56,7 @@
 		<com.querydsl.version>4.2.1</com.querydsl.version>
 		<org.assertj.version>3.15.0</org.assertj.version>
         <io.smallrye.reactive.version>3.0.0</io.smallrye.reactive.version>
-        <org.keycloak.version>6.0.1</org.keycloak.version>
+        <org.keycloak.version>9.0.0</org.keycloak.version>
         
 	</properties>
 
