@@ -32,11 +32,11 @@ spec:
           rm keycloak.zip
       USER jboss
       ENV HOGAJAMA_DB={{ .Values.hogarama.hogajama.mongodb.credentials.database }} MONGODB_PW={{ .Values.hogarama.hogajama.mongodb.credentials.password }} STAGE=AWS-PROD TINYURL=https://tinyurl.com/hogajama-aws
-      ENTRYPOINT [ "/opt/jboss/wildfly/bin/entrypoint.sh" ]
+      ENTRYPOINT [ "/opt/jboss/wildfly/bin/standalone.sh" ]
     images:
       - from:
           kind: ImageStreamTag
-          name: 'hogajama-binary:latest'
+          name: 'jboss/wildfly:23.0.1.Final'
         as: null
         paths:
           - sourcePath: /deployments/target/
