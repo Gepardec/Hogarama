@@ -20,6 +20,8 @@ spec:
           key: postgresql-password
     - name: AMQ_URL
       value: "https://amq:8883"
+    - name: AMQ_NETTY_HOST
+      value: "amq"
     - name: AMQ_USER
       valueFrom:
         secretKeyRef:
@@ -30,6 +32,8 @@ spec:
         secretKeyRef:
           name: amq-credentials
           key: AMQ_PASSWORD
+    - name: KAFKA_TOPIC_PREFIX
+      value: "hogajama"
   envFrom:
     - secretRef:
         name: mongodb-credentials

@@ -715,7 +715,7 @@
             <remote-destination host="${jboss.mail.server.host:localhost}" port="${jboss.mail.server.port:25}"/>
         </outbound-socket-binding>
         <outbound-socket-binding name="messaging-remote-broker01">
-            <remote-destination host="${env.AMQ_NETTY_HOST:broker-amq-netty}" port="61616"/>
+            <remote-destination host="${env.AMQ_NETTY_HOST:amq}" port="61616"/>
         </outbound-socket-binding>
     </socket-binding-group>
 </server>
