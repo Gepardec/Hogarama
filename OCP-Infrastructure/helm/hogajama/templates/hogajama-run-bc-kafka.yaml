@@ -1,0 +1,62 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: hogajama-run-kafk
+  labels:
+    build: hogajama-run-kafka
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'hogajama-run-kafka:latest'
+  resources: {}
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'wildfly-patched:latest'
+  postCommit: {}
+  source:
+    type: Dockerfile
+    dockerfile: |-
+      FROM jboss/wildfly
+      COPY target/* /opt/jboss/wildfly/standalone/deployments/
+      USER root
+      RUN mkdir -p /opt/eap && \
+          echo -e "#!/bin/bash\nexit 0" > /opt/eap/bin/readinessProbe.sh && \
+          echo -e "#!/bin/bash\nexit 0" > /opt/eap/bin/livenessProbe.sh && \
+          chmod +x  /opt/jboss/wildfly/bin/*.sh && \
+          curl -fsSL https://github.com/keycloak/keycloak/releases/download/12.0.4/keycloak-oidc-wildfly-adapter-12.0.4.zip -o keycloak.zip && \
+          unzip -o keycloak.zip -d /opt/jboss/wildfly/ && \
+          rm keycloak.zip && \
+          curl -fsSL https://jdbc.postgresql.org/download/postgresql-42.2.11.jar -o postgresql-42.2.11.jar && \
+          /opt/jboss/wildfly/bin/jboss-cli.sh --command="module add --name=org.postgresql --resources=postgresql-42.2.11.jar --dependencies=javax.api,javax.transaction.api" && \
+          rm postgresql-42.2.11.jar
+      USER jboss
+      ENV HOGAJAMA_DB={{ .Values.hogarama.hogajama.mongodb.credentials.database }} MONGODB_PW={{ .Values.hogarama.hogajama.mongodb.credentials.password }} STAGE=AWS-PROD TINYURL=https://tinyurl.com/hogajama-aws
+      ENTRYPOINT [ "/opt/jboss/wildfly/bin/standalone.sh" ]
+    images:
+      - from:
+          kind: ImageStreamTag
+          name: 'jboss/wildfly:23.0.1.Final'
+        as: null
+        paths:
+          - sourcePath: /deployments/target/
+            destinationDir: target
+  triggers:
+    - type: GitHub
+        github:
+          secret: {{ .Values.hogarama.hogajama.trigger.secret.hogajama_run.github }}
+        - type: Generic
+          generic:
+            secret: {{ .Values.hogarama.hogajama.trigger.secret.hogajama_run.github }}
+    - type: ImageChange
+      imageChange:
+        from:
+          kind: ImageStreamTag
+          name: 'hogajama-binary:latest'
+    - type: ConfigChange
+    - type: ImageChange
+  runPolicy: Serial
