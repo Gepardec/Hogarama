@@ -29,7 +29,10 @@ spec:
           chmod +x  /opt/jboss/wildfly/bin/*.sh && \
           curl -fsSL https://github.com/keycloak/keycloak/releases/download/12.0.4/keycloak-oidc-wildfly-adapter-12.0.4.zip -o keycloak.zip && \
           unzip -o keycloak.zip -d /opt/jboss/wildfly/ && \
-          rm keycloak.zip
+          rm keycloak.zip && \
+          curl -fsSL https://jdbc.postgresql.org/download/postgresql-42.2.11.jar -o postgresql-42.2.11.jar && \
+          /opt/jboss/wildfly/bin/jboss-cli.sh --command="module add --name=org.postgresql --resources=postgresql-42.2.11.jar --dependencies=javax.api,javax.transaction.api" && \
+          rm postgresql-42.2.11.jar
       USER jboss
       ENV HOGAJAMA_DB={{ .Values.hogarama.hogajama.mongodb.credentials.database }} MONGODB_PW={{ .Values.hogarama.hogajama.mongodb.credentials.password }} STAGE=AWS-PROD TINYURL=https://tinyurl.com/hogajama-aws
       ENTRYPOINT [ "/opt/jboss/wildfly/bin/standalone.sh" ]
