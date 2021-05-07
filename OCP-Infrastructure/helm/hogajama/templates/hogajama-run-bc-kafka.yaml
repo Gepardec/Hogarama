@@ -24,8 +24,9 @@ spec:
       FROM jboss/wildfly
       COPY target/* /opt/jboss/wildfly/standalone/deployments/
       USER root
-      RUN echo -e "#!/bin/bash\nexit 0" > /opt/jboss/wildfly/bin/readinessProbe.sh && \
-          echo -e "#!/bin/bash\nexit 0" > /opt/jboss/wildfly/bin/livenessProbe.sh && \
+      RUN mkdir -p /opt/eap && \
+          echo -e "#!/bin/bash\nexit 0" > /opt/eap/bin/readinessProbe.sh && \
+          echo -e "#!/bin/bash\nexit 0" > /opt/eap/bin/livenessProbe.sh && \
           chmod +x  /opt/jboss/wildfly/bin/*.sh && \
           curl -fsSL https://github.com/keycloak/keycloak/releases/download/12.0.4/keycloak-oidc-wildfly-adapter-12.0.4.zip -o keycloak.zip && \
           unzip -o keycloak.zip -d /opt/jboss/wildfly/ && \
