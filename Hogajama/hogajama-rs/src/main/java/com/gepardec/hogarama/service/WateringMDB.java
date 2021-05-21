@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.service.schedulers;
+package com.gepardec.hogarama.service;
 
 import java.io.IOException;
 
@@ -9,7 +9,9 @@ import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-// import org.jboss.ejb3.annotation.ResourceAdapter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.hogarama.domain.metrics.Metrics;
@@ -19,10 +21,6 @@ import com.gepardec.hogarama.domain.sensor.SensorProperties;
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.watering.WateringService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-// @ResourceAdapter("activemq-ext")
 @MessageDriven(
     activationConfig = {
         @ActivationConfigProperty(propertyName = "destination", propertyValue = "habarama::watering"),
@@ -35,6 +33,9 @@ public class WateringMDB implements MessageListener {
     private static final Logger log = LoggerFactory.getLogger(WateringMDB.class);
 
     @Inject
+    HogaramaServiceConfiguration config;
+
+    @Inject
     WateringService wateringSvc;
 
     @Inject
@@ -44,6 +45,9 @@ public class WateringMDB implements MessageListener {
     SensorCache sensors;
     
 	public void onMessage(Message message) {
+        if ( !config.useAMQWatering()) {
+            return;
+        }
 	    log.debug("Receive message of type " + message.getClass().getName());
 	    BytesMessage msg = (BytesMessage) message;
 		try {

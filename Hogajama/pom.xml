@@ -15,6 +15,7 @@
 		<module>hogajama-interfaces</module>
 		<module>hogajama-services</module>
         <module>raspberry-pi-mocks</module>
+		<module>hogajama-angular-frontend</module>
 		<module>hogajama-rs</module>
 	</modules>
 
@@ -54,6 +55,9 @@
 		<sonar-maven-plugin.version>3.3.0.603</sonar-maven-plugin.version>
 		<com.querydsl.version>4.2.1</com.querydsl.version>
 		<org.assertj.version>3.15.0</org.assertj.version>
+        <io.smallrye.reactive.version>3.0.0</io.smallrye.reactive.version>
+        <org.keycloak.version>9.0.0</org.keycloak.version>
+        
 	</properties>
 
 	<dependencies>
