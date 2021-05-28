@@ -14,8 +14,8 @@ spec:
   type: Docker
   dockerStrategy:
     from:
-      kind: DockerImage
-      name: 'jboss/wildfly:23.0.1.Final'
+      kind: ImageStreamTag
+      name: 'wildfly:23.0.1-custom'
   postCommit: {}
   source:
     type: Dockerfile
@@ -33,14 +33,14 @@ spec:
           curl -fsSL https://jdbc.postgresql.org/download/postgresql-42.2.11.jar -o postgresql-42.2.11.jar && \
           /opt/jboss/wildfly/bin/jboss-cli.sh --command="module add --name=org.postgresql --resources=postgresql-42.2.11.jar --dependencies=javax.api,javax.transaction.api" && \
           rm postgresql-42.2.11.jar && \
-          curl -fsSL https://github.com/Gepardec/Hogarama/blob/master/Hogajama/configuration/local_configuration/kafka-truststore.jks -o /opt/jboss/wildfly/standalone/configuration/kafka-truststore.jks
+          curl -fsSL https://github.com/Gepardec/Hogarama/raw/master/Hogajama/configuration/local_configuration/kafka-truststore.jks -o /opt/jboss/wildfly/standalone/configuration/kafka-truststore.jks
       USER jboss
       ENV HOGAJAMA_DB={{ .Values.hogarama.hogajama.mongodb.credentials.database }} MONGODB_PW={{ .Values.hogarama.hogajama.mongodb.credentials.password }} STAGE=AWS-PROD TINYURL=https://tinyurl.com/hogajama-aws
       ENTRYPOINT [ "/opt/jboss/wildfly/bin/standalone.sh" ]
     images:
       - from:
-          kind: DockerImage
-          name: 'image-registry.openshift-image-registry.svc:5000/hogarama/hogajama-binary:latest'
+          kind: ImageStreamTag
+          name: 'hogajama-binary:latest'
         as: null
         paths:
           - sourcePath: /deployments/target/
