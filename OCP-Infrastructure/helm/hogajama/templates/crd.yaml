@@ -27,6 +27,8 @@ spec:
         secretKeyRef:
           name: amq-credentials
           key: AMQ_USER
+    - name: KAFKA_CONNECTION
+      value: {{ .Values.hogarama.hogajama.kafka.bootstrapserver }}
     - name: AMQ_PASSWORD
       valueFrom:
         secretKeyRef:
