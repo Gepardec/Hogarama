@@ -13,6 +13,8 @@ spec:
       value: {{ .Values.global.postgresql.postgresqlDatabase }}
     - name: POSTGRESQL_USERNAME
       value: {{ .Values.global.postgresql.postgresqlUsername }}
+    - name: HOGAJAMA_SENSOR_SOURCE
+      value: kafka
     - name: POSTGRESQL_PASSWORD
       valueFrom:
         secretKeyRef:
