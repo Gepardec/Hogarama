@@ -57,7 +57,7 @@ public class SensorSmoother {
   private double computeAverageAndUpdateCache(String sensorName, double newValue) {
     Double cachedValue = sensorDataCache.get(sensorName);
 
-    double avgValue = computeAverage(newValue, cachedValue);
+    double avgValue = computeAverage(cachedValue, newValue);
 
     updateSensorCache(sensorName, avgValue);
 
