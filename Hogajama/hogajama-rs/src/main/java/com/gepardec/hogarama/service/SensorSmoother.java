@@ -34,10 +34,11 @@ public class SensorSmoother {
       ObjectMapper mapper = new ObjectMapper();
       SensorData sensorData = sensorNormalizer.normalize(mapper.readValue(message, SensorData.class));
       String sensorName = sensorData.getSensorName();
+      double sensorValue = sensorData.getValue();
 
-      sensorDataCache.computeIfAbsent(sensorData.getSensorName(), v -> sensorData.getValue());
+      sensorDataCache.putIfAbsent(sensorName, sensorValue);
 
-      double avgSensorValue = computeAverageAndUpdateCache(sensorName, sensorData.getValue());
+      double avgSensorValue = computeAverageAndUpdateCache(sensorName, sensorValue);
       sensorData.setValue(avgSensorValue);
 
       return mapper.writeValueAsString(sensorData);
@@ -57,7 +58,7 @@ public class SensorSmoother {
   private double computeAverageAndUpdateCache(String sensorName, double newValue) {
     Double cachedValue = sensorDataCache.get(sensorName);
 
-    double avgValue = computeAverage(newValue, cachedValue);
+    double avgValue = computeAverage(cachedValue, newValue);
 
     updateSensorCache(sensorName, avgValue);
 
