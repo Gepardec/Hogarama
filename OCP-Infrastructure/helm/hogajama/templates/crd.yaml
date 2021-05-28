@@ -37,7 +37,7 @@ spec:
           name: amq-credentials
           key: AMQ_PASSWORD
     - name: KAFKA_TOPIC_PREFIX
-      value: "hogajama"
+      value: ""
   envFrom:
     - secretRef:
         name: mongodb-credentials
