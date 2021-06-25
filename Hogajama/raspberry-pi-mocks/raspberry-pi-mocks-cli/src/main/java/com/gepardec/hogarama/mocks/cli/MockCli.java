@@ -29,15 +29,9 @@ public class MockCli {
         printRunConfiguration(runConfiguration);
 
         if(useKafka) {
-            KafkaClient.executeKafkaLogic(runConfiguration);
+            KafkaClient.execute(runConfiguration);
         } else {
-            MqttClient mqttClient = new MqttClient().
-                withURL(runConfiguration.getHost()).
-                withUser(runConfiguration.getUser()).
-                withPassword(runConfiguration.getPassword()).
-                withTopic(runConfiguration.getTopic()).
-                build();
-            mqttClient.connectAndPublish(runConfiguration.getMockMessages(), runConfiguration.getDelayMs());
+            MqttClient.execute(runConfiguration);
         }
 
         LOGGER.info(System.lineSeparator() + "=================== Hogarama Mock Cli Finished =================");

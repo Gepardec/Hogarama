@@ -41,7 +41,17 @@ public class MqttClient {
 	      withPassword(Optional.ofNullable(System.getenv("AMQ_PASSWORD")).orElse("mq_habarama_pass"));
 	}	
 
-	/**
+    public static void execute(RunConfiguration runConfiguration) {
+        MqttClient mqttClient = new MqttClient().
+            withURL(runConfiguration.getHost()).
+            withUser(runConfiguration.getUser()).
+            withPassword(runConfiguration.getPassword()).
+            withTopic(runConfiguration.getTopic()).
+            build();
+        mqttClient.connectAndPublish(runConfiguration.getMockMessages(), runConfiguration.getDelayMs());
+    }
+
+    /**
 	 * Set the URL to connect to the message broker
 	 * @param url
 	 * @return

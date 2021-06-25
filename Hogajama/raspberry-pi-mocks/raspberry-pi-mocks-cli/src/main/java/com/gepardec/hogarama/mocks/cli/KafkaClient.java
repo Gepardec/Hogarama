@@ -19,7 +19,7 @@ public class KafkaClient {
 
   public static final Logger LOGGER = LoggerFactory.getLogger(MockCli.class);
 
-  public static void executeKafkaLogic(RunConfiguration runConfiguration) throws InterruptedException {
+  public static void execute(RunConfiguration runConfiguration) throws InterruptedException {
 
     Producer<Long, String> customerProducer = createKafkaProducer(runConfiguration);
 
