@@ -9,7 +9,7 @@ metadata:
     strimzi.io/cluster: gepardec-kafka-cluster
 spec:
   bootstrapServers: 'gepardec-kafka-cluster-kafka-bootstrap:9093'
-  image: 'csalmhof/camel-active-mq-kafka-connector:0.0.2'
+  image: 'gepardec/kafka-connect-cluster:1.0.2'
   replicas: 1
   tls:
     trustedCertificates:
