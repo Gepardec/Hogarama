@@ -16,6 +16,6 @@ Clients
 Currently there is a working python client.
 The Java client is under development.
 
-Rasberry
+Raspberry
 ----------
 A sketch how to connect the sensors and actors with the raspberry
