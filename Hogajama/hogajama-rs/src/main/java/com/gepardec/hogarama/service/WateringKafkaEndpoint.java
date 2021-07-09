@@ -1,5 +1,8 @@
 package com.gepardec.hogarama.service;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.hogarama.domain.DateUtils;
 import com.gepardec.hogarama.domain.metrics.Metrics;
@@ -59,6 +62,8 @@ public class WateringKafkaEndpoint {
             ).set(sensorData.getValue());
 
             wateringSvc.water(sensorData);
+
+            sensorDataDAO.save(sensorData);
 
         } catch (IOException e) {
             throw new RuntimeException("Error handling sensor data!", e);
