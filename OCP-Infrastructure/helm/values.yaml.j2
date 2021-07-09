@@ -25,21 +25,6 @@ hogarama:
         name: "amq-broker-72-openshift"
       storage:
         size: "32Gi"
-  fluentd:
-    credentials:
-      amq:
-        username: "{{ FLUENTD_USERNAME }}"
-        password: "{{ FLUENTD_PASSWORD }}"
-      db:
-        username: "{{ FLUENTD_MONGO_USERNAME }}"
-        password: "{{ FLUENTD_MONGO_PASSWORD }}"
-    imageStream:
-      name: "fluentd-hogarama"
-      base:
-        name: fluentd-elasticsearch
-        tag: "v2.4.0"
-        kind: "DockerImage"
-        from: "gcr.io/google-containers/fluentd-elasticsearch:v2.4.0"
   grafana:
     DataSource:
       url: {{ GRAFANA_PROMETHEUS_DATASOURCE_URL }}

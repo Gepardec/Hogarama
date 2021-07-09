@@ -18,52 +18,57 @@ import com.gepardec.hogarama.testdata.DummyData;
 @RequestScoped
 public class DummySensorDAO implements SensorDataDAO {
 
-	private static final int MAX_NUMBER_OF_SENSORS = 10;
-	private static final int MAX_NUMBER_OF_DATA = 10000;
-	private List<SensorData> sensorDatas;
-	
-	public DummySensorDAO() {
-		super();
-		this.sensorDatas = DummyData.getDummySensorData(MAX_NUMBER_OF_SENSORS, MAX_NUMBER_OF_DATA, false);
-	}
-	
-	public DummySensorDAO(List<SensorData> sensorDatas) {
-		super();
-		this.sensorDatas = sensorDatas;
-	}
+    private static final int MAX_NUMBER_OF_SENSORS = 10;
+    private static final int MAX_NUMBER_OF_DATA = 10000;
+    private List<SensorData> sensorDatas;
 
-	@Override
-	public List<String> getAllSensors() {
-		return CollectionUtils.emptyIfNull(sensorDatas)
-							  .stream()
-							  .map(SensorData::getSensorName).distinct()
-							  .collect(Collectors.toList());
-	}
+    public DummySensorDAO() {
+        super();
+        this.sensorDatas = DummyData.getDummySensorData(MAX_NUMBER_OF_SENSORS, MAX_NUMBER_OF_DATA, false);
+    }
 
-	@Override
-	public List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to) {
-		Comparator<SensorData> comp = new Comparator<SensorData>() {
-			
-			@Override
-			public int compare(SensorData o1, SensorData o2) {
-				return o1.getTime().compareTo(o2.getTime());
-			}
-		};
-		return CollectionUtils.emptyIfNull(sensorDatas)
-							  .stream()
-							  .filter(new SensorDataPredicate(sensorName, from, to))
-							  .sorted(comp)
-							  .collect(new LastNRecordCollector<>(maxNumber == null || maxNumber < 0 ? sensorDatas.size() : maxNumber));
-	}
+    public DummySensorDAO(List<SensorData> sensorDatas) {
+        super();
+        this.sensorDatas = sensorDatas;
+    }
 
-	@Override
-	public String getLocationBySensorName(String sensorName) {
-		return CollectionUtils.emptyIfNull(sensorDatas)
-				  			  .stream()
-				  			  .filter(s -> sensorName.equals(s.getSensorName()))
-				  			  .map(SensorData::getLocation)
-				  			  .findFirst()
-				  			  .orElse(DummyData.UNKNOW_LOCATION);
-	}
-	
+    @Override
+    public List<String> getAllSensors() {
+        return CollectionUtils.emptyIfNull(sensorDatas)
+                              .stream()
+                              .map(SensorData::getSensorName).distinct()
+                              .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to) {
+        Comparator<SensorData> comp = new Comparator<SensorData>() {
+
+            @Override
+            public int compare(SensorData o1, SensorData o2) {
+                return o1.getTime().compareTo(o2.getTime());
+            }
+        };
+        return CollectionUtils.emptyIfNull(sensorDatas)
+                              .stream()
+                              .filter(new SensorDataPredicate(sensorName, from, to))
+                              .sorted(comp)
+                              .collect(new LastNRecordCollector<>(maxNumber == null || maxNumber < 0 ? sensorDatas.size() : maxNumber));
+    }
+
+    @Override
+    public String getLocationBySensorName(String sensorName) {
+        return CollectionUtils.emptyIfNull(sensorDatas)
+                              .stream()
+                              .filter(s -> sensorName.equals(s.getSensorName()))
+                              .map(SensorData::getLocation)
+                              .findFirst()
+                              .orElse(DummyData.UNKNOW_LOCATION);
+    }
+
+    @Override
+    public void save(SensorData data){
+        return;
+    }
+
 }
