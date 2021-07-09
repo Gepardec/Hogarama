@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,9 @@ public class WateringKafkaEndpoint {
     @Inject
     SensorCache sensors;
 
+    @Inject
+    SensorDataDAO sensorDataDAO;
+
     @Incoming("habarama-in")
     public void onMessage(String message) {
         if (!config.useKafkaWatering()) {
@@ -54,6 +58,8 @@ public class WateringKafkaEndpoint {
                     ).set(sensorData.getValue());
 
             wateringSvc.water(sensorData);
+
+            sensorDataDAO.save(sensorData);
 
         } catch (IOException e) {
             throw new RuntimeException("Error handling sensor data!", e);

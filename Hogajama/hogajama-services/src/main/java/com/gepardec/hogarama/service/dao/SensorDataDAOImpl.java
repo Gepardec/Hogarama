@@ -13,6 +13,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@RequestScoped
+@ApplicationScoped
 public class SensorDataDAOImpl implements SensorDataDAO {
 
     @Inject
@@ -103,6 +104,10 @@ public class SensorDataDAOImpl implements SensorDataDAO {
             Metrics.exceptionsThrown.labels("hogarama_services", "NoResultException", "SensorDAOImple.getLocationBySensorName").inc();
             throw new NoResultException("Could not find location by sensorName");
         }
+    }
+
+    public void save(SensorData data){
+        datastore.save(data);
     }
 
 }
