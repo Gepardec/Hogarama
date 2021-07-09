@@ -8,6 +8,6 @@ metadata:
 spec:
   partitions: 10
   retention.ms: 604800000
-    segment.bytes: 1073741824
+  segment.bytes: 1073741824
   replicas: 3
   topicName: habarama
