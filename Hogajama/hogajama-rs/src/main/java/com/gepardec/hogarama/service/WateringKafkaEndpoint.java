@@ -62,9 +62,6 @@ public class WateringKafkaEndpoint {
             ).set(sensorData.getValue());
 
             wateringSvc.water(sensorData);
-
-            sensorDataDAO.save(sensorData);
-
         } catch (IOException e) {
             throw new RuntimeException("Error handling sensor data!", e);
         }
