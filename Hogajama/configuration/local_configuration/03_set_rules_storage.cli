@@ -1,0 +1,1 @@
+/system-property=hogarama.rules.storage:add(value="${env.HOGARAMA_RULES_STORAGE:mongo}")
