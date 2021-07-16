@@ -2,9 +2,6 @@ package com.gepardec.hogarama.domain.watering;
 
 import java.util.HashMap;
 
-import com.gepardec.hogarama.domain.watering.WateringRuleDAO;
-import com.gepardec.hogarama.domain.watering.WateringConfigData;
-
 public class InMemoryWateringConfigDAO implements WateringRuleDAO {
 
 	private HashMap<String, WateringRule> store = new HashMap<>();

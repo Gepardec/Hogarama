@@ -1,0 +1,11 @@
+<ion-content padding>
+
+    <div id="btn-container">
+        <button mat-raised-button (click)="loginClick()" class="round" *ngIf="!isAuthenticated">
+            <span>Login</span>
+        </button>
+        <button mat-raised-button (click)="logoutClick()" class="round" *ngIf="isAuthenticated">
+            <span>Logout</span>
+        </button>
+    </div>
+</ion-content>

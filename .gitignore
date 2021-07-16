@@ -27,3 +27,6 @@ target/
 
 # Ansible
 *.retry
+
+#jar/plugins
+OCP-Infrastructure/docker/kafka-connector/my-plugins/*.jar

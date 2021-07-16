@@ -10,6 +10,7 @@ spec:
   serviceMonitorSelector:
     matchLabels:
       team: frontend
+  retention: 3w
   additionalScrapeConfigs:
     name: prometheus-scrape-config
     key: scrape-config.yaml

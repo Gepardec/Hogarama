@@ -10,12 +10,12 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: './modules/test-prototype/test-prototype.module#TestPrototypeModule',
+    loadChildren: './modules/home/home.module#HomeModule',
     canLoad: [AuthGuard]
   },
   {
-    path: 'testLoginRedirect',
-    loadChildren: './modules/test-login-redirect/test-login-redirect.module#TestLoginRedirectModule',
+    path: 'login',
+    loadChildren: './modules/login/login.module#LoginModule',
   },
   {
     path: 'playground',

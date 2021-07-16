@@ -19,7 +19,7 @@ export class AppComponent {
     },
     {
       title: 'Login',
-      url: '/testLoginRedirect',
+      url: '/login',
       icon: 'add-circle-outline'
     },
     {

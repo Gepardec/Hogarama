@@ -32,7 +32,7 @@ public class MqttClientTest {
 	@Before
 	public void setup() {
 		mqttClient = new MqttClient().
-				withHost("testhost").
+				withURL("https://testhost:1234/").
 				withUser("testuser").
 				withPassword("testpwd").
 				withTopic("testtopic").

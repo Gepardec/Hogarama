@@ -1,0 +1,18 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaConnect
+metadata:
+  annotations:
+    strimzi.io/use-connector-resources: 'true'
+  name: gepardec-connect-cluster
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: gepardec-kafka-cluster
+spec:
+  bootstrapServers: 'gepardec-kafka-cluster-kafka-bootstrap:9093'
+  image: 'csalmhof/camel-active-mq-kafka-connector:0.0.2'
+  replicas: 1
+  tls:
+    trustedCertificates:
+      - certificate: ca.crt
+        secretName: gepardec-kafka-cluster-cluster-ca-cert
+  version: 2.6.0

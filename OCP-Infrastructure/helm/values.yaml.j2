@@ -15,8 +15,8 @@ keycloak:
 hogarama:
   amq:
     credentials:
-      amq_password: "{{ AMQ_PASSWORD | b64encode }}"
-      amq_user: "{{ AMQ_USER | b64encode }}"
+      amq_password: "{{ AMQ_PASSWORD }}"
+      amq_user: "{{ AMQ_USER }}"
     deploymentconfig:
       amq_truststore_password: "{{ AMQ_TRUSTSTORE_PASSWORD }}"
       amq_keystore_password: "{{ AMQ_KEYSTORE_PASSWORD }}"
@@ -58,9 +58,12 @@ hogarama:
         password: {{ MONGODB_PASSWORD | b64encode }}
         hogajama_db: {{ HOGAJAMA_DB | b64encode }}
         mongodb_pw: {{ MONGODB_PW | b64encode }}
+        mongodb_host: {{ MONGODB_HOST | b64encode }}
   hogajama:
     keycloak:
       server_url: {{ HOGAJAMA_KEYCLOAK_SERVER_URL }}
+    kafka:
+      bootstrapserver: {{ HOGAJAMA_KAFKA_BOOTSTRAPSERVER | default ("https://gepardec-kafka-cluster-kafka-bootstrap-kafka.apps.p.aws.ocp.gepardec.com:443") }}
     trigger:
       secret:
         source_to_image:

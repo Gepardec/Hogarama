@@ -6,8 +6,6 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.gepardec.hogarama.domain.watering.WateringConfigData;
-
 public class DaoTest  {
 
 	private InMemoryWateringConfigDAO dao = new InMemoryWateringConfigDAO();

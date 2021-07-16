@@ -1,4 +1,5 @@
-brokerHost=https://broker-amq-mqtt-ssl-hogarama.127.0.0.1.nip.io
-brokerUser=mq_habarama
-brokerPassword=mq_habarama_pass
+brokerHost=ssl://localhost:8883
+brokerUser=amq
+brokerPassword=amq
 brokerTopic=habarama
+

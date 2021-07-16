@@ -1,17 +1,11 @@
 package com.gepardec.hogarama.domain.sensor;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
-import com.gepardec.hogarama.domain.unitmanagement.entity.SensorType;
 
 @ApplicationScoped
 public class SensorNormalizer {

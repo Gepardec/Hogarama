@@ -24,7 +24,7 @@ export class AuthGuard implements CanLoad {
       const authed = this.authService.isKeycloakAuthenticated();
       console.log('KEYCLOAK AUTH ' + authed);
       if (!authed) {
-        this.router.navigateByUrl('/testLoginRedirect');
+        this.router.navigateByUrl('/login');
       }
       resolve(authed);
     });
