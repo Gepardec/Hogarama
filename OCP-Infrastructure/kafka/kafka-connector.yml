@@ -15,6 +15,5 @@ spec:
     camel.source.path.destinationName: habarama
     errors.log.enable: true
     camel.component.sjms2.connectionFactory.brokerURL: 'tcp://amq.hogarama.svc.cluster.local:61616'
-    camel.source.endpoint.mapJmsMessage: true
     camel.source.path.destinationType: topic
     errors.log.include.messages: true

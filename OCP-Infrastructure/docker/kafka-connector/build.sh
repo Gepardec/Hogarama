@@ -16,8 +16,11 @@ find my-plugins/ -maxdepth 1 -type f  -delete
 
 for plugin in "${PLUGINS[@]}";
 do
-  wget $plugin -P my-plugins
+  wget $plugin -P my-plugins/
 done
+
+find my-plugins/ -maxdepth 1 -type f -exec tar -xzvf {} --directory my-plugins/  \;
+rm my-plugins/*.tar.gz
 
 echo "Building gepardec kafka-connect-cluster image with Version: $VERSION"
 docker build -t gepardec/kafka-connect-cluster:${VERSION} .

@@ -29,4 +29,4 @@ target/
 *.retry
 
 #jar/plugins
-OCP-Infrastructure/docker/kafka-connector/my-plugins/*.jar
+OCP-Infrastructure/docker/kafka-connector/my-plugins/*

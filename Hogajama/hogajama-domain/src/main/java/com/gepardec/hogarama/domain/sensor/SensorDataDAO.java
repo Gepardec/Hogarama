@@ -5,7 +5,9 @@ import java.util.List;
 
 public interface SensorDataDAO {
 
-    public List<String> getAllSensors();
-	public List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to);
-	public String getLocationBySensorName(String sensorName);
+    List<String> getAllSensors();
+    List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to);
+    String getLocationBySensorName(String sensorName);
+
+    void save(SensorData sensorData);
 }
