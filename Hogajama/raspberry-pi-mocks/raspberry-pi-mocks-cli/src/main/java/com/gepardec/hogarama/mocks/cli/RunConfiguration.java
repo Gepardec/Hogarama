@@ -3,6 +3,7 @@ package com.gepardec.hogarama.mocks.cli;
 import java.util.List;
 
 public class RunConfiguration {
+	public static final String BROKER = "broker";
 	public static final String BROKER_HOST = "brokerHost";
 	public static final String BROKER_USERNAME = "brokerUsername";
 	public static final String BROKER_PASSWORD = "brokerPassword";
@@ -16,6 +17,7 @@ public class RunConfiguration {
 	private String password;
 	private String topic;
 	private long delayMs;
+	private String usedBroker;
 	private List<String> mockMessages;
 
 	public String getHost() {
@@ -58,6 +60,14 @@ public class RunConfiguration {
 		this.delayMs = delayMs;
 	}
 
+	public String getUsedBroker() {
+		return usedBroker;
+	}
+
+	public void setUsedBroker(String usedBroker) {
+		this.usedBroker = usedBroker;
+	}
+
 	public List<String> getMockMessages() {
 		return mockMessages;
 	}
@@ -65,5 +75,4 @@ public class RunConfiguration {
 	public void setMockMessages(List<String> mockMessages) {
 		this.mockMessages = mockMessages;
 	}
-
 }

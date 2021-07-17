@@ -19,19 +19,20 @@ public class MockCli {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MockCli.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
+        CommandLine cliArguments = parseCliArguments(args);
+
+        boolean useKafka = "kafka".equals(cliArguments.getOptionValue(RunConfiguration.BROKER));
 
         RunConfiguration runConfiguration = createRunConfigurationFromArguments(args);
         printRunConfiguration(runConfiguration);
 
-        MqttClient mqttClient = new MqttClient().
-                withURL(runConfiguration.getHost()).
-                withUser(runConfiguration.getUser()).
-                withPassword(runConfiguration.getPassword()).
-                withTopic(runConfiguration.getTopic()).
-                build();
-
-        mqttClient.connectAndPublish(runConfiguration.getMockMessages(), runConfiguration.getDelayMs());
+        if(useKafka) {
+            KafkaClient.execute(runConfiguration);
+        } else {
+            MqttClient.execute(runConfiguration);
+        }
 
         LOGGER.info(System.lineSeparator() + "=================== Hogarama Mock Cli Finished =================");
     }
@@ -78,6 +79,8 @@ public class MockCli {
                 "Password. Overrides the parameter in configuration file."));
         options.addOption(new Option("topic", RunConfiguration.BROKER_TOPIC, true,
                 "Topic name. Overrides the parameter in configuration file."));
+        options.addOption(new Option("b", RunConfiguration.BROKER, true,
+            "Broker to use: amq (default) or kafka"));
         return options;
     }
 
@@ -131,7 +134,7 @@ public class MockCli {
             prop.load(input);
             return prop;
         } catch (IOException ex) {
-            LOGGER.error("An expcetion occured while loading properties", ex);
+            LOGGER.error("An exception occured while loading properties", ex);
             System.exit(1);
             return new Properties();
         } finally {

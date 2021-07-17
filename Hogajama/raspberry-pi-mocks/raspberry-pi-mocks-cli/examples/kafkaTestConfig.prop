@@ -1,0 +1,4 @@
+brokerHost=https://localhost:9092
+brokerUser=mq_habarama
+brokerPassword=mq_habarama_pass
+brokerTopic=habarama
