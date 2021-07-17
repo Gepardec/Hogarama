@@ -2,7 +2,7 @@ package com.gepardec.hogarama.domain.unitmanagement.service;
 
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.RuleDAO;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Rule;
+import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -18,28 +18,28 @@ public class RuleService {
     private UserContext userContext;
 
     @Inject
-    Event<Rule> ruleChanged;
+    Event<LowWaterWateringRule> ruleChanged;
 
-    public void createRule(Rule rule) {
+    public void createRule(LowWaterWateringRule rule) {
         rule.verifyIsOwned(userContext.getOwner());
         dao.save(rule);
     }
 
     public void deleteRule(Long ruleId) {
-        Rule rule = this.dao.getById(ruleId)
+        LowWaterWateringRule rule = this.dao.getById(ruleId)
                 .orElseThrow(() -> new NotFoundException(String.format("Rule with id [%d] not found", ruleId)));
 
         ruleChanged.fire(rule);
         dao.delete(rule);
     }
 
-    public void updateRule(Rule rule) {
+    public void updateRule(LowWaterWateringRule rule) {
         rule.verifyIsOwned(userContext.getOwner());
         ruleChanged.fire(rule);
         dao.update(rule);
     }
 
-    public List<Rule> getAllRulesForOwner() {
+    public List<LowWaterWateringRule> getAllRulesForOwner() {
         return dao.getAllRulesForOwner(userContext.getOwner());
     }
 

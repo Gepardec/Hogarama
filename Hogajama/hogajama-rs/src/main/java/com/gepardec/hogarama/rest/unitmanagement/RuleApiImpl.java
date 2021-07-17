@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.rest.unitmanagement;
 
-import com.gepardec.hogarama.domain.unitmanagement.entity.Rule;
+import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.unitmanagement.service.RuleService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.RuleDto;
 import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
@@ -37,7 +37,7 @@ public class RuleApiImpl implements RuleApi {
     @Transactional
     public Response create(SecurityContext securityContext, RuleDto ruleDto) {
         LOG.info("Create rule.");
-        Rule rule = translator.fromDto(ruleDto);
+        LowWaterWateringRule rule = translator.fromDto(ruleDto);
         service.createRule(rule);
 
         return new BaseResponse<>(HttpStatus.SC_CREATED).createRestResponse();
@@ -47,7 +47,7 @@ public class RuleApiImpl implements RuleApi {
     @Transactional
     public Response update(String id, SecurityContext securityContext, RuleDto ruleDto) {
         LOG.info("Updating rule with id {}.", id);
-        Rule rule = translator.fromDto(ruleDto);
+        LowWaterWateringRule rule = translator.fromDto(ruleDto);
         if (id == null || !id.equals(ruleDto.getId().toString()) || ruleDto.getUnitId() == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
         } else {

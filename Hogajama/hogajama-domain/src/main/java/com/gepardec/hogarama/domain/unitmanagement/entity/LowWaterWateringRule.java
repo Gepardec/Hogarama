@@ -1,9 +1,7 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
 import java.io.Serializable;
-import java.util.Optional;
 
-import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,14 +13,14 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.gepardec.hogarama.domain.unitmanagement.cache.ActorCache;
-import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.watering.WateringRule;
 
 
 @Entity
-@Table(name = "wateringrule")
-public class Rule implements WateringRule, Serializable, Owned {
+@Table(name = "low_water_watering_rule")
+public class LowWaterWateringRule implements WateringRule, Serializable, Owned {
+    
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(generator = "WateringRuleGenerator", strategy = GenerationType.SEQUENCE)
@@ -101,11 +99,11 @@ public class Rule implements WateringRule, Serializable, Owned {
     }
 
 
-	public Rule() {
+	public LowWaterWateringRule() {
 		this.isValid = true;
 	}
 	
-    public Rule(Sensor sensor, Actor actor, Unit unit, String name, double lowWater, int waterDuration) {
+    public LowWaterWateringRule(Sensor sensor, Actor actor, Unit unit, String name, double lowWater, int waterDuration) {
         this.isValid = null != sensor && null != actor && null != unit;
         this.sensor = sensor;
         this.actor = actor;

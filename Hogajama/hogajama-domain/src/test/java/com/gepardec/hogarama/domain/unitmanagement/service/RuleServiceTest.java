@@ -3,7 +3,7 @@ package com.gepardec.hogarama.domain.unitmanagement.service;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.RuleDAO;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Rule;
+import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import org.junit.Before;
@@ -30,7 +30,7 @@ public class RuleServiceTest {
     @InjectMocks
     private RuleService service;
     @Mock
-    Event<Rule> ruleChanged;
+    Event<LowWaterWateringRule> ruleChanged;
 
     private Unit unit;
     private Owner owner;
@@ -43,7 +43,7 @@ public class RuleServiceTest {
 
     @Test
     public void createRule_OK() {
-        Rule rule = newRule();
+        LowWaterWateringRule rule = newRule();
 
         service.createRule(rule);
 
@@ -53,14 +53,14 @@ public class RuleServiceTest {
 
     @Test(expected = TechnicalException.class)
     public void createRule_UnitDoesntBelongToOwner() {
-        Rule rule = newRuleWithNotBelongingUnit();
+        LowWaterWateringRule rule = newRuleWithNotBelongingUnit();
 
         service.createRule(rule);
     }
 
     @Test
     public void deleteRule() {
-        Rule rule = newRule();
+        LowWaterWateringRule rule = newRule();
         Mockito.when(dao.getById(RULE_ID)).thenReturn(Optional.of(rule));
 
         service.deleteRule(RULE_ID);
@@ -70,7 +70,7 @@ public class RuleServiceTest {
 
     @Test
     public void updateRule_OK() {
-        Rule rule = newRule();
+        LowWaterWateringRule rule = newRule();
 
         service.updateRule(rule);
 
@@ -80,7 +80,7 @@ public class RuleServiceTest {
 
     @Test(expected = TechnicalException.class)
     public void updateRule_UnitDoesntBelongToOwner() {
-        Rule rule = newRuleWithNotBelongingUnit();
+        LowWaterWateringRule rule = newRuleWithNotBelongingUnit();
 
         service.updateRule(rule);
     }
@@ -100,15 +100,15 @@ public class RuleServiceTest {
         return owner;
     }
 
-    private Rule newRule() {
-        Rule rule = new Rule();
+    private LowWaterWateringRule newRule() {
+        LowWaterWateringRule rule = new LowWaterWateringRule();
         rule.setId(RULE_ID);
         rule.setUnit(unit);
         return rule;
     }
 
-    private Rule newRuleWithNotBelongingUnit() {
-        Rule rule = new Rule();
+    private LowWaterWateringRule newRuleWithNotBelongingUnit() {
+        LowWaterWateringRule rule = new LowWaterWateringRule();
         Unit unit = new Unit();
         unit.setId(-1L);
         rule.setUnit(unit);

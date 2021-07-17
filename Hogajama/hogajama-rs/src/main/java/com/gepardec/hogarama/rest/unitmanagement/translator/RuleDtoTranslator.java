@@ -5,7 +5,7 @@ import com.gepardec.hogarama.domain.unitmanagement.dao.ActorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.dao.UnitDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.EntityNotFoundException;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Rule;
+import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.rest.unitmanagement.dto.RuleDto;
@@ -17,7 +17,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
-public class RuleDtoTranslator implements Translator<RuleDto, Rule> {
+public class RuleDtoTranslator implements Translator<RuleDto, LowWaterWateringRule> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RuleDtoTranslator.class);
 
@@ -34,7 +34,7 @@ public class RuleDtoTranslator implements Translator<RuleDto, Rule> {
     private UserContext userContext;
 
     @Override
-    public RuleDto toDto(Rule rule) {
+    public RuleDto toDto(LowWaterWateringRule rule) {
         Preconditions.checkNotNull(rule, "Rule must not be null");
 
         return RuleDto.of(rule.getId(),
@@ -48,10 +48,10 @@ public class RuleDtoTranslator implements Translator<RuleDto, Rule> {
     }
 
     @Override
-    public Rule fromDto(RuleDto dto) {
+    public LowWaterWateringRule fromDto(RuleDto dto) {
         Preconditions.checkNotNull(dto, "RuleDto must not be null");
 
-        Rule rule = new Rule();
+        LowWaterWateringRule rule = new LowWaterWateringRule();
         rule.setId(dto.getId());
         Sensor sensor = sensorDAO.getByIdNonOpt(dto.getSensorId());
         rule.setSensor(sensor);

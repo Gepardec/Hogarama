@@ -4,7 +4,7 @@ import com.gepardec.hogarama.domain.unitmanagement.dao.ActorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.dao.UnitDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Rule;
+import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.rest.unitmanagement.dto.RuleDto;
@@ -50,7 +50,7 @@ public class RuleDtoTranslatorTest {
 
     @Test
     public void toDto() {
-        Rule rule = new Rule();
+        LowWaterWateringRule rule = new LowWaterWateringRule();
         rule.setId(RULE_ID);
         rule.setName(NAME);
         rule.setSensor(newSensor());
@@ -95,7 +95,7 @@ public class RuleDtoTranslatorTest {
         dto.setWaterDuration(WATER_DURATION);
         dto.setLowWater(LOW_WATER);
 
-        Rule result = translator.fromDto(dto);
+        LowWaterWateringRule result = translator.fromDto(dto);
 
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(RULE_ID);

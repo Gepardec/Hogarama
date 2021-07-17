@@ -5,7 +5,7 @@ create sequence seq_rule_id
 
 alter sequence seq_rule_id owner to hogajama;
 
-create table wateringrule
+create table low_water_watering_rule
 (
     id        bigint       not null
         constraint pk_watering_rule
@@ -25,6 +25,6 @@ create table wateringrule
             references unit
 );
 
-alter table wateringrule
+alter table low_water_watering_rule
     owner to hogajama;
 

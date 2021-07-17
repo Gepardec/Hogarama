@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.gepardec.hogarama.annotations.MongoDAO;
 import com.gepardec.hogarama.annotations.PostgresDAO;
+import com.gepardec.hogarama.domain.unitmanagement.dao.PostgresWateringRuleDAO;
 import com.gepardec.hogarama.domain.watering.WateringRuleDAO;
 
 //@Priority(Interceptor.Priority.APPLICATION)
