@@ -68,19 +68,11 @@ public class PostgresWateringRuleDAO extends BaseDAO<Rule> implements WateringRu
     }
     
     private Sensor getSensor(String sensorName) {
-        Optional<Sensor> optional = sensorCache.getByDeviceId(sensorName);
-        if ( !optional.isPresent() ) {
-            return null;
-        }
-        return optional.get();
+        return sensorCache.getByDeviceId(sensorName).orElse(null);
     }
 
     private Actor getActor(String actorName) {
-        Optional<Actor> optional = actorCache.getByDeviceId(actorName);
-        if ( !optional.isPresent() ) {
-            return null;
-        }
-        return optional.get();
+        return actorCache.getByDeviceId(actorName).orElse(null);
     }
 
     private Unit getUnit(Sensor sensor) {
