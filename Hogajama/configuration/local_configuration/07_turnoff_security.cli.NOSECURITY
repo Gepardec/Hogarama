@@ -4,7 +4,7 @@ end-if
 
 deployment-overlay add --name=overlay1 \
 	--content=/WEB-INF/web.xml=nosecurity//web.xml \
-	--deployments=hogajama-rs-0.0.1-SNAPSHOT.war --redeploy-affected
+	--deployments=hogajama-rs-0.0.1-SNAPSHOT.war,hogajama-frontend-0.0.1-SNAPSHOT.war --redeploy-affected
 
 if (outcome == success) of /system-property=hogajama.nosecurity:remove
     echo removed system-property hogajama.nosecurity
