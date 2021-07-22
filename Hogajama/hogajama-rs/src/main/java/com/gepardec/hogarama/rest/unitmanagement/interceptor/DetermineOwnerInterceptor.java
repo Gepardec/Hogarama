@@ -28,6 +28,8 @@ import java.util.Optional;
 @Interceptor
 public class DetermineOwnerInterceptor {
 
+    private static final String HOGAJAMA_NOSECURITY = "hogajama.nosecurity";
+
     private static final Logger LOG = LoggerFactory.getLogger(DetermineOwnerInterceptor.class);
 
     @Inject
@@ -39,12 +41,20 @@ public class DetermineOwnerInterceptor {
     public Object aroundInvoke(InvocationContext ctx) throws Exception {
         SecurityContext sc = extractSecurityContext(ctx);
         
-        if ( null == sc ) {
+        String ssoUserId;
+        if ( null == sc || null == sc.getUserPrincipal() ) {
             LOG.error("SecurityContext is null. This probably doesn't end well, since we need a configured user.");
-            return ctx.proceed();
+            if ( "true".equals(System.getProperty(HOGAJAMA_NOSECURITY, "false")) ) {
+                ssoUserId = "dummy";
+                userContext.setUserProfile(getDummyUserProfile());
+            }
+            else {
+                return ctx.proceed();
+            }
         }
-
-        String ssoUserId = sc.getUserPrincipal().getName();
+        else {
+            ssoUserId = sc.getUserPrincipal().getName();
+        }
         Optional<Owner> optionalOwner = service.getRegisteredOwner(ssoUserId);
         Owner owner = optionalOwner.orElseGet(() -> registerOwnerAndHandleDuplicates(ssoUserId));
         userContext.setOwner(owner);
@@ -65,6 +75,15 @@ public class DetermineOwnerInterceptor {
         }
 
         return ctx.proceed();
+    }
+
+    private UserProfile getDummyUserProfile() {
+        UserProfile userProfile = new UserProfile();
+        userProfile.setName("Dummy");
+        userProfile.setEmail("dummy@nowhere");
+        userProfile.setFamilyName("Dummy");
+        userProfile.setGivenName("Franz");
+        return userProfile;
     }
 
     private Owner registerOwnerAndHandleDuplicates(String ssoUserId) {

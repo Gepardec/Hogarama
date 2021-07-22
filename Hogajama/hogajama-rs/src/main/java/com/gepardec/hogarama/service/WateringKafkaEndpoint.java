@@ -2,6 +2,7 @@ package com.gepardec.hogarama.service;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.hogarama.domain.DateUtils;
@@ -41,6 +42,7 @@ public class WateringKafkaEndpoint {
     @Inject
     SensorDataDAO sensorDataDAO;
 
+    @Transactional
     @Incoming("habarama-in")
     public void onMessage(String message) {
         if (!config.useKafkaWatering()) {
