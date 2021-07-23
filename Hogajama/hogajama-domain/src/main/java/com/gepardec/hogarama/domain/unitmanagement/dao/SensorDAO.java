@@ -1,13 +1,14 @@
 package com.gepardec.hogarama.domain.unitmanagement.dao;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.enterprise.context.Dependent;
+
 import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
 import com.gepardec.hogarama.domain.unitmanagement.entity.QSensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.querydsl.jpa.impl.JPAQuery;
-
-import javax.enterprise.context.Dependent;
-import java.util.List;
-import java.util.Optional;
 
 @Dependent
 public class SensorDAO extends BaseDAO<Sensor> {

@@ -14,7 +14,7 @@ public class WateringStrategy {
 	public WateringStrategy() {
 	}
 	
-    private int waterDuration(WateringConfigData config, double avg) {
+    private int waterDuration(WateringRule config, double avg) {
         if ( avg < config.getLowWater() ) {
             int dur = config.getWaterDuration();
             log.info("water " + config.getActorName() + " for " + dur + " because water value " + avg + " < " + config.getLowWater());
@@ -24,7 +24,7 @@ public class WateringStrategy {
     }
 
 
-    public int computeWateringDuration(WateringConfigData config, double value) {
+    public int computeWateringDuration(WateringRule config, double value) {
         double avg = computeAverage(getCachedValue(config), value);
         updateCache(config, avg);
         return waterDuration(config,avg);
@@ -38,10 +38,10 @@ public class WateringStrategy {
     }
 
 
-    private Double getCachedValue(WateringConfigData config) {
+    private Double getCachedValue(WateringRule config) {
         return cache.get(config.getSensorName());
     }
-    private void updateCache(WateringConfigData config, double avg) {
+    private void updateCache(WateringRule config, double avg) {
         cache.put(config.getSensorName(), avg);
         
     }

@@ -28,6 +28,8 @@ import java.util.Optional;
 @Interceptor
 public class DetermineOwnerInterceptor {
 
+    private static final String HOGAJAMA_NOSECURITY = "hogajama.nosecurity";
+
     private static final Logger LOG = LoggerFactory.getLogger(DetermineOwnerInterceptor.class);
 
     @Inject
@@ -38,14 +40,28 @@ public class DetermineOwnerInterceptor {
     @AroundInvoke
     public Object aroundInvoke(InvocationContext ctx) throws Exception {
         SecurityContext sc = extractSecurityContext(ctx);
+        
+        String ssoUserId;
+        if ( null == sc || null == sc.getUserPrincipal() ) {
+            LOG.error("SecurityContext is null. This probably doesn't end well, since we need a configured user.");
+            if ( "true".equals(System.getProperty(HOGAJAMA_NOSECURITY, "false")) ) {
+                ssoUserId = "dummy";
+                userContext.setUserProfile(getDummyUserProfile());
+            }
+            else {
+                return ctx.proceed();
+            }
+        }
+        else {
+            ssoUserId = sc.getUserPrincipal().getName();
+        }
+        Optional<Owner> optionalOwner = service.getRegisteredOwner(ssoUserId);
+        Owner owner = optionalOwner.orElseGet(() -> registerOwnerAndHandleDuplicates(ssoUserId));
+        userContext.setOwner(owner);
 
-        if (sc != null && sc.getUserPrincipal() instanceof KeycloakPrincipal) {
+        if (sc.getUserPrincipal() instanceof KeycloakPrincipal) {
             @SuppressWarnings("unchecked")
             KeycloakPrincipal<KeycloakSecurityContext> kp = (KeycloakPrincipal<KeycloakSecurityContext>) sc.getUserPrincipal();
-            String ssoUserId = kp.getName();
-            Optional<Owner> optionalOwner = service.getRegisteredOwner(ssoUserId);
-            Owner owner = optionalOwner.orElseGet(() -> registerOwnerAndHandleDuplicates(ssoUserId));
-            userContext.setOwner(owner);
 
             final AccessToken token = kp.getKeycloakSecurityContext().getToken();
             UserProfile userProfile = new UserProfile();
@@ -54,9 +70,20 @@ public class DetermineOwnerInterceptor {
             userProfile.setFamilyName(token.getFamilyName());
             userProfile.setGivenName(token.getGivenName());
             userContext.setUserProfile(userProfile);
+        } else {
+            LOG.warn("System is not configured for Keycloak. Using login name as user id. Some information might be missing.");
         }
 
         return ctx.proceed();
+    }
+
+    private UserProfile getDummyUserProfile() {
+        UserProfile userProfile = new UserProfile();
+        userProfile.setName("Dummy");
+        userProfile.setEmail("dummy@nowhere");
+        userProfile.setFamilyName("Dummy");
+        userProfile.setGivenName("Franz");
+        return userProfile;
     }
 
     private Owner registerOwnerAndHandleDuplicates(String ssoUserId) {

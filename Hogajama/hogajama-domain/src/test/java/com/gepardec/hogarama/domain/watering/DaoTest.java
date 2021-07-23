@@ -17,11 +17,11 @@ public class DaoTest  {
 
 	@Test
 	public void test() {
-		WateringConfigData wconf = new WateringConfigData("sensor", "actor", 60, 0.2, 5);
+		WateringConfigData wconf = new WateringConfigData("sensor", "actor", 0.2, 5);
 		dao.save(wconf);
 		
 		String id = "sensor";
-		WateringConfigData c1 = dao.getBySensorName(id);
+		WateringRule c1 = dao.getBySensorName(id);
 		assertEquals("sensor", c1.getSensorName());
 		assertEquals("actor", c1.getActorName());
 		

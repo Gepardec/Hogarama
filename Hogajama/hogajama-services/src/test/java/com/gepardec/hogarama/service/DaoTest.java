@@ -8,11 +8,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.gepardec.hogarama.domain.watering.WateringConfigData;
-import com.gepardec.hogarama.service.dao.MongoWateringConfigDAO;
+import com.gepardec.hogarama.domain.watering.WateringRule;
+import com.gepardec.hogarama.service.dao.MongoWateringRuleDAO;
 
 public class DaoTest  {
 
-	private MongoWateringConfigDAO dao = new MongoWateringConfigDAO();
+	private MongoWateringRuleDAO dao = new MongoWateringRuleDAO();
 
 	@Before
 	public void setUp() throws Exception {
@@ -21,11 +22,11 @@ public class DaoTest  {
 
 	@Test @Ignore // Das ist eher ein Integrationstest. Man benötigt Mongo-Zugriff
 	public void test() {
-		WateringConfigData wconf = new WateringConfigData("sensor", "actor", 60, 0.2, 5);
+		WateringConfigData wconf = new WateringConfigData("sensor", "actor", 0.2, 5);
 		dao.save(wconf);
 		
 		String id = "sensor";
-		WateringConfigData c1 = dao.getBySensorName(id);
+		WateringRule c1 = dao.getBySensorName(id);
 		assertEquals("sensor", c1.getSensorName());
 		assertEquals("actor", c1.getActorName());
 		
