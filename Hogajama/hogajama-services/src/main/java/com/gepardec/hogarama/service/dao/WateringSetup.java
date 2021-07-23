@@ -24,7 +24,7 @@ public class WateringSetup {
 
     @Produces
     WateringRuleDAO createWateringRuleDao() {
-        if ( System.getProperty("hogarama.rules.storage").contentEquals("postgres")) {
+        if ( System.getProperty("hogarama.rules.storage", "mongo").contentEquals("postgres")) {
             LOG.debug("Produce PostgresWateringRuleDAO");
             return postgresDAO;
         }
