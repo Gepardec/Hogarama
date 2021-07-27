@@ -9,8 +9,42 @@ import RPi.GPIO as GPIO
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_MCP3008
 import sys
+import getopt
 
+from os.path import basename
 from threading import Thread
+
+optWater = False
+optWaterDuration = 5
+
+def usage():
+    prog = basename(sys.argv[0]);
+    return """usage: {prog} [-hw] [-d duration]
+Starts sending values to sensor topic and listening to actos topic.
+Options:
+  w: activate actors for duration seconds (watering)
+  d duration: set duration for option w. Default: {optWaterDuration}
+""".format(prog=prog, optWaterDuration=optWaterDuration)
+
+def handleOptions(argv):
+
+    global optWater
+    global optWaterDuration
+
+    try:
+        opts, args = getopt.getopt(argv,"hwd:")
+    except getopt.GetoptError:
+        print usage()
+        sys.exit(2)
+
+    for opt, arg in opts:
+      if opt == '-h':
+         print usage()
+         sys.exit()
+      elif opt == '-w':
+         optWater = True
+      elif opt == "-d":
+         optWaterDuration = int(arg)
 
 def log(message):
     sys.stderr.write(message+"\n")
@@ -108,7 +142,7 @@ class Actor:
         payload = json.loads(message.payload)
 
         if actor.type == "gpio":
-            # set actor in different thread to not block the main thread
+            # activate actor in different thread to not block the main thread
             thread = Thread(target = actor.do_water, args =(payload['duration'],))
             thread.start()
         elif actor.type == "console":
@@ -152,6 +186,8 @@ SPI_PORT   = 0
 SPI_DEVICE = 0
 mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
 
+handleOptions(sys.argv[1:])
+
 # Setup measuring
 with open('habarama.json') as data_file:
     data = json.load(data_file)
@@ -170,6 +206,11 @@ for sensor in sensors:
 for actor in actors:
     actor.setup_pin()
 
+if optWater:
+    for actor in actors:
+        print "Water actor {actorName} for {duration} seconds".format(actorName=actor.name, duration=optWaterDuration)
+        actor.do_water(optWaterDuration)
+        sys.exit(0)
 
 # Setup Hogarama connection
 clients = []
