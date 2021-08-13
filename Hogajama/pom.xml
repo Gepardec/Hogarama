@@ -20,6 +20,11 @@
 	</modules>
 
 	<properties>
+		<sonar.projectKey>Gepardec_Hogarama</sonar.projectKey>
+        <sonar.organization>gepardec-1</sonar.organization>
+		<sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.language>java</sonar.language>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -52,7 +57,7 @@
 		<swagger-codegen-maven-plugin.version>2.2.2</swagger-codegen-maven-plugin.version>
 		<build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-		<sonar-maven-plugin.version>3.3.0.603</sonar-maven-plugin.version>
+		<sonar-maven-plugin.version>3.9.0.2155</sonar-maven-plugin.version>
 		<com.querydsl.version>4.2.1</com.querydsl.version>
 		<org.assertj.version>3.15.0</org.assertj.version>
         <io.smallrye.reactive.version>3.0.0</io.smallrye.reactive.version>
