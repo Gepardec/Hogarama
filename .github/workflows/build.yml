@@ -33,4 +33,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -f Hogajama/pom.xml clean -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run:
+          cd Hogajama
+          mvn clean -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
