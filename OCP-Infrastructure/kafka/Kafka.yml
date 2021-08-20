@@ -5,6 +5,7 @@ metadata:
   namespace: hogarama-kafka
   labels:
     strimzi.io/cluster: gepardec-kafka-cluster
+    play.gepaplexx.com/persist: "true"
 spec:
   entityOperator:
     topicOperator: {}
@@ -31,13 +32,27 @@ spec:
         type: route
     replicas: 3
     storage:
-      class: gp2
+#      class: gp2
       size: 50Gi
       type: persistent-claim
     version: 2.6.0
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: "250oc m"
+      limits:
+        memory: 2Gi
+        cpu: "1"
   zookeeper:
     replicas: 3
     storage:
-      class: gp2
+#      class: gp2
       size: 50Gi
       type: persistent-claim
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: "250m"
+      limits:
+        memory: 512Mi
+        cpu: "1"
