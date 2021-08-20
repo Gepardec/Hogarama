@@ -12,18 +12,18 @@ spec:
       resources:
         requests:
           memory: 128Mi
-          cpu: "100m"
+          cpu: "250m"
         limits:
           memory: 256Mi
-          cpu: "200m"
+          cpu: "1"
     userOperator:
       resources:
         requests:
           memory: 128Mi
-          cpu: "100m"
+          cpu: "250m"
         limits:
           memory: 256Mi
-          cpu: "200m"
+          cpu: "1"
     tlsSidecar:
       resources:
         requests:
