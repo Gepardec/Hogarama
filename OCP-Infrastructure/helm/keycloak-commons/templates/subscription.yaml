@@ -8,3 +8,11 @@ spec:
   name: keycloak-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
+  config:
+    resources: 
+      requests:
+        memory: 128Mi
+        cpu: "100m"
+      limits:
+        memory: 256Mi
+        cpu: "200m"
