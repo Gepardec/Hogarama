@@ -45,8 +45,12 @@ spec:
           successThreshold: 1
           timeoutSeconds: 1
         resources:
-          limits:
-            memory: 1536Mi
+            requests:
+              memory: 256Mi
+              cpu: "100m"
+            limits:
+              memory: 512Mi
+              cpu: "200m"
         securityContext:
           capabilities: {}
           privileged: false
