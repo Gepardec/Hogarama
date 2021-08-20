@@ -10,7 +10,13 @@ spec:
     to:
       kind: ImageStreamTag
       name: 'jboss-eap-7-patched:latest'
-  resources: {}
+  resources: 
+    requests:
+      memory: 128Mi
+      cpu: "100m"
+    limits:
+      memory: 256Mi
+      cpu: "200m"
   strategy:
     type: Docker
     dockerStrategy:

@@ -7,4 +7,12 @@ spec:
   name: grafana-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
-  version: 2.0.0
+#  version: 2.0.0
+  config:
+    resources: 
+      requests:
+        memory: 128Mi
+        cpu: "100m"
+      limits:
+        memory: 256Mi
+        cpu: "200m"
