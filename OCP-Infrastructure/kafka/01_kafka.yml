@@ -11,18 +11,26 @@ spec:
     topicOperator:
       resources:
         requests:
-          memory: 256Mi
+          memory: 128Mi
           cpu: "100m"
         limits:
-          memory: 512Mi
+          memory: 256Mi
           cpu: "200m"
     userOperator:
       resources:
         requests:
-          memory: 256Mi
+          memory: 128Mi
           cpu: "100m"
         limits:
-          memory: 512Mi
+          memory: 256Mi
+          cpu: "200m"
+    tlsSidecar:
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: "100m"
+        limits:
+          memory: 256Mi
           cpu: "200m"
   kafka:
     config:
