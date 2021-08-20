@@ -10,7 +10,13 @@ spec:
     to:
       kind: ImageStreamTag
       name: 'wildfly:23.0.1-custom'
-  resources: {}
+  resources: 
+    requests:
+      memory: 128Mi
+      cpu: "100m"
+    limits:
+      memory: 256Mi
+      cpu: "200m"
   strategy:
     type: Docker
     dockerStrategy:
