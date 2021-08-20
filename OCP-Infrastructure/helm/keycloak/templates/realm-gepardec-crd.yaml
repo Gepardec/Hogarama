@@ -15,10 +15,7 @@ spec:
         "providerId": "google",
         "displayName": "Google",
         "enabled": true,
-        "webOrigins": "*",
-        "redirectUris" : "*",
         "alias": "google",
-        "BrowserRedirectorIdentityProvider": "google",
         "config": {
           "alias": "google",
           "clientId": "{{ .Values.keycloak.google.client.id }}",

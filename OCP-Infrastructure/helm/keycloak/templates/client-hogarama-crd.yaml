@@ -14,7 +14,7 @@ spec:
     secret: "{{ .Values.keycloak.client.secret }}"
     redirectUris: ["*"]
     webOrigins: ["*"]
-    identityProvider: google
+#    identityProvider: google
     standardFlowEnabled: true
     directAccessGrantsEnabled: true
   realmSelector:
