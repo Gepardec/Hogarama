@@ -1,4 +1,1 @@
-[![Build Status](https://travis-ci.org/Gepardec/Hogarama.svg?branch=master)](https://travis-ci.org/Gepardec/Hogarama) 
-<!--[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.gepardec.hogajama:hogajama)](https://sonarcloud.io/dashboard/index/com.gepardec.hogajama:hogajama)-->
-
 We use our *Home and Garden Automation* to water our office plants. As all good applications have a catchy name, we came up with an abbreviation and started to call our application "Hogarama". Hogarama is a distributed application consisting of multiple components. Managing all the components can be cumbersome, hence we use a few tools to make managing Hogarama a breeze. To find out more about Hogaram check out our documentation at [https://gepardec.github.io/Hogarama/](https://gepardec.github.io/Hogarama/)
