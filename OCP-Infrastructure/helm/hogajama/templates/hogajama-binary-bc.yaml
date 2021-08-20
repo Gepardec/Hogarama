@@ -12,11 +12,11 @@ spec:
       name: 'hogajama-binary:latest'
   resources: 
     requests:
-      memory: 128Mi
-      cpu: "100m"
+      memory: 1Gi
+      cpu: "0.5"
     limits:
-      memory: 256Mi
-      cpu: "200m"
+      memory: 2Gi
+      cpu: "1"
   strategy:
     type: Source
     sourceStrategy:
