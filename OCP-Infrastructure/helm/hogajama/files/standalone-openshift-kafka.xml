@@ -51,6 +51,9 @@
     <system-properties>
         <property name="kafka.bootstrap.servers" value="${env.KAFKA_CONNECTION:KAFKA_CONNECTION_not_set}"/>
         <property name="kafka.topic.prefix" value="${env.KAFKA_TOPIC_PREFIX}"/>
+        <property name="kafka.kafka.security.protocol" value="${env.KAFKA_SECURITY_PROTOCOL:SSL}"/>
+        <property name="jboss.as.reactive.messaging.experimental" value="true"/>
+        <property name="hogarama.rules.storage" value="${env.HOGARAMA_RULES_STORAGE:mongo}"/>
     </system-properties>
     <management>
         <security-realms>
