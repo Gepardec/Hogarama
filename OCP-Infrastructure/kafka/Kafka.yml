@@ -2,7 +2,7 @@ apiVersion: kafka.strimzi.io/v1beta1
 kind: Kafka
 metadata:
   name: gepardec-kafka-cluster
-  namespace: kafka
+  namespace: hogarama-kafka
   labels:
     strimzi.io/cluster: gepardec-kafka-cluster
 spec:

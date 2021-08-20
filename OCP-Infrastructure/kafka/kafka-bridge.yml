@@ -2,7 +2,7 @@ apiVersion: kafka.strimzi.io/v1alpha1
 kind: KafkaBridge
 metadata:
   name: gepardec-kafka-bridge
-  namespace: kafka
+  namespace: hogarama-kafka
   labels:
     strimzi.io/cluster: gepardec-kafka-cluster
 spec:

@@ -4,7 +4,7 @@ metadata:
   annotations:
     strimzi.io/use-connector-resources: 'true'
   name: gepardec-connect-cluster
-  namespace: kafka
+  namespace: hogarama-kafka
   labels:
     strimzi.io/cluster: gepardec-kafka-cluster
 spec:
