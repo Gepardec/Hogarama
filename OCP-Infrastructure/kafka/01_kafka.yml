@@ -8,8 +8,22 @@ metadata:
     play.gepaplexx.com/persist: "true"
 spec:
   entityOperator:
-    topicOperator: {}
-    userOperator: {}
+    topicOperator:
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: "100m"
+        limits:
+          memory: 512Mi
+          cpu: "200m"
+    userOperator:
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: "100m"
+        limits:
+          memory: 512Mi
+          cpu: "200m"
   kafka:
     config:
       inter.broker.protocol.version: '2.6'
@@ -39,7 +53,7 @@ spec:
     resources:
       requests:
         memory: 1Gi
-        cpu: "250oc m"
+        cpu: "250m"
       limits:
         memory: 2Gi
         cpu: "1"

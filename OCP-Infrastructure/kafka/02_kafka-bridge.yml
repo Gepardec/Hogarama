@@ -5,8 +5,17 @@ metadata:
   namespace: hogarama-kafka
   labels:
     strimzi.io/cluster: gepardec-kafka-cluster
+    play.gepaplexx.com/persist: "true"
 spec:
   bootstrapServers: 'gepardec-kafka-cluster-kafka-bootstrap:9092'
   http:
     port: 8080
   replicas: 1
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: "100m"
+    limits:
+      memory: 512Mi
+      cpu: "200m"
+

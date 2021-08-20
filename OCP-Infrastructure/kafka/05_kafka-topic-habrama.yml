@@ -5,6 +5,7 @@ metadata:
   namespace: hogarama-kafka
   labels:
     strimzi.io/cluster: gepardec-kafka-cluster
+    play.gepaplexx.com/persist: "true"
 spec:
   partitions: 10
   retention.ms: 604800000
