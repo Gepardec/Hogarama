@@ -5,7 +5,7 @@ LABEL MAINTAINER="clemens.kaserer@gepardec.com, felix.hochleitner@gepardec.com"
 
 COPY --from=oc /usr/bin/oc /usr/bin/
 
-ENV VERSION v3.1.1
+ENV VERSION v3.5.1
 
 ENV HOME /home
 
