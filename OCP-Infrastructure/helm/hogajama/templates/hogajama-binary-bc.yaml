@@ -15,7 +15,7 @@ spec:
       memory: 1Gi
       cpu: "0.5"
     limits:
-      memory: 2Gi
+      memory: 3Gi
       cpu: "1"
   strategy:
     type: Source
