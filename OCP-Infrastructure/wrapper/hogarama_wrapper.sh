@@ -17,7 +17,7 @@ main () {
   set -e
   ${ENGINE} run --rm -it \
     -v ${TOPLEVEL_DIR}/:/mnt/hogarama \
-    -v ~/.kube/config/:/.kube/config \
+    -v ~/.kube/config:/.kube/config \
     gepardec/hogarama-bootstrap:1.0.0\
     /mnt/hogarama/helm/scripts/hogarama.sh ${@}
   set +e
