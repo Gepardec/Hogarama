@@ -10,7 +10,13 @@ spec:
     to:
       kind: ImageStreamTag
       name: 'hogajama-binary:latest'
-  resources: {}
+  resources: 
+    requests:
+      memory: 1Gi
+      cpu: "0.5"
+    limits:
+      memory: 3Gi
+      cpu: "1"
   strategy:
     type: Source
     sourceStrategy:
