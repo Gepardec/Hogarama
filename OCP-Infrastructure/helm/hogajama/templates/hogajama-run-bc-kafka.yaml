@@ -1,7 +1,7 @@
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
-  name: hogajama-run-kafk
+  name: hogajama-run-kafka
   labels:
     build: hogajama-run-kafka
 spec:
@@ -12,11 +12,11 @@ spec:
       name: 'hogajama-run-kafka:latest'
   resources: 
     requests:
-      memory: 128Mi
-      cpu: "100m"
+      memory: 1Gi
+      cpu: "0.5"
     limits:
-      memory: 256Mi
-      cpu: "200m"
+      memory: 3Gi
+      cpu: "1"
   strategy:
     type: Docker
     dockerStrategy:

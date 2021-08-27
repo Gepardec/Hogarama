@@ -12,11 +12,11 @@ spec:
       name: 's2i-builder-maven:latest'
   resources: 
     requests:
-      memory: 128Mi
-      cpu: "100m"
+      memory: 1Gi
+      cpu: "0.5"
     limits:
-      memory: 256Mi
-      cpu: "200m"
+      memory: 3Gi
+      cpu: "1"
   strategy:
     type: Docker
     dockerStrategy:
