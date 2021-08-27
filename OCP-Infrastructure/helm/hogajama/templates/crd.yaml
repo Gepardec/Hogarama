@@ -47,6 +47,6 @@ spec:
   serviceAccountName: hogajama-anyuid
   disableHTTPRoute: true
   standaloneConfigMap:
-    key: standalone-openshift.xml
+    key: standalone-openshift-kafka.xml
     name: hogajama-standalone-kafka
   imagePullPolicy: always
