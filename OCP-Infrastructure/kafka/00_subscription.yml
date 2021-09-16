@@ -6,7 +6,7 @@ metadata:
   labels:
     "play.gepaplexx.com/persist": "true"
 spec:
-  channel: stable
+  channel: amq-streams-1.6.x
   installPlanApproval: Manual
   name: amq-streams
   source: redhat-operators
