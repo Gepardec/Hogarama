@@ -8,5 +8,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.hogarama.hogajama.mongodb.storage.size }}
-  storageClassName: gp2
   volumeMode: Filesystem

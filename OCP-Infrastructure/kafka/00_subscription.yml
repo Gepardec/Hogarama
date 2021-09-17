@@ -3,9 +3,11 @@ kind: Subscription
 metadata:
   name: amq-streams
   namespace: openshift-operators
+  labels:
+    "play.gepaplexx.com/persist": "true"
 spec:
-  channel: stable
-  installPlanApproval: Automatic
+  channel: amq-streams-1.6.x
+  installPlanApproval: Manual
   name: amq-streams
   source: redhat-operators
   sourceNamespace: openshift-marketplace

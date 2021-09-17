@@ -89,7 +89,7 @@ main() {
     local print_output=false
 
     local namespace_hogarama=hogarama
-    local namespace_keycloak=gepardec
+    local namespace_keycloak=hogarama
 
     if [[ ! " ${COMMANDS[@]} " =~ " ${command} " ]] || [[ ${command} == "help" ]]; then
        usage_message

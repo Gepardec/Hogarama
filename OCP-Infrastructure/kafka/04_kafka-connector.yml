@@ -2,9 +2,10 @@ apiVersion: kafka.strimzi.io/v1alpha1
 kind: KafkaConnector
 metadata:
   name: amq-kafka-connector
-  namespace: kafka
+  namespace: hogarama-kafka
   labels:
     strimzi.io/cluster: gepardec-connect-cluster
+    play.gepaplexx.com/persist: "true"
 spec:
   class: org.apache.camel.kafkaconnector.sjms2.CamelSjms2SourceConnector
   config:

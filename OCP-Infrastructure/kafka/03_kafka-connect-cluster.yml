@@ -3,8 +3,9 @@ kind: KafkaConnect
 metadata:
   annotations:
     strimzi.io/use-connector-resources: 'true'
+    play.gepaplexx.com/persist: "true"
   name: gepardec-connect-cluster
-  namespace: kafka
+  namespace: hogarama-kafka
   labels:
     strimzi.io/cluster: gepardec-kafka-cluster
 spec:
@@ -15,4 +16,12 @@ spec:
     trustedCertificates:
       - certificate: ca.crt
         secretName: gepardec-kafka-cluster-cluster-ca-cert
+  resources:
+    requests:
+      memory: 1.5Gi
+      cpu: "250m"
+    limits:
+      memory: 2Gi
+      cpu: "500m"
+
   version: 2.6.0
