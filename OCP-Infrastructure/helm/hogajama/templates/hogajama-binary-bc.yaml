@@ -33,6 +33,7 @@ spec:
     type: Git
     git:
       uri: 'https://github.com/Gepardec/Hogarama'
+      ref: master
   triggers:
     - type: GitHub
       github:
