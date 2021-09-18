@@ -3,7 +3,7 @@ kind: WildFlyServer
 metadata:
   name: hogajama
 spec:
-  applicationImage: 'image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/hogajama-run-kafka:latest'
+  applicationImage: 'image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/hogajama-run:latest'
   env:
     - name: KEYCLOAK_AUTH_SERVER_URL
       value: {{ .Values.hogarama.hogajama.keycloak.server_url }}
