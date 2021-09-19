@@ -22,7 +22,7 @@ spec:
     dockerStrategy:
       from:
         kind: ImageStreamTag
-        name: 'wildfly:23.0.1-custom'
+        name: 'wildfly:23.0.1.Final'
   postCommit: {}
   source:
     type: Dockerfile
@@ -30,7 +30,7 @@ spec:
       FROM jboss/wildfly
       COPY target/* /opt/jboss/wildfly/standalone/deployments/
       USER root
-      RUN mkdir -p /opt/eap && \
+      RUN ln -s /opt/jboss/wildfly /opt/eap && \
           echo -e "#!/bin/bash\nexit 0" > /opt/jboss/wildfly/bin/readinessProbe.sh && \
           echo -e "#!/bin/bash\nexit 0" > /opt/jboss/wildfly/bin/livenessProbe.sh && \
           chmod +x  /opt/jboss/wildfly/bin/*.sh && \
@@ -41,11 +41,7 @@ spec:
           /opt/jboss/wildfly/bin/jboss-cli.sh --command="module add --name=org.postgresql --resources=postgresql-42.2.11.jar --dependencies=javax.api,javax.transaction.api" && \
           rm postgresql-42.2.11.jar && \
           curl -fsSL https://github.com/Gepardec/Hogarama/raw/master/Hogajama/configuration/local_configuration/kafka-truststore.jks -o /opt/jboss/wildfly/standalone/configuration/kafka-truststore.jks && \
-          rm -f /opt/jboss/wildfly/standalone/configuration/standalone.xml && \
-          ln -s /opt/eap/standalone/configuration/standalone.xml /opt/jboss/wildfly/standalone/configuration/standalone.xml && \
-          mkdir -p /opt/eap/bin/ && \
-          ln -s /opt/jboss/wildfly/bin/readinessProbe.sh /opt/eap/bin/readinessProbe.sh && \
-          ln -s /opt/jboss/wildfly/bin/livenessProbe.sh /opt/eap/bin/livenessProbe.sh
+          echo "Configuration done"
       USER jboss
       ENV HOGAJAMA_DB={{ .Values.hogarama.hogajama.mongodb.credentials.database }} MONGODB_PW={{ .Values.hogarama.hogajama.mongodb.credentials.password }} STAGE=AWS-PROD TINYURL=https://tinyurl.com/hogajama-aws
       ENTRYPOINT [ "/opt/jboss/wildfly/bin/standalone.sh" ] 
