@@ -1,9 +1,0 @@
-kind: ImageStream
-apiVersion: image.openshift.io/v1
-metadata:
-  name: wildfly-patched
-  namespace: hogarama
-spec:
-  lookupPolicy:
-    local: false
-  dockerImageRepository: jboss/wildfly
