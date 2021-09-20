@@ -27,6 +27,7 @@ function helm-template () {
     ## INSTALL
     for item in ${RESOURCE_ORDER[@]}; do
         if [[ " ${resources[@]} " =~ "${item}" ]]; then
+            execute "helm dep update ${TOPLEVEL_DIR}/helm/${item}" 2>&1 > /dev/null
             exec_command="helm template ${TOPLEVEL_DIR}/helm/${item} -f ${secrets_file}"
 
             if [[ "${output}" == "false" ]];then
