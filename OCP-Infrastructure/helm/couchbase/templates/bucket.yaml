@@ -1,0 +1,6 @@
+apiVersion: couchbase.com/v2
+kind: CouchbaseBucket
+metadata:
+  name: default
+spec:
+  memoryQuota: 128Mi

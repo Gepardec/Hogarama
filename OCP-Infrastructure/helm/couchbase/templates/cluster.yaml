@@ -1,0 +1,58 @@
+apiVersion: couchbase.com/v2
+kind: CouchbaseCluster
+metadata:
+  name: cb-cluster
+spec:
+  security:
+    adminSecret: cb-cluster-auth
+    rbac: {}
+  backup: {}
+  buckets:
+    managed: true
+  antiAffinity: true
+  servers:
+    - name: infra
+      resources: {}
+      services:
+        - index
+        - search
+        - eventing
+        - analytics
+      size: 1
+    - name: worker
+      resources: {}
+      services:
+        - data
+        - query
+      size: 3
+  networking:
+    adminConsoleServiceType: NodePort
+    adminConsoleServices:
+      - data
+    exposeAdminConsole: true
+    exposedFeatureServiceType: NodePort
+  cluster:
+    autoFailoverTimeout: 2m0s
+    indexStorageSetting: memory_optimized
+    analyticsServiceMemoryQuota: 1Gi
+    eventingServiceMemoryQuota: 256Mi
+    searchServiceMemoryQuota: 256Mi
+    autoFailoverMaxCount: 3
+    dataServiceMemoryQuota: 256Mi
+    autoFailoverOnDataDiskIssuesTimePeriod: 2m0s
+    indexServiceMemoryQuota: 256Mi
+    autoCompaction:
+      databaseFragmentationThreshold:
+        percent: 30
+      timeWindow: {}
+      tombstonePurgeInterval: 72h0m0s
+      viewFragmentationThreshold:
+        percent: 30
+  xdcr: {}
+  image: 'couchbase/server:6.6.2'
+  autoResourceAllocation:
+    cpuLimits: '2'
+    cpuRequests: '1'
+    enabled: true
+    overheadPercent: 25
+  logging: {}
