@@ -1,0 +1,14 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  name: cb-cluster
+spec:
+  rules:
+    - host: couchbase.apps.play.gepaplexx.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              serviceName: cb-cluster-ui
+              servicePort: 8091
