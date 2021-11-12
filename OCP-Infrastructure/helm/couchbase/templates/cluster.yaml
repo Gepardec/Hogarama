@@ -7,21 +7,18 @@ spec:
     adminSecret: cb-cluster-auth
     rbac: {}
   backup: {}
+  recoveryPolicy: PrioritizeUptime
   buckets:
     managed: true
   antiAffinity: true
   servers:
-    - name: infra
+    - name: server
       resources: {}
       services:
         - index
         - search
         - eventing
         - analytics
-      size: 1
-    - name: worker
-      resources: {}
-      services:
         - data
         - query
       size: 3
