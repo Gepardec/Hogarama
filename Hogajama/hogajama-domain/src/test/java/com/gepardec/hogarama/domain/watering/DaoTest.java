@@ -1,17 +1,17 @@
 package com.gepardec.hogarama.domain.watering;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class DaoTest  {
 
-	private InMemoryWateringConfigDAO dao = new InMemoryWateringConfigDAO();
+	private final InMemoryWateringConfigDAO dao = new InMemoryWateringConfigDAO();
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void setUp() {
 		dao.setUpForTest();
 	}
 
@@ -27,6 +27,5 @@ public class DaoTest  {
 		
 		assertNull(dao.getBySensorName("sensor1"));
 	}
-
 
 }

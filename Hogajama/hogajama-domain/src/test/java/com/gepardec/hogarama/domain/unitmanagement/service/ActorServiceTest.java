@@ -6,19 +6,22 @@ import com.gepardec.hogarama.domain.unitmanagement.dao.ActorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.enterprise.event.Event;
 import java.util.Collections;
 import java.util.Optional;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+
+@ExtendWith(MockitoExtension.class)
 public class ActorServiceTest {
 
     private static final Long ACTOR_ID = 3537L;
@@ -29,16 +32,16 @@ public class ActorServiceTest {
     private UserContext userContext;
     @InjectMocks
     private ActorService service;
-    @Mock
-    Event<Actor> actorChanged;
+    @SuppressWarnings("unused") @Mock
+    Event<Actor>   actorChanged;
 
     private Unit unit;
     private Owner owner;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         owner = newOwner();
-        Mockito.when(userContext.getOwner()).thenReturn(owner);
+        Mockito.lenient().when(userContext.getOwner()).thenReturn(owner);
     }
 
     @Test
@@ -51,11 +54,11 @@ public class ActorServiceTest {
         Mockito.verifyNoMoreInteractions(dao);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void createActor_UnitDoesntBelongToOwner() {
         Actor actor = newActorWithNotBelongingUnit();
 
-        service.createActor(actor);
+        assertThrows(TechnicalException.class, () -> service.createActor(actor));
     }
 
     @Test
@@ -78,11 +81,11 @@ public class ActorServiceTest {
         Mockito.verifyNoMoreInteractions(dao);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void updateActor_UnitDoesntBelongToOwner() {
         Actor actor = newActorWithNotBelongingUnit();
 
-        service.updateActor(actor);
+        assertThrows(TechnicalException.class, () -> service.updateActor(actor));
     }
 
     @Test

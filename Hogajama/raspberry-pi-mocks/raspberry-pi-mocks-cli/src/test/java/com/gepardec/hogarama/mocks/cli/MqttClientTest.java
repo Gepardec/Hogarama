@@ -1,24 +1,22 @@
 package com.gepardec.hogarama.mocks.cli;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.fusesource.mqtt.client.BlockingConnection;
 import org.fusesource.mqtt.client.MQTT;
 import org.fusesource.mqtt.client.QoS;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.internal.util.reflection.Whitebox;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.powermock.reflect.Whitebox;
 
-@RunWith(MockitoJUnitRunner.class)
+
+@ExtendWith(MockitoExtension.class)
 public class MqttClientTest {
 	
 	@Mock
@@ -29,7 +27,7 @@ public class MqttClientTest {
 	
 	private MqttClient mqttClient;
 	
-	@Before
+	@BeforeEach
 	public void setup() {
 		mqttClient = new MqttClient().
 				withURL("https://testhost:1234/").
@@ -37,8 +35,9 @@ public class MqttClientTest {
 				withPassword("testpwd").
 				withTopic("testtopic").
 				build();
+
 		Whitebox.setInternalState(mqttClient, "mqtt", mockMQTT);
-		when(mockMQTT.blockingConnection()).thenReturn(mockBlockingConnection);
+		lenient().when(mockMQTT.blockingConnection()).thenReturn(mockBlockingConnection);
 	}
 	
 	@Test
@@ -62,7 +61,7 @@ public class MqttClientTest {
 	}
 	
 	@Test
-	public void testFixBrokerUrl() throws Exception {
+	public void testFixBrokerUrl() {
 		check("ssl://myhost:443", "https://myhost");
 		check("ssl://myhost:443", "ssl://myhost");
 		check("ssl://myhost:8443", "https://myhost:8443");

@@ -2,15 +2,16 @@ package com.gepardec.hogarama.service.couchbase;
 
 import com.couchbase.client.core.diagnostics.PingResult;
 import com.couchbase.client.core.diagnostics.PingState;
+import com.couchbase.client.core.error.DocumentNotFoundException;
 import com.couchbase.client.core.service.ServiceType;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.Collection;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class CouchbaseProducerIT {
@@ -21,7 +22,7 @@ public class CouchbaseProducerIT {
   private static Collection collection;
 
 
-  @BeforeClass
+  @BeforeAll
   public static void setUp() {
 
     classToTest = new CouchbaseProducer();
@@ -30,33 +31,37 @@ public class CouchbaseProducerIT {
     cluster = classToTest.getCluster();
     bucket = classToTest.getBucket();
     collection = classToTest.getCollection();
-    readDummyEntry(); // Workaround: without reading a dummy entry, there are no endpoints available.
+    readDummyEntryIfExists(); // Workaround: without reading a dummy entry, there are no endpoints available.
   }
 
-  @AfterClass
+  @AfterAll
   public static void afterClass() {
     classToTest.destroy();
   }
 
   @Test
   public void validate_cluster() {
-    assertNotNull( "Cluster should not be NULL", cluster);
+    assertNotNull(cluster, "Cluster should not be NULL");
     verifyPingResult(cluster.ping());
   }
 
   @Test
   public void validateBucket() {
-    assertNotNull("Bucket should not be NULL", bucket);
+    assertNotNull(bucket, "Bucket should not be NULL");
     verifyPingResult(bucket.ping());
   }
 
-  private static void readDummyEntry() {
-    collection.get("sensor::test");
+  private static void readDummyEntryIfExists() {
+    try {
+      collection.get("sensor::test");
+    } catch (DocumentNotFoundException ex) {
+      // Test-Entry does not exist. Nothing to see here.
+    }
   }
 
   private void verifyPingResult(PingResult pingResult) {
-    assertNotEquals("Available endpoints is 0, likely due to authentication failure", 0, pingResult.endpoints().size());
+    assertNotEquals( 0, pingResult.endpoints().size(), "Available endpoints is 0, likely due to authentication failure");
     PingState pingState = pingResult.endpoints().get(ServiceType.QUERY).get(0).state();
-    assertEquals("Expected state to be 'OK'", PingState.OK, pingState);
+    assertEquals(PingState.OK, pingState, "Expected state to be 'OK'");
   }
 }

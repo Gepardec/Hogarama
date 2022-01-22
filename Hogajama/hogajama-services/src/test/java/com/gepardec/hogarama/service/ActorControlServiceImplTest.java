@@ -1,14 +1,15 @@
 package com.gepardec.hogarama.service;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+
+@ExtendWith(MockitoExtension.class)
 public class ActorControlServiceImplTest {
 
   @InjectMocks
@@ -16,35 +17,26 @@ public class ActorControlServiceImplTest {
 
   @Test
   public void testCheckParametersOrFailOk() {
-    String sensorName = "Palmlilie";
-    String location = "Vienna";
-
-    actorService.checkParametersOrFail(location, sensorName, 5);
+    actorService.checkParametersOrFail("Vienna", "Palmlilie", 5);
   }
 
   @Test
   public void testCheckParametersOrFailNoParameters() {
-    String sensorName = null;
-    String location = null;
-
     try {
-      actorService.checkParametersOrFail(location, sensorName, 5);
+      actorService.checkParametersOrFail(null, null, 5);
       fail("Expected exception due to missing parameters.");
     } catch(IllegalArgumentException e) {
-      Assert.assertEquals("Supplied parameters 'null', 'null', '5' must not be empty or null", e.getMessage());
+      assertEquals("Supplied parameters 'null', 'null', '5' must not be empty or null", e.getMessage());
     }
   }
 
   @Test
   public void testCheckParametersOrFailEmptyParameters() {
-    String sensorName = "";
-    String location = "";
-
     try {
-      actorService.checkParametersOrFail(location, sensorName, 5);
+      actorService.checkParametersOrFail("", "", 5);
       fail("Expected exception due to missing parameters.");
     } catch(IllegalArgumentException e) {
-      Assert.assertEquals("Supplied parameters '', '', '5' must not be empty or null", e.getMessage());
+      assertEquals("Supplied parameters '', '', '5' must not be empty or null", e.getMessage());
     }
   }
 }

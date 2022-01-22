@@ -36,15 +36,15 @@
 		<!-- Test Start -->
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
+			<artifactId>mockito-junit-jupiter</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.weld</groupId>
-			<artifactId>weld-junit4</artifactId>
+			<artifactId>weld-junit5</artifactId>
 		</dependency>
         <dependency>
             <groupId>javax</groupId>

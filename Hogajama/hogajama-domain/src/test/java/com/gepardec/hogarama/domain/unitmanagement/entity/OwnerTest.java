@@ -1,7 +1,8 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
 import com.gepardec.hogarama.domain.exception.TechnicalException;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,24 +18,25 @@ public class OwnerTest {
         assertThat(owner.getUnitList()).containsExactly(unit);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void addUnit_NullInput_ExceptionExpected() {
         Owner owner = new Owner();
+        Assertions.assertThrows(NullPointerException.class, () -> owner.addUnit(null));
 
-        owner.addUnit(null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void getDefaultUnit_EmptyUnitList() {
         Owner owner = new Owner();
-        owner.getDefaultUnit();
+        Assertions.assertThrows(NullPointerException.class, owner::getDefaultUnit);
+
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void getDefaultUnit_NoDefaultUnitPresent() {
         Owner owner = new Owner();
         owner.addUnit(newNonDefaultUnit());
-        owner.getDefaultUnit();
+        Assertions.assertThrows(TechnicalException.class, owner::getDefaultUnit);
     }
 
     @Test

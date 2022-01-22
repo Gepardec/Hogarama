@@ -6,20 +6,20 @@ import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.Optional;
-
 import javax.enterprise.event.Event;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SensorServiceTest {
 
     private static final Long SENSOR_ID = 3537L;
@@ -39,10 +39,10 @@ public class SensorServiceTest {
     private Unit unit;
     private Owner owner;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         owner = newOwner();
-        Mockito.when(userContext.getOwner()).thenReturn(owner);
+        Mockito.lenient().when(userContext.getOwner()).thenReturn(owner);
     }
 
     @Test
@@ -55,11 +55,11 @@ public class SensorServiceTest {
         Mockito.verifyNoMoreInteractions(dao);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void createSensor_UnitDoesntBelongToOwner() {
         Sensor sensor = newSensorWithNotBelongingUnit();
 
-        service.createSensor(sensor);
+        Assertions.assertThrows(TechnicalException.class, () -> service.createSensor(sensor));
     }
 
     @Test
@@ -84,11 +84,11 @@ public class SensorServiceTest {
         Mockito.verify(sensorChanged).fire(sensor);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void updateSensor_UnitDoesntBelongToOwner() {
         Sensor sensor = newSensorWithNotBelongingUnit();
 
-        service.updateSensor(sensor);
+        Assertions.assertThrows(TechnicalException.class, () -> service.updateSensor(sensor));
         Mockito.verifyNoMoreInteractions(sensorChanged);
     }
 

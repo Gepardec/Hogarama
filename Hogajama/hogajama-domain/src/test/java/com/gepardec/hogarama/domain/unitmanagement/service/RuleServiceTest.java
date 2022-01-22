@@ -6,19 +6,21 @@ import com.gepardec.hogarama.domain.unitmanagement.dao.RuleDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.enterprise.event.Event;
 import java.util.Collections;
 import java.util.Optional;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RuleServiceTest {
 
     private static final Long RULE_ID = 3537L;
@@ -29,16 +31,16 @@ public class RuleServiceTest {
     private UserContext userContext;
     @InjectMocks
     private RuleService service;
-    @Mock
+    @SuppressWarnings("unused") @Mock
     Event<LowWaterWateringRule> ruleChanged;
 
     private Unit unit;
     private Owner owner;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         owner = newOwner();
-        Mockito.when(userContext.getOwner()).thenReturn(owner);
+        Mockito.lenient().when(userContext.getOwner()).thenReturn(owner);
     }
 
     @Test
@@ -51,11 +53,11 @@ public class RuleServiceTest {
         Mockito.verifyNoMoreInteractions(dao);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void createRule_UnitDoesntBelongToOwner() {
         LowWaterWateringRule rule = newRuleWithNotBelongingUnit();
 
-        service.createRule(rule);
+        Assertions.assertThrows(TechnicalException.class, () -> service.createRule(rule));
     }
 
     @Test
@@ -78,11 +80,10 @@ public class RuleServiceTest {
         Mockito.verifyNoMoreInteractions(dao);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void updateRule_UnitDoesntBelongToOwner() {
         LowWaterWateringRule rule = newRuleWithNotBelongingUnit();
-
-        service.updateRule(rule);
+        Assertions.assertThrows(TechnicalException.class, () -> service.updateRule(rule));
     }
 
     @Test

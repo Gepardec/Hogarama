@@ -14,7 +14,6 @@ import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
@@ -87,7 +86,7 @@ public class SensorDataDAOImpl implements SensorDataDAO {
     }
 
     @Override
-    /**
+    /*
      * TODO: rewrite query and logic with single result
      */
     public String getLocationBySensorName(String sensorName) {

@@ -1,16 +1,15 @@
 package com.gepardec.hogarama.mocks.cli;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class MockCliTest {
+
 	@Test
 	public void testCreateRunConfigurationFromArguments() throws Exception {
 		String properties = "brokerHost=url" + System.lineSeparator() + 
@@ -28,15 +27,15 @@ public class MockCliTest {
 		assertEquals("pwd", runConfiguration.getPassword());
 		assertEquals("topic", runConfiguration.getTopic());
 		assertEquals(3000L, runConfiguration.getDelayMs());
-		assertTrue(Arrays.equals(new String[] {"{1}", "{2}"}, runConfiguration.getMockMessages().toArray()));
-		
+		assertArrayEquals(new String[] {"{1}", "{2}"}, runConfiguration.getMockMessages().toArray());
 	}
 	
-	private static final String writeToTempFile(String filename, String content) throws IOException {
+	private static String writeToTempFile(String filename, String content) throws IOException {
 		File tempFile = File.createTempFile(filename, "");
 		FileOutputStream tempFileOutputStream = new FileOutputStream(tempFile);
 		tempFileOutputStream.write(content.getBytes());
 		tempFileOutputStream.close();
 		return tempFile.getAbsolutePath();
 	}
+
 }

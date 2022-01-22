@@ -7,19 +7,19 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.SensorType;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.rest.unitmanagement.dto.SensorDto;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SensorDtoTranslatorTest {
 
     private static final long SENSOR_ID = 1337L;
@@ -35,9 +35,9 @@ public class SensorDtoTranslatorTest {
     @InjectMocks
     private SensorDtoTranslator translator;
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void toDto_NullInput_ExceptionExpected() {
-        translator.toDto(null);
+        assertThrows(NullPointerException.class, () -> translator.toDto(null));
     }
 
     @Test
@@ -59,9 +59,9 @@ public class SensorDtoTranslatorTest {
         assertThat(result.getUnitId()).isEqualTo(UNIT_ID);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void fromDto_NullInput_ExceptionExpected() {
-        translator.fromDto(null);
+        assertThrows(NullPointerException.class, () -> translator.fromDto(null));
     }
 
     @Test

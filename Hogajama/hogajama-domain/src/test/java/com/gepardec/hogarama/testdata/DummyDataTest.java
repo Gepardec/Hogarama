@@ -1,23 +1,22 @@
 package com.gepardec.hogarama.testdata;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.gepardec.hogarama.domain.sensor.SensorData;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.gepardec.hogarama.domain.sensor.SensorData;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DummyDataTest {
 
 	private Calendar calendar;
 	private List<SensorData> sensors;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		calendar = new GregorianCalendar();
 		sensors = DummyData.getDummySensorData(2, 2, true);
@@ -30,9 +29,9 @@ public class DummyDataTest {
 		SensorData sensorData1 = sensors.get(0);
 		SensorData sensorData2 = sensors.get(1);
 
-		assertTrue(sensorData1.getSensorName().equals(sensorData2.getSensorName()));
-		assertTrue(sensorData1.getLocation().equals(sensorData2.getLocation()));
-		assertTrue(sensorData1.getVersion().equals(sensorData2.getVersion()));
+		assertEquals(sensorData1.getSensorName(), sensorData2.getSensorName());
+		assertEquals(sensorData1.getLocation(), sensorData2.getLocation());
+		assertEquals(sensorData1.getVersion(), sensorData2.getVersion());
 		assertTrue(sensorData1.getValue() > DummyData.MIN_VAL);
 		assertTrue(sensorData1.getValue() < DummyData.MAX_VAL);
 	}
@@ -40,10 +39,10 @@ public class DummyDataTest {
 	@Test
 	public void testGenerateSameData() {
 		List<SensorData> sensor2 = DummyData.getDummySensorData(99, 99, false);
-		
-		assertTrue(sensors.size() == 4);
-		assertTrue(sensors.size() == sensor2.size());
-		assertTrue(sensors.get(0).equals(sensor2.get(0)));
+
+		assertEquals(4, sensors.size());
+		assertEquals(sensors.size(), sensor2.size());
+		assertEquals(sensors.get(0), sensor2.get(0));
 	}
 
 	@Test
@@ -52,6 +51,7 @@ public class DummyDataTest {
 		assertEquals(2018, calendar.get(Calendar.YEAR));
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Test
 	public void testSetMonth() {
 		DummyData.setMonth(calendar);
@@ -60,6 +60,7 @@ public class DummyDataTest {
 		assertTrue(month <= 11);
 	}
 	
+	@SuppressWarnings("ConstantConditions")
 	@Test
 	public void testSetDay() {
 		DummyData.setDay(calendar);
@@ -68,6 +69,7 @@ public class DummyDataTest {
 		assertTrue(month <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 	}
 	
+	@SuppressWarnings("ConstantConditions")
 	@Test
 	public void testSetHour() {
 		DummyData.setHour(calendar);
@@ -76,6 +78,7 @@ public class DummyDataTest {
 		assertTrue(month <= 23);
 	}
 	
+	@SuppressWarnings("ConstantConditions")
 	@Test
 	public void testSetMinute() {
 		DummyData.setMinute(calendar);
