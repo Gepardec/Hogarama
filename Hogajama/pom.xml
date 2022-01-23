@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>hogajama</artifactId>
@@ -117,7 +117,6 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${org.slf4j.version}</version>
-
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -282,6 +281,7 @@
 								<goal>generate</goal>
 							</goals>
 							<configuration>
+								<!--suppress UnresolvedMavenProperty -->
 								<inputSpec>${project.parent.basedir}/src/main/swagger/hogajama.swagger.yaml</inputSpec>
                                 <language>java</language>
 								<generateSupportingFiles>false</generateSupportingFiles>
@@ -339,7 +339,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

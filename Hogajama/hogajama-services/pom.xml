@@ -46,10 +46,6 @@
 			<groupId>org.jboss.weld</groupId>
 			<artifactId>weld-junit5</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-        </dependency>
 		<dependency>
 			<groupId>com.gepardec.hogarama</groupId>
 			<artifactId>raspberry-pi-mocks-cli</artifactId>
