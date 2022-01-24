@@ -17,7 +17,7 @@ import com.gepardec.hogarama.mocks.cli.MqttClient;
 public class ActorControlServiceImpl implements ActorControlService {
 
     @Inject
-    private Datastore db;
+    private Datastore db; // TODO LST: Inject DAO Producer
 
     @Inject
     private Logger log;
@@ -35,7 +35,7 @@ public class ActorControlServiceImpl implements ActorControlService {
 
 
         WateringData data = new WateringData(new Date(), actorName, location, duration);
-        db.save(data);
+        db.save(data); // TODO LST: change to DAO call
         JSONObject json = new JSONObject(data);
         String message = json.toString();
         mqttClient.connectAndPublish(message);

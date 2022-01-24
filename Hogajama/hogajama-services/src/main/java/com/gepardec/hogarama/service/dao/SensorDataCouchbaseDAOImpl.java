@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import static com.couchbase.client.java.query.QueryOptions.queryOptions;
 import static com.gepardec.hogarama.service.couchbase.CouchbaseProducer.BUCKET_NAME;
 import static com.gepardec.hogarama.service.couchbase.CouchbaseProducer.SCOPE_NAME;
+import static com.gepardec.hogarama.util.couchbase.CouchbaseUtil.getKey;
 
 @ApplicationScoped
 public class SensorDataCouchbaseDAOImpl implements SensorDataDAO {
@@ -145,13 +146,10 @@ public class SensorDataCouchbaseDAOImpl implements SensorDataDAO {
   @Override
   public void save(SensorData sensorData) {
     try {
-      collection.insert(getKey(sensorData.getId()), sensorData);
+      collection.insert(getKey(COLLECTION_NAME, sensorData.getId()), sensorData);
     } catch (DocumentExistsException | TimeoutException ex) {
       throw new TechnicalException("Failure while trying to create sensorData: " + sensorData, ex);
     }
   }
 
-  private String getKey(String id) {
-    return COLLECTION_NAME + "::" + id;
-  }
 }

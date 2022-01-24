@@ -31,6 +31,11 @@ public class WateringDAOImpl implements WateringDAO {
         return query.asList(numberLimitOption);
     }
 
+    @Override
+    public void save(WateringData wateringData) {
+        dataStore.save(wateringData);
+    }
+
     private void limitQueryByActor(String sensorName, Query<WateringData> query) {
 
         if (StringUtils.isNotEmpty(sensorName)) {
