@@ -12,6 +12,7 @@ import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.service.couchbase.CouchbaseProducer;
+import com.gepardec.hogarama.util.couchbase.N1qlBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -46,15 +47,7 @@ public class SensorDataCouchbaseDAOImpl implements SensorDataDAO {
   public List<String> getAllSensors() {
     Metrics.requestsTotal.labels("hogajama_services", "getAllSensors").inc();
 
-    //@formatter:off
-    String statement = String.format(
-        "SELECT distinct sensorName "
-            + "from %s.%s.%s",
-        BUCKET_NAME,
-        SCOPE_NAME,
-        COLLECTION_NAME
-    );
-    //@formatter:on
+    String statement = new N1qlBuilder(BUCKET_NAME, SCOPE_NAME).select("sensorName").distinct().from(COLLECTION_NAME).build();
 
     try {
       return couchbase.getScope()
@@ -82,6 +75,8 @@ public class SensorDataCouchbaseDAOImpl implements SensorDataDAO {
     }
 
     Metrics.requestsTotal.labels("hogajama_services", "getAllData").inc();
+
+    //new N1qlBuilder(BUCKET_NAME, SCOPE_NAME).select(COLLECTION_NAME + ".*").from(COLLECTION_NAME)
     //@formatter:off
     String statement = String.format(
         "SELECT %s.* "
