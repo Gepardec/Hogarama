@@ -2,8 +2,6 @@ package com.gepardec.hogarama.service.dao;
 
 import com.gepardec.hogarama.domain.sensor.SensorData;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +13,8 @@ import javax.persistence.NonUniqueResultException;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
+import static com.gepardec.hogarama.domain.DateUtils.getMax;
+import static com.gepardec.hogarama.domain.DateUtils.getMin;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -37,8 +37,8 @@ public class SensorDataCouchbaseDAOImplIT {
 
   @Test
   public void testGetAllData_OK() {
-    Date from = getDate(2021, 1, 1);
-    Date to = getDate(2022, 12, 31);
+    Date from = getMin();
+    Date to = getMax();
 
     List<SensorData> allData = classUnderTest.getAllData(2, SENSOR_NAME_DEFAULT, from, to);
     assertNotNull(allData);
@@ -82,7 +82,4 @@ public class SensorDataCouchbaseDAOImplIT {
         classUnderTest.getLocationBySensorName(SENSOR_NAME_MULTI));
   }
 
-  private Date getDate(int year, int month, int dayOfMonth) {
-    return Date.from(LocalDate.of(year, month, dayOfMonth).atStartOfDay(ZoneId.systemDefault()).toInstant());
-  }
 }

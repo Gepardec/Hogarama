@@ -28,5 +28,12 @@ public class DateUtils {
 		return LocalDate.from(time.toInstant().atZone(ZoneId.systemDefault()));
 	}
 
+	public static Date getMin() {
+		return DateUtils.toDate(1800, Month.JANUARY, 1, 0, 0);
+	}
+
+	public static Date getMax() {
+		return DateUtils.toDate(2999, Month.DECEMBER, 31, 23, 59);
+	}
 
 }
