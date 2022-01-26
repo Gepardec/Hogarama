@@ -1,6 +1,9 @@
 package com.gepardec.hogarama.service.dao;
 
+import com.gepardec.hogarama.annotations.CouchbaseDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
+import com.gepardec.hogarama.service.CouchbaseProducer;
+import org.jboss.weld.junit5.auto.AddBeanClasses;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
@@ -14,13 +17,14 @@ import static com.gepardec.hogarama.domain.DateUtils.getMin;
 import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
-public class WateringDataCouchbaseDAOImplIT {
+@AddBeanClasses({CouchbaseWateringDataDAO.class, CouchbaseProducer.class})
+public class CouchbaseWateringDataDAOIT {
 
   private static final String DEMO_PFLANZE       = "Demo-Pflanze";
   private static final String PFLANZE_NOT_EXISTS = "Irgendein-Gestrüpp";
 
-  @Inject
-  private WateringDataCouchbaseDAOImpl classUnderTest;
+  @Inject @CouchbaseDAO
+  private CouchbaseWateringDataDAO classUnderTest;
 
   @Test
   public void testGetWateringData_OK() {

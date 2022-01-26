@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.service.couchbase;
+package com.gepardec.hogarama.service;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
@@ -28,7 +28,7 @@ public class CouchbaseProducer {
   public static final String SCOPE_NAME      = System.getenv("COUCHBASE_SCOPE");
 
   @PostConstruct
-  public void init() {
+  private void init() {
     try {
       LOG.info("Connecting to Couchbase...");
       cluster = Cluster.connect(HOST, USER, PASSWORD);
@@ -56,7 +56,7 @@ public class CouchbaseProducer {
   }
 
   @PreDestroy
-  public void destroy() {
+  private void destroy() {
     LOG.info("Disconnecting from Couchbase...");
     if(cluster != null) {
       cluster.disconnect();

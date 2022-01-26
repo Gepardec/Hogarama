@@ -4,31 +4,31 @@ import com.couchbase.client.core.error.DocumentExistsException;
 import com.couchbase.client.core.error.QueryException;
 import com.couchbase.client.core.error.TimeoutException;
 import com.couchbase.client.java.Collection;
+import com.couchbase.client.java.Scope;
 import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.java.query.QueryOptions;
 import com.couchbase.client.java.query.QueryScanConsistency;
+import com.gepardec.hogarama.annotations.CouchbaseDAO;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.watering.WateringDAO;
+import com.gepardec.hogarama.domain.watering.WateringDataDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
-import com.gepardec.hogarama.service.couchbase.CouchbaseProducer;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
 
 import static com.couchbase.client.java.query.QueryOptions.queryOptions;
-import static com.gepardec.hogarama.service.couchbase.CouchbaseProducer.BUCKET_NAME;
-import static com.gepardec.hogarama.service.couchbase.CouchbaseProducer.SCOPE_NAME;
+import static com.gepardec.hogarama.service.CouchbaseProducer.BUCKET_NAME;
+import static com.gepardec.hogarama.service.CouchbaseProducer.SCOPE_NAME;
 import static com.gepardec.hogarama.util.couchbase.CouchbaseUtil.getKey;
 
-@ApplicationScoped // TODO @ESI: Warum ist die WateringDAOImpl Request-Scoped?
-public class WateringDataCouchbaseDAOImpl implements WateringDAO {
+@CouchbaseDAO
+public class CouchbaseWateringDataDAO implements WateringDataDAO {
 
   @Inject
-  private CouchbaseProducer couchbase;
+  private Scope scope;
 
   private Collection collection;
 
@@ -36,7 +36,7 @@ public class WateringDataCouchbaseDAOImpl implements WateringDAO {
 
   @PostConstruct
   private void setup() {
-    collection = couchbase.getScope().collection(COLLECTION_NAME);
+    collection = scope.collection(COLLECTION_NAME);
   }
 
   @Override
@@ -78,7 +78,7 @@ public class WateringDataCouchbaseDAOImpl implements WateringDAO {
     // @formatter:on
 
     try {
-      return couchbase.getScope().query(statement, options).rowsAs(WateringData.class);
+      return scope.query(statement, options).rowsAs(WateringData.class);
     } catch (QueryException e) {
       throw new TechnicalException("Query Failed: " + statement, e);
     }

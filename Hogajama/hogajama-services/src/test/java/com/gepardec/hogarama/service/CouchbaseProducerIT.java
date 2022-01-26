@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.service.couchbase;
+package com.gepardec.hogarama.service;
 
 import com.couchbase.client.core.diagnostics.PingResult;
 import com.couchbase.client.core.diagnostics.PingState;

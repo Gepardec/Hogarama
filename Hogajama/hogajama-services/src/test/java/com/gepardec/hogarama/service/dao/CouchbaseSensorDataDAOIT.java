@@ -1,5 +1,6 @@
 package com.gepardec.hogarama.service.dao;
 
+import com.gepardec.hogarama.annotations.CouchbaseDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 
 import java.util.Arrays;
@@ -10,6 +11,8 @@ import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import com.gepardec.hogarama.service.CouchbaseProducer;
+import org.jboss.weld.junit5.auto.AddBeanClasses;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
@@ -19,10 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @EnableAutoWeld
-public class SensorDataCouchbaseDAOImplIT {
+@AddBeanClasses({CouchbaseSensorDataDAO.class, CouchbaseProducer.class})
+public class CouchbaseSensorDataDAOIT {
 
-  @Inject
-  private SensorDataCouchbaseDAOImpl classUnderTest;
+  @Inject @CouchbaseDAO
+  private CouchbaseSensorDataDAO classUnderTest;
 
   private static final String SENSOR_NAME_DEFAULT = "Demo-Pflanze";
   private static final String SENSOR_NAME_MULTI = "Demo-Pflanze-multi-location";

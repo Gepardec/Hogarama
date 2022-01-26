@@ -1,5 +1,6 @@
 package com.gepardec.hogarama.service.dao;
 
+import com.gepardec.hogarama.annotations.MongoDAO;
 import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
@@ -13,15 +14,14 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@ApplicationScoped
-public class SensorDataDAOImpl implements SensorDataDAO {
+@MongoDAO
+public class MongoSensorDataDAO implements SensorDataDAO {
 
     @Inject
     private Datastore datastore;

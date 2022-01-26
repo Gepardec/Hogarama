@@ -2,7 +2,7 @@ package com.gepardec.hogarama.rest;
 
 import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.sensor.SensorNamesCache;
-import com.gepardec.hogarama.domain.watering.WateringDAO;
+import com.gepardec.hogarama.domain.watering.WateringDataDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.rest.mapper.SensorMapper;
 import com.gepardec.hogarama.rest.util.DateUtil;
@@ -26,7 +26,7 @@ public class SensorApiImpl implements SensorApi, Serializable {
 	private SensorDataDAO habaramaDAO;
 
 	@Inject
-	private WateringDAO wateringDAO;
+	private WateringDataDAO wateringDataDAO;
 
 	@Inject
 	private SensorNamesCache sensorNamesCache;
@@ -64,7 +64,7 @@ public class SensorApiImpl implements SensorApi, Serializable {
 			fromDate = getTodayStartTime();
 			toDate = getTodayEndTime();
 		}
-		List<WateringData> wateringData = wateringDAO.getWateringData(maxNumber, sensor, fromDate, toDate);
+		List<WateringData> wateringData = wateringDataDAO.getWateringData(maxNumber, sensor, fromDate, toDate);
 		return Response.ok(wateringData).build();
 	}
 

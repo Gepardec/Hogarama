@@ -4,18 +4,18 @@ import com.couchbase.client.core.error.DocumentExistsException;
 import com.couchbase.client.core.error.QueryException;
 import com.couchbase.client.core.error.TimeoutException;
 import com.couchbase.client.java.Collection;
+import com.couchbase.client.java.Scope;
 import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.java.query.QueryOptions;
 import com.couchbase.client.java.query.QueryScanConsistency;
+import com.gepardec.hogarama.annotations.CouchbaseDAO;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
-import com.gepardec.hogarama.service.couchbase.CouchbaseProducer;
 import com.gepardec.hogarama.util.couchbase.N1qlBuilder;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -24,15 +24,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.couchbase.client.java.query.QueryOptions.queryOptions;
-import static com.gepardec.hogarama.service.couchbase.CouchbaseProducer.BUCKET_NAME;
-import static com.gepardec.hogarama.service.couchbase.CouchbaseProducer.SCOPE_NAME;
+import static com.gepardec.hogarama.service.CouchbaseProducer.BUCKET_NAME;
+import static com.gepardec.hogarama.service.CouchbaseProducer.SCOPE_NAME;
 import static com.gepardec.hogarama.util.couchbase.CouchbaseUtil.getKey;
 
-@ApplicationScoped
-public class SensorDataCouchbaseDAOImpl implements SensorDataDAO {
+@CouchbaseDAO
+public class CouchbaseSensorDataDAO implements SensorDataDAO {
 
   @Inject
-  private CouchbaseProducer couchbase;
+  private Scope scope;
 
   private Collection collection;
 
@@ -41,7 +41,7 @@ public class SensorDataCouchbaseDAOImpl implements SensorDataDAO {
 
   @PostConstruct
   private void setup() {
-    collection = couchbase.getScope().collection(COLLECTION_NAME);
+    collection = scope.collection(COLLECTION_NAME);
   }
 
   @Override
@@ -51,7 +51,7 @@ public class SensorDataCouchbaseDAOImpl implements SensorDataDAO {
     String statement = new N1qlBuilder(BUCKET_NAME, SCOPE_NAME).select("sensorName").distinct().from(COLLECTION_NAME).build();
 
     try {
-      return couchbase.getScope()
+      return scope
           .query(statement)
           .rowsAs(SensorData.class)
           .stream().map(SensorData::getSensorName)
@@ -101,7 +101,7 @@ public class SensorDataCouchbaseDAOImpl implements SensorDataDAO {
     //@formatter:on
 
     try {
-      return couchbase.getScope().query(statement, options).rowsAs(SensorData.class);
+      return scope.query(statement, options).rowsAs(SensorData.class);
     } catch (QueryException e) {
       throw new TechnicalException("Query Failed: " + statement, e);
     }
@@ -128,7 +128,7 @@ public class SensorDataCouchbaseDAOImpl implements SensorDataDAO {
 
     List<SensorData> sensorData;
     try {
-      sensorData = couchbase.getScope().query(statement, options).rowsAs(SensorData.class);
+      sensorData = scope.query(statement, options).rowsAs(SensorData.class);
     } catch (QueryException e) {
       throw new TechnicalException("Query Failed: " + statement, e);
     }
