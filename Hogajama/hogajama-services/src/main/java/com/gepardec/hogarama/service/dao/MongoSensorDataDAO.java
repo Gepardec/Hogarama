@@ -23,90 +23,89 @@ import java.util.List;
 @MongoDAO
 public class MongoSensorDataDAO implements SensorDataDAO {
 
-    @Inject
-    private Datastore datastore;
-    @Inject
-    private MongoCollection<Document> collection;
+  @Inject
+  private Datastore                 datastore;
+  @Inject
+  private MongoCollection<Document> collection;
 
-    @Inject
-    SensorNormalizer sensorNormalizer;
+  @Inject
+  SensorNormalizer sensorNormalizer;
 
-    @Override
-    public List<String> getAllSensors() {
+  @Override
+  public List<String> getAllSensors() {
 
-        DistinctIterable<String> sensors = collection.distinct("sensorName", String.class);
-        Metrics.requestsTotal.labels("hogajama_services", "getAllSensors").inc();
-        return createResultList(sensors);
+    DistinctIterable<String> sensors = collection.distinct("sensorName", String.class);
+    Metrics.requestsTotal.labels("hogajama_services", "getAllSensors").inc();
+    return createResultList(sensors);
+  }
+
+  private <T> List<T> createResultList(MongoIterable<T> sourceIterable) {
+
+    List<T> result = new ArrayList<>();
+    sourceIterable.into(result);
+    return result;
+  }
+
+  @Override
+  public List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to) {
+
+    Metrics.requestsTotal.labels("hogajama_services", "getAllData").inc();
+    Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id");
+    limitQueryBySensor(sensorName, query);
+    limitQueryByDate(from, to, query);
+
+    FindOptions numberLimitOption = getFindOptionsWithMaxNumber(maxNumber);
+    return sensorNormalizer.normalize(query.asList(numberLimitOption));
+  }
+
+  private void limitQueryBySensor(String sensorName, Query<SensorData> query) {
+
+    if (StringUtils.isNotEmpty(sensorName)) {
+      query.field("sensorName").equal(sensorName);
     }
+  }
 
-    private <T> List<T> createResultList(MongoIterable<T> sourceIterable) {
+  private void limitQueryByDate(Date from, Date to, Query<SensorData> query) {
 
-        List<T> result = new ArrayList<>();
-        sourceIterable.into(result);
-        return result;
+    if (from != null) {
+      if (to == null) {
+        to = new Date();
+      }
+      query.field("time").greaterThanOrEq(from);
+      query.field("time").lessThanOrEq(to);
     }
+  }
 
-    @Override
-    public List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to) {
+  private FindOptions getFindOptionsWithMaxNumber(Integer maxNumber) {
 
-        Metrics.requestsTotal.labels("hogajama_services", "getAllData").inc();
-        Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id");
-        limitQueryBySensor(sensorName, query);
-        limitQueryByDate(from, to, query);
-
-        FindOptions numberLimitOption = getFindOptionsWithMaxNumber(maxNumber);
-        return sensorNormalizer.normalize(query.asList(numberLimitOption));
+    FindOptions findOptions = new FindOptions();
+    if (maxNumber != null && maxNumber >= 0) {
+      findOptions.limit(maxNumber);
     }
+    return findOptions;
+  }
 
-    private void limitQueryBySensor(String sensorName, Query<SensorData> query) {
+  @Override
+  /*
+   * TODO: rewrite query and logic with single result
+   */ public String getLocationBySensorName(String sensorName) {
 
-        if (StringUtils.isNotEmpty(sensorName)) {
-            query.field("sensorName").equal(sensorName);
-        }
+    Metrics.requestsTotal.labels("hogajama_services", "getLocationBySensorName").inc();
+    Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id");
+    limitQueryBySensor(sensorName, query);
+
+    FindOptions numberLimitOption = getFindOptionsWithMaxNumber(1);
+    List<SensorData> sensors = query.asList(numberLimitOption);
+    if (!sensors.isEmpty()) {
+      return sensors.get(0).getLocation();
+    } else {
+      Metrics.exceptionsThrown.labels("hogarama_services", "NoResultException", "SensorDAOImple.getLocationBySensorName").inc();
+      throw new NoResultException("Could not find location by sensorName");
     }
+  }
 
-    private void limitQueryByDate(Date from, Date to, Query<SensorData> query) {
-
-        if (from != null) {
-            if (to == null) {
-                to = new Date();
-            }
-            query.field("time").greaterThanOrEq(from);
-            query.field("time").lessThanOrEq(to);
-        }
-    }
-
-    private FindOptions getFindOptionsWithMaxNumber(Integer maxNumber) {
-
-        FindOptions findOptions = new FindOptions();
-        if (maxNumber != null && maxNumber >= 0) {
-            findOptions.limit(maxNumber);
-        }
-        return findOptions;
-    }
-
-    @Override
-    /*
-     * TODO: rewrite query and logic with single result
-     */
-    public String getLocationBySensorName(String sensorName) {
-
-        Metrics.requestsTotal.labels("hogajama_services", "getLocationBySensorName").inc();
-        Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id");
-        limitQueryBySensor(sensorName, query);
-
-        FindOptions numberLimitOption = getFindOptionsWithMaxNumber(1);
-        List<SensorData> sensors = query.asList(numberLimitOption);
-        if (!sensors.isEmpty()) {
-            return sensors.get(0).getLocation();
-        } else {
-            Metrics.exceptionsThrown.labels("hogarama_services", "NoResultException", "SensorDAOImple.getLocationBySensorName").inc();
-            throw new NoResultException("Could not find location by sensorName");
-        }
-    }
-
-    public void save(SensorData data){
-        datastore.save(data);
-    }
+  public void save(SensorData data) {
+    datastore.save(data);
+  }
 
 }

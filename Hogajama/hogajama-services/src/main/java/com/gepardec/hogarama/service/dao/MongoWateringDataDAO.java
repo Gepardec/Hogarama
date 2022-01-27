@@ -16,50 +16,50 @@ import java.util.List;
 @MongoDAO
 public class MongoWateringDataDAO implements WateringDataDAO {
 
-    @Inject
-    private Datastore dataStore;
+  @Inject
+  private Datastore dataStore;
 
-    @Override
-    public List<WateringData> getWateringData(Integer maxNumber, String actorName, Date from, Date to) {
+  @Override
+  public List<WateringData> getWateringData(Integer maxNumber, String actorName, Date from, Date to) {
 
-        Metrics.requestsTotal.labels("hogajama_services", "getWateringData");
-        Query<WateringData> query = dataStore.createQuery(WateringData.class).order("-_id");
-        limitQueryByActor(actorName, query);
-        limitQueryByDate(from, to, query);
+    Metrics.requestsTotal.labels("hogajama_services", "getWateringData");
+    Query<WateringData> query = dataStore.createQuery(WateringData.class).order("-_id");
+    limitQueryByActor(actorName, query);
+    limitQueryByDate(from, to, query);
 
-        FindOptions numberLimitOption = getFindOptionsWithMaxNumber(maxNumber);
-        return query.asList(numberLimitOption);
+    FindOptions numberLimitOption = getFindOptionsWithMaxNumber(maxNumber);
+    return query.asList(numberLimitOption);
+  }
+
+  @Override
+  public void save(WateringData wateringData) {
+    dataStore.save(wateringData);
+  }
+
+  private void limitQueryByActor(String sensorName, Query<WateringData> query) {
+
+    if (StringUtils.isNotEmpty(sensorName)) {
+      query.field("name").equal(sensorName);
     }
+  }
 
-    @Override
-    public void save(WateringData wateringData) {
-        dataStore.save(wateringData);
+  private void limitQueryByDate(Date from, Date to, Query<WateringData> query) {
+
+    if (from != null) {
+      if (to == null) {
+        to = new Date();
+      }
+      query.field("time").greaterThanOrEq(from);
+      query.field("time").lessThanOrEq(to);
     }
+  }
 
-    private void limitQueryByActor(String sensorName, Query<WateringData> query) {
+  private FindOptions getFindOptionsWithMaxNumber(Integer maxNumber) {
 
-        if (StringUtils.isNotEmpty(sensorName)) {
-            query.field("name").equal(sensorName);
-        }
+    FindOptions findOptions = new FindOptions();
+    if (maxNumber != null && maxNumber >= 0) {
+      findOptions.limit(maxNumber);
     }
-
-    private void limitQueryByDate(Date from, Date to, Query<WateringData> query) {
-
-        if (from != null) {
-            if (to == null) {
-                to = new Date();
-            }
-            query.field("time").greaterThanOrEq(from);
-            query.field("time").lessThanOrEq(to);
-        }
-    }
-
-    private FindOptions getFindOptionsWithMaxNumber(Integer maxNumber) {
-
-        FindOptions findOptions = new FindOptions();
-        if (maxNumber != null && maxNumber >= 0) {
-            findOptions.limit(maxNumber);
-        }
-        return findOptions;
-    }
+    return findOptions;
+  }
 }

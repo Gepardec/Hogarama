@@ -15,39 +15,39 @@ import com.gepardec.hogarama.domain.watering.WateringRule;
 import com.gepardec.hogarama.service.MongoDbProducer;
 
 @MongoDAO
-public class MongoWateringRuleDAO implements WateringRuleDAO{
+public class MongoWateringRuleDAO implements WateringRuleDAO {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MongoWateringRuleDAO.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MongoWateringRuleDAO.class);
 
-	@Inject
-	public Datastore db;
+  @Inject
+  public Datastore db;
 
-	public MongoWateringRuleDAO() {
-	}
-	
-	@Override
-	public void save(WateringRule wconf) {
-		db.save(wconf);
-	}
+  public MongoWateringRuleDAO() {
+  }
 
-	@Override
-	public WateringRule getBySensorName(String sensorName) {
-	    LOG.debug("getBySensorName " + sensorName);
-		List<WateringConfigData> configs = db.createQuery(WateringConfigData.class).field("sensorName").equal(sensorName).asList();
-		if (configs.isEmpty()){
-			return null;
-		}
-		return configs.get(0);
-	}
+  @Override
+  public void save(WateringRule wconf) {
+    db.save(wconf);
+  }
 
-    @Override
-    public WateringRule createWateringRule(String sensorName, String actorName, double lowWater, int waterDuration) {
-          return new WateringConfigData(sensorName, actorName, lowWater, waterDuration);
+  @Override
+  public WateringRule getBySensorName(String sensorName) {
+    LOG.debug("getBySensorName " + sensorName);
+    List<WateringConfigData> configs = db.createQuery(WateringConfigData.class).field("sensorName").equal(sensorName).asList();
+    if (configs.isEmpty()) {
+      return null;
     }
+    return configs.get(0);
+  }
 
-	public void setUpForTest() {
-		MongoDbProducer producer = new MongoDbProducer();
-		db = producer.getDatastore();
-	}
+  @Override
+  public WateringRule createWateringRule(String sensorName, String actorName, double lowWater, int waterDuration) {
+    return new WateringConfigData(sensorName, actorName, lowWater, waterDuration);
+  }
+
+  public void setUpForTest() {
+    MongoDbProducer producer = new MongoDbProducer();
+    db = producer.getDatastore();
+  }
 
 }

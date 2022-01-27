@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import com.gepardec.hogarama.domain.watering.WateringDataDAO;
 import org.json.JSONObject;
-import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
 
 import com.gepardec.hogarama.domain.metrics.Metrics;
@@ -17,7 +17,7 @@ import com.gepardec.hogarama.mocks.cli.MqttClient;
 public class ActorControlServiceImpl implements ActorControlService {
 
     @Inject
-    private Datastore db; // TODO LST: Inject DAO Producer
+    private WateringDataDAO dao;
 
     @Inject
     private Logger log;
@@ -33,12 +33,9 @@ public class ActorControlServiceImpl implements ActorControlService {
                 withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("actor." + location + "." + actorName)).
                 build();
 
-
         WateringData data = new WateringData(new Date(), actorName, location, duration);
-        db.save(data); // TODO LST: change to DAO call
-        JSONObject json = new JSONObject(data);
-        String message = json.toString();
-        mqttClient.connectAndPublish(message);
+        dao.save(data);
+        mqttClient.connectAndPublish(new JSONObject(data).toString());
     }
 
     protected void checkParametersOrFail(String location, String actorName, Integer duration) {

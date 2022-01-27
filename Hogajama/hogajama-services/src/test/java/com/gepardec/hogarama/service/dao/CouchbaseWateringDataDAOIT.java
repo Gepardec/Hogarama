@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.service.dao;
 
 import com.gepardec.hogarama.annotations.CouchbaseDAO;
+import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.service.CouchbaseProducer;
 import org.jboss.weld.junit5.auto.AddBeanClasses;
@@ -23,7 +24,8 @@ public class CouchbaseWateringDataDAOIT {
   private static final String DEMO_PFLANZE       = "Demo-Pflanze";
   private static final String PFLANZE_NOT_EXISTS = "Irgendein-Gestrüpp";
 
-  @Inject @CouchbaseDAO
+  @Inject
+  @CouchbaseDAO
   private CouchbaseWateringDataDAO classUnderTest;
 
   @Test
@@ -38,6 +40,11 @@ public class CouchbaseWateringDataDAOIT {
     Date time = data.getTime();
     assertFalse(time.before(getMin()));
     assertFalse(time.after(getMax()));
+  }
+
+  @Test
+  public void testGetWateringData_TechnicalException() {
+    assertThrows(TechnicalException.class, () -> classUnderTest.getWateringData(null, DEMO_PFLANZE, getMin(), getMax()));
   }
 
   @Test
@@ -66,6 +73,16 @@ public class CouchbaseWateringDataDAOIT {
     assertEquals(1, allData.size());
     assertEquals(id, allData.get(0).getId());
     assertEquals(DEMO_PFLANZE, allData.get(0).getName());
+  }
+
+  @Test
+  public void testSaveWateringData_ThrowTechnicalException() {
+    Date date = new Date(System.currentTimeMillis());
+    String id = UUID.randomUUID().toString();
+    WateringData data = new WateringData(id, date, DEMO_PFLANZE, "Wien", 6);
+
+    classUnderTest.save(data);
+    assertThrows(TechnicalException.class, () ->  classUnderTest.save(data));
   }
 
 }

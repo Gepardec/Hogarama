@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.service.dao;
 
 import com.gepardec.hogarama.annotations.CouchbaseDAO;
+import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 
 import java.util.Arrays;
@@ -25,11 +26,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @AddBeanClasses({CouchbaseSensorDataDAO.class, CouchbaseProducer.class})
 public class CouchbaseSensorDataDAOIT {
 
-  @Inject @CouchbaseDAO
+  @Inject
+  @CouchbaseDAO
   private CouchbaseSensorDataDAO classUnderTest;
 
-  private static final String SENSOR_NAME_DEFAULT = "Demo-Pflanze";
-  private static final String SENSOR_NAME_MULTI = "Demo-Pflanze-multi-location";
+  private static final String SENSOR_NAME_DEFAULT      = "Demo-Pflanze";
+  private static final String SENSOR_NAME_MULTI        = "Demo-Pflanze-multi-location";
   private static final String SENSOR_NAME_NONEXSISTING = "NonExistingSensorName";
 
   @Test
@@ -55,6 +57,11 @@ public class CouchbaseSensorDataDAOIT {
   }
 
   @Test
+  public void testGetAllData_TechnicalException() {
+    assertThrows(TechnicalException.class, () -> classUnderTest.getAllData(null, SENSOR_NAME_DEFAULT, getMin(), getMax()));
+  }
+
+  @Test
   public void testSaveSensorData_OK() {
     Date date = new Date(System.currentTimeMillis());
     String id = UUID.randomUUID().toString();
@@ -69,6 +76,21 @@ public class CouchbaseSensorDataDAOIT {
   }
 
   @Test
+  public void testSaveSensorData_NPE() {
+    assertThrows(TechnicalException.class, () -> classUnderTest.save(null));
+  }
+
+  @Test
+  public void testSaveSensorData_DocumentExistsException() {
+    Date date = new Date(System.currentTimeMillis());
+    String id = UUID.randomUUID().toString();
+    SensorData sensorData = new SensorData(id, date, SENSOR_NAME_DEFAULT, "wasser", 0.2, "Wien", "0");
+
+    classUnderTest.save(sensorData);
+    assertThrows(TechnicalException.class, () -> classUnderTest.save(sensorData));
+  }
+
+  @Test
   public void testGetLocationBySensorName_OK() {
     String locationBySensorName = classUnderTest.getLocationBySensorName(SENSOR_NAME_DEFAULT);
     assertEquals("Wien", locationBySensorName);
@@ -76,14 +98,12 @@ public class CouchbaseSensorDataDAOIT {
 
   @Test
   public void testGetLocationBySensorName_NotExists() {
-    assertThrows(NoResultException.class, () ->
-        classUnderTest.getLocationBySensorName(SENSOR_NAME_NONEXSISTING));
+    assertThrows(NoResultException.class, () -> classUnderTest.getLocationBySensorName(SENSOR_NAME_NONEXSISTING));
   }
 
   @Test
   public void testGetLocationBySensorName_NonUniqueResult() {
-    assertThrows(NonUniqueResultException.class, () ->
-        classUnderTest.getLocationBySensorName(SENSOR_NAME_MULTI));
+    assertThrows(NonUniqueResultException.class, () -> classUnderTest.getLocationBySensorName(SENSOR_NAME_MULTI));
   }
 
 }

@@ -16,16 +16,20 @@ public class DAOProducer {
 
   private static final Logger LOG = LoggerFactory.getLogger(DAOProducer.class);
 
-  @Inject @CouchbaseDAO
+  @Inject
+  @CouchbaseDAO
   private CouchbaseSensorDataDAO couchbaseSensorDataDAO;
 
-  @Inject @CouchbaseDAO
+  @Inject
+  @CouchbaseDAO
   private CouchbaseWateringDataDAO couchbaseWateringDataDAO;
 
-  @Inject @MongoDAO
+  @Inject
+  @MongoDAO
   private MongoSensorDataDAO mongoSensorDataDAO;
 
-  @Inject @MongoDAO
+  @Inject
+  @MongoDAO
   private MongoWateringDataDAO mongoWateringDataDAO;
 
   @Produces
@@ -34,7 +38,7 @@ public class DAOProducer {
       LOG.debug("Produce CouchbaseSensorDataDAO");
       return couchbaseSensorDataDAO;
     }
-    LOG.debug("Produce CouchbaseSensorDataDAO");
+    LOG.debug("Produce MongaSensorDataDAO");
     return mongoSensorDataDAO;
   }
 
@@ -44,7 +48,7 @@ public class DAOProducer {
       LOG.debug("Produce CouchbaseWateringDataDAO");
       return couchbaseWateringDataDAO;
     }
-    LOG.debug("Produce CouchbaseWateringDataDAO");
+    LOG.debug("Produce MongoWateringDataDAO");
     return mongoWateringDataDAO;
   }
 

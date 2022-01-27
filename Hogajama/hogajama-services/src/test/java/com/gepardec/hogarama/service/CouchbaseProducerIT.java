@@ -21,7 +21,6 @@ public class CouchbaseProducerIT {
   @Inject
   private CouchbaseProducer classToTest;
 
-
   @BeforeEach
   public void setUp() {
     readDummyEntryIfExists(); // Workaround: without reading a dummy entry, the endpoints are not available yet.

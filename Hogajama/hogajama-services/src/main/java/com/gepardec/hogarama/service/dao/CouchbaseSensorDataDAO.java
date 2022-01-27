@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.service.dao;
 
 import com.couchbase.client.core.error.DocumentExistsException;
+import com.couchbase.client.core.error.InternalServerFailureException;
 import com.couchbase.client.core.error.QueryException;
 import com.couchbase.client.core.error.TimeoutException;
 import com.couchbase.client.java.Collection;
@@ -51,11 +52,13 @@ public class CouchbaseSensorDataDAO implements SensorDataDAO {
     String statement = new N1qlBuilder(BUCKET_NAME, SCOPE_NAME).select("sensorName").distinct().from(COLLECTION_NAME).build();
 
     try {
+      // @formatter:off
       return scope
           .query(statement)
           .rowsAs(SensorData.class)
           .stream().map(SensorData::getSensorName)
           .collect(Collectors.toList());
+      // @formatter:on
     } catch (QueryException e) {
       throw new TechnicalException("Query Failed: " + statement, e);
     }
@@ -69,7 +72,7 @@ public class CouchbaseSensorDataDAO implements SensorDataDAO {
   List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to, boolean enforceConsistency) {
     QueryScanConsistency consistency;
 
-    if(enforceConsistency) {
+    if (enforceConsistency) {
       consistency = QueryScanConsistency.REQUEST_PLUS;
     } else {
       consistency = QueryScanConsistency.NOT_BOUNDED;
@@ -77,7 +80,6 @@ public class CouchbaseSensorDataDAO implements SensorDataDAO {
 
     Metrics.requestsTotal.labels("hogajama_services", "getAllData").inc();
 
-    //new N1qlBuilder(BUCKET_NAME, SCOPE_NAME).select(COLLECTION_NAME + ".*").from(COLLECTION_NAME)
     //@formatter:off
     String statement = String.format(
         "SELECT %s.* "
@@ -102,7 +104,7 @@ public class CouchbaseSensorDataDAO implements SensorDataDAO {
 
     try {
       return scope.query(statement, options).rowsAs(SensorData.class);
-    } catch (QueryException e) {
+    } catch (QueryException | InternalServerFailureException e) {
       throw new TechnicalException("Query Failed: " + statement, e);
     }
   }
@@ -133,10 +135,10 @@ public class CouchbaseSensorDataDAO implements SensorDataDAO {
       throw new TechnicalException("Query Failed: " + statement, e);
     }
 
-    if(sensorData == null || sensorData.isEmpty()) {
+    if (sensorData == null || sensorData.isEmpty()) {
       Metrics.exceptionsThrown.labels("hogarama_services", "NoResultException", "getLocationBySensorName").inc();
       throw new NoResultException("No location for sensorName: " + sensorName);
-    } else if(sensorData.size() > 1) {
+    } else if (sensorData.size() > 1) {
       Metrics.exceptionsThrown.labels("hogarama_services", "NonUniqueResultException", "getLocationBySensorName").inc();
       throw new NonUniqueResultException("Multiple locations for sensorName: " + sensorName);
     }
@@ -145,6 +147,9 @@ public class CouchbaseSensorDataDAO implements SensorDataDAO {
 
   @Override
   public void save(SensorData sensorData) {
+    if (sensorData == null) {
+      throw new TechnicalException("Failure while trying to create sensorData. SensorData must not be null.");
+    }
     try {
       collection.insert(getKey(COLLECTION_NAME, sensorData.getId()), sensorData);
     } catch (DocumentExistsException | TimeoutException ex) {

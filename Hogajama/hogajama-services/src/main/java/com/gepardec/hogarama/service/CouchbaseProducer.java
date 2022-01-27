@@ -20,12 +20,12 @@ public class CouchbaseProducer {
 
   private static final Logger LOG = LoggerFactory.getLogger(CouchbaseProducer.class);
 
-  private static final String HOST       = System.getenv("COUCHBASE_HOST");
-  private static final String USER       = System.getenv("COUCHBASE_USER");
-  private static final String PASSWORD   = System.getenv("COUCHBASE_PASSWORD");
+  private static final String HOST     = System.getenv("COUCHBASE_HOST");
+  private static final String USER     = System.getenv("COUCHBASE_USER");
+  private static final String PASSWORD = System.getenv("COUCHBASE_PASSWORD");
 
-  public static final String BUCKET_NAME     = System.getenv("COUCHBASE_BUCKET");
-  public static final String SCOPE_NAME      = System.getenv("COUCHBASE_SCOPE");
+  public static final String BUCKET_NAME = System.getenv("COUCHBASE_BUCKET");
+  public static final String SCOPE_NAME  = System.getenv("COUCHBASE_SCOPE");
 
   @PostConstruct
   private void init() {
@@ -58,7 +58,7 @@ public class CouchbaseProducer {
   @PreDestroy
   private void destroy() {
     LOG.info("Disconnecting from Couchbase...");
-    if(cluster != null) {
+    if (cluster != null) {
       cluster.disconnect();
       LOG.info("Successfully disconnected from Couchbase.");
     }

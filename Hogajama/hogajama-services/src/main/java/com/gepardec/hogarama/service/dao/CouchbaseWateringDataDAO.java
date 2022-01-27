@@ -1,6 +1,7 @@
 package com.gepardec.hogarama.service.dao;
 
 import com.couchbase.client.core.error.DocumentExistsException;
+import com.couchbase.client.core.error.InternalServerFailureException;
 import com.couchbase.client.core.error.QueryException;
 import com.couchbase.client.core.error.TimeoutException;
 import com.couchbase.client.java.Collection;
@@ -47,7 +48,7 @@ public class CouchbaseWateringDataDAO implements WateringDataDAO {
   List<WateringData> getWateringData(Integer maxNumber, String actorName, Date from, Date to, boolean enforceConsistency) {
     QueryScanConsistency consistency;
 
-    if(enforceConsistency) {
+    if (enforceConsistency) {
       consistency = QueryScanConsistency.REQUEST_PLUS;
     } else {
       consistency = QueryScanConsistency.NOT_BOUNDED;
@@ -79,13 +80,12 @@ public class CouchbaseWateringDataDAO implements WateringDataDAO {
 
     try {
       return scope.query(statement, options).rowsAs(WateringData.class);
-    } catch (QueryException e) {
+    } catch (QueryException | InternalServerFailureException e) {
       throw new TechnicalException("Query Failed: " + statement, e);
     }
   }
 
-
-    @Override
+  @Override
   public void save(WateringData wateringData) {
     try {
       collection.insert(getKey(COLLECTION_NAME, wateringData.getId()), wateringData);
