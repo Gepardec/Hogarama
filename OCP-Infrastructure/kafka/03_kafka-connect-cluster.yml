@@ -1,4 +1,4 @@
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
   annotations:
@@ -24,4 +24,4 @@ spec:
       memory: 2Gi
       cpu: "500m"
 
-  version: 2.6.0
+  version: 2.8.0

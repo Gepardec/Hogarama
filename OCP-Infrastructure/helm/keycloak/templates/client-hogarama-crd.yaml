@@ -20,3 +20,8 @@ spec:
   realmSelector:
     matchLabels:
       app: sso
+  roles:
+    - clientRole: true
+      description: Hogarama Administratoren
+      name: admins
+
