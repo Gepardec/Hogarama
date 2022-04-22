@@ -42,6 +42,9 @@ public class LowWaterWateringRule implements WateringRule, Serializable, Owned {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "description")
+    private String description;
     
     @Column(name = "water_duration")
     private int waterDuration;
@@ -85,6 +88,14 @@ public class LowWaterWateringRule implements WateringRule, Serializable, Owned {
 
     public Long getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setId(Long id) {

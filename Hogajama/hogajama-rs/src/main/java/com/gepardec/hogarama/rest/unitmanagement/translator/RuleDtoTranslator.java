@@ -4,7 +4,6 @@ import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.ActorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.dao.UnitDAO;
-import com.gepardec.hogarama.domain.unitmanagement.entity.EntityNotFoundException;
 import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
@@ -39,6 +38,7 @@ public class RuleDtoTranslator implements Translator<RuleDto, LowWaterWateringRu
 
         return RuleDto.of(rule.getId(),
                 rule.getName(),
+                rule.getDescription(),
                 rule.getSensor().getId(),
                 rule.getActor().getId(),
                 rule.getUnit().getId(),
@@ -58,6 +58,7 @@ public class RuleDtoTranslator implements Translator<RuleDto, LowWaterWateringRu
         rule.setActor(actorDAO.getByIdNonOpt(dto.getActorId()));
         rule.setUnit(unitDAO.getById(dto.getUnitId()).orElse(sensor.getUnit()));
         rule.setName(dto.getName());
+        rule.setDescription(dto.getDescription());
         rule.setLowWater(dto.getLowWater());
         rule.setWaterDuration(dto.getWaterDuration());
 

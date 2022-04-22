@@ -1,0 +1,38 @@
+
+<ion-content padding>
+  <form #sensorForm="ngForm">
+    <mat-form-field *ngIf="this.isEditAction">
+      <mat-label>Id</mat-label>
+      <input matInput placeholder="1234" type="number" [(ngModel)]="rule.id" name="id" [readonly]="true">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="abcde" type="text" [(ngModel)]="rule.name" name="name">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="abcde" type="text" [(ngModel)]="rule.description" name="description">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Sensor Id</mat-label>
+      <input matInput placeholder="1234" type="number" [(ngModel)]="rule.sensorId" name="sensorId">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Actor Id</mat-label>
+      <input matInput placeholder="1234" type="number" [(ngModel)]="rule.actorId" name="actorId">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Water Duration</mat-label>
+      <input matInput placeholder="1234" type="number" [(ngModel)]="rule.waterDuration" name="waterDuration">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Low Water</mat-label>
+      <input matInput placeholder="1234" type="number" [(ngModel)]="rule.lowWater" name="lowWater">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Unit Id</mat-label>
+      <input matInput placeholder="1234" type="number" [(ngModel)]="rule.unitId" name="unitId">
+    </mat-form-field>
+    <button mat-raised-button (click)="save()" color="primary" style="margin-top: 10px">Save</button>
+  </form>
+</ion-content>
