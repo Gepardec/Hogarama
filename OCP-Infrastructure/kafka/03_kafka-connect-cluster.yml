@@ -18,8 +18,8 @@ spec:
         secretName: gepardec-kafka-cluster-cluster-ca-cert
   resources:
     requests:
-      memory: 1.5Gi
-      cpu: "250m"
+      memory: 0.5Gi
+      cpu: "20m"
     limits:
       memory: 2Gi
       cpu: "500m"
