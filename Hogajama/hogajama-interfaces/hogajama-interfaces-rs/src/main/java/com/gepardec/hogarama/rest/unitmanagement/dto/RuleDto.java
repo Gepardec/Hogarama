@@ -3,6 +3,7 @@ package com.gepardec.hogarama.rest.unitmanagement.dto;
 public class RuleDto extends BaseDto {
 
     private String name;
+    private String description;
     private Long sensorId;
     private Long actorId;
     private Long unitId;
@@ -12,9 +13,10 @@ public class RuleDto extends BaseDto {
     public RuleDto() {
     }
 
-    private RuleDto(Long id, String name, Long sensorId, Long actorId, Long unitId, int waterDuration, double lowWater) {
+    private RuleDto(Long id, String name, String description, Long sensorId, Long actorId, Long unitId, int waterDuration, double lowWater) {
         super(id);
         this.name = name;
+        this.description = description;
         this.sensorId = sensorId;
         this.actorId = actorId;
         this.unitId = unitId;
@@ -22,8 +24,8 @@ public class RuleDto extends BaseDto {
         this.lowWater = lowWater;
     }
 
-    public static RuleDto of(Long id, String name, Long sensorId, Long actorId, Long unitId, int waterDuration, double lowWater) {
-        return new RuleDto( id, name, sensorId, actorId, unitId, waterDuration, lowWater);
+    public static RuleDto of(Long id, String name, String description, Long sensorId, Long actorId, Long unitId, int waterDuration, double lowWater) {
+        return new RuleDto( id, name, description, sensorId, actorId, unitId, waterDuration, lowWater);
     }
 
     public String getName() {
@@ -32,6 +34,14 @@ public class RuleDto extends BaseDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getSensorId() {

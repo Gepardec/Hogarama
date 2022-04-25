@@ -17,14 +17,16 @@ import {
     MatSortModule,
     MatTableModule,
     MatTabsModule
-} from "@angular/material";
-import {SharedModule} from "../shared/shared.module";
-import {SensorDialogModule} from "../shared/sensor-dialog/sensor-dialog.module";
-import {SensorDialogComponent} from "../shared/sensor-dialog/sensor-dialog.component";
-import {UnitDialogModule} from "../shared/unit-dialog/unit-dialog.module";
-import {UnitDialogComponent} from "../shared/unit-dialog/unit-dialog.component";
-import {ActorDialogComponent} from "../shared/actor-dialog/actor-dialog.component";
-import {ActorDialogModule} from "../shared/actor-dialog/actor-dialog.module";
+} from '@angular/material';
+import {SharedModule} from '../shared/shared.module';
+import {SensorDialogModule} from '../shared/sensor-dialog/sensor-dialog.module';
+import {SensorDialogComponent} from '../shared/sensor-dialog/sensor-dialog.component';
+import {UnitDialogModule} from '../shared/unit-dialog/unit-dialog.module';
+import {UnitDialogComponent} from '../shared/unit-dialog/unit-dialog.component';
+import {ActorDialogComponent} from '../shared/actor-dialog/actor-dialog.component';
+import {ActorDialogModule} from '../shared/actor-dialog/actor-dialog.module';
+import {RuleDialogComponent} from '../shared/rule-dialog/rule-dialog.component';
+import {RuleDialogModule} from '../shared/rule-dialog/rule-dialog.module';
 
 const routes: Routes = [
     {
@@ -34,7 +36,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    entryComponents: [SensorDialogComponent, UnitDialogComponent, ActorDialogComponent],
+    entryComponents: [SensorDialogComponent, UnitDialogComponent, ActorDialogComponent, RuleDialogComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -53,7 +55,8 @@ const routes: Routes = [
         MatSelectModule,
         SensorDialogModule,
         UnitDialogModule,
-        ActorDialogModule
+        ActorDialogModule,
+        RuleDialogModule
     ],
     declarations: [TestingPlaygroundPage]
 })
