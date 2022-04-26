@@ -28,7 +28,7 @@ spec:
     type: Dockerfile
     dockerfile: |-
       FROM jboss/wildfly
-      COPY target/* /opt/jboss/wildfly/standalone/deployments/
+      COPY deployments/*.war /opt/jboss/wildfly/standalone/deployments/
       USER root
       RUN ln -s /opt/jboss/wildfly /opt/eap && \
           echo -e "#!/bin/bash\nexit 0" > /opt/jboss/wildfly/bin/readinessProbe.sh && \
@@ -48,11 +48,11 @@ spec:
     images:
       - from:
           kind: ImageStreamTag
-          name: 'hogajama-binary:latest'
+          name: 'hogajama-build-artefacts:latest'
         as: null
         paths:
-          - sourcePath: /deployments/target/
-            destinationDir: target
+          - sourcePath: /deployments
+            destinationDir: deployments
   triggers:
     - type: ImageChange
       imageChange:
