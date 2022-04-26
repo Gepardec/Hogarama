@@ -10,7 +10,9 @@ metadata:
     strimzi.io/cluster: gepardec-kafka-cluster
 spec:
   bootstrapServers: 'gepardec-kafka-cluster-kafka-bootstrap:9093'
-  image: 'gepardec/kafka-connect-cluster:1.0.2'
+  image: 'gepardec/kafka-connect-cluster:1.1.0'
+  livenessProbe:
+    initialDelaySeconds: 300
   replicas: 1
   tls:
     trustedCertificates:
@@ -19,9 +21,9 @@ spec:
   resources:
     requests:
       memory: 0.5Gi
-      cpu: "20m"
+      cpu: "250m"
     limits:
-      memory: 2Gi
+      memory: 1Gi
       cpu: "500m"
 
   version: 2.8.0
