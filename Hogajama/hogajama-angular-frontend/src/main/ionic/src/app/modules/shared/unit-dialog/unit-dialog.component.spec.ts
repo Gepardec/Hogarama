@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnitDialogComponent } from './unit-dialog.component';
 
-describe('SensorDialogComponent', () => {
+describe('UnitDialogComponent', () => {
   let component: UnitDialogComponent;
   let fixture: ComponentFixture<UnitDialogComponent>;
 
