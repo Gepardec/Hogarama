@@ -35,7 +35,7 @@ public class UnitApiImpl implements UnitApi {
     @Override
     @Transactional
     public Response create(SecurityContext securityContext, UnitDto unitDto) {
-        LOG.info("Create new unit.");
+        LOG.info("Create new unit {}", unitDto);
         Unit unit = translator.fromDto(unitDto);
         service.createUnit(unit);
 
@@ -45,7 +45,7 @@ public class UnitApiImpl implements UnitApi {
     @Override
     @Transactional
     public Response update(String id, SecurityContext securityContext, UnitDto unitDto) {
-        LOG.info("Updating unit with id {}.", id);
+        LOG.info("Updating unit {}.", unitDto);
         Unit unit = translator.fromDto(unitDto);
 
         if (id == null || !id.equals(unitDto.getId().toString())) {
