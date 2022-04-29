@@ -48,8 +48,10 @@ public class UnitApiImpl implements UnitApi {
         LOG.info("Updating unit {}.", unitDto);
         Unit unit = translator.fromDto(unitDto);
 
-        if (id == null || !id.equals(unitDto.getId().toString())) {
-            return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        if (id == null) {
+            return new BaseResponse<>("Required parameter ID is not set!", HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        } else if (!id.equals(unitDto.getId().toString())) {
+            return new BaseResponse<>(String.format("ID %s has to match with ID %s", id, unitDto.getId().toString()), HttpStatus.SC_BAD_REQUEST).createRestResponse();
         } else {
             service.updateUnit(unit);
         }
