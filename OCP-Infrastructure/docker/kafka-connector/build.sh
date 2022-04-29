@@ -1,8 +1,8 @@
 #!/bin/bash
 
 VERSION=$1
-PLUGINS=("https://repo.maven.apache.org/maven2/org/apache/camel/kafkaconnector/camel-activemq-kafka-connector/0.9.0/camel-activemq-kafka-connector-0.9.0-package.tar.gz"
-         "https://repo.maven.apache.org/maven2/org/apache/camel/kafkaconnector/camel-sjms2-kafka-connector/0.9.0/camel-sjms2-kafka-connector-0.9.0-package.tar.gz")
+PLUGINS=("https://repo.maven.apache.org/maven2/org/apache/camel/kafkaconnector/camel-activemq-kafka-connector/1.0.0/camel-activemq-kafka-connector-1.0.0-package.tar.gz"
+         "https://repo.maven.apache.org/maven2/org/apache/camel/kafkaconnector/camel-sjms2-kafka-connector/1.0.0/camel-sjms2-kafka-connector-1.0.0-package.tar.gz")
 
 
 if [ -x "VERSION" ]; then

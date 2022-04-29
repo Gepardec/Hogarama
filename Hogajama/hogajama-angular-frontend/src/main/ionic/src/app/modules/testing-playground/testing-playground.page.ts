@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from "../../services/AuthenticationService/authentication.service";
-import {ToastController} from "@ionic/angular";
-import {MatDialog, MatTableDataSource} from "@angular/material";
-import {Sensor} from "../../shared/models/Sensor";
-import {HogaramaBackendService} from "../../services/HogaramaBackendService/hogarama-backend.service";
-import {SensorDialogComponent} from "../shared/sensor-dialog/sensor-dialog.component";
-import {Unit} from "../../shared/models/Unit";
-import {Actor} from "../../shared/models/Actor";
-import {UnitDialogComponent} from "../shared/unit-dialog/unit-dialog.component";
-import {ActorDialogComponent} from "../shared/actor-dialog/actor-dialog.component";
+import {AuthenticationService} from '../../services/AuthenticationService/authentication.service';
+import {ToastController} from '@ionic/angular';
+import {MatDialog, MatTableDataSource} from '@angular/material';
+import {Sensor} from '../../shared/models/Sensor';
+import {HogaramaBackendService} from '../../services/HogaramaBackendService/hogarama-backend.service';
+import {SensorDialogComponent} from '../shared/sensor-dialog/sensor-dialog.component';
+import {Unit} from '../../shared/models/Unit';
+import {Actor} from '../../shared/models/Actor';
+import {Rule} from '../../shared/models/Rule';
+import {UnitDialogComponent} from '../shared/unit-dialog/unit-dialog.component';
+import {ActorDialogComponent} from '../shared/actor-dialog/actor-dialog.component';
+import {RuleDialogComponent} from '../shared/rule-dialog/rule-dialog.component';
 
 @Component({
   selector: 'app-testing-playground',
@@ -17,13 +19,18 @@ import {ActorDialogComponent} from "../shared/actor-dialog/actor-dialog.componen
 })
 export class TestingPlaygroundPage implements OnInit {
     sensorsDisplayedColumns: string[] = ['id', 'name', 'deviceId', 'unitId', 'sensorTypeId', 'actions'];
-    sensorsDataSource: MatTableDataSource<Sensor>= new MatTableDataSource<Sensor>();
+    sensorsDataSource: MatTableDataSource<Sensor> = new MatTableDataSource<Sensor>();
 
     actorsDisplayedColumns: string[] = ['id', 'name', 'deviceId', 'unitId', 'queueName', 'actions'];
-    actorsDataSource: MatTableDataSource<Actor>= new MatTableDataSource<Actor>();
+    actorsDataSource: MatTableDataSource<Actor> = new MatTableDataSource<Actor>();
 
     unitsDisplayedColumns: string[] = ['id', 'name', 'description', 'isDefault', 'ownerId', 'actions'];
-    unitsDataSource: MatTableDataSource<Unit>= new MatTableDataSource<Unit>();
+    unitsDataSource: MatTableDataSource<Unit> = new MatTableDataSource<Unit>();
+
+    rulesDisplayedColumns: string[] = ['id', 'name', 'description', 'sensorId', 'actorId', 'waterDuration',
+        'lowWater', 'unitId', 'actions'];
+    rulesDataSource: MatTableDataSource<Rule> = new MatTableDataSource<Rule>();
+
     constructor(
       public authService: AuthenticationService,
       public toastController: ToastController,
@@ -39,6 +46,7 @@ export class TestingPlaygroundPage implements OnInit {
         await this.reloadSensors();
         await this.reloadActors();
         await this.reloadUnits();
+        await this.reloadRules();
     }
 
     private async reloadUnits() {
@@ -58,6 +66,13 @@ export class TestingPlaygroundPage implements OnInit {
     private async reloadSensors() {
         try {
             this.sensorsDataSource.data = await this.backend.sensors.getAllForOwner();
+        } catch (e) {
+        }
+    }
+
+    private async reloadRules() {
+        try {
+            this.rulesDataSource.data = await this.backend.rules.getAllForOwner();
         } catch (e) {
         }
     }
@@ -86,7 +101,7 @@ export class TestingPlaygroundPage implements OnInit {
 
     copyBearerToClipboard() {
         document.execCommand('copy');
-        this.presentToast('Copied to clipboard')
+        this.presentToast('Copied to clipboard');
     }
 
     async deleteSensor(id: number) {
@@ -103,7 +118,7 @@ export class TestingPlaygroundPage implements OnInit {
 
     async deleteUnit(id: number) {
         try {
-            let result = await this.backend.sensors.delete(id);
+            let result = await this.backend.units.delete(id);
             console.log(result);
             this.presentToast('Unit deleted');
             this.reloadUnits();
@@ -125,6 +140,18 @@ export class TestingPlaygroundPage implements OnInit {
         }
     }
 
+    async deleteRule(id: number) {
+        try {
+            const result = await this.backend.rules.delete(id);
+            console.log(result);
+            this.presentToast('Rule deleted');
+            this.reloadActors();
+        } catch (e) {
+            console.log(e);
+            this.presentToast('Rule delete failed');
+        }
+    }
+
     addNewSensor() {
         let dialogRef = this.dialog.open(SensorDialogComponent, {
             height: '500px',
@@ -134,7 +161,7 @@ export class TestingPlaygroundPage implements OnInit {
             console.log(result);
             this.presentToast('Sensor added');
             this.reloadSensors();
-        })
+        });
     }
 
     addNewUnit() {
@@ -161,6 +188,18 @@ export class TestingPlaygroundPage implements OnInit {
         });
     }
 
+    addNewRule() {
+        const dialogRef = this.dialog.open(RuleDialogComponent, {
+            height: '700px',
+            width: '560px',
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+            this.presentToast('Rule added');
+            this.reloadRules();
+        });
+    }
+
     editSensor(sensor: Sensor) {
         let dialogRef = this.dialog.open(SensorDialogComponent, {
             height: '500px',
@@ -171,7 +210,7 @@ export class TestingPlaygroundPage implements OnInit {
             console.log(result);
             this.presentToast('Sensor edited');
             this.reloadSensors();
-        })
+        });
     }
 
     editUnit(unit: Unit) {
@@ -184,7 +223,7 @@ export class TestingPlaygroundPage implements OnInit {
             console.log(result);
             this.presentToast('Unit edited');
             this.reloadUnits();
-        })
+        });
     }
 
     editActor(actor: Actor) {
@@ -195,8 +234,21 @@ export class TestingPlaygroundPage implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
             console.log(result);
-            this.presentToast('Unit edited');
+            this.presentToast('Actor edited');
             this.reloadActors();
-        })
+        });
+    }
+
+    editRule(rule: Rule) {
+        const dialogRef = this.dialog.open(RuleDialogComponent, {
+            height: '700px',
+            width: '560px',
+            data: rule
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+            this.presentToast('Rule edited');
+            this.reloadRules();
+        });
     }
 }

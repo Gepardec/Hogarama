@@ -1,4 +1,4 @@
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: habarama
@@ -10,5 +10,5 @@ spec:
   partitions: 10
   retention.ms: 604800000
   segment.bytes: 1073741824
-  replicas: 3
+  replicas: 1
   topicName: habarama

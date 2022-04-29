@@ -1,4 +1,4 @@
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
   annotations:
@@ -10,18 +10,24 @@ metadata:
     strimzi.io/cluster: gepardec-kafka-cluster
 spec:
   bootstrapServers: 'gepardec-kafka-cluster-kafka-bootstrap:9093'
-  image: 'gepardec/kafka-connect-cluster:1.0.2'
+  image: 'gepardec/kafka-connect-cluster:1.1.0'
+  livenessProbe:
+    initialDelaySeconds: 300
   replicas: 1
+  config:
+    config.storage.replication.factor: -1
+    offset.storage.replication.factor: -1
+    status.storage.replication.factor: -1
   tls:
     trustedCertificates:
       - certificate: ca.crt
         secretName: gepardec-kafka-cluster-cluster-ca-cert
   resources:
     requests:
-      memory: 1.5Gi
-      cpu: "250m"
+      memory: 256Mi
+      cpu: 10m
     limits:
-      memory: 2Gi
-      cpu: "500m"
+      memory: 512Mi
+      cpu: 300m
 
-  version: 2.6.0
+  version: 2.8.0

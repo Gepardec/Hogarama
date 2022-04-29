@@ -24,6 +24,7 @@ public class RuleDtoTranslatorTest {
 
     private static final long RULE_ID = 1338L;
     private static final String NAME = "MY_RULE";
+    private static final String DESCRIPTION = "MY_RULE_DESCRIPTION";
     private static final long SENSOR_ID = 2L;
     private static final long ACTOR_ID = 3L;
     private static final long UNIT_ID = 4L;
@@ -53,6 +54,7 @@ public class RuleDtoTranslatorTest {
         LowWaterWateringRule rule = new LowWaterWateringRule();
         rule.setId(RULE_ID);
         rule.setName(NAME);
+        rule.setDescription(DESCRIPTION);
         rule.setSensor(newSensor());
         rule.setActor(newActor());
         rule.setUnit(newUnit());
@@ -64,6 +66,7 @@ public class RuleDtoTranslatorTest {
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(RULE_ID);
         assertThat(result.getName()).isEqualTo(NAME);
+        assertThat(result.getDescription()).isEqualTo(DESCRIPTION);
         assertThat(result.getUnitId()).isEqualTo(UNIT_ID);
         assertThat(result.getSensorId()).isEqualTo(SENSOR_ID);
         assertThat(result.getActorId()).isEqualTo(ACTOR_ID);
@@ -89,6 +92,7 @@ public class RuleDtoTranslatorTest {
         RuleDto dto = new RuleDto();
         dto.setId(RULE_ID);
         dto.setName(NAME);
+        dto.setDescription(DESCRIPTION);
         dto.setSensorId(SENSOR_ID);
         dto.setActorId(ACTOR_ID);
         dto.setUnitId(UNIT_ID);
@@ -100,6 +104,7 @@ public class RuleDtoTranslatorTest {
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(RULE_ID);
         assertThat(result.getName()).isEqualTo(NAME);
+        assertThat(result.getDescription()).isEqualTo(DESCRIPTION);
         assertThat(result.getSensor()).isEqualTo(sensor);
         assertThat(result.getActor()).isEqualTo(actor);
         assertThat(result.getUnit()).isEqualTo(unit);
