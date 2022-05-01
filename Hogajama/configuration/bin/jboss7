@@ -244,6 +244,12 @@ configure() {
             echo "[ERROR]: failed executing $0 restart" ; exit 1
         }
   	  ;;
+  	  stop)
+		echo $0 stop
+		$0 stop || {
+            echo "[ERROR]: failed executing $0 stop" ; exit 1
+        }
+  	  ;;
   	  interactive)
 		echo $0 interactive
 		$0 interactive || {

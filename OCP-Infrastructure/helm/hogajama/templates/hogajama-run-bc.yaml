@@ -23,13 +23,17 @@ spec:
       from:
         kind: ImageStreamTag
         name: 'wildfly:23.0.2.Final'
+      envFrom:
+        - configMapRef:
+            name: hogajama-config
   postCommit: {}
   source:
     type: Dockerfile
     dockerfile: |-
       FROM jboss/wildfly
       COPY artefacts/deployments   /tmp/setup
-      RUN /tmp/setup/configure_ocp_jboss.sh 
+      RUN env KAFKA_TOPIC_PREFIX="" /tmp/setup/configure_ocp_jboss.sh 
+      USER 0
       RUN chgrp -R 0 /opt/jboss/wildfly && chmod g=u /opt/jboss/wildfly
     images:
       - from:

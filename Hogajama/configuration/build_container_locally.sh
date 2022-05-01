@@ -14,5 +14,6 @@ if [ ! -f "$ENV_FILE" ]; then
 fi
 echo "Using $ENV_FILE as environment"
 
+cd $DIR
 cp $ENV_FILE local_configuration/tmp_environment
-docker build -t hogajama-run $DIR --build-arg ENV_FILE=tmp_environment
+docker build -t hogajama-run . --build-arg ENV_FILE=local_configuration/tmp_environment
