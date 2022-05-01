@@ -40,7 +40,6 @@ spec:
     type: Source
   successfulBuildsHistoryLimit: 5
   triggers:
-  triggers:
   - github:
       secret: BmvoaZZ0-34BgkToUhPn
     type: GitHub

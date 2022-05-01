@@ -1,0 +1,511 @@
+#!/bin/bash
+#
+# Copyright (C) Gepardec IT Services GmbH 2015
+#
+# This copyrighted material is made available to anyone wishing to use,
+# modify, copy, or redistribute it subject to the terms and conditions
+# of the GNU General Public License Version 3.
+#
+# 
+# Allgemeins Start - Stop Script für JBoss7
+# Spezielle Start/Stop-Skripts sollten nur ein link auf dieses
+# Script sein. 
+# Konfiguration durch $HOME/.${instanzName}rc
+if [ x$JBOSS_INSTANZ_NAME = x ]; then
+	instanzName=`basename $0`
+else
+	instanzName=$JBOSS_INSTANZ_NAME
+fi
+
+# You may use TIMEOUT or JBOSS_TIMEOUT, JBOSS_START_TIMEOUT, JBOSS_STOP_TIMEOUT
+# The use of TIMEOUT is deprecated. Use JBOSS_TIMEOUT instead.
+TIMEOUT=40
+JBOSS_MAJOR_CODE=7
+ECHO_COMMAND="--echo-command"
+
+test -f $HOME/.${instanzName}rc && . $HOME/.${instanzName}rc
+
+if [ X$JBOSS_HOME = X ]; then
+ 	echo "ERROR: Variable JBOSS_HOME is not set."
+ 	exit 1
+fi
+
+if [ ! X$JBOSS_RELEASE_NAME = X ]; then
+ 	product=`echo $JBOSS_RELEASE_NAME | sed -r 's:^(.*)-([^\.]*)\.([^\.]*).*$:\1:'`
+ 	major=`  echo $JBOSS_RELEASE_NAME | sed -r 's:^(.*)-([^\.]*)\.([^\.]*).*$:\2:'`
+ 	minor=`  echo $JBOSS_RELEASE_NAME | sed -r 's:^(.*)-([^\.]*)\.([^\.]*).*$:\3:'`
+	case "$product" in
+	  *eap|*sso)
+		case "$major" in
+	  	  6)
+			let JBOSS_MAJOR_CODE=7
+			ECHO_COMMAND=""
+		  ;;
+	  	  7)
+			let JBOSS_MAJOR_CODE=10
+			test $minor -lt 2 && ECHO_COMMAND=""
+		  ;;
+	  	  *)
+			let JBOSS_MAJOR_CODE=$major+3
+		  ;;
+		esac
+  	  ;;
+	  *wildfly|*as)
+		JBOSS_MAJOR_CODE=$major
+  	  ;;
+	esac
+fi
+
+if [ ! X$FORCE_JBOSS_MAJOR_CODE = X ]; then
+ 	JBOSS_MAJOR_CODE=$FORCE_JBOSS_MAJOR_CODE
+fi
+
+TIMEOUT=${JBOSS_TIMEOUT:-"$TIMEOUT"}
+START_TIMEOUT=${JBOSS_START_TIMEOUT:-"$TIMEOUT"}
+STOP_TIMEOUT=${JBOSS_STOP_TIMEOUT:-"$TIMEOUT"}
+
+export JBOSS_HOME
+export JBOSS_INSTANZ_NAME=$instanzName
+ 
+if [ X$DEPLOY_SUBDIR = X ]; then
+	DEPLOY_SUBDIR=""
+fi
+
+# You may use JBOSS_PORT_OFFSET or PORT_OFFSET to set the Port-Offset
+# The use of PORT_OFFSET is deprecated. Use JBOSS_PORT_OFFSET instead.
+PORT_OFFSET=${JBOSS_PORT_OFFSET:-"$PORT_OFFSET"}
+if [ X$PORT_OFFSET = X ]; then
+	PORT_OFFSET=0
+else
+	OFFSET_PROP="-Djboss.socket.binding.port-offset=$PORT_OFFSET"
+fi
+
+let JBOSS_ADMIN_HTTP_PORT=9990+$PORT_OFFSET
+if [ $JBOSS_MAJOR_CODE -ge 8 ]; then
+	JBOSS_ADMIN_PORT=$JBOSS_ADMIN_HTTP_PORT
+else
+	let JBOSS_ADMIN_PORT=9999+$PORT_OFFSET
+fi
+let JBOSS_HTTP_PORT=8080+$PORT_OFFSET
+
+export JBOSS_PORT_OFFSET=$PORT_OFFSET
+export JBOSS_ADMIN_PORT JBOSS_HTTP_PORT
+
+rundir=$JBOSS_HOME/standalone
+start="$JBOSS_HOME/bin/standalone.sh -Djboss.node.name=$instanzName $OFFSET_PROP $JBOSS_OPTS"
+configFile=$rundir/configuration/standalone.xml
+displayName="JBoss Server $instanzName"
+
+if [ ! X$DOMAIN_MODE = X ]; then
+	DOMAIN_PROP="-Djboss.management.native.port=$JBOSS_ADMIN_PORT -Djboss.management.http.port=$JBOSS_ADMIN_HTTP_PORT"
+	rundir=$JBOSS_HOME/domain
+	start="$JBOSS_HOME/bin/domain.sh $DOMAIN_PROP $JBOSS_OPTS"
+	displayName="JBoss Domain $instanzName"
+	configFile=$rundir/configuration/domain.xml
+fi
+
+logdir=$rundir/log
+deployDir=$rundir/deployments/$DEPLOY_SUBDIR
+out=$logdir/out.log
+logfile=$logdir/server.log
+if [ ! X$DOMAIN_MODE = X ]; then
+	logfile=$logdir/host-controller.log
+fi
+if [ "x$JBOSS_PIDFILE" = "x" ]; then
+	JBOSS_PIDFILE=$rundir/pid.lock
+fi
+export JBOSS_PIDFILE
+export LAUNCH_JBOSS_IN_BACKGROUND=true
+
+admin() {
+  if [ "x$OPENSHIFT_HOMEDIR" = "x" ]; then
+    echo "$JBOSS_HOME/bin/jboss-cli.sh $ECHO_COMMAND --connect --controller=${BIND_ADDRSS-localhost}:$JBOSS_ADMIN_PORT" "$@"
+    $JBOSS_HOME/bin/jboss-cli.sh $ECHO_COMMAND --connect --controller=${BIND_ADDRSS-localhost}:$JBOSS_ADMIN_PORT "$@"
+  else
+    thisdir=${PWD}
+    cd $JBOSS_HOME/bin/
+    jboss-cli.sh --connect --controller="${OPENSHIFT_WILDFLY_IP}:${OPENSHIFT_WILDFLY_MANAGEMENT_HTTP_PORT}" "$@"
+    cd $thisdir
+  fi
+}
+
+admin-embedded() {
+  echo "$JBOSS_HOME/bin/jboss-cli.sh $ECHO_COMMAND --controller=${BIND_ADDRSS-localhost}:$JBOSS_ADMIN_PORT" "$@"
+  $JBOSS_HOME/bin/jboss-cli.sh $ECHO_COMMAND --controller=${BIND_ADDRSS-localhost}:$JBOSS_ADMIN_PORT "$@"
+}
+
+
+moduleDir="$JBOSS_HOME/modules"
+ 
+
+action="$1"
+deployment="$2"
+ 
+###########################
+# getting pid from pid.lock
+###########################
+get_pid() {
+  if [ "x$OPENSHIFT_HOMEDIR" = "x" ]; then
+	if [ -f $JBOSS_PIDFILE ]; then
+		pid=`cat $JBOSS_PIDFILE`
+	else
+	  return 1
+	fi
+  else
+	pid=$(jps | grep jboss | cut -d' ' -f1)
+  fi
+  if ps -p $pid >/dev/null 2>&1; then
+	 echo $pid
+ 	 return 0;
+  fi
+  return 2;
+}
+
+###########################
+# configure server from directory
+###########################
+config_dir() {
+	dir=$1
+	curr_dir=`pwd`
+	echo "Configure Directory $dir"
+	cd $dir
+	if [ -f 00_BOOTSTRAP ]; then
+		echo "Execute 00_BOOTSTRAP"
+		/bin/bash 00_BOOTSTRAP || ( echo "00_BOOTSTRAP failed" && exit -1 ) || exit -1
+	fi
+	for file in *; do
+		configure $file
+	done
+	cd $curr_dir
+}
+
+###########################
+# instead of readlink -f
+###########################
+full_file_name() {
+	mfile=$1
+	if readlink --help >/dev/null 2>&1; then
+		readlink -f $mfile
+		return
+	fi
+	m_dir=`pwd`
+	m_fdir=`dirname $mfile`
+	m_file=`basename $mfile`
+	cd $m_fdir
+	r_file=`pwd`"/$m_file"
+	cd $m_dir
+	echo $r_file
+	# echo "readlink workaround $r_file" 1>&2
+}
+
+###########################
+# configure server from file
+###########################
+configure() {
+	file=`full_file_name $1`
+	f_dir=`dirname $file`
+	f_curr_dir=`pwd`
+	cd $f_dir
+
+	ext=`echo $file | sed  's/.*\.//'`
+	case "$ext" in
+	  conf|cli)
+        if grep -ql "^embed-server" $file; then
+          admin-embedded --file=$file || {
+		    echo "[ERROR]: failed executing jboss-cli.sh --file=$file" ; exit 1
+		  }
+        else
+		  admin --file=$file || {
+		    echo "[ERROR]: failed executing jboss-cli.sh --file=$file" ; exit 1
+		  }
+        fi
+  	  ;;
+  	  sh)
+		echo /bin/bash $file
+		/bin/bash $file || {
+			echo "[ERROR]: failed executing /bin/bash $file" ; exit 1
+		}
+  	  ;;
+  	  module)
+		echo unzip -d $moduleDir $file
+		unzip -o -d $moduleDir $file || {
+            echo "[ERROR]: failed executing unzip -d $moduleDir $file" ; exit 1
+        }
+  	  ;;
+  	  zip)
+		echo unzip -d $JBOSS_HOME $file
+		unzip -o -d $JBOSS_HOME $file || {
+            echo "[ERROR]: failed executing unzip -d $JBOSS_HOME $file" ; exit 1
+        }
+  	  ;;
+  	  restart)
+		echo $0 restart
+		$0 restart || {
+            echo "[ERROR]: failed executing $0 restart" ; exit 1
+        }
+  	  ;;
+  	  interactive)
+		echo $0 interactive
+		$0 interactive || {
+            echo "[ERROR]: failed executing $0 interactive" ; exit 1
+        }
+  	  ;;
+  	  00_BOOTSTRAP)
+		# Already done
+  	  ;;
+	  *)
+		echo "Ignoring $file with unknown extension $ext." 1>&2
+  	  ;;
+	esac
+
+	cd $f_curr_dir
+}
+ 
+###########################
+# check for running server
+###########################
+is_running() {
+	get_pid > /dev/null
+}
+ 
+###########################
+# check server for state running
+###########################
+is_started() {
+	if [ ! X$DOMAIN_MODE = X ]; then
+		local_host=$(admin ":read-attribute(name=local-host-name)"  2>/dev/null | grep result | cut -d'"' -f4 2>/dev/null)
+		state=$(admin "/host=$local_host:read-attribute(name=host-state)"  2>/dev/null | grep result | cut -d'"' -f4 2>/dev/null)
+	else
+		state=$(admin ":read-attribute(name=server-state)" 2>/dev/null | grep result | cut -d'"' -f4 2>/dev/null)
+	fi
+	test  X$state = Xrunning 
+}
+
+###########################
+# check whether admin application is available
+###########################
+check_admin_app() {
+    admin 'pwd' >/dev/null 2>&1
+}
+
+###########################
+# wait until admin port is available
+###########################
+wait_for_admin_app() {
+    cnt=0
+    while [ ${cnt} -le 30 ]; do
+		check_admin_app && return 0
+        let cnt=${cnt}+1
+        echo "INFO: [$(date +'%Y-%m-%d %H:%M:%S')] Admin application not available at port ${JBOSS_ADMIN_PORT}" 
+        sleep 1
+    done
+    echo "ERROR: Admin application not available at port ${JBOSS_ADMIN_PORT}" 
+	exit 1
+}
+
+
+
+################################################
+#                   MAIN
+################################################
+ 
+case "$action" in
+  start)
+    if is_running; then
+        echo "$displayName is already running. PID: " `get_pid`
+        exit 0
+    fi
+ 
+    echo "$start"
+    echo -n "Starting $displayName "
+    if ! [ -d $logdir ]; then
+        echo Create Log-Verzeichnis: $logdir
+        mkdir $logdir || exit -2
+    fi
+    cd $rundir
+    rm -f $out
+    $start > $out 2>&1 &
+    cnt=$START_TIMEOUT
+    is_running || ( sleep 1; is_running || sleep 2 )
+    while [ $cnt -gt 0 ] && is_running && ! is_started $out 
+    do
+        let cnt=$cnt-1
+        echo -n "."
+        sleep 1
+    done
+    echo 
+    if is_running; then
+		if is_started $out; then
+			wait_for_admin_app  ### It seems that sometimes the admin-port is not open immediately ###
+    		echo "$displayName started"
+		else
+			echo "$displayName process seems to run, but the state is not 'started' within $START_TIMEOUT seconds." 1>&2
+		fi
+    else
+        echo "$displayName not startet!" 1>&2
+		exit -3
+    fi
+  ;;
+  stop)
+    if  ! is_running; then
+        echo "$displayName not running"
+    else
+        echo -n "Shutting down $displayName "
+		admin "shutdown" > /dev/null &
+        cnt=$STOP_TIMEOUT
+        while [ $cnt -gt 0 ] && is_running
+        do
+            let cnt=$cnt-1
+            echo -n "."
+            sleep 1
+        done
+    	echo 
+        if is_running; then
+            echo "Error shutting down $displayName, killing"
+            kill -KILL `get_pid`
+        else
+            echo "$displayName stopped"
+        fi
+		rm -f $JBOSS_PIDFILE 
+    fi
+  ;;
+  kill)
+    if  ! is_running; then
+        echo "$displayName not running"
+    else
+		echo "Killing $displayName"
+		kill -KILL  `get_pid`
+    fi
+  ;;
+  interactive)
+    $0 stop
+	sleep 1
+    if is_running; then
+        echo "$displayName couln't be stopped. PID: " `get_pid`
+        exit 0
+    fi
+ 
+    echo "$start"
+    echo -n "Starting $displayName "
+    if ! [ -d $logdir ]; then
+        echo Create Log-Verzeichnis: $logdir
+        mkdir $logdir || exit -2
+    fi
+    cd $rundir
+    rm -f $out
+    $start 
+  ;;
+  restart)
+    $0 stop
+	sleep 1
+    $0 start "$@"
+  ;;
+  pid)
+	  get_pid
+  ;;
+    status)
+    pid=`get_pid`
+    if [ -z "$pid" ]; then
+        #not running
+        echo "$displayName is not running"
+		echo "  Admin-Port: $JBOSS_ADMIN_PORT"
+    else
+        echo "$displayName running on pid $pid"
+		if check_admin_app; then
+			echo "  Admin-Port: $JBOSS_ADMIN_PORT open"
+		else
+			echo "  Admin-Port: $JBOSS_ADMIN_PORT not reachable!"
+		fi
+		if is_started; then
+			echo "  Server-State: running"
+		fi
+    fi
+    echo "  JBOSS_HOME=$JBOSS_HOME"
+	if [ ! -d $JBOSS_HOME ]; then
+		echo "  Directory $JBOSS_HOME does not exist!"
+	fi
+    echo "  JBOSS_HTTP_PORT=$JBOSS_HTTP_PORT"
+    echo "  Stdoutfile: $out"
+    echo "  Logfile: $logfile"
+    echo "  Pidfile: $JBOSS_PIDFILE"
+    echo "  Deploy dir: $deployDir"
+    echo "  Config file: $configFile"
+  ;;
+  log)
+    tail -f $logfile
+  ;;
+  out)
+    tail -f $out
+  ;;
+  deploy)
+	admin "deploy --force $deployment"
+  ;;
+  undeploy)
+	name=`basename $deployment`
+	admin "undeploy $name"
+  ;;
+  admin)
+	admin
+  ;;
+  deployments)
+	admin "ls deployment"
+  ;;
+  tear-down)
+    if is_running; then
+        $0 stop
+        echo "rm -rf $JBOSS_HOME"
+        rm -rf $JBOSS_HOME
+    else
+        echo "For savety-reasons only running instances are removed." 1>&2
+        echo "Remove manually with:" 1>&2
+        echo "rm -rf $JBOSS_HOME" 1>&2
+		exit -5
+    fi
+  ;;
+  run|configure)
+    if [ -z "$deployment" ]; then
+		echo "usage: $0 $1 file.extension" 1>&2
+		echo "  where extension is in:" 1>&2
+		echo "    conf - file with commands for jboss-cli" 1>&2
+		echo "    cli - same as conf" 1>&2
+		echo "    sh   - file with shell commands. JBOSS_HOME is exported." 1>&2
+		echo "    module - Zip-file to be unpacked in $moduleDir" 1>&2
+		echo "    zip - Zip-file to be unpacked in JBOSS_HOME ($JBOSS_HOME)" 1>&2
+		echo "    restart - call $0 restart" 1>&2
+		echo "" 1>&2
+		echo "If the file is a directory, it will be processed recursively." 1>&2
+		echo "If there is a file 00_BOOTSTRAP in a directory, it will be processed before everything else. Eg. for handling templates." 1>&2
+		exit -1
+    fi
+    if [ -f $deployment ]; then
+		configure $deployment
+    elif [ -d $deployment ]; then
+		config_dir $deployment
+	else
+		echo "File or directory $deployment doesn't exist" 1>&2
+    fi
+  ;;
+  *)
+    cat >&2 <<EOF
+    Usage: $0 <command> [file]
+ 
+    where <command> is one of:
+        start       - start $displayName
+        stop        - stop $displayName (kill -TERM)
+        kill        - stop $displayName with kill -KILL
+        restart     - stop and start $displayName
+        status      - check whether $displayName is running
+        pid         - show process-id if server is running
+        admin       - start jboss-cli.sh and connect to $displayName
+        deploy f    - deploy file f with jboss-cli.
+        deployments - list current deployments.
+        configure f - configure server with file or directory f. Use >$0 configure< for more help.
+        run f       - same as configure. Intended to run scripts within the specific environment.
+        tear-down   - remove the whole installation! (rm -rf $JBOSS_HOME)
+        log         - show logfile with tail -f
+        out         - show console output with tail -f
+        help        - this screen
+EOF
+    exit 1
+esac
+
