@@ -31,9 +31,10 @@ spec:
     type: Dockerfile
     dockerfile: |-
       FROM jboss/wildfly
-      COPY artefacts/deployments   /tmp/setup
-      RUN env KAFKA_TOPIC_PREFIX="" /tmp/setup/configure_ocp_jboss.sh 
+      COPY artefacts/deployments   /opt/jboss/wildfly/setup
       USER 0
+      RUN chmod 775 /opt/jboss/wildfly/setup/local_configuration && \
+          env KAFKA_TOPIC_PREFIX="" /opt/jboss/wildfly/setup/configure_ocp_jboss.sh 
       RUN chgrp -R 0 /opt/jboss/wildfly && chmod g=u /opt/jboss/wildfly
     images:
       - from:

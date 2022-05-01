@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: List
+metadata: {}
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"hogajama-run:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"hogajama-run\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: hogajama
+      app.kubernetes.io/component: hogajama
+      app.kubernetes.io/instance: hogajama
+    name: hogajama
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        deployment: hogajama
+    strategy: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          deployment: hogajama
+      spec:
+        containers:
+        - image: ' '
+          name: hogajama-run
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: hogajama-config
+          resources:
+            requests:
+              memory: 0.2Gi
+              cpu: "200m"
+            limits:
+              memory: 0.5Gi
+              cpu: "1"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: hogajama
+      app.kubernetes.io/component: hogajama
+      app.kubernetes.io/instance: hogajama
+    name: hogajama-lodbalancer
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deployment: hogajama
+  status:
+    loadBalancer: {}
