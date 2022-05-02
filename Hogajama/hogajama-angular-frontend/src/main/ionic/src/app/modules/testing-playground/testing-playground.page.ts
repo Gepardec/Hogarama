@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from '../../services/AuthenticationService/authentication.service';
 import {ToastController} from '@ionic/angular';
 import {MatDialog, MatTableDataSource} from '@angular/material';
-import {Sensor} from '../../shared/models/Sensor';
+import {AuthenticationService} from '../../services/AuthenticationService/authentication.service';
 import {HogaramaBackendService} from '../../services/HogaramaBackendService/hogarama-backend.service';
 import {SensorDialogComponent} from '../shared/sensor-dialog/sensor-dialog.component';
-import {Unit} from '../../shared/models/Unit';
-import {Actor} from '../../shared/models/Actor';
-import {Rule} from '../../shared/models/Rule';
 import {UnitDialogComponent} from '../shared/unit-dialog/unit-dialog.component';
 import {ActorDialogComponent} from '../shared/actor-dialog/actor-dialog.component';
 import {RuleDialogComponent} from '../shared/rule-dialog/rule-dialog.component';
+import {Sensor} from '../../shared/models/Sensor';
+import {Unit} from '../../shared/models/Unit';
+import {Actor} from '../../shared/models/Actor';
+import {Rule} from '../../shared/models/Rule';
 
 @Component({
   selector: 'app-testing-playground',
@@ -118,13 +118,12 @@ export class TestingPlaygroundPage implements OnInit {
 
     async deleteUnit(id: number) {
         try {
-            let result = await this.backend.units.delete(id);
-            console.log(result);
-            this.presentToast('Unit deleted');
-            this.reloadUnits();
+            await this.backend.units.delete(id);
+            await this.presentToast(`Unit with id ${id} deleted`);
+            await this.reloadUnits();
         } catch (e) {
-            console.log(e);
-            this.presentToast('Unit delete failed');
+            console.error('Error occured during deletion of an unit: ', e);
+            await this.presentToast('Unit delete failed');
         }
     }
 
@@ -164,14 +163,15 @@ export class TestingPlaygroundPage implements OnInit {
         });
     }
 
-    addNewUnit() {
-        let dialogRef = this.dialog.open(UnitDialogComponent, {
+    async addNewUnit() {
+        const dialogRef = this.dialog.open(UnitDialogComponent, {
             height: '500px',
             width: '400px',
         });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-            this.presentToast('Unit added');
+        dialogRef.afterClosed().subscribe((newUnit: Unit) => {
+            if (newUnit !== undefined) {
+                this.presentToast('Unit added');
+            }
             this.reloadUnits();
         });
     }
@@ -213,15 +213,16 @@ export class TestingPlaygroundPage implements OnInit {
         });
     }
 
-    editUnit(unit: Unit) {
-        let dialogRef = this.dialog.open(UnitDialogComponent, {
+    async editUnit(unit: Unit) {
+        const dialogRef = this.dialog.open(UnitDialogComponent, {
             height: '500px',
             width: '400px',
             data: unit
         });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-            this.presentToast('Unit edited');
+        dialogRef.afterClosed().subscribe((editedUnit: Unit) => {
+            if (editedUnit !== undefined) {
+                this.presentToast(`Unit with id ${editedUnit.id} edited`);
+            }
             this.reloadUnits();
         });
     }

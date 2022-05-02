@@ -35,10 +35,47 @@ public class UnitApiImpl implements UnitApi {
     @Override
     @Transactional
     public Response create(SecurityContext securityContext, UnitDto unitDto) {
-        LOG.info("Create new unit.");
+        LOG.info("Create new unit {}", unitDto);
         Unit unit = translator.fromDto(unitDto);
         service.createUnit(unit);
 
-        return new BaseResponse<>(HttpStatus.SC_CREATED).createRestResponse();
+        return new BaseResponse<>(unitDto, HttpStatus.SC_CREATED).createRestResponse();
+    }
+
+    @Override
+    @Transactional
+    public Response update(String id, SecurityContext securityContext, UnitDto unitDto) {
+        LOG.info("Updating unit {}.", unitDto);
+        Unit unit = translator.fromDto(unitDto);
+
+        if (id == null) {
+            return new BaseResponse<>("Required parameter ID is not set!", HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        } else if (!id.equals(unitDto.getId().toString())) {
+            return new BaseResponse<>(String.format("ID %s has to match with ID %s", id, unitDto.getId().toString()), HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        } else {
+            service.updateUnit(unit);
+        }
+
+        return new BaseResponse<>(unitDto, HttpStatus.SC_OK).createRestResponse();
+    }
+
+    @Override
+    @Transactional
+    public Response delete(String id, SecurityContext securityContext) {
+        LOG.info("Deleting unit with id {}.", id);
+        if (id == null) {
+            return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        } else {
+            Long idNum;
+            try {
+                idNum = Long.parseLong(id);
+            } catch (NumberFormatException e) {
+                return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
+            }
+
+            service.deleteUnit(idNum);
+        }
+
+        return new BaseResponse<>(HttpStatus.SC_OK).createRestResponse();
     }
 }
