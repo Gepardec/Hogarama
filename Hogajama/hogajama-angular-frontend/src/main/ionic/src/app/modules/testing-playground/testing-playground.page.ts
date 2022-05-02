@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../services/AuthenticationService/authentication.service';
 import {ToastController} from '@ionic/angular';
-import {MatDialog, MatTableDataSource} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatTableDataSource} from '@angular/material/table';
 import {Sensor} from '../../shared/models/Sensor';
 import {HogaramaBackendService} from '../../services/HogaramaBackendService/hogarama-backend.service';
 import {SensorDialogComponent} from '../shared/sensor-dialog/sensor-dialog.component';

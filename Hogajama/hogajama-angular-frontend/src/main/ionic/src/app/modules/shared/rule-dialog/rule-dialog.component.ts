@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {HogaramaBackendService} from '../../../services/HogaramaBackendService/hogarama-backend.service';
 import {Rule} from '../../../shared/models/Rule';
 

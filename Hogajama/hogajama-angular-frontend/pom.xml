@@ -13,8 +13,8 @@
     <packaging>war</packaging>
 
     <properties>
-        <version.node>v12.22.12</version.node>
-        <version.npm>6.14.16</version.npm>
+        <version.node>v14.19.1</version.node>
+        <version.npm>7.24.2</version.npm>
         <frontend.build.environment></frontend.build.environment>
     </properties>
 

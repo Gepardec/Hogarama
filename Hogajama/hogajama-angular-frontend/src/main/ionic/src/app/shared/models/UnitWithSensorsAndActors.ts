@@ -1,6 +1,6 @@
-import {Unit} from "./Unit";
-import {Sensor} from "./Sensor";
-import {Actor} from "./Actor";
+import {Unit} from './Unit';
+import {Sensor} from './Sensor';
+import {Actor} from './Actor';
 
 export interface UnitWithSensorsAndActors extends Unit{
     sensors?: Sensor[];
@@ -8,7 +8,7 @@ export interface UnitWithSensorsAndActors extends Unit{
 }
 
 export const getCompleteUnits = (units: Unit[], sensors: Sensor[], actors: Actor[]): UnitWithSensorsAndActors[] => {
-    if(units == null) return [];
+    if (units == null) return [];
 
     return units
         .map(u => ({

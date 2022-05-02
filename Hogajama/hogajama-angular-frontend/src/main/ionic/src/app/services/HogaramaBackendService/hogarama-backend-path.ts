@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {environment} from "../../../environments/environment";
+import {environment} from '../../../environments/environment';
 
 type WrappedDto<X> = { response: X };
 
@@ -44,11 +44,11 @@ export class HogaramaBackendPath<responseType> {
       this.http.delete<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}/${id}`).toPromise()
     );
   }
-  
+
   private mapPromiseResult<anyType>(promise: Promise<WrappedDto<anyType>>): Promise<anyType> {
-    //@ts-ignore, weil type nicht aus this.wrappedByDto hergeleitet werden kann
+    // @ts-ignore, weil type nicht aus this.wrappedByDto hergeleitet werden kann
     return promise.then((resp) => {
-      if(this.wrappedByDto) {
+      if (this.wrappedByDto) {
         return resp.response;
       } else {
         return resp;
