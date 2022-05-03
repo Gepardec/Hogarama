@@ -1,0 +1,3 @@
+deploy --force ../deployments/hogajama-rs-0.0.1-SNAPSHOT.war
+deploy --force ../deployments/hogajama-frontend-0.0.1-SNAPSHOT.war
+deploy --force ../deployments/hogajama-angular-frontend-0.0.1-SNAPSHOT.war
