@@ -1,5 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import { firstValueFrom } from 'rxjs';
 
 type WrappedDto<X> = { response: X };
 
@@ -11,37 +12,37 @@ export class HogaramaBackendPath<responseType> {
 
   public getByBearer(): Promise<responseType> {
     return this.mapPromiseResult(
-      this.http.get<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`).toPromise()
+        firstValueFrom(this.http.get<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`))
     );
   }
   public get(id: string|number): Promise<responseType> {
     return this.mapPromiseResult(
-      this.http.get<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}/${id}`).toPromise()
+        firstValueFrom(this.http.get<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}/${id}`))
     );
   }
   public getAllByBearer(): Promise<responseType[]> {
     return this.mapPromiseResult(
-      this.http.get<WrappedDto<responseType[]>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`).toPromise()
+        firstValueFrom(this.http.get<WrappedDto<responseType[]>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`))
     );
   }
   public getAllForOwner(): Promise<responseType[]> {
     return this.mapPromiseResult(
-      this.http.get<WrappedDto<responseType[]>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`).toPromise()
+        firstValueFrom(this.http.get<WrappedDto<responseType[]>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`))
     );
   }
   public put(data: responseType): Promise<responseType> {
     return this.mapPromiseResult(
-      this.http.put<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`, data).toPromise()
+        firstValueFrom(this.http.put<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`, data))
     );
   }
   public patch(id: string|number, data: responseType): Promise<responseType> {
     return this.mapPromiseResult(
-      this.http.patch<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}/${id}`, data).toPromise()
+        firstValueFrom(this.http.patch<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}/${id}`, data))
     );
   }
   public delete(id: string|number): Promise<responseType> {
     return this.mapPromiseResult(
-      this.http.delete<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}/${id}`).toPromise()
+        firstValueFrom(this.http.delete<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}/${id}`))
     );
   }
 
