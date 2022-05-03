@@ -18,4 +18,12 @@ public interface UnitApi {
 
     @PUT
     Response create(@Context SecurityContext securityContext, UnitDto unitDto);
+
+    @PATCH
+    @Path("/{id}")
+    Response update(@PathParam("id") String id, @Context SecurityContext securityContext, UnitDto unitDto);
+
+    @DELETE
+    @Path("/{id}")
+    Response delete(@PathParam("id") String id, @Context SecurityContext securityContext);
 }

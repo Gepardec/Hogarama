@@ -54,4 +54,14 @@ public class UnitDto extends BaseDto {
         this.ownerId = ownerId;
     }
 
+    @Override
+    public String toString() {
+        return "UnitDto{" +
+                "id=" + id  +
+                ", description='" + description + '\'' +
+                ", defaultUnit=" + defaultUnit +
+                ", name='" + name + '\'' +
+                ", ownerId=" + ownerId +
+                '}';
+    }
 }

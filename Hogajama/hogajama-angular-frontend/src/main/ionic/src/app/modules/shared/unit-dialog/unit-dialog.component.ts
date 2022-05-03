@@ -29,7 +29,6 @@ export class UnitDialogComponent implements OnInit {
   ngOnInit() {}
 
   async save() {
-    console.log(this.unit);
     let actionResult;
     if (this.isEditAction) {
       actionResult = await this.backend.units.patch(this.unit.id, this.unit);

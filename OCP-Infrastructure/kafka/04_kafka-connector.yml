@@ -14,6 +14,7 @@ spec:
     tasks.max: 1
     camel.component.sjms2.connectionFactory: org.apache.activemq.ActiveMQConnectionFactory
     camel.source.path.destinationName: habarama
+    cleanup.policy: compact
     errors.log.enable: true
     camel.component.sjms2.connectionFactory.brokerURL: 'tcp://amq.hogarama.svc.cluster.local:61616'
     camel.source.path.destinationType: topic

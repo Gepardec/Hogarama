@@ -12,33 +12,32 @@ spec:
       resources:
         requests:
           memory: 128Mi
-          cpu: "250m"
+          cpu: "10m"
         limits:
           memory: 256Mi
-          cpu: "1"
+          cpu: "300m"
     userOperator:
       resources:
         requests:
           memory: 128Mi
-          cpu: "250m"
+          cpu: "10m"
         limits:
           memory: 256Mi
-          cpu: "1"
+          cpu: "300m"
     tlsSidecar:
       resources:
         requests:
           memory: 128Mi
-          cpu: "100m"
+          cpu: "10m"
         limits:
           memory: 256Mi
-          cpu: "200m"
+          cpu: "300m"
   kafka:
     config:
       inter.broker.protocol.version: '2.8'
       log.message.format.version: '2.8'
-      offsets.topic.replication.factor: 3
-      transaction.state.log.min.isr: 2
-      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 1
+      transaction.state.log.replication.factor: 1
     listeners:
       - name: plain
         port: 9092
@@ -52,29 +51,27 @@ spec:
         port: 9094
         tls: true
         type: route
-    replicas: 3
+    replicas: 1
     storage:
-#      class: gp2
-      size: 50Gi
+      size: 0.5Gi
       type: persistent-claim
     version: 2.8.0
     resources:
       requests:
-        memory: 1Gi
-        cpu: "250m"
+        memory: 256Mi
+        cpu: "10m"
       limits:
-        memory: 2Gi
-        cpu: "1"
+        memory: 1Gi
+        cpu: "300m"
   zookeeper:
-    replicas: 3
+    replicas: 1
     storage:
-#      class: gp2
-      size: 50Gi
+      size: 0.5Gi
       type: persistent-claim
     resources:
       requests:
         memory: 256Mi
-        cpu: "250m"
+        cpu: "10m"
       limits:
         memory: 512Mi
-        cpu: "1"
+        cpu: "300m"
