@@ -1,14 +1,7 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  annotations:
-    openshift.io/image.dockerRepositoryCheck: "2022-04-24T19:37:53Z"
-  creationTimestamp: "2022-04-24T19:37:53Z"
-  generation: 1
   name: wildfly-s2i-jdk11
-  namespace: erhard-pg
-  resourceVersion: "728406914"
-  uid: b8c1bca6-b477-4dd4-8529-e233668f53d3
 spec:
   lookupPolicy:
     local: false
@@ -40,25 +33,3 @@ spec:
     name: latest
     referencePolicy:
       type: Source
-status:
-  dockerImageRepository: image-registry.openshift-image-registry.svc:5000/erhard-pg/wildfly-s2i-jdk11
-  publicDockerImageRepository: default-route-openshift-image-registry.apps.play.gepaplexx.com/erhard-pg/wildfly-s2i-jdk11
-  tags:
-  - items:
-    - created: "2022-04-24T19:37:53Z"
-      dockerImageReference: quay.io/wildfly/wildfly-s2i-jdk11@sha256:b2e50833e64cbbbe1d133c7ae30aa71c941aba63ba97d9b7018eff13e1bae5b4
-      generation: 1
-      image: sha256:b2e50833e64cbbbe1d133c7ae30aa71c941aba63ba97d9b7018eff13e1bae5b4
-    tag: 1.0.0
-  - items:
-    - created: "2022-04-24T19:37:53Z"
-      dockerImageReference: quay.io/wildfly/wildfly-s2i-jdk11@sha256:64a5bfa63236abe24d79a4ef583ec59fdb8074acd7d7e0522d46049dc8a8224c
-      generation: 1
-      image: sha256:64a5bfa63236abe24d79a4ef583ec59fdb8074acd7d7e0522d46049dc8a8224c
-    tag: 1.0.1
-  - items:
-    - created: "2022-04-24T19:37:53Z"
-      dockerImageReference: quay.io/wildfly/wildfly-s2i-jdk11@sha256:64a5bfa63236abe24d79a4ef583ec59fdb8074acd7d7e0522d46049dc8a8224c
-      generation: 1
-      image: sha256:64a5bfa63236abe24d79a4ef583ec59fdb8074acd7d7e0522d46049dc8a8224c
-    tag: latest

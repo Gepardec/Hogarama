@@ -34,34 +34,31 @@ items:
           ports:
           - containerPort: 8080
             protocol: TCP
+          env:
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: postgresql-password
+                name: helm-hogajama-postgresql
+          - name: AMQ_USER
+            valueFrom:
+              secretKeyRef:
+                key: AMQ_USER
+                name: amq-credentials
+          - name: AMQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: AMQ_PASSWORD
+                name: amq-credentials
           envFrom:
             - configMapRef:
                 name: hogajama-config
+            - secretRef:
+                name: mongodb-credentials
           resources:
             requests:
-              memory: 0.2Gi
+              memory: 0.5Gi
               cpu: "200m"
             limits:
-              memory: 0.5Gi
+              memory: 1Gi
               cpu: "1"
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    labels:
-      app: hogajama
-      app.kubernetes.io/component: hogajama
-      app.kubernetes.io/instance: hogajama
-    name: hogajama-lodbalancer
-  spec:
-    ports:
-    - name: 8080-tcp
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
-    selector:
-      deployment: hogajama
-  status:
-    loadBalancer: {}

@@ -7,7 +7,7 @@ FROM quay.io/wildfly/wildfly:23.0.2.Final
 ARG SETUP=/tmp/setup
 ARG ENV_FILE
 
-COPY --from=artefacts /deployments   /tmp/setup/deployments
+COPY --from=artefacts /deployments   /tmp/setup
 COPY configure_ocp_jboss.sh  $SETUP
 COPY local_configuration $SETUP/local_configuration
 COPY bin $SETUP/bin
