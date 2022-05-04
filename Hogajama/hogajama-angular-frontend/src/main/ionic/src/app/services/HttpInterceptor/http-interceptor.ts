@@ -17,15 +17,15 @@ export class MyHttpInterceptor implements HttpInterceptor {
         return next.handle(authReq)
             .pipe(
                 catchError((error: HttpErrorResponse) => {
-                    console.log(error)
                     let errorMessage = '';
                     if (error.error instanceof ErrorEvent) {
                         // client-side error
                         errorMessage = `Error: ${error.error.message}`;
                     } else {
                         // server-side error
-                        errorMessage = `Backend returned status ${error.status}, message: ${error.error}`;
+                        errorMessage = `Backend returned status ${error.status}, message: ${error.error.message}`;
                     }
+                    console.error("Error catched in MyHttpInterceptor: ", error)
                     // TODO move to own service class with predefined settings (depending on UX concept)
                     this.presentToast(errorMessage);
                     return throwError(() => new Error(errorMessage));

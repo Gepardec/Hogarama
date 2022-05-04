@@ -29,7 +29,6 @@ export class RuleDialogComponent implements OnInit {
   ngOnInit() {}
 
   async save() {
-    console.log(this.rule);
     let actionResult;
     if (this.isEditAction) {
       actionResult = await this.backend.rules.patch(this.rule.id, this.rule);

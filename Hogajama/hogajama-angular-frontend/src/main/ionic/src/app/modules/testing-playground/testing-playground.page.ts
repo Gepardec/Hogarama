@@ -97,69 +97,51 @@ export class TestingPlaygroundPage implements OnInit {
             message: text,
             duration: 2000
         });
-        toast.present();
+        await toast.present();
     }
 
-    copyBearerToClipboard() {
+    async copyBearerToClipboard() {
         document.execCommand('copy');
-        this.presentToast('Copied to clipboard');
+        await this.presentToast('Copied to clipboard');
     }
 
     async deleteSensor(id: number) {
-        try {
-            let result = await this.backend.sensors.delete(id);
-            console.log(result);
-            this.presentToast('Sensor deleted');
+        await this.backend.sensors.delete(id).then(() => {
+            this.presentToast(`Sensor with id ${id} deleted`);
             this.reloadSensors();
-        } catch (e) {
-            console.log(e);
-            this.presentToast('Sensor delete failed');
-        }
+        }).catch(() => { /* errors are handled in MyHttpInterceptor */ });
     }
 
     async deleteUnit(id: number) {
-        try {
-            await this.backend.units.delete(id);
-            await this.presentToast(`Unit with id ${id} deleted`);
-            await this.reloadUnits();
-        } catch (e) {
-            console.error('Error occured during deletion of an unit: ', e);
-            await this.presentToast('Unit delete failed');
-        }
+        await this.backend.units.delete(id).then(() => {
+            this.presentToast(`Unit with id ${id} deleted`);
+            this.reloadUnits();
+        }).catch(() => { /* errors are handled in MyHttpInterceptor */ });
     }
 
     async deleteActor(id: number) {
-        try {
-            let result = await this.backend.actors.delete(id);
-            console.log(result);
-            this.presentToast('Actor deleted');
+        await this.backend.actors.delete(id).then(() => {
+            this.presentToast(`Actor with id ${id} deleted`);
             this.reloadActors();
-        } catch (e) {
-            console.log(e);
-            this.presentToast('Actor delete failed');
-        }
+        }).catch(() => { /* errors are handled in MyHttpInterceptor */ });
     }
 
     async deleteRule(id: number) {
-        try {
-            const result = await this.backend.rules.delete(id);
-            console.log(result);
-            this.presentToast('Rule deleted');
-            this.reloadActors();
-        } catch (e) {
-            console.log(e);
-            this.presentToast('Rule delete failed');
-        }
+        await this.backend.rules.delete(id).then(() => {
+            this.presentToast(`Rule with id ${id} deleted`);
+            this.reloadRules();
+        }).catch(() => { /* errors are handled in MyHttpInterceptor */ });
     }
 
-    addNewSensor() {
+    async addNewSensor() {
         let dialogRef = this.dialog.open(SensorDialogComponent, {
             height: '500px',
             width: '400px',
         });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-            this.presentToast('Sensor added');
+        dialogRef.afterClosed().subscribe((newSensor: Sensor) => {
+            if (newSensor !== undefined) {
+                this.presentToast('Sensor added');
+            }
             this.reloadSensors();
         });
     }
@@ -177,39 +159,42 @@ export class TestingPlaygroundPage implements OnInit {
         });
     }
 
-    addNewActor() {
+    async addNewActor() {
         let dialogRef = this.dialog.open(ActorDialogComponent, {
             height: '500px',
             width: '400px',
         });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-            this.presentToast('Actor added');
+        dialogRef.afterClosed().subscribe((newActor: Actor) => {
+            if (newActor !== undefined) {
+                this.presentToast('Actor added');
+            }
             this.reloadActors();
         });
     }
 
-    addNewRule() {
+    async addNewRule() {
         const dialogRef = this.dialog.open(RuleDialogComponent, {
             height: '700px',
             width: '560px',
         });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-            this.presentToast('Rule added');
+        dialogRef.afterClosed().subscribe((newRule: Rule) => {
+            if (newRule !== undefined) {
+                this.presentToast('Rule added');
+            }
             this.reloadRules();
         });
     }
 
-    editSensor(sensor: Sensor) {
+    async editSensor(sensor: Sensor) {
         let dialogRef = this.dialog.open(SensorDialogComponent, {
             height: '500px',
             width: '400px',
             data: sensor
         });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-            this.presentToast('Sensor edited');
+        dialogRef.afterClosed().subscribe((editedSensor: Sensor) => {
+            if (editedSensor !== undefined) {
+                this.presentToast(`Sensor with id ${editedSensor.id} edited`);
+            }
             this.reloadSensors();
         });
     }
@@ -228,28 +213,30 @@ export class TestingPlaygroundPage implements OnInit {
         });
     }
 
-    editActor(actor: Actor) {
+    async editActor(actor: Actor) {
         let dialogRef = this.dialog.open(ActorDialogComponent, {
             height: '500px',
             width: '400px',
             data: actor
         });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-            this.presentToast('Actor edited');
+        dialogRef.afterClosed().subscribe((editedActor: Actor) => {
+            if (editedActor !== undefined) {
+                this.presentToast(`Actor with id ${editedActor.id} edited`);
+            }
             this.reloadActors();
         });
     }
 
-    editRule(rule: Rule) {
+    async editRule(rule: Rule) {
         const dialogRef = this.dialog.open(RuleDialogComponent, {
             height: '700px',
             width: '560px',
             data: rule
         });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-            this.presentToast('Rule edited');
+        dialogRef.afterClosed().subscribe((editedRule: Rule) => {
+            if (editedRule !== undefined) {
+                this.presentToast(`Rule with id ${editedRule.id} edited`);
+            }
             this.reloadRules();
         });
     }

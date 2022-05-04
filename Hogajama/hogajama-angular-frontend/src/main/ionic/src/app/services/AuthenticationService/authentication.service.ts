@@ -24,11 +24,10 @@ export class AuthenticationService {
                         const updateSuccess = await this._keycloak.updateToken(environment.keycloakTokenMinValidity);
 
                         if (updateSuccess) {
-                            console.log('Token updated');
                             this.saveKeycloakTokens();
                         }
                     } catch (e) {
-                        console.error('Token update failed', e);
+                        console.error('Keycloak token update failed', e);
                     }
                 });
             }
@@ -39,23 +38,17 @@ export class AuthenticationService {
         const token = localStorage.getItem('kc_token');
         const refreshToken = localStorage.getItem('kc_refreshToken');
 
-        console.log(`Init Keycloak with token [${token}]`);
-        console.log(`Init Keycloak with refresh-token [${refreshToken}]`);
-
         return this._keycloak.init({
             adapter: this.platformInfo.isCurrentPlatformApp() ? 'cordova' : 'default',
             promiseType: 'native',
             onLoad: 'check-sso',
             token, refreshToken
         }).then(() => {
-            console.log('Authentication Status: ', this.isKeycloakAuthenticated());
             this._isAuthenticated.next(this.isKeycloakAuthenticated());
-
             return this.isKeycloakAuthenticated();
         }).catch((error) => {
-            console.log('Error in init: ', error);
+            console.error('Error in init: ', error);
             this._isAuthenticated.next(false);
-
             return false;
         });
     }
