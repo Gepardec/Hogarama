@@ -1,6 +1,6 @@
 import { Directive, HostListener } from '@angular/core';
 import { NavController, Platform } from '@ionic/angular';
-import { Location } from "@angular/common";
+import { Location } from '@angular/common';
 
 @Directive({
   selector: '[backButton]'

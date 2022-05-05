@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {HogaramaBackendService} from '../../../services/HogaramaBackendService/hogarama-backend.service';
 import {Rule} from '../../../shared/models/Rule';
 
@@ -29,7 +29,6 @@ export class RuleDialogComponent implements OnInit {
   ngOnInit() {}
 
   async save() {
-    console.log(this.rule);
     let actionResult;
     if (this.isEditAction) {
       actionResult = await this.backend.rules.patch(this.rule.id, this.rule);
