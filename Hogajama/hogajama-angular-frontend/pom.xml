@@ -13,8 +13,8 @@
     <packaging>war</packaging>
 
     <properties>
-        <version.node>v16.15.0</version.node>
-        <version.npm>8.9.0</version.npm>
+        <version.node>v18.0.0</version.node>
+        <version.npm>8.6.0</version.npm>
         <frontend.build.environment></frontend.build.environment>
     </properties>
 
