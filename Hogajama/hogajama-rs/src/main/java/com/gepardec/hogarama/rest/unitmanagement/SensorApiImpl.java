@@ -40,7 +40,7 @@ public class SensorApiImpl implements SensorApi {
         Sensor sensor = translator.fromDto(sensorDto);
         service.createSensor(sensor);
 
-        return new BaseResponse<>(sensorDto, HttpStatus.SC_CREATED).createRestResponse();
+        return new BaseResponse<>(HttpStatus.SC_CREATED).createRestResponse();
     }
 
     @Override
@@ -48,16 +48,13 @@ public class SensorApiImpl implements SensorApi {
     public Response update(String id, SecurityContext securityContext, SensorDto sensorDto) {
         LOG.info("Updating sensor with id {}.", id);
         Sensor sensor = translator.fromDto(sensorDto);
-
-        if (id == null) {
-            return new BaseResponse<>("Required parameter ID is not set!", HttpStatus.SC_BAD_REQUEST).createRestResponse();
-        } else if (!id.equals(sensorDto.getId().toString())) {
-            return new BaseResponse<>(String.format("ID %s has to match with ID %s", id, sensorDto.getId().toString()), HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        if (id == null || !id.equals(sensorDto.getId().toString()) || sensorDto.getUnitId() == null) {
+            return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
         } else {
             service.updateSensor(sensor);
         }
 
-        return new BaseResponse<>(sensorDto, HttpStatus.SC_OK).createRestResponse();
+        return new BaseResponse<>(HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override

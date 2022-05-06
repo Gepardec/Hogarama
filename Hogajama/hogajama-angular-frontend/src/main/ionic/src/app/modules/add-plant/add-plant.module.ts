@@ -7,9 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { AddPlantPage } from './add-plant.page';
 import { BackButtonModule } from 'src/app/directives/back-button/back-button.module';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 const routes: Routes = [
   {

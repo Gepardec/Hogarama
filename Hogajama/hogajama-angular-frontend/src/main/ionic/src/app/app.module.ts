@@ -11,8 +11,9 @@ import {AppRoutingModule} from './app-routing.module';
 import {NetworkInterface} from '@ionic-native/network-interface/ngx';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import { IonicStorageModule } from '@ionic/storage-angular';
-import {MyHttpInterceptor} from './services/HttpInterceptor/http-interceptor';
+import {DeviceDetectorModule} from "ngx-device-detector";
+import { IonicStorageModule } from '@ionic/storage';
+import {MyHttpInterceptor} from "./services/HttpInterceptor/http-interceptor";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SideMenuComponent } from './modules/shared/side-menu/side-menu.component';
 
@@ -25,6 +26,7 @@ import { SideMenuComponent } from './modules/shared/side-menu/side-menu.componen
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    DeviceDetectorModule.forRoot(),
     IonicStorageModule.forRoot(),
     BrowserAnimationsModule
   ],

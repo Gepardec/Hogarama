@@ -1,21 +1,14 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RuleDialogComponent } from './rule-dialog.component';
-import {HttpClientModule} from '@angular/common/http';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 
-describe('RuleDialogComponent', () => {
+describe('SensorDialogComponent', () => {
   let component: RuleDialogComponent;
   let fixture: ComponentFixture<RuleDialogComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, MatDialogModule],
-      providers: [
-        { provide: MatDialogRef, useValue: {} },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-      ],
       declarations: [ RuleDialogComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
