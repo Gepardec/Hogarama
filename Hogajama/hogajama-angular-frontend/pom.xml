@@ -71,7 +71,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>install --unsafe-perm=true --allow-root</arguments>
+                            <arguments>install --unsafe-perm=true</arguments>
                         </configuration>
                     </execution>
                     <execution>
