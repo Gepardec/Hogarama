@@ -16,8 +16,8 @@ spec:
   postCommit: {}
   resources:
     limits:
-      cpu: "1"
-      memory: 2Gi
+      cpu: "2"
+      memory: 3Gi
     requests:
       cpu: 500m
       memory: 1Gi
