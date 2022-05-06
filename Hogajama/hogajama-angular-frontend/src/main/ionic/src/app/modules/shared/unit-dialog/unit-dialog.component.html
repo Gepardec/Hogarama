@@ -1,6 +1,6 @@
 
-<ion-content class="ion-padding">
-  <form>
+<ion-content padding>
+  <form #sensorForm="ngForm">
     <mat-form-field *ngIf="this.isEditAction">
       <mat-label>Id</mat-label>
       <input matInput placeholder="1234" type="number" [(ngModel)]="unit.id" name="id" [readonly]="true">
@@ -22,7 +22,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Owner Id</mat-label>
-      <input matInput placeholder="12345" type="number" [(ngModel)]="unit.ownerId" name="ownerId">
+      <input matInput placeholder="abcde" type="text" [(ngModel)]="unit.ownerId" name="ownerId">
     </mat-form-field>
     <button mat-raised-button (click)="save()" color="primary" style="margin-top: 10px">Save</button>
   </form>

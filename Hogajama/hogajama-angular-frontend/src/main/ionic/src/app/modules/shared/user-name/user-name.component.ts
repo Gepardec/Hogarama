@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {log} from "util";
 import { UserData } from 'src/app/shared/models/UserData';
 import { HogaramaBackendService } from 'src/app/services/HogaramaBackendService/hogarama-backend.service';
 
@@ -17,6 +18,7 @@ export class UserNameComponent implements OnInit {
   ngOnInit() {
     this.rs.users.getByBearer().then((userData: UserData) => {
       this.userData = userData;
+      console.log(this.userData);
     });
   }
 }

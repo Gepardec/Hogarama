@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Sensor} from '../../../shared/models/Sensor';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {HogaramaBackendService} from '../../../services/HogaramaBackendService/hogarama-backend.service';
+import {Sensor} from "../../../shared/models/Sensor";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {HogaramaBackendService} from "../../../services/HogaramaBackendService/hogarama-backend.service";
 
 @Component({
   selector: 'app-sensor-dialog',
@@ -18,7 +18,7 @@ export class SensorDialogComponent implements OnInit {
       @Inject(MAT_DIALOG_DATA) public data: Sensor,
       private backend: HogaramaBackendService
   ) {
-    if (data != null) {
+    if(data != null) {
       this.isEditAction = true;
       this.sensor = data;
     } else {
@@ -30,7 +30,7 @@ export class SensorDialogComponent implements OnInit {
 
   async save() {
     let actionResult;
-    if (this.isEditAction) {
+    if(this.isEditAction) {
       actionResult = await this.backend.sensors.patch(this.sensor.id, this.sensor);
     } else {
       actionResult = await this.backend.sensors.put(this.sensor);
