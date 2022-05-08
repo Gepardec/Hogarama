@@ -12,6 +12,9 @@ spec:
     protocol: "openid-connect"
     baseUrl: "/auth/realms/gepardec/hogarama"
     secret: "{{ .Values.keycloak.client.secret }}"
+    defaultClientScopes:
+    - microprofile-jwt
+    - roles
     redirectUris: ["*"]
     webOrigins: ["*"]
 #    identityProvider: google

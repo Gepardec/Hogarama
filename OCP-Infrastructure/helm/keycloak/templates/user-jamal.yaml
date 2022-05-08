@@ -1,0 +1,27 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakUser
+metadata:
+  finalizers:
+  - user.cleanup
+  generation: 2
+  labels:
+    app: sso
+  name: jamal
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  user:
+    credentials:
+    - type: password
+      value: jamal@gepard
+    email: jamal@gepard.com
+    enabled: true
+    firstName: Jamal
+    id: 84b279cb-cd3d-4fd0-bfca-de939361ff47
+    lastName: Gepard
+    username: jamal
+    clientRoles:
+      hogarama:
+        - "admins"
+
