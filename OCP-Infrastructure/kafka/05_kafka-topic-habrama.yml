@@ -1,8 +1,8 @@
+---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: habarama
-  namespace: hogarama-kafka
   labels:
     strimzi.io/cluster: gepardec-kafka-cluster
     play.gepaplexx.com/persist: "true"

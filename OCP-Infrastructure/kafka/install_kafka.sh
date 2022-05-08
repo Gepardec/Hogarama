@@ -1,3 +1,3 @@
 #!/bin/bash
 
-oc apply -f .
+oc apply -f . -n hogarama-kafka
