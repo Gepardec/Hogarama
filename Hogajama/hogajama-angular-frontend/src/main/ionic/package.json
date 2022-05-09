@@ -39,7 +39,6 @@
     "@ionic/cli": "^6.19.0",
     "@ionic/storage-angular": "^3.0.6",
     "cordova-android": "^10.1.2",
-    "cordova-browser": "^6.0.0",
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-network-information": "^3.0.0",
     "cordova-plugin-networkinterface": "^2.2.0",
