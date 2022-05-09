@@ -46,7 +46,6 @@
     "cordova-sqlite-storage": "^6.0.0",
     "core-js": "^3.22.3",
     "hammerjs": "^2.0.8",
-    "ionic": "^5.4.16",
     "keycloak-js": "^7.0.1",
     "ngx-device-detector": "^3.0.0",
     "rxjs": "~7.5.5",
