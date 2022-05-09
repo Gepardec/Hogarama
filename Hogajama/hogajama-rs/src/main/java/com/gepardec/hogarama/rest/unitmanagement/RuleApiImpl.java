@@ -40,7 +40,7 @@ public class RuleApiImpl implements RuleApi {
         LowWaterWateringRule rule = translator.fromDto(ruleDto);
         service.createRule(rule);
 
-        return new BaseResponse<>(HttpStatus.SC_CREATED).createRestResponse();
+        return new BaseResponse<>(ruleDto, HttpStatus.SC_CREATED).createRestResponse();
     }
 
     @Override
@@ -48,13 +48,16 @@ public class RuleApiImpl implements RuleApi {
     public Response update(String id, SecurityContext securityContext, RuleDto ruleDto) {
         LOG.info("Updating rule with id {}.", id);
         LowWaterWateringRule rule = translator.fromDto(ruleDto);
-        if (id == null || !id.equals(ruleDto.getId().toString()) || ruleDto.getUnitId() == null) {
-            return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
+
+        if (id == null) {
+            return new BaseResponse<>("Required parameter ID is not set!", HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        } else if (!id.equals(ruleDto.getId().toString())) {
+            return new BaseResponse<>(String.format("ID %s has to match with ID %s", id, ruleDto.getId().toString()), HttpStatus.SC_BAD_REQUEST).createRestResponse();
         } else {
             service.updateRule(rule);
         }
 
-        return new BaseResponse<>(HttpStatus.SC_OK).createRestResponse();
+        return new BaseResponse<>(ruleDto, HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override

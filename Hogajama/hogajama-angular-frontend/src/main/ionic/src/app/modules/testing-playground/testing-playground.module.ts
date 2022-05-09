@@ -6,18 +6,16 @@ import {RouterModule, Routes} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 
 import {TestingPlaygroundPage} from './testing-playground.page';
-import {
-    MatButtonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatSelectModule,
-    MatSortModule,
-    MatTableModule,
-    MatTabsModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
 import {SharedModule} from '../shared/shared.module';
 import {SensorDialogModule} from '../shared/sensor-dialog/sensor-dialog.module';
 import {SensorDialogComponent} from '../shared/sensor-dialog/sensor-dialog.component';
