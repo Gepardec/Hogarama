@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {IonicModule} from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import {MatButtonModule} from '@angular/material/button';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {UnitDialogComponent} from './unit-dialog.component';
+import {UnitDialogComponent} from "./unit-dialog.component";
+import {MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule} from "@angular/material";
+import {FormsModule} from "@angular/forms";
+import {IonicModule} from "@ionic/angular";
 
 @NgModule({
   declarations: [UnitDialogComponent],

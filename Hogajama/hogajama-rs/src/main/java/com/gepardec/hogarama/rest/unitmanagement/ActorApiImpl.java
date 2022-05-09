@@ -40,7 +40,7 @@ public class ActorApiImpl implements ActorApi {
         Actor actor = translator.fromDto(actorDto);
         service.createActor(actor);
 
-        return new BaseResponse<>(actorDto, HttpStatus.SC_CREATED).createRestResponse();
+        return new BaseResponse<>(HttpStatus.SC_CREATED).createRestResponse();
     }
 
     @Override
@@ -48,16 +48,13 @@ public class ActorApiImpl implements ActorApi {
     public Response update(String id, SecurityContext securityContext, ActorDto actorDto) {
         LOG.info("Updating actor with id {}.", id);
         Actor actor = translator.fromDto(actorDto);
-
-        if (id == null) {
-            return new BaseResponse<>("Required parameter ID is not set!", HttpStatus.SC_BAD_REQUEST).createRestResponse();
-        } else if (!id.equals(actorDto.getId().toString())) {
-            return new BaseResponse<>(String.format("ID %s has to match with ID %s", id, actorDto.getId().toString()), HttpStatus.SC_BAD_REQUEST).createRestResponse();
+        if (id == null || !id.equals(actorDto.getId().toString()) || actorDto.getUnitId() == null) {
+            return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();
         } else {
             service.updateActor(actor);
         }
 
-        return new BaseResponse<>(actorDto, HttpStatus.SC_OK).createRestResponse();
+        return new BaseResponse<>(HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override

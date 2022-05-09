@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ConfigStartInfoPage } from './config-start-info.page';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material';
 import { BackButtonModule } from 'src/app/directives/back-button/back-button.module';
 
 const routes: Routes = [

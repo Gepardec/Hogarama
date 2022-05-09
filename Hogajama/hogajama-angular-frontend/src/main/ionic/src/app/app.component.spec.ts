@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
@@ -12,8 +12,8 @@ describe('AppComponent', () => {
 
   let statusBarSpy, splashScreenSpy, platformReadySpy, platformSpy;
 
-  beforeEach(waitForAsync(() => {
-    statusBarSpy = jasmine.createSpyObj('StatusBar', ['styleLightContent', 'backgroundColorByHexString']);
+  beforeEach(async(() => {
+    statusBarSpy = jasmine.createSpyObj('StatusBar', ['styleDefault']);
     splashScreenSpy = jasmine.createSpyObj('SplashScreen', ['hide']);
     platformReadySpy = Promise.resolve();
     platformSpy = jasmine.createSpyObj('Platform', { ready: platformReadySpy });
@@ -40,8 +40,7 @@ describe('AppComponent', () => {
     TestBed.createComponent(AppComponent);
     expect(platformSpy.ready).toHaveBeenCalled();
     await platformReadySpy;
-    expect(statusBarSpy.styleLightContent).toHaveBeenCalled();
-    expect(statusBarSpy.backgroundColorByHexString).toHaveBeenCalled();
+    expect(statusBarSpy.styleDefault).toHaveBeenCalled();
     expect(splashScreenSpy.hide).toHaveBeenCalled();
   });
 
@@ -50,10 +49,9 @@ describe('AppComponent', () => {
     await fixture.detectChanges();
     const app = fixture.nativeElement;
     const menuItems = app.querySelectorAll('ion-label');
-    expect(menuItems.length).toEqual(3);
+    expect(menuItems.length).toEqual(2);
     expect(menuItems[0].textContent).toContain('Home');
-    expect(menuItems[1].textContent).toContain('Login');
-    expect(menuItems[2].textContent).toContain('Testing');
+    expect(menuItems[1].textContent).toContain('List');
   });
 
   it('should have urls', async () => {
@@ -61,10 +59,9 @@ describe('AppComponent', () => {
     await fixture.detectChanges();
     const app = fixture.nativeElement;
     const menuItems = app.querySelectorAll('ion-item');
-    expect(menuItems.length).toEqual(3);
+    expect(menuItems.length).toEqual(2);
     expect(menuItems[0].getAttribute('ng-reflect-router-link')).toEqual('/home');
-    expect(menuItems[1].getAttribute('ng-reflect-router-link')).toEqual('/login');
-    expect(menuItems[2].getAttribute('ng-reflect-router-link')).toEqual('/playground');
+    expect(menuItems[1].getAttribute('ng-reflect-router-link')).toEqual('/list');
   });
 
 });

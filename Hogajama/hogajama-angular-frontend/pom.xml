@@ -13,8 +13,8 @@
     <packaging>war</packaging>
 
     <properties>
-        <version.node>v16.15.0</version.node>
-        <version.npm>8.9.0</version.npm>
+        <version.node>v12.22.12</version.node>
+        <version.npm>6.14.16</version.npm>
         <frontend.build.environment></frontend.build.environment>
     </properties>
 
@@ -71,7 +71,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>install --force</arguments>
+                            <arguments>install --unsafe-perm=true</arguments>
                         </configuration>
                     </execution>
                     <execution>

@@ -10,4 +10,4 @@ if (environment.production) {
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error("Failed to create an instance of the @NgModule AppModule!", err));
+  .catch(err => console.log(err));

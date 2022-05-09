@@ -3,8 +3,8 @@ import {CommonModule} from '@angular/common';
 
 import {LoginRoutingModule} from './login-routing.module';
 import {LoginComponent} from './login.component';
-import {IonicModule} from '@ionic/angular';
-import { MatButtonModule } from '@angular/material/button';
+import {IonicModule} from "@ionic/angular";
+import { MatButtonModule } from '@angular/material';
 
 @NgModule({
   declarations: [LoginComponent],
