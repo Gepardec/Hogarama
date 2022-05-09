@@ -28,6 +28,8 @@ spec:
           value: Hogajama
         - name: BUILDER_MVN_OPTIONS
           value: '-P ocp-aws -Dfrontend.build.environment=prod'
+        - name: XDG_CACHE_HOME
+          value: /deployments/Hogajama/target/
   postCommit: {}
   source:
     type: Git
