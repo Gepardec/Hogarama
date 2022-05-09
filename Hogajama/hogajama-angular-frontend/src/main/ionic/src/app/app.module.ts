@@ -3,17 +3,16 @@ import {BrowserModule} from '@angular/platform-browser';
 import {RouteReuseStrategy} from '@angular/router';
 
 import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
-import {SplashScreen} from '@ionic-native/splash-screen/ngx';
-import {StatusBar} from '@ionic-native/status-bar/ngx';
+import {SplashScreen} from '@awesome-cordova-plugins/splash-screen/ngx';
+import {StatusBar} from '@awesome-cordova-plugins/status-bar/ngx';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import {NetworkInterface} from '@ionic-native/network-interface/ngx';
-import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
+import {NetworkInterface} from '@awesome-cordova-plugins/network-interface/ngx';
+import {InAppBrowser} from '@awesome-cordova-plugins/in-app-browser/ngx';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {DeviceDetectorModule} from "ngx-device-detector";
-import { IonicStorageModule } from '@ionic/storage';
-import {MyHttpInterceptor} from "./services/HttpInterceptor/http-interceptor";
+import { IonicStorageModule } from '@ionic/storage-angular';
+import {MyHttpInterceptor} from './services/HttpInterceptor/http-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SideMenuComponent } from './modules/shared/side-menu/side-menu.component';
 
@@ -26,7 +25,6 @@ import { SideMenuComponent } from './modules/shared/side-menu/side-menu.componen
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    DeviceDetectorModule.forRoot(),
     IonicStorageModule.forRoot(),
     BrowserAnimationsModule
   ],

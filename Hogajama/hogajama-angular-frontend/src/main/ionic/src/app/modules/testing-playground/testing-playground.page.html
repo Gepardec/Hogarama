@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="ion-padding">
   <mat-tab-group style="height: 100%">
     <mat-tab label="Basic stuff">
       <h1>Logged In state</h1>
@@ -38,116 +38,116 @@
     <mat-tab label="Units">
       <button mat-raised-button (click)="addNewUnit()" color="primary" style="margin-top: 10px">Add new Unit</button>
       <table matSort mat-table [dataSource]="unitsDataSource">
-          <ng-container matColumnDef="id">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>
-              <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-          </ng-container>
-          <ng-container matColumnDef="name">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
-              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-          </ng-container>
-          <ng-container matColumnDef="description">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef> Description </th>
-              <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-          </ng-container>
-          <ng-container matColumnDef="isDefault">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef> Default? </th>
-              <td mat-cell *matCellDef="let element"> {{element.isDefault}} </td>
-          </ng-container>
-          <ng-container matColumnDef="ownerId">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef> Owner Id </th>
-              <td mat-cell *matCellDef="let element"> {{element.ownerId}} </td>
-          </ng-container>
-          <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef> Actions </th>
-              <td mat-cell *matCellDef="let element">
-                  <button mat-button (click)="editUnit(element)">Edit</button>
-                  <button mat-raised-button color="warn" (click)="deleteUnit(element.id)">Delete</button>
-              </td>
-          </ng-container>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        </ng-container>
+        <ng-container matColumnDef="isDefault">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Default? </th>
+          <td mat-cell *matCellDef="let element"> {{element.isDefault}} </td>
+        </ng-container>
+        <ng-container matColumnDef="ownerId">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Owner Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.ownerId}} </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-button (click)="editUnit(element)">Edit</button>
+            <button mat-raised-button color="warn" (click)="deleteUnit(element.id)">Delete</button>
+          </td>
+        </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="unitsDisplayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: unitsDisplayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="unitsDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: unitsDisplayedColumns;"></tr>
       </table>
     </mat-tab>
     <mat-tab label="Actors">
       <button mat-raised-button (click)="addNewActor()" color="primary" style="margin-top: 10px">Add new Actor</button>
       <table matSort mat-table [dataSource]="actorsDataSource">
-          <ng-container matColumnDef="id">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>
-              <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-          </ng-container>
-          <ng-container matColumnDef="name">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
-              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-          </ng-container>
-          <ng-container matColumnDef="deviceId">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef> Device Id </th>
-              <td mat-cell *matCellDef="let element"> {{element.deviceId}} </td>
-          </ng-container>
-          <ng-container matColumnDef="unitId">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef> Unit Id </th>
-              <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
-          </ng-container>
-          <ng-container matColumnDef="queueName">
-              <th mat-header-cell mat-sort-header *matHeaderCellDef> Queue Name </th>
-              <td mat-cell *matCellDef="let element"> {{element.queueName}} </td>
-          </ng-container>
-          <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef> Actions </th>
-              <td mat-cell *matCellDef="let element">
-                  <button mat-button (click)="editActor(element)">Edit</button>
-                  <button mat-raised-button color="warn" (click)="deleteActor(element.id)">Delete</button>
-              </td>
-          </ng-container>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="deviceId">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Device Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.deviceId}} </td>
+        </ng-container>
+        <ng-container matColumnDef="unitId">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Unit Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
+        </ng-container>
+        <ng-container matColumnDef="queueName">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Queue Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.queueName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-button (click)="editActor(element)">Edit</button>
+            <button mat-raised-button color="warn" (click)="deleteActor(element.id)">Delete</button>
+          </td>
+        </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="actorsDisplayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: actorsDisplayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="actorsDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: actorsDisplayedColumns;"></tr>
       </table>
     </mat-tab>
     <mat-tab label="Sensors">
       <button mat-raised-button (click)="addNewSensor()" color="primary" style="margin-top: 10px">Add new Sensor</button>
       <table matSort mat-table [dataSource]="sensorsDataSource">
-          <ng-container matColumnDef="id">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>
-            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-          </ng-container>
-          <ng-container matColumnDef="name">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-          </ng-container>
-          <ng-container matColumnDef="deviceId">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef> Device Id </th>
-            <td mat-cell *matCellDef="let element"> {{element.deviceId}} </td>
-          </ng-container>
-          <ng-container matColumnDef="unitId">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef> Unit Id </th>
-            <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
-          </ng-container>
-          <ng-container matColumnDef="sensorTypeId">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef> Sensor Type Id </th>
-            <td mat-cell *matCellDef="let element"> {{element.sensorTypeId}} </td>
-          </ng-container>
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-button (click)="editSensor(element)">Edit</button>
-              <button mat-raised-button color="warn" (click)="deleteSensor(element.id)">Delete</button>
-            </td>
-          </ng-container>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="deviceId">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Device Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.deviceId}} </td>
+        </ng-container>
+        <ng-container matColumnDef="unitId">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Unit Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
+        </ng-container>
+        <ng-container matColumnDef="sensorTypeId">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Sensor Type Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.sensorTypeId}} </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-button (click)="editSensor(element)">Edit</button>
+            <button mat-raised-button color="warn" (click)="deleteSensor(element.id)">Delete</button>
+          </td>
+        </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="sensorsDisplayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: sensorsDisplayedColumns;"></tr>
-        </table>
+        <tr mat-header-row *matHeaderRowDef="sensorsDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: sensorsDisplayedColumns;"></tr>
+      </table>
 
-        <!--<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>-->
+      <!--<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>-->
     </mat-tab>
     <mat-tab label="Rules">
       <button mat-raised-button (click)="addNewRule()" color="primary" style="margin-top: 10px">Add new Rule</button>
       <table matSort mat-table [dataSource]="rulesDataSource">
         <ng-container matColumnDef="id">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>
-            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
         </ng-container>
         <ng-container matColumnDef="name">
           <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
@@ -158,16 +158,16 @@
           <td mat-cell *matCellDef="let element"> {{element.description}} </td>
         </ng-container>
         <ng-container matColumnDef="sensorId">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef> Sensor Id </th>
-            <td mat-cell *matCellDef="let element"> {{element.sensorId}} </td>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Sensor Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.sensorId}} </td>
         </ng-container>
         <ng-container matColumnDef="actorId">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef> Actor Id </th>
-            <td mat-cell *matCellDef="let element"> {{element.actorId}} </td>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Actor Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.actorId}} </td>
         </ng-container>
         <ng-container matColumnDef="waterDuration">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef> Water Duration </th>
-            <td mat-cell *matCellDef="let element"> {{element.waterDuration}} </td>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Water Duration </th>
+          <td mat-cell *matCellDef="let element"> {{element.waterDuration}} </td>
         </ng-container>
         <ng-container matColumnDef="lowWater">
           <th mat-header-cell mat-sort-header *matHeaderCellDef> Low Water </th>
@@ -178,11 +178,11 @@
           <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
         </ng-container>
         <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-button (click)="editRule(element)">Edit</button>
-                <button mat-raised-button color="warn" (click)="deleteRule(element.id)">Delete</button>
-            </td>
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-button (click)="editRule(element)">Edit</button>
+            <button mat-raised-button color="warn" (click)="deleteRule(element.id)">Delete</button>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="rulesDisplayedColumns"></tr>
