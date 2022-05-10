@@ -22,10 +22,6 @@
 			<artifactId>morphia</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.openshift</groupId>
 			<artifactId>openshift-restclient-java</artifactId>
 		</dependency>
