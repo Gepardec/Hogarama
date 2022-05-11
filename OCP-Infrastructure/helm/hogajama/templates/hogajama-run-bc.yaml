@@ -36,6 +36,7 @@ spec:
       RUN chmod 775 /opt/jboss/wildfly/setup/local_configuration && \
           env KAFKA_TOPIC_PREFIX="" /opt/jboss/wildfly/setup/configure_ocp_jboss.sh 
       RUN chgrp -R 0 /opt/jboss/wildfly && chmod g=u /opt/jboss/wildfly
+      EXPOSE 9990
     images:
       - from:
           kind: ImageStreamTag

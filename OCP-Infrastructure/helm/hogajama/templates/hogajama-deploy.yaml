@@ -34,6 +34,8 @@ items:
           ports:
           - containerPort: 8080
             protocol: TCP
+          - containerPort: 9990
+            protocol: TCP
           env:
           - name: POSTGRESQL_PASSWORD
             valueFrom:
