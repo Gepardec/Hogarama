@@ -3,7 +3,7 @@ package com.gepardec.hogarama.service.dao;
 import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.watering.WateringDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
@@ -32,7 +32,6 @@ public class WateringDAOImpl implements WateringDAO {
     }
 
     private void limitQueryByActor(String sensorName, Query<WateringData> query) {
-
         if (StringUtils.isNotEmpty(sensorName)) {
             query.field("name").equal(sensorName);
         }

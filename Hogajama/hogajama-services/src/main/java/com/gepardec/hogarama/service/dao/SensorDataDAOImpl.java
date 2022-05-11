@@ -7,14 +7,13 @@ import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoIterable;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
@@ -60,7 +59,6 @@ public class SensorDataDAOImpl implements SensorDataDAO {
     }
 
     private void limitQueryBySensor(String sensorName, Query<SensorData> query) {
-
         if (StringUtils.isNotEmpty(sensorName)) {
             query.field("sensorName").equal(sensorName);
         }
