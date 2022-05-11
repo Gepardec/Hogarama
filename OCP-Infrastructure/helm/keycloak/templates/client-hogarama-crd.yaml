@@ -1,7 +1,7 @@
 apiVersion: keycloak.org/v1alpha1
 kind: KeycloakClient
 metadata:
-  name: client-secret-hogarama
+  name: hogarama-client
   labels:
     app: sso
 spec:
@@ -24,7 +24,7 @@ spec:
     matchLabels:
       app: sso
   roles:
-    - clientRole: true
+    - clientRole: false
       description: Hogarama Administratoren
-      name: admins
+      name: admins3
 

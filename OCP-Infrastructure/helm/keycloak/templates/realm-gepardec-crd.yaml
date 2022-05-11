@@ -10,6 +10,7 @@ spec:
     realm: hogarama
     enabled: true
     displayName: hogarama
+
     identityProviders: [
       {
         "providerId": "google",
@@ -26,3 +27,4 @@ spec:
   instanceSelector:
     matchLabels:
       app: sso
+  unmanaged: false

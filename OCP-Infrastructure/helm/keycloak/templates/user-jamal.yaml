@@ -18,10 +18,7 @@ spec:
     email: jamal@gepard.com
     enabled: true
     firstName: Jamal
-    id: 84b279cb-cd3d-4fd0-bfca-de939361ff47
     lastName: Gepard
     username: jamal
-    clientRoles:
-      hogarama:
-        - "admins"
-
+    realmRoles:
+      - "admins"
