@@ -61,7 +61,8 @@
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
 		<sonar-maven-plugin.version>3.9.0.2155</sonar-maven-plugin.version>
 		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-		<com.querydsl.version>4.2.1</com.querydsl.version>
+		<com.querydsl.version>5.0.0</com.querydsl.version>
+		<com.google.guava.version>31.1-jre</com.google.guava.version>
 		<org.assertj.version>3.15.0</org.assertj.version>
         <io.smallrye.reactive.version>3.0.0</io.smallrye.reactive.version>
         <org.keycloak.version>18.0.0</org.keycloak.version>
