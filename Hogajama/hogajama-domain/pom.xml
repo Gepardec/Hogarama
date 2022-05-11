@@ -29,6 +29,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
+			<version>${org.apache.commons.version}</version>
 		</dependency>
         <dependency>
             <groupId>io.prometheus</groupId>
