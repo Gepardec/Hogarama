@@ -34,10 +34,6 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-        </dependency>
 		<dependency>
 			<groupId>com.gepardec.hogarama</groupId>
 			<artifactId>raspberry-pi-mocks-cli</artifactId>
