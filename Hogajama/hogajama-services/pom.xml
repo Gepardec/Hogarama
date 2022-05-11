@@ -21,10 +21,6 @@
 			<groupId>org.mongodb.morphia</groupId>
 			<artifactId>morphia</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.openshift</groupId>
-			<artifactId>openshift-restclient-java</artifactId>
-		</dependency>
 		<!-- Test Start -->
 		<dependency>
 			<groupId>org.mockito</groupId>
