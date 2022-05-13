@@ -33,6 +33,8 @@ spec:
       env:
       - name: MAVEN_ARGS
         value: -Pocp-aws -Dfrontend.build.environment=prod
+      - name: XDG_CACHE_HOME
+        value: /deployments/Hogajama/target/
       from:
         kind: ImageStreamTag
         name: wildfly-s2i-jdk11:latest

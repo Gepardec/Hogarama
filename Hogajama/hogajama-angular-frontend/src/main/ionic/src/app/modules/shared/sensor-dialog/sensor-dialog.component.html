@@ -1,6 +1,6 @@
 
-<ion-content padding>
-  <form #sensorForm="ngForm">
+<ion-content class="ion-padding">
+  <form>
     <mat-form-field *ngIf="this.isEditAction">
       <mat-label>Id</mat-label>
       <input matInput placeholder="1234" type="number" [(ngModel)]="sensor.id" name="id" [readonly]="true">

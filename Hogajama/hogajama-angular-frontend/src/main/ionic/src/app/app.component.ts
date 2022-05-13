@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 
 import {Platform} from '@ionic/angular';
-import {SplashScreen} from '@ionic-native/splash-screen/ngx';
-import {StatusBar} from '@ionic-native/status-bar/ngx';
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthenticationService} from "./services/AuthenticationService/authentication.service";
+import {SplashScreen} from '@awesome-cordova-plugins/splash-screen/ngx';
+import {StatusBar} from '@awesome-cordova-plugins/status-bar/ngx';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthenticationService} from './services/AuthenticationService/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -49,15 +49,14 @@ export class AppComponent {
     });
   }
 
-
   async ngOnInit() {
-    if(window.location) {
+    if (window.location) {
       const params = new URLSearchParams(window.location.hash.substr(1));
       // If we get the params from the keycloak auth back
       if (params.has('state') && params.has('code')) {
-        let state = params.get('state'), code = params.get('code');
-        console.log(state);
-        console.log(code);
+        const state = params.get('state'), code = params.get('code');
+        console.info('keycloak parameter state: ', state);
+        console.info('keycloak parameter code: ', code);
       }
     }
 
@@ -66,8 +65,8 @@ export class AppComponent {
           localStorage.setItem('kc_token', this.authService.getToken());
           localStorage.setItem('kc_refreshToken', this.authService.getRefreshToken());
         });
-    } catch(error) {
-        console.log('Cant init Keycloak Connection');
+    } catch (error) {
+        console.info('Cant init Keycloak Connection');
     } finally {
         this.router.initialNavigation();
     }
