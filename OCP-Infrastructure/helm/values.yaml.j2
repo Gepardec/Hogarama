@@ -12,6 +12,10 @@ keycloak:
     client:
       secret: {{ KEYCLOAK_GOOGLE_CLIENT_SECRET }}
       id: {{ KEYCLOAK_GOOGLE_CLIENT_ID }}
+  users:
+    jamal:
+      password: {{ KEYCLOAK_USER_JAMAL_PASSWORD }}
+
 hogarama:
   amq:
     credentials:

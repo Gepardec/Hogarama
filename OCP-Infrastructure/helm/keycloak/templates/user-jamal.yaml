@@ -14,7 +14,7 @@ spec:
   user:
     credentials:
     - type: password
-      value: jamal@gepard
+      value: {{ .Values.keycloak.users.jamal.password }}
     email: jamal@gepard.com
     enabled: true
     firstName: Jamal
