@@ -16,12 +16,13 @@ import org.mongodb.morphia.query.Query;
 
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @MongoDAO
-public class MongoSensorDataDAO implements SensorDataDAO {
+public class MongoSensorDataDAO implements SensorDataDAO, Serializable {
 
   @Inject
   private Datastore                 datastore;

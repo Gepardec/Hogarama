@@ -20,6 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ import static com.gepardec.hogarama.service.CouchbaseProducer.SCOPE_NAME;
 import static com.gepardec.hogarama.util.couchbase.CouchbaseUtil.getKey;
 
 @CouchbaseDAO
-public class CouchbaseSensorDataDAO implements SensorDataDAO {
+public class CouchbaseSensorDataDAO implements SensorDataDAO, Serializable {
 
   @Inject
   private Scope scope;

@@ -10,11 +10,12 @@ import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @MongoDAO
-public class MongoWateringDataDAO implements WateringDataDAO {
+public class MongoWateringDataDAO implements WateringDataDAO, Serializable {
 
   @Inject
   private Datastore dataStore;

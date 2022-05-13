@@ -17,6 +17,7 @@ import com.gepardec.hogarama.domain.watering.WateringData;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import static com.gepardec.hogarama.service.CouchbaseProducer.SCOPE_NAME;
 import static com.gepardec.hogarama.util.couchbase.CouchbaseUtil.getKey;
 
 @CouchbaseDAO
-public class CouchbaseWateringDataDAO implements WateringDataDAO {
+public class CouchbaseWateringDataDAO implements WateringDataDAO, Serializable {
 
   @Inject
   private Scope scope;
