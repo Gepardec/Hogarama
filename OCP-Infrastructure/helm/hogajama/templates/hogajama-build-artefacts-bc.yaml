@@ -25,7 +25,7 @@ spec:
   source:
     contextDir: Hogajama
     git:
-      ref: 413-simplify-hogajama-build-prozess
+      ref: master
       uri: https://github.com/Gepardec/Hogarama
     type: Git
   strategy:
