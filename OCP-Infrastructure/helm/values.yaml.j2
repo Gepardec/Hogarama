@@ -48,7 +48,7 @@ hogarama:
     keycloak:
       server_url: {{ HOGAJAMA_KEYCLOAK_SERVER_URL }}
     kafka:
-      bootstrapserver: {{ HOGAJAMA_KAFKA_BOOTSTRAPSERVER | default ("https://gepardec-kafka-cluster-kafka-bootstrap-kafka.apps.p.aws.ocp.gepardec.com:443") }}
+      bootstrapserver: {{ HOGAJAMA_KAFKA_BOOTSTRAPSERVER }}
     trigger:
       secret:
         source_to_image:
