@@ -11,7 +11,6 @@ spec:
   config:
     value.converter: org.apache.kafka.connect.converters.ByteArrayConverter
     topics: habarama
-    tasks.max: 1
     camel.component.sjms2.connectionFactory: org.apache.activemq.ActiveMQConnectionFactory
     camel.source.path.destinationName: habarama
     cleanup.policy: compact
