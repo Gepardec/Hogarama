@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthenticationService} from 'src/app/services/AuthenticationService/authentication.service';
 import {Router} from '@angular/router';
 
@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   isAuthenticated: boolean;
 
   constructor(public authService: AuthenticationService, private router: Router) {
@@ -17,21 +17,12 @@ export class LoginComponent implements OnInit {
     this.isAuthenticated = authService.isCurrentlyAuthenticated();
   }
 
-  ngOnInit() {
-  }
-
   loginClick(): void {
-    this.authService.loginUser().then(
-      () => this.router.navigateByUrl('/home'),
-      (reason) => console.log(reason)
-    );
+    this.authService.loginUser()
   }
 
   logoutClick(): void {
-    this.authService.logoutUser().then(
-      () => alert('Logged out!'),
-      () => alert('Logout failure!')
-    );
+    this.authService.logoutUser()
   }
 
 }

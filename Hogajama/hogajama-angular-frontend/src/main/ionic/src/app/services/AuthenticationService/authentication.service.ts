@@ -1,89 +1,117 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, interval, Observable} from 'rxjs';
+import {ToastController} from '@ionic/angular';
+import Keycloak, {KeycloakError} from 'keycloak-js';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import * as Keycloak from 'keycloak-js';
 import {PlatformInfoService} from '../PlatformInfoService/platform-info.service';
+import {KeycloakModel} from '../../shared/models/KeycloakModel';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenticationService {
+
+    private static LOCALSTORAGE_KC_TOKEN: string = 'kc_token'
+    private static LOCALSTORAGE_KC_REFRESH_TOKEN: string = 'kc_refreshToken'
+    private static KEYCLOAK_INIT_TIMEOUT_MS: number = 3000
     private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
-    private _keycloak;
+    private _keycloak: Keycloak.KeycloakInstance = null;
 
-    constructor(
-      private platformInfo: PlatformInfoService
-    ) {
-        this._keycloak = Keycloak(environment.keycloak);
-        this._isAuthenticated.next(this.isKeycloakAuthenticated());
+    constructor(private platformInfo: PlatformInfoService,
+                private toastController: ToastController) {}
 
-        this.isAuthenticated().subscribe((authed: boolean) => {
-            if (authed) {
-                interval(5000).subscribe(async () => {
-                    try {
-                        const updateSuccess = await this._keycloak.updateToken(environment.keycloakTokenMinValidity);
-
-                        if (updateSuccess) {
-                            this.saveKeycloakTokens();
-                        }
-                    } catch (e) {
-                        console.error('Keycloak token update failed', e);
-                    }
-                });
-            }
-        });
-    }
-
-    public async init(): Promise<boolean> {
-        const token = localStorage.getItem('kc_token');
-        const refreshToken = localStorage.getItem('kc_refreshToken');
-
-        return this._keycloak.init({
-            adapter: this.platformInfo.isCurrentPlatformApp() ? 'cordova' : 'default',
-            promiseType: 'native',
-            onLoad: 'check-sso',
-            token, refreshToken
-        }).then(() => {
-            this._isAuthenticated.next(this.isKeycloakAuthenticated());
-            return this.isKeycloakAuthenticated();
-        }).catch((error) => {
-            console.error('Error in init: ', error);
-            this._isAuthenticated.next(false);
-            return false;
-        });
+    public async init(keycloakSettings: KeycloakModel) {
+        const kcUrl = keycloakSettings.authServerUrl;
+        if (!kcUrl) {
+            await this.presentError('Failed to initialize Keycloak! ', 'URL is not defined')
+            return;
+        }
+        const kcRealm = keycloakSettings.realm;
+        if (!kcRealm) {
+            await this.presentError('Failed to initialize Keycloak! ', 'Realm is not defined')
+            return;
+        }
+        const kcClientId = keycloakSettings.clientId;
+        if (!kcClientId) {
+            await this.presentError('Failed to initialize Keycloak! ', 'Client ID is not defined')
+            return;
+        }
+        const kcCredentialsSecret = keycloakSettings.credentialsSecret;
+        if (!kcCredentialsSecret) {
+            await this.presentError('Failed to initialize Keycloak! ', 'Secret is not defined')
+            return;
+        }
+        this._keycloak = Keycloak({
+            url: kcUrl,
+            realm: kcRealm,
+            clientId: kcClientId,
+            credentials : {secret : kcCredentialsSecret}
+        })
+        this._keycloak.onAuthSuccess = () => {
+            this.saveKeycloakTokens()
+            this._isAuthenticated.next(true);
+            this.updateToken();
+        }
+        this._keycloak.onAuthError = (errorData: KeycloakError) => {
+            console.log(errorData)
+            this.presentError("Error occured during auth! ", errorData.error_description)
+        }
+        this._keycloak.onAuthLogout = () => {
+            this.removeKeycloakTokens();
+        }
+        this._keycloak.onTokenExpired = () => {
+            this.updateToken();
+        }
+        this._keycloak.onAuthRefreshSuccess = () => {
+            this.saveKeycloakTokens()
+        }
+        this._keycloak.onAuthRefreshError = () => {
+            this._keycloak.clearToken()
+        }
+        await new Promise(async (resolve, reject) => {
+            const timeout = setTimeout(() => {
+                this.presentError('Failed to initialize Keycloak! ', 'Timeout reached')
+                reject('Failed to initialize Keycloak! ' + 'Timeout reached')
+            }, AuthenticationService.KEYCLOAK_INIT_TIMEOUT_MS)
+            await this._keycloak.init({
+                adapter: this.platformInfo.isCurrentPlatformApp() ? 'cordova' : 'default',
+                promiseType: 'native',
+                onLoad: 'check-sso',
+                token: this.getKcTokenInLocalStorage(),
+                refreshToken: this.getKcRefreshTokenInLocalStorage()
+            }).catch((error) => {
+                console.error('Failed to initialize Keycloak! ', error)
+                this.presentError('Failed to initialize Keycloak! ', error)
+                clearTimeout(timeout);
+                reject(error)
+            });
+            clearTimeout(timeout);
+            resolve(true)
+        })
     }
 
     public getToken(): string {
-        return this._keycloak.token;
+        return this._keycloak?.token;
+    }
+
+    private updateToken() {
+        this._keycloak.updateToken(environment.keycloakTokenMinValidity);
     }
 
     public getRefreshToken(): string {
-        return this._keycloak.refreshToken;
+        return this._keycloak?.refreshToken;
     }
 
     public getRoles(): string[] {
-        return this._keycloak.realmAccess.roles;
+        return this._keycloak?.realmAccess.roles;
     }
 
-    public loginUser(): Promise<boolean> {
-        return this._keycloak.login().then(() => {
-            this.saveKeycloakTokens();
-
-            this._isAuthenticated.next(true);
-            return true;
-        }).catch(() => {
-            this._isAuthenticated.next(false);
-            return false;
-        });
+    public loginUser() {
+        this._keycloak?.login();
     }
 
-    public logoutUser(): Promise<void> {
-        this.removeKeycloakTokens();
-
-        return this._keycloak.logout().then(() => {
-            this._isAuthenticated.next(false);
-            return;
-        });
+    public logoutUser() {
+        this._keycloak?.logout();
     }
 
     public isAuthenticated(): Observable<boolean> {
@@ -94,17 +122,39 @@ export class AuthenticationService {
         return this._isAuthenticated.getValue();
     }
 
-    public isKeycloakAuthenticated(): boolean {
-        return this._keycloak.authenticated;
+    public getKcTokenInLocalStorage(): string {
+        const token = localStorage.getItem(AuthenticationService.LOCALSTORAGE_KC_TOKEN);
+        return token ? token : '';
+    }
+
+    public getKcRefreshTokenInLocalStorage(): string {
+        const refreshToken = localStorage.getItem(AuthenticationService.LOCALSTORAGE_KC_REFRESH_TOKEN);
+        return refreshToken ? refreshToken : '';
     }
 
     private saveKeycloakTokens(): void {
-        localStorage.setItem('kc_token', this.getToken());
-        localStorage.setItem('kc_refreshToken', this.getRefreshToken());
+        localStorage.setItem(AuthenticationService.LOCALSTORAGE_KC_TOKEN, this.getToken());
+        localStorage.setItem(AuthenticationService.LOCALSTORAGE_KC_REFRESH_TOKEN, this.getRefreshToken());
     }
 
     private removeKeycloakTokens(): void {
-        localStorage.setItem('kc_token', null);
-        localStorage.setItem('kc_refreshToken', null);
+        localStorage.removeItem(AuthenticationService.LOCALSTORAGE_KC_TOKEN)
+        localStorage.removeItem(AuthenticationService.LOCALSTORAGE_KC_REFRESH_TOKEN)
+    }
+
+    async presentError(text: string, error) {
+        let errorMessage = ''
+        if (error && typeof error == 'string') {
+            errorMessage = error
+        } else if (error && error.hasOwnProperty('error') && typeof error.error == 'string') {
+            errorMessage = error.error
+        }
+
+        const toast = await this.toastController.create({
+            message: text + errorMessage,
+            duration: 4000,
+            color: 'danger'
+        });
+        await toast.present();
     }
 }

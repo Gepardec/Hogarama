@@ -30,17 +30,17 @@ export class HomeComponent implements OnInit {
   async ngOnInit() {
     const unitsPromise = this.rs.units.getAllByBearer()
         .then(units => {this.units = units; })
-        .catch(e => console.error(e));
+        .catch(e => console.error("Failed to laod units! ", e));
     const sensorsPromise = this.rs.sensors.getAllByBearer()
         .then(sensors => {this.sensors = sensors; })
-        .catch(e => console.error(e));
+        .catch(e => console.error("Failed to laod sensors! ", e));
     const actorsPromise = this.rs.actors.getAllByBearer()
         .then(actors => {this.actors = actors; })
-        .catch(e => console.error(e));
+        .catch(e => console.error("Failed to laod actors! ", e));
 
     this.rs.users.getByBearer()
         .then(user => {this.username = user.name; })
-        .catch(e => console.error(e));
+        .catch(e => console.error("Failed to laod users! ", e));
 
     await Promise.all([unitsPromise, sensorsPromise, actorsPromise]);
 

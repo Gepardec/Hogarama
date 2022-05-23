@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 
-import {Platform} from '@ionic/angular';
+import {Platform, LoadingController} from '@ionic/angular';
 import {SplashScreen} from '@awesome-cordova-plugins/splash-screen/ngx';
 import {StatusBar} from '@awesome-cordova-plugins/status-bar/ngx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from './services/AuthenticationService/authentication.service';
+import {HogaramaBackendService} from './services/HogaramaBackendService/hogarama-backend.service';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +36,9 @@ export class AppComponent {
     private statusBar: StatusBar,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private rs: HogaramaBackendService,
+    private loadingController: LoadingController
   ) {
     this.initializeApp();
   }
@@ -45,7 +48,6 @@ export class AppComponent {
       this.statusBar.styleLightContent();
       this.statusBar.backgroundColorByHexString('#2aaf47');
       this.splashScreen.hide();
-
     });
   }
 
@@ -60,15 +62,16 @@ export class AppComponent {
       }
     }
 
-    try {
-        await this.authService.init().then(() => {
-          localStorage.setItem('kc_token', this.authService.getToken());
-          localStorage.setItem('kc_refreshToken', this.authService.getRefreshToken());
-        });
-    } catch (error) {
-        console.info('Cant init Keycloak Connection');
-    } finally {
-        this.router.initialNavigation();
-    }
+    const loading = await this.loadingController.create({
+      message: 'Initialize Keycloak...'
+    });
+    this.rs.keycloak.getByBearer()
+      .then((keycloak) => this.authService.init(keycloak))
+      .finally(() => {
+        loading.dismiss()
+        this.router.initialNavigation()
+      })
+    await loading.present();
   }
+
 }
