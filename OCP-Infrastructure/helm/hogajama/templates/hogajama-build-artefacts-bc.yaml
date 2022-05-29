@@ -1,0 +1,53 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+  labels:
+    app: hogajama-build-artefacts
+    app.kubernetes.io/component: hogajama-build-artefacts
+    app.kubernetes.io/instance: hogajama-build-artefacts
+  name: hogajama-build-artefacts
+spec:
+  failedBuildsHistoryLimit: 5
+  output:
+    to:
+      kind: ImageStreamTag
+      name: hogajama-build-artefacts:latest
+  postCommit: {}
+  resources:
+    limits:
+      cpu: "2"
+      memory: 3Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  runPolicy: Serial
+  source:
+    contextDir: Hogajama
+    git:
+      ref: master
+      uri: https://github.com/Gepardec/Hogarama
+    type: Git
+  strategy:
+    sourceStrategy:
+      env:
+      - name: MAVEN_ARGS
+        value: -Pocp-aws -Dfrontend.build.environment=prod
+      - name: XDG_CACHE_HOME
+        value: /deployments/Hogajama/target/
+      from:
+        kind: ImageStreamTag
+        name: wildfly-s2i-jdk11:latest
+      incremental: true
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - github:
+      secret: BmvoaZZ0-34BgkToUhPn
+    type: GitHub
+  - generic:
+      secret: xLMArBAOJwL7YESCmQHU
+    type: Generic
+  - type: ConfigChange
+  - imageChange: {}
+    type: ImageChange

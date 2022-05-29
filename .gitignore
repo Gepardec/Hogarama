@@ -30,3 +30,6 @@ target/
 
 #jar/plugins
 OCP-Infrastructure/docker/kafka-connector/my-plugins/*
+
+# temporary files
+tmp*

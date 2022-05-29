@@ -1,3 +1,4 @@
+---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
@@ -5,7 +6,6 @@ metadata:
     strimzi.io/use-connector-resources: 'true'
     play.gepaplexx.com/persist: "true"
   name: gepardec-connect-cluster
-  namespace: hogarama-kafka
   labels:
     strimzi.io/cluster: gepardec-kafka-cluster
 spec:
@@ -18,6 +18,9 @@ spec:
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
+  jvmOptions:
+    '-Xmx': 300m
+    '-Xms': 128m
   tls:
     trustedCertificates:
       - certificate: ca.crt
@@ -30,4 +33,4 @@ spec:
       memory: 512Mi
       cpu: 300m
 
-  version: 2.8.0
+  version: 3.1.0
