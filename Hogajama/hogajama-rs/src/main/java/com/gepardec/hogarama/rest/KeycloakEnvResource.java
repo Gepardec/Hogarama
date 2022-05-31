@@ -20,8 +20,7 @@ public class KeycloakEnvResource {
 		KeycloakDto keycloakDto = new KeycloakDto();
 		keycloakDto.setAuthServerUrl(System.getenv("KEYCLOAK_AUTH_SERVER_URL"));
 		keycloakDto.setRealm(System.getenv("KEYCLOAK_REALM"));
-		keycloakDto.setClientId(System.getenv("KEYCLOAK_CLIENT_ID"));
-		keycloakDto.setCredentialsSecret(System.getenv("KEYCLOAK_CREDENTIALS_SECRET"));
+		keycloakDto.setClientIdFrontend(System.getenv("KEYCLOAK_CLIENT_ID_FRONTEND"));
 		return new BaseResponse<>(keycloakDto, HttpStatus.SC_OK).createRestResponse();
 	}
 }

@@ -53,7 +53,7 @@ export class AppComponent {
 
   async ngOnInit() {
     if (window.location) {
-      const params = new URLSearchParams(window.location.hash.substr(1));
+      const params = new URLSearchParams(window.location.hash.substring(1));
       // If we get the params from the keycloak auth back
       if (params.has('state') && params.has('code')) {
         const state = params.get('state'), code = params.get('code');

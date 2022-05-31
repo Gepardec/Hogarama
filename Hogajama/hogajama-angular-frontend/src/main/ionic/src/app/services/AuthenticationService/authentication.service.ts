@@ -13,9 +13,8 @@ export class AuthenticationService {
 
     private static LOCALSTORAGE_KC_TOKEN: string = 'kc_token'
     private static LOCALSTORAGE_KC_REFRESH_TOKEN: string = 'kc_refreshToken'
-    private static KEYCLOAK_INIT_TIMEOUT_MS: number = 3000
     private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
-    private _keycloak: Keycloak.KeycloakInstance = null;
+    private _keycloak: Keycloak = null;
 
     constructor(private platformInfo: PlatformInfoService,
                 private toastController: ToastController) {}
@@ -31,21 +30,16 @@ export class AuthenticationService {
             await this.presentError('Failed to initialize Keycloak! ', 'Realm is not defined')
             return;
         }
-        const kcClientId = keycloakSettings.clientId;
-        if (!kcClientId) {
+        const kcClientIdFrontend = keycloakSettings.clientIdFrontend;
+        if (!kcClientIdFrontend) {
             await this.presentError('Failed to initialize Keycloak! ', 'Client ID is not defined')
             return;
         }
-        const kcCredentialsSecret = keycloakSettings.credentialsSecret;
-        if (!kcCredentialsSecret) {
-            await this.presentError('Failed to initialize Keycloak! ', 'Secret is not defined')
-            return;
-        }
-        this._keycloak = Keycloak({
+
+        this._keycloak = new Keycloak({
             url: kcUrl,
             realm: kcRealm,
-            clientId: kcClientId,
-            credentials : {secret : kcCredentialsSecret}
+            clientId: kcClientIdFrontend
         })
         this._keycloak.onAuthSuccess = () => {
             this.saveKeycloakTokens()
@@ -68,25 +62,15 @@ export class AuthenticationService {
         this._keycloak.onAuthRefreshError = () => {
             this._keycloak.clearToken()
         }
-        await new Promise(async (resolve, reject) => {
-            const timeout = setTimeout(() => {
-                this.presentError('Failed to initialize Keycloak! ', 'Timeout reached')
-                reject('Failed to initialize Keycloak! ' + 'Timeout reached')
-            }, AuthenticationService.KEYCLOAK_INIT_TIMEOUT_MS)
-            await this._keycloak.init({
-                adapter: this.platformInfo.isCurrentPlatformApp() ? 'cordova' : 'default',
-                promiseType: 'native',
-                onLoad: 'check-sso',
-                token: this.getKcTokenInLocalStorage(),
-                refreshToken: this.getKcRefreshTokenInLocalStorage()
-            }).catch((error) => {
+        await this._keycloak.init({
+            adapter: this.platformInfo.isCurrentPlatformApp() ? 'cordova' : 'default',
+            onLoad: 'check-sso',
+            token: this.getKcTokenInLocalStorage(),
+            refreshToken: this.getKcRefreshTokenInLocalStorage(),
+            messageReceiveTimeout: 3000
+        }).catch((error) => {
                 console.error('Failed to initialize Keycloak! ', error)
-                this.presentError('Failed to initialize Keycloak! ', error)
-                clearTimeout(timeout);
-                reject(error)
-            });
-            clearTimeout(timeout);
-            resolve(true)
+            this.presentError('Failed to initialize Keycloak! ', error)
         })
     }
 

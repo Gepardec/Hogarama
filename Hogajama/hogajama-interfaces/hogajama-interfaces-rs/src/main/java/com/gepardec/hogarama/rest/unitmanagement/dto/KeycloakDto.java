@@ -4,8 +4,7 @@ public class KeycloakDto {
 
     private String authServerUrl;
     private String realm;
-    private String clientId;
-    private String credentialsSecret;
+    private String clientIdFrontend;
 
     public String getAuthServerUrl() {
         return authServerUrl;
@@ -23,19 +22,11 @@ public class KeycloakDto {
         this.realm = realm;
     }
 
-    public String getClientId() {
-        return clientId;
+    public String getClientIdFrontend() {
+        return clientIdFrontend;
     }
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    public String getCredentialsSecret() {
-        return credentialsSecret;
-    }
-
-    public void setCredentialsSecret(String credentialsSecret) {
-        this.credentialsSecret = credentialsSecret;
+    public void setClientIdFrontend(String clientIdFrontend) {
+        this.clientIdFrontend = clientIdFrontend;
     }
 }
