@@ -1,4 +1,4 @@
 /subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=ALL)
 /subsystem=logging/logger=com.gepardec.hogarama:add(level=DEBUG)
 /subsystem=logging/logger=org.hibernate.SQL:add(level=DEBUG)
-/subsystem=logging/logger=org.hibernate.SQL:write-attribute(name=level, value=INFO) # Turn it Off for now.
+/subsystem=logging/logger=org.hibernate.SQL:write-attribute(name=level, value=INFO)
