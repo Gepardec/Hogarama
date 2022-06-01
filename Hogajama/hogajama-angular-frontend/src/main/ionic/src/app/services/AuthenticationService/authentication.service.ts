@@ -46,9 +46,9 @@ export class AuthenticationService {
             this._isAuthenticated.next(true);
             this.updateToken();
         }
-        this._keycloak.onAuthError = (errorData: KeycloakError) => {
-            console.log(errorData)
-            this.presentError("Error occured during auth! ", errorData.error_description)
+        this._keycloak.onAuthError = (error: KeycloakError) => {
+            console.log("Error occured during authentication! ", error)
+            this.presentError("Error occured during authentication! ", error)
         }
         this._keycloak.onAuthLogout = () => {
             this.removeKeycloakTokens();
@@ -65,11 +65,12 @@ export class AuthenticationService {
         await this._keycloak.init({
             adapter: this.platformInfo.isCurrentPlatformApp() ? 'cordova' : 'default',
             onLoad: 'check-sso',
+            pkceMethod: 'S256',
             token: this.getKcTokenInLocalStorage(),
             refreshToken: this.getKcRefreshTokenInLocalStorage(),
             messageReceiveTimeout: 3000
         }).catch((error) => {
-                console.error('Failed to initialize Keycloak! ', error)
+            console.error('Failed to initialize Keycloak! ', error)
             this.presentError('Failed to initialize Keycloak! ', error)
         })
     }
