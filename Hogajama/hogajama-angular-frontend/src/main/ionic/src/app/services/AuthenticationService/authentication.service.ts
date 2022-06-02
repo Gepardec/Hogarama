@@ -52,6 +52,7 @@ export class AuthenticationService {
         }
         this._keycloak.onAuthLogout = () => {
             this.removeKeycloakTokens();
+            this._isAuthenticated.next(false);
         }
         this._keycloak.onTokenExpired = () => {
             this.updateToken();
@@ -61,6 +62,7 @@ export class AuthenticationService {
         }
         this._keycloak.onAuthRefreshError = () => {
             this._keycloak.clearToken()
+            this._isAuthenticated.next(false);
         }
         await this._keycloak.init({
             adapter: this.platformInfo.isCurrentPlatformApp() ? 'cordova' : 'default',
