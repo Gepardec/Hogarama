@@ -88,13 +88,16 @@ public class CouchbaseSensorDataDAO implements SensorDataDAO, Serializable {
             + "from %s.%s.%s "
             + "where sensorName = $sensorName "
             + "and time >= $from "
-            + "and time <= $to "
-            + "limit $maxNumber",
+            + "and time <= $to ",
         COLLECTION_NAME,
         BUCKET_NAME,
         SCOPE_NAME,
         COLLECTION_NAME
     );
+
+    if(maxNumber >= 0) {
+      statement += "limit $maxNumber";
+    }
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     QueryOptions options = queryOptions().parameters(JsonObject.create()
