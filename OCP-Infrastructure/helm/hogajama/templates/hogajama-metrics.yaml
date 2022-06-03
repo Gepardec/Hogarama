@@ -1,0 +1,14 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: hogajama-metrics
+spec:
+  endpoints:
+    - interval: 30s #In welchem Abstand werden die Metriken gepollt.
+      port: 8080-tcp
+      path: /hogajama-rs/rest/metrics
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: hogajama
+

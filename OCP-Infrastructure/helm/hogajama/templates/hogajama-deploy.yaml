@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: List
+metadata: {}
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"hogajama-run:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"hogajama-run\")].image"}]'
+    creationTimestamp: null
+    labels:
+      app: hogajama
+      app.kubernetes.io/component: hogajama
+      app.kubernetes.io/instance: hogajama
+    name: hogajama
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        deployment: hogajama
+    strategy: {}
+    template:
+      metadata:
+        annotations:
+        creationTimestamp: null
+        labels:
+          deployment: hogajama
+      spec:
+        containers:
+        - image: ' '
+          name: hogajama-run
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 9990
+            protocol: TCP
+          env:
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: postgresql-password
+                name: helm-hogajama-postgresql
+          - name: AMQ_USER
+            valueFrom:
+              secretKeyRef:
+                key: AMQ_USER
+                name: amq-credentials
+          - name: AMQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: AMQ_PASSWORD
+                name: amq-credentials
+          - name: KEYCLOAK_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-client-secret-hogarama-client
+                key: CLIENT_ID
+          - name: KEYCLOAK_CREDENTIALS_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-client-secret-hogarama-client
+                key: CLIENT_SECRET
+          envFrom:
+            - configMapRef:
+                name: hogajama-config
+            - secretRef:
+                name: mongodb-credentials
+          resources:
+            requests:
+              memory: 0.5Gi
+              cpu: "200m"
+            limits:
+              memory: 1Gi
+              cpu: "1"

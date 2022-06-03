@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {HogaramaBackendService} from "../../../services/HogaramaBackendService/hogarama-backend.service";
-import {Unit} from "../../../shared/models/Unit";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {HogaramaBackendService} from '../../../services/HogaramaBackendService/hogarama-backend.service';
+import {Unit} from '../../../shared/models/Unit';
 
 @Component({
   selector: 'app-unit-dialog',
@@ -14,11 +14,11 @@ export class UnitDialogComponent implements OnInit {
   public isEditAction = false;
 
   constructor(
-      public dialogRef: MatDialogRef<UnitDialogComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: Unit,
-      private backend: HogaramaBackendService
+    public dialogRef: MatDialogRef<UnitDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Unit,
+    private backend: HogaramaBackendService
   ) {
-    if(data != null) {
+    if (data != null) {
       this.isEditAction = true;
       this.unit = data;
     } else {
@@ -29,9 +29,8 @@ export class UnitDialogComponent implements OnInit {
   ngOnInit() {}
 
   async save() {
-    console.log(this.unit);
     let actionResult;
-    if(this.isEditAction) {
+    if (this.isEditAction) {
       actionResult = await this.backend.units.patch(this.unit.id, this.unit);
     } else {
       actionResult = await this.backend.units.put(this.unit);

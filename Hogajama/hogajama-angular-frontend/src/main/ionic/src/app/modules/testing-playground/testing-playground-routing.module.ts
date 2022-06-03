@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TestingPlaygroundPage } from "./testing-playground.page";
+import { TestingPlaygroundPage } from './testing-playground.page';
 
 const routes: Routes = [
   {

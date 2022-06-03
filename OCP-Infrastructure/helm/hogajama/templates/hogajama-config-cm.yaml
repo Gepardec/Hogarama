@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hogajama-config
+data:
+  KEYCLOAK_AUTH_SERVER_URL: {{ .Values.hogarama.hogajama.keycloak.server_url }}
+  KEYCLOAK_REALM: hogarama
+  KEYCLOAK_CLIENT_ID_FRONTEND: hogarama-frontend
+  POSTGRESQL_HOST: helm-hogajama-postgresql
+  POSTGRESQL_DATABASE: {{ .Values.global.postgresql.postgresqlDatabase }}
+  POSTGRESQL_USERNAME: {{ .Values.global.postgresql.postgresqlUsername }}
+  HOGAJAMA_SENSOR_SOURCE: kafka
+  HOGARAMA_RULES_STORAGE: postgres
+  AMQ_URL: "https://amq:8883"
+  AMQ_NETTY_HOST: "amq"
+  KAFKA_CONNECTION: {{ .Values.hogarama.hogajama.kafka.bootstrapserver }}
+  KAFKA_TOPIC_PREFIX: ""
+

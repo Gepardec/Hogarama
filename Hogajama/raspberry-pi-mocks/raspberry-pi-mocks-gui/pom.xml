@@ -10,7 +10,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<version.thorntail>2.3.0.Final</version.thorntail>
+		<version.thorntail>2.7.0.Final</version.thorntail>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
@@ -87,22 +87,27 @@
 		<dependency>
 			<groupId>io.thorntail</groupId>
 			<artifactId>cdi</artifactId>
+			<version>${version.thorntail}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.thorntail</groupId>
 			<artifactId>web</artifactId>
+			<version>${version.thorntail}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.thorntail</groupId>
 			<artifactId>jaxrs</artifactId>
+			<version>${version.thorntail}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.thorntail</groupId>
 			<artifactId>undertow</artifactId>
+			<version>${version.thorntail}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.thorntail</groupId>
 			<artifactId>keycloak</artifactId>
+			<version>${version.thorntail}</version>
 		</dependency>
 		<dependency>
 			<artifactId>raspberry-pi-mocks-cli</artifactId>

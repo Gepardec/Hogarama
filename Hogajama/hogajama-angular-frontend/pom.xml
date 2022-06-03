@@ -70,6 +70,9 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <configuration>
+                            <arguments>install --unsafe-perm=true</arguments>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>npm rebuild node-sass</id>

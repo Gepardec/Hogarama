@@ -25,14 +25,6 @@
 			<groupId>com.couchbase.client</groupId>
 			<artifactId>java-client</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.openshift</groupId>
-			<artifactId>openshift-restclient-java</artifactId>
-		</dependency>
 		<!-- Test Start -->
 		<dependency>
 			<groupId>org.mockito</groupId>
