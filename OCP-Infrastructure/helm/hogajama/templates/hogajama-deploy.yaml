@@ -50,6 +50,16 @@ items:
               secretKeyRef:
                 key: AMQ_PASSWORD
                 name: amq-credentials
+          - name: KEYCLOAK_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-client-secret-hogarama-client
+                key: CLIENT_ID
+          - name: KEYCLOAK_CREDENTIALS_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-client-secret-hogarama-client
+                key: CLIENT_SECRET
           envFrom:
             - configMapRef:
                 name: hogajama-config
