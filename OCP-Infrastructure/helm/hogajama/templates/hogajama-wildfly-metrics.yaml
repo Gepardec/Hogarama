@@ -1,0 +1,14 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: hogajama-wildfly-metrics
+spec:
+  endpoints:
+    - interval: 30s 
+      port: 9990-tcp
+      path: /metrics
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: hogajama-admin
+

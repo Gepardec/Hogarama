@@ -3,6 +3,11 @@
 set -x
 error=0
 
+if [ -n "$JBOSS_DONT_UNPACK" ]; then
+    echo "Don't unpack JBoss" 1>&2
+    exit 0
+fi
+
 if [ -n "$CODE_READY_WORKSPACE" ]; then
     echo "Don't unpack JBoss on Code Ready Workspace" 1>&2
     rm -rf $JBOSS_HOME; mkdir -p $JBOSS_HOME && cp -r $CODE_READY_JBOSS/* $JBOSS_HOME

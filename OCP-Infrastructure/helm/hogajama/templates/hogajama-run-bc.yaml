@@ -22,43 +22,35 @@ spec:
     dockerStrategy:
       from:
         kind: ImageStreamTag
-        name: 'wildfly:23.0.1.Final'
+        name: 'wildfly:23.0.2.Final'
+      envFrom:
+        - configMapRef:
+            name: hogajama-config
   postCommit: {}
   source:
     type: Dockerfile
     dockerfile: |-
       FROM jboss/wildfly
-      COPY target/* /opt/jboss/wildfly/standalone/deployments/
-      USER root
-      RUN ln -s /opt/jboss/wildfly /opt/eap && \
-          echo -e "#!/bin/bash\nexit 0" > /opt/jboss/wildfly/bin/readinessProbe.sh && \
-          echo -e "#!/bin/bash\nexit 0" > /opt/jboss/wildfly/bin/livenessProbe.sh && \
-          chmod +x  /opt/jboss/wildfly/bin/*.sh && \
-          curl -fsSL https://github.com/keycloak/keycloak/releases/download/15.0.2/keycloak-oidc-wildfly-adapter-15.0.2.zip -o keycloak.zip && \
-          unzip -o keycloak.zip -d /opt/jboss/wildfly/ && \
-          rm keycloak.zip && \
-          curl -fsSL https://jdbc.postgresql.org/download/postgresql-42.2.11.jar -o postgresql-42.2.11.jar && \
-          /opt/jboss/wildfly/bin/jboss-cli.sh --command="module add --name=org.postgresql --resources=postgresql-42.2.11.jar --dependencies=javax.api,javax.transaction.api" && \
-          rm postgresql-42.2.11.jar && \
-          curl -fsSL https://github.com/Gepardec/Hogarama/raw/master/Hogajama/configuration/local_configuration/kafka-truststore.jks -o /opt/jboss/wildfly/standalone/configuration/kafka-truststore.jks && \
-          echo "Configuration done"
-      USER jboss
-      ENV HOGAJAMA_DB={{ .Values.hogarama.hogajama.mongodb.credentials.database }} MONGODB_PW={{ .Values.hogarama.hogajama.mongodb.credentials.password }} STAGE=AWS-PROD TINYURL=https://tinyurl.com/hogajama-aws
-      ENTRYPOINT [ "/opt/jboss/wildfly/bin/standalone.sh" ] 
+      COPY artefacts/deployments   /opt/jboss/wildfly/setup
+      USER 0
+      RUN chmod 775 /opt/jboss/wildfly/setup/local_configuration && \
+          env KAFKA_TOPIC_PREFIX="" /opt/jboss/wildfly/setup/configure_ocp_jboss.sh 
+      RUN chgrp -R 0 /opt/jboss/wildfly && chmod g=u /opt/jboss/wildfly
+      EXPOSE 9990
     images:
       - from:
           kind: ImageStreamTag
-          name: 'hogajama-binary:latest'
+          name: 'hogajama-build-artefacts:latest'
         as: null
         paths:
-          - sourcePath: /deployments/target/
-            destinationDir: target
+          - sourcePath: /deployments
+            destinationDir: artefacts
   triggers:
     - type: ImageChange
       imageChange:
         from:
           kind: ImageStreamTag
-          name: 'hogajama-binary:latest'
+          name: 'hogajama-build-artefacts:latest'
     - type: ConfigChange
     - type: ImageChange
   runPolicy: Serial

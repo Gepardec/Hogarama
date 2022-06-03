@@ -1,0 +1,35 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: wildfly-s2i-jdk11
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly-s2i-jdk11:1.0.0
+    generation: 1
+    importPolicy: {}
+    name: 1.0.0
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly-s2i-jdk11:1.0.1
+    generation: 1
+    importPolicy: {}
+    name: 1.0.1
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly-s2i-jdk11:latest
+    generation: 1
+    importPolicy: {}
+    name: latest
+    referencePolicy:
+      type: Source

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+echo 
+echo "Entering custom Hogajama assembly script: $0"
+echo 
+
+source "${JBOSS_CONTAINER_UTIL_LOGGING_MODULE}/logging.sh"
+source "${JBOSS_CONTAINER_MAVEN_S2I_MODULE}/maven-s2i"
+
+# invoke the build
+maven_s2i_build
+
+echo 
+echo "Exiting custom Hogajama assembly script: $0"
+echo 

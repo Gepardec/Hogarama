@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo Cleanup $JBOSS_HOME
+rm -rf $JBOSS_HOME/standalone/tmp
+rm -rf $JBOSS_HOME/standalone/log
+rm -rf $JBOSS_HOME/standalone/pid.lock
+rm -rf $JBOSS_HOME/standalone/configuration/standalone_xml_history
+chmod -R g=u $JBOSS_HOME

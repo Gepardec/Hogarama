@@ -1,0 +1,4 @@
+if [ -n "$ENV_FILE" ]; then
+    tmp_env=`readlink -e $ENV_FILE`
+    echo "source ${tmp_env}" >> $JBOSS_HOME/bin/standalone.conf
+fi
