@@ -4,7 +4,7 @@ import com.gepardec.hogarama.annotations.MongoDAO;
 import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.watering.WateringDataDAO;
 import com.gepardec.hogarama.domain.watering.WateringData;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;

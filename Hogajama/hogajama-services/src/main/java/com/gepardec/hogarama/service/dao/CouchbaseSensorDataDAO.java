@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,10 +96,11 @@ public class CouchbaseSensorDataDAO implements SensorDataDAO, Serializable {
         COLLECTION_NAME
     );
 
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     QueryOptions options = queryOptions().parameters(JsonObject.create()
             .put("sensorName", sensorName)
-            .put("from", from.getTime())
-            .put("to", to.getTime())
+            .put("from", sdf.format(from))
+            .put("to", sdf.format(to))
             .put("maxNumber", maxNumber)
     ).scanConsistency(consistency);
     //@formatter:on
