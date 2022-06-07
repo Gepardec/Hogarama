@@ -7,6 +7,9 @@ metadata:
 spec:
   client:
     baseUrl: /auth/realms/gepardec/hogarama-frontend
+    defaultClientScopes:
+      - microprofile-jwt
+      - roles
     clientAuthenticatorType: public
     clientId: hogarama-frontend
     directAccessGrantsEnabled: true
