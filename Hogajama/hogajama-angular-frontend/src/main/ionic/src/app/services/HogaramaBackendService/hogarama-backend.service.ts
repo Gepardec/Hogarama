@@ -7,6 +7,7 @@ import {HogaramaBackendPath} from './hogarama-backend-path';
 import {Actor} from '../../shared/models/Actor';
 import {Unit} from '../../shared/models/Unit';
 import {Rule} from '../../shared/models/Rule';
+import {KeycloakModel} from '../../shared/models/KeycloakModel';
 
 @Injectable({
     providedIn: 'root'
@@ -19,6 +20,7 @@ export class HogaramaBackendService {
     public units = new HogaramaBackendPath<Unit>(this.http, 'rest/unitmanagement/unit');
     public users = new HogaramaBackendPath<UserData>(this.http, 'rest/unitmanagement/user');
     public rules = new HogaramaBackendPath<Rule>(this.http, 'rest/unitmanagement/rule');
+    public keycloak = new HogaramaBackendPath<KeycloakModel>(this.http, 'rest/keycloak');
 
     constructor(private http: HttpClient) {
     }

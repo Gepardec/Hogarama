@@ -16,7 +16,7 @@
       <h1>Bearer Token</h1>
       <mat-form-field appearance="outline" style="width: 100%; height: 200px" >
         <textarea matInput placeholder="Your Bearer would be here (If there was one)"
-                  (focus)="$event.target.select(); copyBearerToClipboard()"
+                  (focus)="$any($event.target).select(); copyBearerToClipboard()"
                   [value]="authService.getToken() != null ? authService.getToken():''"
                   cdkTextareaAutosize
                   cdkAutosizeMinRows="10"
@@ -27,7 +27,7 @@
       <h1>Refresh Token</h1>
       <mat-form-field appearance="outline" style="width: 100%; height: 200px" >
         <textarea matInput placeholder="Your Refresh Token would be here (If there was one)"
-                  (focus)="$event.target.select(); copyBearerToClipboard()"
+                  (focus)="$any($event.target).select(); copyBearerToClipboard()"
                   [value]="authService.getRefreshToken() != null ? authService.getRefreshToken():''"
                   cdkTextareaAutosize
                   cdkAutosizeMinRows="10"

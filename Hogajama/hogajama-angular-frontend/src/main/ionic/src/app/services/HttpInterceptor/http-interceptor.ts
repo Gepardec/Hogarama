@@ -12,8 +12,13 @@ export class MyHttpInterceptor implements HttpInterceptor {
   constructor(private auth: AuthenticationService, private toastController: ToastController) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authReq = req.clone({ headers:
-        req.headers.set('Authorization', 'Bearer ' + this.auth.getToken())});
+    let authReq = req
+    if (this.auth.isCurrentlyAuthenticated()) {
+      authReq = req.clone({
+        headers: req.headers.set('Authorization', 'Bearer ' + this.auth.getToken())
+      });
+    }
+
     return next.handle(authReq)
       .pipe(
         catchError((error: HttpErrorResponse) => {

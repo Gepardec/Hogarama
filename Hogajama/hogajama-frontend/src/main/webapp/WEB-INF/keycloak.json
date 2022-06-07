@@ -3,7 +3,7 @@
 	"auth-server-url": "${env.KEYCLOAK_AUTH_SERVER_URL}",
 	"ssl-required": "external",
 	"resource": "hogarama",
-	"credentials": {"secret":"12360720-0484-40da-9459-34ce53121677"},
+	"credentials": {"secret":"${env.KEYCLOAK_CREDENTIALS_SECRET}"},
 	"disable-trust-manager":true,
 	"allow-any-hostname": true
 }

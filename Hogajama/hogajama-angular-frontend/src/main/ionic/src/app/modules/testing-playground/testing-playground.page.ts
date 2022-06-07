@@ -79,17 +79,11 @@ export class TestingPlaygroundPage implements OnInit {
     }
 
     onLoginClickTest(): void {
-        this.authService.loginUser().then(
-          () => this.presentToast('Logged In!'),
-          (reason) => this.presentToast('Log in failure: ' + reason)
-        );
+        this.authService.loginUser()
     }
 
     onLogoutClickTest(): void {
-        this.authService.logoutUser().then(
-          () => this.presentToast('Logged out!'),
-          () => this.presentToast('Logout failure!')
-        );
+        this.authService.logoutUser()
     }
 
     async presentToast(text: string) {

@@ -10,7 +10,24 @@ spec:
     realm: hogarama
     enabled: true
     displayName: hogarama
-
+    roles:
+      realm:
+      - clientRole: false
+        composite: false
+        containerId: hogarama
+        description: Hogarama Admins
+        name: admins
+    users:
+    - credentials:
+      - type: password
+        value: {{ .Values.keycloak.users.jamal.password }}
+      email: jamal@gepard.com
+      enabled: true
+      firstName: Jamal
+      lastName: Gepard
+      username: jamal
+      realmRoles:
+      - admins
     identityProviders: [
       {
         "providerId": "google",

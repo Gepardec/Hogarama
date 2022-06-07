@@ -1,0 +1,27 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  labels:
+    app: sso
+  name: hogarama-frontend
+spec:
+  client:
+    baseUrl: /auth/realms/gepardec/hogarama-frontend
+    defaultClientScopes:
+      - microprofile-jwt
+      - roles
+    clientAuthenticatorType: public
+    clientId: hogarama-frontend
+    directAccessGrantsEnabled: true
+    enabled: true
+    frontchannelLogout: false
+    name: hogarama-frontend
+    publicClient: true
+    redirectUris:
+    - '*'
+    standardFlowEnabled: true
+    webOrigins:
+    - '*'
+  realmSelector:
+    matchLabels:
+      app: sso

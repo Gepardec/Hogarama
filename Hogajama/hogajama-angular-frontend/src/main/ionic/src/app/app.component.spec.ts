@@ -7,6 +7,7 @@ import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('AppComponent', () => {
 
@@ -26,7 +27,10 @@ describe('AppComponent', () => {
         { provide: SplashScreen, useValue: splashScreenSpy },
         { provide: Platform, useValue: platformSpy },
       ],
-      imports: [ RouterTestingModule.withRoutes([])],
+      imports: [
+        HttpClientModule,
+        RouterTestingModule.withRoutes([])
+      ],
     }).compileComponents();
   }));
 

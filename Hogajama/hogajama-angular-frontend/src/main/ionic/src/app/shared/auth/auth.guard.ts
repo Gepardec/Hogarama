@@ -21,7 +21,7 @@ export class AuthGuard implements CanLoad {
     : boolean | Observable<boolean> | Promise<boolean> {
 
     return new Promise<boolean>((resolve, reject) => {
-      const authed = this.authService.isKeycloakAuthenticated();
+      const authed = this.authService.isCurrentlyAuthenticated()
       if (!authed) {
         this.router.navigateByUrl('/login');
       }
