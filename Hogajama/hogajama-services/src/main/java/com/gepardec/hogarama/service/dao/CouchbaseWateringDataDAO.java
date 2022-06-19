@@ -18,6 +18,7 @@ import com.gepardec.hogarama.domain.watering.WateringData;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -63,18 +64,22 @@ public class CouchbaseWateringDataDAO implements WateringDataDAO, Serializable {
             + "from %s.%s.%s "
             + "where name = $actorName "
             + "and time >= $from "
-            + "and time <= $to "
-            + "limit $maxNumber",
+            + "and time <= $to ",
         COLLECTION_NAME,
         BUCKET_NAME,
         SCOPE_NAME,
         COLLECTION_NAME
     );
 
+    if(maxNumber >= 0) {
+      statement += "limit $maxNumber";
+    }
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     QueryOptions options = queryOptions().parameters(JsonObject.create()
         .put("actorName", actorName)
-        .put("from", from.getTime())
-        .put("to", to.getTime())
+        .put("from", sdf.format(from))
+        .put("to", sdf.format(to))
         .put("maxNumber", maxNumber)
     ).scanConsistency(consistency);
     // @formatter:on
