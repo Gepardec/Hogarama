@@ -1,1 +1,3 @@
+01_source_variables.sh
+07_turnoff_amq.cli
 07_turnoff_security.cli

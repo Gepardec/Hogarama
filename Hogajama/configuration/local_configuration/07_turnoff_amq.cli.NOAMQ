@@ -1,0 +1,1 @@
+/deployment=hogajama-rs-0.0.1-SNAPSHOT.war/subsystem=ejb3/message-driven-bean=WateringMDB:stop-delivery
