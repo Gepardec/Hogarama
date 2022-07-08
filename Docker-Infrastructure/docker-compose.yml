@@ -1,0 +1,102 @@
+version: '3.9'
+
+volumes:
+  mongodb_data:
+  postgres_data:
+  amq_data:
+
+services:
+  mongo:
+    container_name: mongo
+    hostname: mongo
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo/01_create_user.js:/docker-entrypoint-initdb.d/01_create_user.js
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: hogajama
+      MONGO_INITDB_ROOT_PASSWORD: mongodb
+      MONGO_INITDB_DATABASE: hogajamadb
+
+  amq:
+    container_name: amq
+    hostname: amq
+    platform: linux/amd64
+    restart: unless-stopped
+    build:
+      context: amq
+    image: amq:latest
+    ports:
+      - "8161:8161" # ui
+      - "61616:61616" # all protocols
+      - "8883:8883" # ssl
+      - "5672:5672"
+      - "61613:61613"
+      - "5445:5445"
+      - "1883:1883"
+    volumes:
+      - ./amq/files/:/etc/amq-secret-volume/
+      - amq_data:/opt/amq/
+    environment:
+      AMQ_TRUSTSTORE: broker.ks
+      AMQ_TRUSTSTORE_PASSWORD: 765rjvb5rtzh8i7587fg
+      AMQ_KEYSTORE: broker.ks
+      AMQ_KEYSTORE_PASSWORD: 765rjvb5rtzh8i7587fg
+
+  postgres:
+    container_name: postgres
+    hostname: postgres
+    image: postgres:13.4
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/01_create_db.sh:/docker-entrypoint-initdb.d/01_create_db.sh
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: hogajama
+      POSTGRES_PASSWORD: changepassword
+      POSTGRES_DB: management
+
+  keycloak:
+    container_name: keycloak
+    hostname: keycloak
+    build:
+      context: keycloak
+    command: --hostname-port 18080
+    tty: true
+    restart: unless-stopped
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: changepassword
+    ports:
+      - "18080:8080"
+    volumes:
+      - ./keycloak/hogarama-realm-export.json:/opt/keycloak/data/import/hogarama-realm-export.json:ro
+    depends_on:
+      - postgres
+
+  hogajama:
+    container_name: hogajama
+    hostname: hogajama
+    stdin_open: true
+    build:
+      context: hogajama
+      args:
+        ENV_FILE: hogarama_local.env
+    image: hogajama:latest
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    volumes:
+      - ./hogajama/local_env:/tmp/setup/local_env
+      - ./hogajama/deployments:/usr/jboss-hogajama/standalone/deployments
+    command: ["-c", "hogajama start && /bin/sh"]
+    depends_on:
+      - amq
+      - keycloak
+      - mongo
+      - postgres

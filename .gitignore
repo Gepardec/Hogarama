@@ -33,3 +33,6 @@ OCP-Infrastructure/docker/kafka-connector/my-plugins/*
 
 # temporary files
 tmp*
+
+# Docker
+Docker-Infrastructure/hogajama/bin/wildfly-23.0.1.Final.zip

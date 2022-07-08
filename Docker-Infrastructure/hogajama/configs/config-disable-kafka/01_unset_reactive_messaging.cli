@@ -1,0 +1,8 @@
+batch
+/subsystem=microprofile-reactive-messaging-smallrye:remove
+/subsystem=microprofile-reactive-streams-operators-smallrye:remove
+/extension=org.wildfly.extension.microprofile.reactive-streams-operators-smallrye:remove
+/extension=org.wildfly.extension.microprofile.reactive-messaging-smallrye:remove
+run-batch
+
+# reload
