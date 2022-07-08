@@ -1,0 +1,23 @@
+batch
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=messaging-remote-broker01:add(host=${env.AMQ_NETTY_HOST:broker-amq-netty},port=61616 )
+/subsystem=messaging-activemq/server=default/remote-connector=messaging-remote-broker01-connector:add(socket-binding=messaging-remote-broker01)
+run-batch
+reload
+batch
+/subsystem=messaging-activemq/server=default/pooled-connection-factory=activemq-ext:add(\
+       entries=["java:/RemoteJms", "java:jboss/RemoteJms"],\
+       connectors=["messaging-remote-broker01-connector"],\
+       ha=true)
+/subsystem=naming/binding=java\:global\/remoteContext:add(\
+    binding-type=external-context, \
+    class=javax.naming.InitialContext, \
+    module=org.apache.activemq.artemis, \
+    environment=[\
+        java.naming.factory.initial=org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory, \
+        topic.habarama=habarama \
+])
+/subsystem=naming/binding=java\:\/topic\/habarama:add(lookup=java:global/remoteContext/habarama,binding-type=lookup)
+
+/subsystem=ee/service=default-bindings/:write-attribute(name=jms-connection-factory, value=java:jboss/RemoteJms)
+/subsystem=ejb3/:write-attribute(name=default-resource-adapter-name, value="${ejb.resource-adapter-name:activemq-ext}")
+run-batch

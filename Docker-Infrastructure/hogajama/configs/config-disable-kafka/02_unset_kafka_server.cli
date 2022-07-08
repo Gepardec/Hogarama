@@ -1,0 +1,5 @@
+/system-property=kafka.bootstrap.servers:remove
+/system-property=kafka.topic.prefix:remove
+/system-property=kafka.kafka.security.protocol:remove
+
+/system-property=jboss.as.reactive.messaging.experimental:remove

@@ -1,0 +1,22 @@
+FROM fedora:latest
+
+ARG SETUP=/tmp/setup
+ARG ENV_FILE=hogarama_local.env
+
+RUN yum -y install java-1.8.0-openjdk
+RUN yum -y install unzip
+RUN yum -y install git
+
+RUN mkdir /usr/local/Downloads
+ADD bin/wildfly-23.0.1.Final.zip /root/Downloads/wildfly-23.0.1.Final.zip
+
+RUN mkdir -p $SETUP
+ADD bin $SETUP/bin/
+ADD configs $SETUP/configs
+ADD local_env/$ENV_FILE $SETUP/local_env/$ENV_FILE
+
+USER 0
+RUN chmod a+x $SETUP/bin/setup.sh
+RUN $SETUP/bin/setup.sh
+
+ENTRYPOINT ["/bin/sh"]
