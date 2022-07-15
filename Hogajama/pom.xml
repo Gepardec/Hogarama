@@ -17,6 +17,8 @@
         <module>raspberry-pi-mocks</module>
 		<module>hogajama-angular-frontend</module>
 		<module>hogajama-rs</module>
+        <module>hogajama-security-dummy</module>
+		<module>hogajama-security-keycloak</module>
 	</modules>
 
 	<properties>
