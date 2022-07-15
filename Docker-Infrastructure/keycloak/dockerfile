@@ -20,4 +20,4 @@ ENV KC_DB_PASSWORD=changepassword
 ENV KC_HOSTNAME=localhost
 ENV KC_PROXY=none
 
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--import-realm",  "--http-enabled true"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev", "--db=postgres", "--import-realm",  "--http-enabled true"]
