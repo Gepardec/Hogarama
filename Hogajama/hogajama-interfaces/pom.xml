@@ -13,5 +13,6 @@
 	<modules>
 		<module>hogajama-interfaces-frontend</module>
 		<module>hogajama-interfaces-rs</module>
+		<module>hogajama-interfaces-security</module>
 	</modules>
 </project>

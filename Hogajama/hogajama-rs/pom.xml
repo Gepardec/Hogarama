@@ -41,11 +41,6 @@
             <version>${org.jboss.resteasy.version}</version>
             <scope>provided</scope>
         </dependency>
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-core</artifactId>
-			<version>${org.keycloak.version}</version>
-		</dependency>
         <dependency>
             <groupId>io.smallrye.reactive</groupId>
             <artifactId>smallrye-reactive-messaging-api</artifactId>
