@@ -1,7 +1,7 @@
 package com.gepardec.hogarama.domain.unitmanagement.dao;
 
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
+import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.QActor;
 import com.querydsl.jpa.impl.JPAQuery;
 
@@ -17,10 +17,10 @@ public class ActorDAO extends BaseDAO<Actor> {
         return Actor.class;
     }
 
-    public List<Actor> getAllActorsForOwner(Owner owner) {
+    public List<Actor> getAllActorsForUser(User user) {
         JPAQuery<Actor> query = new JPAQuery<>(entityManager);
         QActor actor = QActor.actor;
-        return query.select(actor).from(actor).where(actor.unit.owner.id.eq(owner.getId())).fetch();
+        return query.select(actor).from(actor).where(actor.unit.user.id.eq(user.getId())).fetch();
     }
 
     public Optional<Actor> getByDeviceId(String id) {

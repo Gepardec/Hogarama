@@ -3,7 +3,7 @@ package com.gepardec.hogarama.rest.unitmanagement;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.domain.unitmanagement.service.UnitService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.UnitDto;
-import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
+import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineUser;
 import com.gepardec.hogarama.rest.unitmanagement.translator.UnitDtoTranslator;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
-@DetermineOwner
+@DetermineUser
 public class UnitApiImpl implements UnitApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(UnitApiImpl.class);
@@ -26,9 +26,9 @@ public class UnitApiImpl implements UnitApi {
     private UnitDtoTranslator translator;
 
     @Override
-    public Response getForOwner(SecurityContext securityContext) {
-        LOG.info("Get unit for current owner.");
-        List<UnitDto> dtoList = translator.toDtoList(service.getUnitsForOwner());
+    public Response getForUser(SecurityContext securityContext) {
+        LOG.info("Get unit for current user.");
+        List<UnitDto> dtoList = translator.toDtoList(service.getUnitsForUser());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
 

@@ -1,7 +1,7 @@
 package com.gepardec.hogarama.domain.unitmanagement.dao;
 
 import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
+import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.QLowWaterWateringRule;
 import com.querydsl.jpa.impl.JPAQuery;
 
@@ -17,10 +17,10 @@ public class RuleDAO extends BaseDAO<LowWaterWateringRule> {
         return LowWaterWateringRule.class;
     }
 
-    public List<LowWaterWateringRule> getAllRulesForOwner(Owner owner) {
+    public List<LowWaterWateringRule> getAllRulesForUser(User user) {
         JPAQuery<LowWaterWateringRule> query = new JPAQuery<>(entityManager);
         QLowWaterWateringRule rule = QLowWaterWateringRule.lowWaterWateringRule;
-        return query.select(rule).from(rule).where(rule.unit.owner.id.eq(owner.getId())).fetch();
+        return query.select(rule).from(rule).where(rule.unit.user.id.eq(user.getId())).fetch();
     }
 
     public Optional<LowWaterWateringRule> getBySensor(String sensorName) {

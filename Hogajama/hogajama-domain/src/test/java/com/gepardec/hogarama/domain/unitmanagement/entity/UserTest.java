@@ -5,49 +5,49 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OwnerTest {
+public class UserTest {
 
     @Test
     public void addUnit() {
-        Owner owner = new Owner();
+        User user = new User();
         Unit unit = new Unit();
 
-        owner.addUnit(unit);
+        user.addUnit(unit);
 
-        assertThat(owner.getUnitList()).containsExactly(unit);
+        assertThat(user.getUnitList()).containsExactly(unit);
     }
 
     @Test(expected = NullPointerException.class)
     public void addUnit_NullInput_ExceptionExpected() {
-        Owner owner = new Owner();
+        User user = new User();
 
-        owner.addUnit(null);
+        user.addUnit(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void getDefaultUnit_EmptyUnitList() {
-        Owner owner = new Owner();
-        owner.getDefaultUnit();
+        User user = new User();
+        user.getDefaultUnit();
     }
 
     @Test(expected = TechnicalException.class)
     public void getDefaultUnit_NoDefaultUnitPresent() {
-        Owner owner = new Owner();
-        owner.addUnit(newNonDefaultUnit());
-        owner.getDefaultUnit();
+        User user = new User();
+        user.addUnit(newNonDefaultUnit());
+        user.getDefaultUnit();
     }
 
     @Test
     public void getDefaultUnit() {
-        Owner owner = new Owner();
+        User user = new User();
 
         // add default unit
-        Unit defaultUnit = Unit.createDefault(owner);
-        owner.addUnit(defaultUnit);
+        Unit defaultUnit = Unit.createDefault(user);
+        user.addUnit(defaultUnit);
         // add non default unit
-        owner.addUnit(newNonDefaultUnit());
+        user.addUnit(newNonDefaultUnit());
 
-        Unit result = owner.getDefaultUnit();
+        Unit result = user.getDefaultUnit();
 
         assertThat(result).isEqualTo(defaultUnit);
     }

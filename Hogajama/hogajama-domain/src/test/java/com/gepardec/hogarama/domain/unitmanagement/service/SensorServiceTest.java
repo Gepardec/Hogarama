@@ -3,7 +3,7 @@ package com.gepardec.hogarama.domain.unitmanagement.service;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
+import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import org.junit.Before;
@@ -37,12 +37,12 @@ public class SensorServiceTest {
     private SensorService service;
 
     private Unit unit;
-    private Owner owner;
+    private User user;
 
     @Before
     public void setUp() {
-        owner = newOwner();
-        Mockito.when(userContext.getOwner()).thenReturn(owner);
+        user = newUser();
+        Mockito.when(userContext.getUser()).thenReturn(user);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class SensorServiceTest {
     }
 
     @Test(expected = TechnicalException.class)
-    public void createSensor_UnitDoesntBelongToOwner() {
+    public void createSensor_UnitDoesntBelongToUser() {
         Sensor sensor = newSensorWithNotBelongingUnit();
 
         service.createSensor(sensor);
@@ -85,7 +85,7 @@ public class SensorServiceTest {
     }
 
     @Test(expected = TechnicalException.class)
-    public void updateSensor_UnitDoesntBelongToOwner() {
+    public void updateSensor_UnitDoesntBelongToUser() {
         Sensor sensor = newSensorWithNotBelongingUnit();
 
         service.updateSensor(sensor);
@@ -93,18 +93,18 @@ public class SensorServiceTest {
     }
 
     @Test
-    public void getAllSensorForOwner() {
-        service.getAllSensorsForOwner();
+    public void getAllSensorForUser() {
+        service.getAllSensorsForUser();
 
-        Mockito.verify(dao).getAllSensorsForOwner(owner);
+        Mockito.verify(dao).getAllSensorsForUser(user);
     }
 
-    private Owner newOwner() {
-        Owner owner = new Owner();
+    private User newUser() {
+        User user = new User();
         this.unit = new Unit();
         unit.setId(1337L);
-        owner.setUnitList(Collections.singletonList(unit));
-        return owner;
+        user.setUnitList(Collections.singletonList(unit));
+        return user;
     }
 
     private Sensor newSensor() {

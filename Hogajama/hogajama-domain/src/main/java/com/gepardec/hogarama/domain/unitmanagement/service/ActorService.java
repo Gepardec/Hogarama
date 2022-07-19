@@ -21,7 +21,7 @@ public class ActorService {
     Event<Actor> actorChanged;
 
     public void createActor(Actor actor) {
-        actor.verifyIsOwned(userContext.getOwner());
+        actor.verifyIsOwned(userContext.getUser());
         dao.save(actor);
     }
 
@@ -34,13 +34,13 @@ public class ActorService {
     }
 
     public void updateActor(Actor actor) {
-        actor.verifyIsOwned(userContext.getOwner());
+        actor.verifyIsOwned(userContext.getUser());
         actorChanged.fire(actor);
         dao.update(actor);
     }
 
-    public List<Actor> getAllActorsForOwner() {
-        return dao.getAllActorsForOwner(userContext.getOwner());
+    public List<Actor> getAllActorsForUser() {
+        return dao.getAllActorsForUser(userContext.getUser());
     }
 
 }

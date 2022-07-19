@@ -4,7 +4,7 @@ import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.RuleDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
+import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +33,12 @@ public class RuleServiceTest {
     Event<LowWaterWateringRule> ruleChanged;
 
     private Unit unit;
-    private Owner owner;
+    private User user;
 
     @Before
     public void setUp() {
-        owner = newOwner();
-        Mockito.when(userContext.getOwner()).thenReturn(owner);
+        user = newUser();
+        Mockito.when(userContext.getUser()).thenReturn(user);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class RuleServiceTest {
     }
 
     @Test(expected = TechnicalException.class)
-    public void createRule_UnitDoesntBelongToOwner() {
+    public void createRule_UnitDoesntBelongToUser() {
         LowWaterWateringRule rule = newRuleWithNotBelongingUnit();
 
         service.createRule(rule);
@@ -79,25 +79,25 @@ public class RuleServiceTest {
     }
 
     @Test(expected = TechnicalException.class)
-    public void updateRule_UnitDoesntBelongToOwner() {
+    public void updateRule_UnitDoesntBelongToUser() {
         LowWaterWateringRule rule = newRuleWithNotBelongingUnit();
 
         service.updateRule(rule);
     }
 
     @Test
-    public void getAllRulesForOwner() {
-        service.getAllRulesForOwner();
+    public void getAllRulesForUser() {
+        service.getAllRulesForUser();
 
-        Mockito.verify(dao).getAllRulesForOwner(owner);
+        Mockito.verify(dao).getAllRulesForUser(user);
     }
 
-    private Owner newOwner() {
-        Owner owner = new Owner();
+    private User newUser() {
+        User user = new User();
         this.unit = new Unit();
         unit.setId(1337L);
-        owner.setUnitList(Collections.singletonList(unit));
-        return owner;
+        user.setUnitList(Collections.singletonList(unit));
+        return user;
     }
 
     private LowWaterWateringRule newRule() {

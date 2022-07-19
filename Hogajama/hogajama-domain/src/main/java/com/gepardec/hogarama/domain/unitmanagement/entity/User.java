@@ -9,20 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Owner implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "OwnerIdGenerator", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "OwnerIdGenerator", sequenceName = "seq_owner_id")
+    @GeneratedValue(generator = "UserIdGenerator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "UserIdGenerator", sequenceName = "seq_user_id")
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "sso_user_id")
-    private String ssoUserId;
+    @Column(name = "key")
+    private String key;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "user")
     private List<Unit> unitList;
 
     public Long getId() {
@@ -33,12 +33,12 @@ public class Owner implements Serializable {
         this.id = id;
     }
 
-    public String getSsoUserId() {
-        return ssoUserId;
+    public String getKey() {
+        return key;
     }
 
-    public void setSsoUserId(String ssoUserId) {
-        this.ssoUserId = ssoUserId;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public List<Unit> getUnitList() {

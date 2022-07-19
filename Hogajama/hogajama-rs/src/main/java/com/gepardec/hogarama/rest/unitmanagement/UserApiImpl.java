@@ -3,7 +3,7 @@ package com.gepardec.hogarama.rest.unitmanagement;
 import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 import com.gepardec.hogarama.domain.unitmanagement.service.UserProfileService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.UserDto;
-import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
+import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineUser;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-@DetermineOwner
+@DetermineUser
 public class UserApiImpl implements UserApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserApiImpl.class);

@@ -8,7 +8,7 @@
     <hudson.model.MyViewsProperty>
       <views>
         <hudson.model.AllView>
-          <owner class="hudson.model.MyViewsProperty" reference="../../.."/>
+          <user class="hudson.model.MyViewsProperty" reference="../../.."/>
           <name>All</name>
           <filterExecutors>false</filterExecutors>
           <filterQueue>false</filterQueue>

@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 
 public interface Owned {
 
-    public Unit getUnit();
+    Unit getUnit();
 
-    public default void verifyIsOwned(Owner owner) {
-        if (!owner.getUnitList().stream().map(Unit::getId).collect(Collectors.toSet()).contains(getUnit().getId())) {
-            throw new TechnicalException("Unit doesn't belong to owner");
+    default void verifyIsOwned(User user) {
+        if (!user.getUnitList().stream().map(Unit::getId).collect(Collectors.toSet()).contains(getUnit().getId())) {
+            throw new TechnicalException("Unit doesn't belong to user");
         }
     }
 

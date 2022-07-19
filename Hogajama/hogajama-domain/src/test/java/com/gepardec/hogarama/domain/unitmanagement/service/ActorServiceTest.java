@@ -4,7 +4,7 @@ import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.ActorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
+import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +33,12 @@ public class ActorServiceTest {
     Event<Actor> actorChanged;
 
     private Unit unit;
-    private Owner owner;
+    private User user;
 
     @Before
     public void setUp() {
-        owner = newOwner();
-        Mockito.when(userContext.getOwner()).thenReturn(owner);
+        user = newUser();
+        Mockito.when(userContext.getUser()).thenReturn(user);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class ActorServiceTest {
     }
 
     @Test(expected = TechnicalException.class)
-    public void createActor_UnitDoesntBelongToOwner() {
+    public void createActor_UnitDoesntBelongToUser() {
         Actor actor = newActorWithNotBelongingUnit();
 
         service.createActor(actor);
@@ -79,25 +79,25 @@ public class ActorServiceTest {
     }
 
     @Test(expected = TechnicalException.class)
-    public void updateActor_UnitDoesntBelongToOwner() {
+    public void updateActor_UnitDoesntBelongToUser() {
         Actor actor = newActorWithNotBelongingUnit();
 
         service.updateActor(actor);
     }
 
     @Test
-    public void getAllActorsForOwner() {
-        service.getAllActorsForOwner();
+    public void getAllActorsForUser() {
+        service.getAllActorsForUser();
 
-        Mockito.verify(dao).getAllActorsForOwner(owner);
+        Mockito.verify(dao).getAllActorsForUser(user);
     }
 
-    private Owner newOwner() {
-        Owner owner = new Owner();
+    private User newUser() {
+        User user = new User();
         this.unit = new Unit();
         unit.setId(1337L);
-        owner.setUnitList(Collections.singletonList(unit));
-        return owner;
+        user.setUnitList(Collections.singletonList(unit));
+        return user;
     }
 
     private Actor newActor() {

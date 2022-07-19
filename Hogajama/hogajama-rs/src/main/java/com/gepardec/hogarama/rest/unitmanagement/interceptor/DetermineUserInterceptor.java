@@ -1,9 +1,9 @@
 package com.gepardec.hogarama.rest.unitmanagement.interceptor;
 
 
-import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
+import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
-import com.gepardec.hogarama.domain.unitmanagement.service.OwnerService;
+import com.gepardec.hogarama.domain.unitmanagement.service.UserService;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
@@ -20,20 +20,20 @@ import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * Intercepts all requests annotated with {@link DetermineOwner} and extracts logged in user
+ * Intercepts all requests annotated with {@link DetermineUser} and extracts logged in user
  * by request's bearer token. <br />
  * The extracted user will be stored in the {@link UserContext}.
  */
-@DetermineOwner
+@DetermineUser
 @Interceptor
-public class DetermineOwnerInterceptor {
+public class DetermineUserInterceptor {
 
     private static final String HOGAJAMA_NOSECURITY = "hogajama.nosecurity";
 
-    private static final Logger LOG = LoggerFactory.getLogger(DetermineOwnerInterceptor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DetermineUserInterceptor.class);
 
     @Inject
-    private OwnerService service;
+    private UserService service;
     @Inject
     private UserContext userContext;
 
@@ -41,11 +41,11 @@ public class DetermineOwnerInterceptor {
     public Object aroundInvoke(InvocationContext ctx) throws Exception {
         SecurityContext sc = extractSecurityContext(ctx);
         
-        String ssoUserId;
+        String userKey;
         if ( null == sc || null == sc.getUserPrincipal() ) {
             LOG.error("SecurityContext is null. This probably doesn't end well, since we need a configured user.");
             if ( "true".equals(System.getProperty(HOGAJAMA_NOSECURITY, "false")) ) {
-                ssoUserId = "dummy";
+                userKey = "dummy";
                 userContext.setUserProfile(getDummyUserProfile());
             }
             else {
@@ -53,11 +53,11 @@ public class DetermineOwnerInterceptor {
             }
         }
         else {
-            ssoUserId = sc.getUserPrincipal().getName();
+            userKey = sc.getUserPrincipal().getName();
         }
-        Optional<Owner> optionalOwner = service.getRegisteredOwner(ssoUserId);
-        Owner owner = optionalOwner.orElseGet(() -> registerOwnerAndHandleDuplicates(ssoUserId));
-        userContext.setOwner(owner);
+        Optional<User> optionalUser = service.getRegisteredUser(userKey);
+        User user = optionalUser.orElseGet(() -> registerUserAndHandleDuplicates(userKey));
+        userContext.getUser(user);
 
         if (sc.getUserPrincipal() instanceof KeycloakPrincipal) {
             @SuppressWarnings("unchecked")
@@ -86,13 +86,13 @@ public class DetermineOwnerInterceptor {
         return userProfile;
     }
 
-    private Owner registerOwnerAndHandleDuplicates(String ssoUserId) {
+    private User registerUserAndHandleDuplicates(String userKey) {
         try {
-            return service.register(ssoUserId);
+            return service.register(userKey);
         } catch (Exception e) {
             if (e.getCause().getMessage().contains("ConstraintViolationException")) {
-                LOG.warn("Tried to register owner twice.");
-                return service.getRegisteredOwner(ssoUserId).orElse(null);
+                LOG.warn("Tried to register user twice.");
+                return service.getRegisteredUser(userKey).orElse(null);
             }
             throw e;
         }

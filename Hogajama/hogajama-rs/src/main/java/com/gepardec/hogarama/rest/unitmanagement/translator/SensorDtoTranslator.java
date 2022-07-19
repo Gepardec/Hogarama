@@ -62,12 +62,12 @@ public class SensorDtoTranslator implements Translator<SensorDto, Sensor> {
     private Unit getUnitByUnitIdOrDefaultUnit(Long unitId) {
         if (unitId == null) {
             LOG.debug("No unitId supplied - Use default unit.");
-            return userContext.getOwner().getDefaultUnit();
+            return userContext.getUser().getDefaultUnit();
         }
 
         return unitDAO.getById(unitId).orElseGet(() -> {
             LOG.warn("No unit with id {} found.", unitId);
-            return userContext.getOwner().getDefaultUnit();
+            return userContext.getUser().getDefaultUnit();
         });
     }
 }

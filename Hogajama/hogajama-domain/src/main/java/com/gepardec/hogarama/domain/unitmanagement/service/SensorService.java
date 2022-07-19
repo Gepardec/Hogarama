@@ -22,7 +22,7 @@ public class SensorService {
     Event<Sensor> sensorChanged;
     
     public void createSensor(Sensor sensor) {
-        sensor.verifyIsOwned(userContext.getOwner());
+        sensor.verifyIsOwned(userContext.getUser());
         dao.save(sensor);
     }
 
@@ -35,13 +35,13 @@ public class SensorService {
     }
 
     public void updateSensor(Sensor sensor) {
-        sensor.verifyIsOwned(userContext.getOwner());
+        sensor.verifyIsOwned(userContext.getUser());
         sensorChanged.fire(sensor);
         dao.update(sensor);
     }
 
-    public List<Sensor> getAllSensorsForOwner() {
-        return dao.getAllSensorsForOwner(userContext.getOwner());
+    public List<Sensor> getAllSensorsForUser() {
+        return dao.getAllSensorsForUser(userContext.getUser());
     }
 
 }

@@ -5,21 +5,21 @@ public class UnitDto extends BaseDto {
     private String description;
     private Boolean defaultUnit;
     private String name;
-    private Long ownerId;
+    private Long userId;
 
     public UnitDto() {
     }
 
-    private UnitDto(Long id, String description, boolean defaultUnit, String name, Long ownerId) {
+    private UnitDto(Long id, String description, boolean defaultUnit, String name, Long userId) {
         super(id);
         this.description = description;
         this.defaultUnit = defaultUnit;
         this.name = name;
-        this.ownerId = ownerId;
+        this.userId = userId;
     }
 
-    public static UnitDto of(Long id, String description, boolean defaultUnit, String name, Long ownerId) {
-        return new UnitDto(id, description, defaultUnit, name, ownerId);
+    public static UnitDto of(Long id, String description, boolean defaultUnit, String name, Long userId) {
+        return new UnitDto(id, description, defaultUnit, name, userId);
     }
 
     public String getDescription() {
@@ -34,8 +34,8 @@ public class UnitDto extends BaseDto {
         return name;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public Long getUserId() {
+        return userId;
     }
 
     public void setDescription(String description) {
@@ -50,8 +50,8 @@ public class UnitDto extends BaseDto {
         this.name = name;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class UnitDto extends BaseDto {
                 ", description='" + description + '\'' +
                 ", defaultUnit=" + defaultUnit +
                 ", name='" + name + '\'' +
-                ", ownerId=" + ownerId +
+                ", userId=" + userId +
                 '}';
     }
 }
