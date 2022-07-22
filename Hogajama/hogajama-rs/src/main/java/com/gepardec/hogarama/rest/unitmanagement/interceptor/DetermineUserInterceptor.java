@@ -26,8 +26,6 @@ import java.util.Optional;
 @Interceptor
 public class DetermineUserInterceptor {
 
-    private static final String HOGAJAMA_NOSECURITY = "hogajama.nosecurity";
-
     private static final Logger LOG = LoggerFactory.getLogger(DetermineUserInterceptor.class);
 
     @Inject
@@ -66,7 +64,7 @@ public class DetermineUserInterceptor {
     private SecurityContext extractSecurityContext(InvocationContext ctx) {
         return Arrays.stream(ctx.getParameters())
                 .filter(p -> SecurityContext.class.isAssignableFrom(p.getClass()))
-                .map(p -> (SecurityContext) p)
+                .map(SecurityContext.class::cast)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No Security context supplied"));
     }
