@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class User implements Serializable {
@@ -65,5 +66,18 @@ public class User implements Serializable {
         }
 
         unitList.add(unit);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(key, user.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, key);
     }
 }

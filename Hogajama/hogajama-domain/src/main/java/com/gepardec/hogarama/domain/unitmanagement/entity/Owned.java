@@ -9,10 +9,9 @@ public interface Owned {
     Unit getUnit();
 
     default void verifyIsOwned(User user) {
-        if (!user.getUnitList().stream().map(Unit::getId).collect(Collectors.toSet()).contains(getUnit().getId())) {
-            throw new TechnicalException("Unit doesn't belong to user");
+        if (!user.equals(getUnit().getUser())) {
+            throw new TechnicalException("Unit '"+getUnit()+"' doesn't belong to user '"+user.getId()+"'");
         }
     }
-
 
 }

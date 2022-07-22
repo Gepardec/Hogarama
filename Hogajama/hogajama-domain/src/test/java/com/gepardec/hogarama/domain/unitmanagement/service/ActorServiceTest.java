@@ -94,8 +94,10 @@ public class ActorServiceTest {
 
     private User newUser() {
         User user = new User();
+        user.setId(-1L);
         this.unit = new Unit();
         unit.setId(1337L);
+        unit.setUser(user);
         user.setUnitList(Collections.singletonList(unit));
         return user;
     }
