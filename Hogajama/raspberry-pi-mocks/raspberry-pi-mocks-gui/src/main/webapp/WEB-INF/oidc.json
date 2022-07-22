@@ -1,0 +1,8 @@
+{
+	"client-id" : "${env.KEYCLOAK_CLIENT_ID}",
+	"provider-url": "${env.KEYCLOAK_AUTH_SERVER_URL}",
+	"ssl-required": "external",
+	"credentials": {"secret":"${env.KEYCLOAK_CREDENTIALS_SECRET}"},
+	"disable-trust-manager":true,
+	"allow-any-hostname": true
+}
