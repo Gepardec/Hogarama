@@ -124,9 +124,8 @@
 				</plugins>
 			</build>
 		</profile>
-		<!-- TODO: Erhard: needed? -->
 		<profile>
-			<id>ocp-aws</id>
+			<id>ocp</id>
 			<build>
 				<plugins>
 					<plugin>
