@@ -6,7 +6,7 @@
 	<session-config>
 		<session-timeout>1</session-timeout>
 	</session-config>
-	
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Restricted</web-resource-name>
@@ -14,7 +14,7 @@
 			<http-method>GET</http-method>
 		</web-resource-collection>
 		<auth-constraint>
-			<role-name>admins</role-name>
+			<role-name>*</role-name>
 		</auth-constraint>
 	</security-constraint>
 	<security-constraint>
@@ -28,16 +28,22 @@
 			<http-method>DELETE</http-method>
 		</web-resource-collection>
 		<auth-constraint>
-			<role-name>admins</role-name>
+			<role-name>*</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
+
 	<login-config>
-		<auth-method>KEYCLOAK</auth-method>
+		<auth-method>MP-JWT</auth-method>
 	</login-config>
-	
+
 	<security-role>
-		<role-name>admins</role-name>
+		<role-name>*</role-name>
 	</security-role>
+
+	<context-param>
+		<!-- fpe: This one is necessary. -->
+		<param-name>resteasy.role.based.security</param-name>
+		<param-value>true</param-value>
+	</context-param>
 
 </web-app>

@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.rest;
+package com.gepardec.hogarama.security.dummy;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

@@ -27,7 +27,7 @@ public class ActorApiImpl implements ActorApi {
     private ActorDtoTranslator translator;
 
     @Override
-    public Response getForUser(SecurityContext securityContext) {
+    public Response getForUser() {
         LOG.info("Get actors for current user.");
         List<ActorDto> dtoList = translator.toDtoList(service.getAllActorsForUser());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
@@ -35,7 +35,7 @@ public class ActorApiImpl implements ActorApi {
 
     @Override
     @Transactional
-    public Response create(SecurityContext securityContext, ActorDto actorDto) {
+    public Response create(ActorDto actorDto) {
         LOG.info("Create actor.");
         Actor actor = translator.fromDto(actorDto);
         service.createActor(actor);
@@ -45,7 +45,7 @@ public class ActorApiImpl implements ActorApi {
 
     @Override
     @Transactional
-    public Response update(String id, SecurityContext securityContext, ActorDto actorDto) {
+    public Response update(String id, ActorDto actorDto) {
         LOG.info("Updating actor with id {}.", id);
         Actor actor = translator.fromDto(actorDto);
 
@@ -62,7 +62,7 @@ public class ActorApiImpl implements ActorApi {
 
     @Override
     @Transactional
-    public Response delete(String id, SecurityContext securityContext) {
+    public Response delete(String id) {
         LOG.info("Deleting actor with id {}.", id);
         if (id == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();

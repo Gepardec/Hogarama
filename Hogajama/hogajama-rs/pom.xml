@@ -156,6 +156,17 @@
 					<version>0.0.1-SNAPSHOT</version>
 				</dependency>
 			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<configuration>
+							<webXml>src/main/resources/config/dummy_security/web.xml</webXml>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 		<profile>
 			<id>security-keycloak</id>

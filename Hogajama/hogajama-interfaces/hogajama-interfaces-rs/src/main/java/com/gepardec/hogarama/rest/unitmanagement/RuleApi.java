@@ -3,10 +3,8 @@ package com.gepardec.hogarama.rest.unitmanagement;
 import com.gepardec.hogarama.rest.unitmanagement.dto.RuleDto;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 
 @Path("/unitmanagement/rule")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -14,16 +12,16 @@ import javax.ws.rs.core.SecurityContext;
 public interface RuleApi {
 
     @GET
-    Response getForUser(@Context SecurityContext securityContext);
+    Response getForUser();
 
     @PUT
-    Response create(@Context SecurityContext securityContext, RuleDto actorDto);
+    Response create(RuleDto actorDto);
 
     @PATCH
     @Path("/{id}")
-    Response update(@PathParam("id") String id, @Context SecurityContext securityContext, RuleDto actorDto);
+    Response update(@PathParam("id") String id, RuleDto actorDto);
 
     @DELETE
     @Path("/{id}")
-    Response delete(@PathParam("id") String id, @Context SecurityContext securityContext);
+    Response delete(@PathParam("id") String id);
 }

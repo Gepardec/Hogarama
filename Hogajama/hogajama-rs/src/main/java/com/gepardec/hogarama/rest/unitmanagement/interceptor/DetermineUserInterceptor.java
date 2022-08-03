@@ -37,9 +37,8 @@ public class DetermineUserInterceptor {
 
     @AroundInvoke
     public Object aroundInvoke(InvocationContext ctx) throws Exception {
-        SecurityContext sc = extractSecurityContext(ctx);
 
-        UserProfile userProfile = userProfileResolver.resolveUserProfile(sc);
+        UserProfile userProfile = userProfileResolver.resolveUserProfile();
         userContext.setUserProfile(userProfile);
 
         Optional<User> optionalUser = service.getRegisteredUser(userProfile.getEmail());
@@ -59,13 +58,5 @@ public class DetermineUserInterceptor {
             }
             throw e;
         }
-    }
-
-    private SecurityContext extractSecurityContext(InvocationContext ctx) {
-        return Arrays.stream(ctx.getParameters())
-                .filter(p -> SecurityContext.class.isAssignableFrom(p.getClass()))
-                .map(SecurityContext.class::cast)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No Security context supplied"));
     }
 }

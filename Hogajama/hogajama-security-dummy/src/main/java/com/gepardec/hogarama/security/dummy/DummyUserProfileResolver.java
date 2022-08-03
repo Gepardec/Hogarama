@@ -8,7 +8,7 @@ import javax.ws.rs.core.SecurityContext;
 public class DummyUserProfileResolver implements UserProfileResolver {
 
   @Override
-  public UserProfile resolveUserProfile(SecurityContext sc) {
+  public UserProfile resolveUserProfile() {
     UserProfile userProfile = new UserProfile();
     userProfile.setName("Dummy");
     userProfile.setEmail("dummy@nowhere");

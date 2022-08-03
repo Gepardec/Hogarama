@@ -33,6 +33,8 @@
 
 		<!-- DEPENDENCY VERSIONS-->
 
+		<wildfly.version>26.0.0.Final</wildfly.version>
+
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<org.json.version>20200518</org.json.version>
@@ -66,8 +68,7 @@
 		<com.google.guava.version>31.1-jre</com.google.guava.version>
 		<org.assertj.version>3.15.0</org.assertj.version>
         <io.smallrye.reactive.version>3.0.0</io.smallrye.reactive.version>
-        <org.keycloak.version>18.0.0</org.keycloak.version>
-        
+
 	</properties>
 
 	<dependencies>
@@ -163,6 +164,15 @@
 				<groupId>org.mongodb.morphia</groupId>
 				<artifactId>morphia</artifactId>
 				<version>${mongodb.morphia.version}</version>
+			</dependency>
+
+			<!-- Microprofile -->
+			<dependency>
+				<groupId>org.wildfly.bom</groupId>
+				<artifactId>wildfly-microprofile</artifactId>
+				<version>${wildfly.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 			<!-- TESTING -->
