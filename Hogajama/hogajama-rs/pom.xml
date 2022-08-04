@@ -23,6 +23,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.gepardec.hogajama</groupId>
+			<artifactId>hogajama-interfaces-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.gepardec.hogajama</groupId>
 			<artifactId>hogajama-services</artifactId>
 		</dependency>
 		<dependency>
@@ -41,11 +45,6 @@
             <version>${org.jboss.resteasy.version}</version>
             <scope>provided</scope>
         </dependency>
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-core</artifactId>
-			<version>${org.keycloak.version}</version>
-		</dependency>
         <dependency>
             <groupId>io.smallrye.reactive</groupId>
             <artifactId>smallrye-reactive-messaging-api</artifactId>
@@ -130,7 +129,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>ocp-aws</id>
+			<id>ocp</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -141,6 +140,39 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>security-dummy</id>
+			<activation>
+				<property>
+					<name>env.HOGAJAMA_MODULE_SECURITY</name>
+					<value>DUMMY</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<artifactId>hogajama-security-dummy</artifactId>
+					<groupId>com.gepardec.hogajama</groupId>
+					<version>0.0.1-SNAPSHOT</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>security-keycloak</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env.HOGAJAMA_MODULE_SECURITY</name>
+					<value>KEYCLOAK</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<artifactId>hogajama-security-keycloak</artifactId>
+					<groupId>com.gepardec.hogajama</groupId>
+					<version>0.0.1-SNAPSHOT</version>
+				</dependency>
+			</dependencies>
 		</profile>
 	</profiles>
 </project>

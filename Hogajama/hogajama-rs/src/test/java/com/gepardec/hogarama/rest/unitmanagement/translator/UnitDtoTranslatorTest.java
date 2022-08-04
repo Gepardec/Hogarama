@@ -2,6 +2,7 @@ package com.gepardec.hogarama.rest.unitmanagement.translator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -10,7 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.rest.unitmanagement.dto.UnitDto;
 
@@ -19,7 +19,7 @@ import com.gepardec.hogarama.rest.unitmanagement.dto.UnitDto;
 public class UnitDtoTranslatorTest {
 
     private static final String EXAMPLE_UNIT = "ExampleUnit";
-	private static final long OWNER_ID = 5L;
+	  private static final long USER_ID = 5L;
     private static final long UNIT_ID = 2L;
 
     @Mock
@@ -36,19 +36,19 @@ public class UnitDtoTranslatorTest {
     	dto.setId(UNIT_ID);
     	dto.setName(EXAMPLE_UNIT);
     	
-    	Mockito.when(userContext.getOwner()).thenReturn(currentOwner());
+    	Mockito.when(userContext.getUser()).thenReturn(currentUser());
  
         Unit result = translator.fromDto(dto);
 
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(UNIT_ID);
-        assertThat(result.getOwner().getId()).isEqualTo(OWNER_ID);
+        assertThat(result.getUser().getId()).isEqualTo(USER_ID);
         assertThat(result.getName()).isEqualTo(EXAMPLE_UNIT);
      }
 
-    private Owner currentOwner() {
-		Owner owner = new Owner();
-		owner.setId(OWNER_ID);
-		return owner;
+    private User currentUser() {
+		User user = new User();
+		user.setId(USER_ID);
+		return user;
 	}
 }

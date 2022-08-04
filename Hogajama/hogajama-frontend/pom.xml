@@ -44,7 +44,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>ocp-aws</id>
+			<id>ocp</id>
 			<build>
 				<plugins>
 					<plugin>

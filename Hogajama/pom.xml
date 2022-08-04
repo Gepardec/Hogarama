@@ -17,6 +17,8 @@
         <module>raspberry-pi-mocks</module>
 		<module>hogajama-angular-frontend</module>
 		<module>hogajama-rs</module>
+        <module>hogajama-security-dummy</module>
+		<module>hogajama-security-keycloak</module>
 	</modules>
 
 	<properties>
@@ -100,6 +102,11 @@
 			<dependency>
 				<groupId>com.gepardec.hogajama</groupId>
 				<artifactId>hogajama-interfaces-frontend</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gepardec.hogajama</groupId>
+				<artifactId>hogajama-interfaces-security</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

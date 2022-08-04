@@ -3,7 +3,7 @@ package com.gepardec.hogarama.rest.unitmanagement;
 import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.unitmanagement.service.RuleService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.RuleDto;
-import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
+import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineUser;
 import com.gepardec.hogarama.rest.unitmanagement.translator.RuleDtoTranslator;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 @SuppressWarnings("unused")
-@DetermineOwner
+@DetermineUser
 public class RuleApiImpl implements RuleApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(RuleApiImpl.class);
@@ -27,9 +27,9 @@ public class RuleApiImpl implements RuleApi {
     private RuleDtoTranslator translator;
 
     @Override
-    public Response getForOwner(SecurityContext securityContext) {
-        LOG.info("Get rules for current owner.");
-        List<RuleDto> dtoList = translator.toDtoList(service.getAllRulesForOwner());
+    public Response getForUser(SecurityContext securityContext) {
+        LOG.info("Get rules for current user.");
+        List<RuleDto> dtoList = translator.toDtoList(service.getAllRulesForUser());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
 

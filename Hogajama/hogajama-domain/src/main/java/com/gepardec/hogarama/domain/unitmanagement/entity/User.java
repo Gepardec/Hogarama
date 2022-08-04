@@ -7,22 +7,23 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-public class Owner implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "OwnerIdGenerator", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "OwnerIdGenerator", sequenceName = "seq_owner_id")
+    @GeneratedValue(generator = "UserIdGenerator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "UserIdGenerator", sequenceName = "seq_user_id")
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "sso_user_id")
-    private String ssoUserId;
+    @Column(name = "key")
+    private String key;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "user")
     private List<Unit> unitList;
 
     public Long getId() {
@@ -33,12 +34,12 @@ public class Owner implements Serializable {
         this.id = id;
     }
 
-    public String getSsoUserId() {
-        return ssoUserId;
+    public String getKey() {
+        return key;
     }
 
-    public void setSsoUserId(String ssoUserId) {
-        this.ssoUserId = ssoUserId;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public List<Unit> getUnitList() {
@@ -65,5 +66,18 @@ public class Owner implements Serializable {
         }
 
         unitList.add(unit);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(key, user.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, key);
     }
 }

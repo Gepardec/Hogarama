@@ -30,7 +30,7 @@ export class HogaramaBackendPath<responseType> {
     return this.http.get<{ response: Sensor[] }>(`${HogaramaBackendPath.baseUrl}/rest/v2/sensor/all`);
   }
 
-  public getAllSensorsForOwner(): Observable<{ response: Sensor[] }> {
+  public getAllSensorsForUser(): Observable<{ response: Sensor[] }> {
     return this.http.get<{ response: Sensor[] }>(`${HogaramaBackendPath.baseUrl}/rest/v2/sensor`);
   }
 }

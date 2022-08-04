@@ -17,7 +17,7 @@ public class UnitDtoTranslator implements Translator<UnitDto, Unit> {
                 unit.getDescription(),
                 unit.isDefaultUnit(),
                 unit.getName(),
-                unit.getOwner().getId());
+                unit.getUser().getId());
     }
 
     @Override
@@ -26,7 +26,7 @@ public class UnitDtoTranslator implements Translator<UnitDto, Unit> {
         unit.setDescription(dto.getDescription());
         unit.setName(dto.getName());
         unit.setId(dto.getId());
-        unit.setOwner(userContext.getOwner()); // We always use the current Owner? Should OwnerId be in Dto?
+        unit.setUser(userContext.getUser()); // We always use the current User? Should UserId be in Dto?
         unit.setDefaultUnit(dto.isDefaultUnit());
         return unit;
      }

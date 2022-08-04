@@ -10,13 +10,13 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * JAX-RS endpoints annotated with {@link DetermineOwner} are intercepted by {@link DetermineOwnerInterceptor}.
- * @see DetermineOwnerInterceptor
+ * JAX-RS endpoints annotated with {@link DetermineUser} are intercepted by {@link DetermineUserInterceptor}.
+ * @see DetermineUserInterceptor
  */
 @Inherited
 @InterceptorBinding
 @Retention(RUNTIME)
 @Target({METHOD, TYPE})
-public @interface DetermineOwner {
+public @interface DetermineUser {
 }
 

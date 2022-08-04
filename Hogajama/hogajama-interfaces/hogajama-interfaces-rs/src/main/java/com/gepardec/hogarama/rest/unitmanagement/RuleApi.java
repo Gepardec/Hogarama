@@ -14,7 +14,7 @@ import javax.ws.rs.core.SecurityContext;
 public interface RuleApi {
 
     @GET
-    Response getForOwner(@Context SecurityContext securityContext);
+    Response getForUser(@Context SecurityContext securityContext);
 
     @PUT
     Response create(@Context SecurityContext securityContext, RuleDto actorDto);

@@ -16,9 +16,9 @@ public class UnitDAO extends BaseDAO<Unit> {
         return Unit.class;
     }
 
-    public List<Unit> getUnitsForOwner(Long ownerId) {
+    public List<Unit> getUnitsForUser(Long userId) {
         JPAQuery<Sensor> query = new JPAQuery<>(entityManager);
         QUnit unit = QUnit.unit;
-        return query.select(unit).from(unit).where(unit.unit.owner.id.eq(ownerId)).fetch();
+        return query.select(unit).from(unit).where(unit.unit.user.id.eq(userId)).fetch();
     }
 }

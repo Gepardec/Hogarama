@@ -25,7 +25,7 @@ export class TestingPlaygroundPage implements OnInit {
     actorsDisplayedColumns: string[] = ['id', 'name', 'deviceId', 'unitId', 'queueName', 'actions'];
     actorsDataSource: MatTableDataSource<Actor> = new MatTableDataSource<Actor>();
 
-    unitsDisplayedColumns: string[] = ['id', 'name', 'description', 'isDefault', 'ownerId', 'actions'];
+    unitsDisplayedColumns: string[] = ['id', 'name', 'description', 'isDefault', 'userId', 'actions'];
     unitsDataSource: MatTableDataSource<Unit> = new MatTableDataSource<Unit>();
 
     rulesDisplayedColumns: string[] = ['id', 'name', 'description', 'sensorId', 'actorId', 'waterDuration',
@@ -52,28 +52,28 @@ export class TestingPlaygroundPage implements OnInit {
 
     private async reloadUnits() {
         try {
-            this.unitsDataSource.data = await this.backend.units.getAllForOwner();
+            this.unitsDataSource.data = await this.backend.units.getAllForUser();
         } catch (e) {
         }
     }
 
     private async reloadActors() {
         try {
-            this.actorsDataSource.data = await this.backend.actors.getAllForOwner();
+            this.actorsDataSource.data = await this.backend.actors.getAllForUser();
         } catch (e) {
         }
     }
 
     private async reloadSensors() {
         try {
-            this.sensorsDataSource.data = await this.backend.sensors.getAllForOwner();
+            this.sensorsDataSource.data = await this.backend.sensors.getAllForUser();
         } catch (e) {
         }
     }
 
     private async reloadRules() {
         try {
-            this.rulesDataSource.data = await this.backend.rules.getAllForOwner();
+            this.rulesDataSource.data = await this.backend.rules.getAllForUser();
         } catch (e) {
         }
     }

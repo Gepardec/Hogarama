@@ -23,8 +23,8 @@ public class Unit implements Serializable {
     private Boolean defaultUnit;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private Owner owner;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "unit")
     private List<Sensor> sensorList;
@@ -56,12 +56,12 @@ public class Unit implements Serializable {
         this.description = description;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public User getUser() {
+        return user;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Sensor> getSensorList() {
@@ -92,12 +92,12 @@ public class Unit implements Serializable {
         this.actorList = actorList;
     }
 
-    public static Unit createDefault(Owner owner) {
+    public static Unit createDefault(User user) {
         Unit unit = new Unit();
         unit.setDefaultUnit(true);
         unit.setName("DEFAULT_UNIT");
         unit.setDescription("Automatically created default unit.");
-        unit.setOwner(owner);
+        unit.setUser(user);
         return unit;
     }
 
