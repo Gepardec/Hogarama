@@ -32,7 +32,7 @@ spec:
     sourceStrategy:
       env:
       - name: MAVEN_ARGS
-        value: -Pocp -Dfrontend.build.environment=prod
+        value: -Pocp -Dfrontend.build.environment=prod -Psecurity-keycloak
       - name: XDG_CACHE_HOME
         value: /deployments/Hogajama/target/
       from:
