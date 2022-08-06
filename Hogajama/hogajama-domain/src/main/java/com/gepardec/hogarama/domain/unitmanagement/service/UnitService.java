@@ -18,8 +18,8 @@ public class UnitService {
     @Inject
     Event<Unit> unitChanged;
 
-    public List<Unit> getUnitsForOwner() {
-        return dao.getUnitsForOwner(userContext.getOwner().getId());
+    public List<Unit> getUnitsForUser() {
+        return dao.getUnitsForUser(userContext.getUser().getId());
     }
 
     public void createUnit(Unit unit) {

@@ -3,7 +3,7 @@ package com.gepardec.hogarama.rest.unitmanagement;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.service.SensorService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.SensorDto;
-import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
+import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineUser;
 import com.gepardec.hogarama.rest.unitmanagement.translator.SensorDtoTranslator;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 @SuppressWarnings("unused")
-@DetermineOwner
+@DetermineUser
 public class SensorApiImpl implements SensorApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(SensorApiImpl.class);
@@ -27,15 +27,15 @@ public class SensorApiImpl implements SensorApi {
     private SensorDtoTranslator translator;
 
     @Override
-    public Response getForOwner(SecurityContext securityContext) {
-        LOG.info("Get sensors for current owner.");
-        List<SensorDto> dtoList = translator.toDtoList(service.getAllSensorsForOwner());
+    public Response getForUser() {
+        LOG.info("Get sensors for current user.");
+        List<SensorDto> dtoList = translator.toDtoList(service.getAllSensorsForUser());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override
     @Transactional
-    public Response create(SecurityContext securityContext, SensorDto sensorDto) {
+    public Response create(SensorDto sensorDto) {
         LOG.info("Create sensor.");
         Sensor sensor = translator.fromDto(sensorDto);
         service.createSensor(sensor);
@@ -45,7 +45,7 @@ public class SensorApiImpl implements SensorApi {
 
     @Override
     @Transactional
-    public Response update(String id, SecurityContext securityContext, SensorDto sensorDto) {
+    public Response update(String id, SensorDto sensorDto) {
         LOG.info("Updating sensor with id {}.", id);
         Sensor sensor = translator.fromDto(sensorDto);
 
@@ -62,7 +62,7 @@ public class SensorApiImpl implements SensorApi {
 
     @Override
     @Transactional
-    public Response delete(String id, SecurityContext securityContext) {
+    public Response delete(String id) {
         LOG.info("Deleting sensor with id {}.", id);
         if (id == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();

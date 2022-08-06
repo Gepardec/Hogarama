@@ -3,5 +3,5 @@ export interface Unit {
     description?: string;
     defaultUnit?: boolean;
     name?: string;
-    ownerId?: number;
+    userId?: number;
 }

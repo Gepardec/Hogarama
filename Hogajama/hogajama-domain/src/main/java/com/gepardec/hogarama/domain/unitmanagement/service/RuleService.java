@@ -21,7 +21,7 @@ public class RuleService {
     Event<LowWaterWateringRule> ruleChanged;
 
     public void createRule(LowWaterWateringRule rule) {
-        rule.verifyIsOwned(userContext.getOwner());
+        rule.verifyIsOwned(userContext.getUser());
         dao.save(rule);
     }
 
@@ -34,13 +34,13 @@ public class RuleService {
     }
 
     public void updateRule(LowWaterWateringRule rule) {
-        rule.verifyIsOwned(userContext.getOwner());
+        rule.verifyIsOwned(userContext.getUser());
         ruleChanged.fire(rule);
         dao.update(rule);
     }
 
-    public List<LowWaterWateringRule> getAllRulesForOwner() {
-        return dao.getAllRulesForOwner(userContext.getOwner());
+    public List<LowWaterWateringRule> getAllRulesForUser() {
+        return dao.getAllRulesForUser(userContext.getUser());
     }
 
 }

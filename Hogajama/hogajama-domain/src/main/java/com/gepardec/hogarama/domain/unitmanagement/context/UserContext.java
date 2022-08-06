@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.domain.unitmanagement.context;
 
-import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
+import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,16 +12,16 @@ public class UserContext {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserContext.class);
 
-    private Owner owner;
+    private User user;
     private UserProfile userProfile;
 
-    public Owner getOwner() {
-        return owner;
+    public User getUser() {
+        return user;
     }
 
-    public void setOwner(Owner owner) {
-        LOG.debug("Set owner with id {} and ssoUserId {}.", owner.getId(), owner.getSsoUserId());
-        this.owner = owner;
+    public void getUser(User user) {
+        LOG.debug("Set user with id {} and key {}.", user.getId(), user.getKey());
+        this.user = user;
     }
 
     public UserProfile getUserProfile() {

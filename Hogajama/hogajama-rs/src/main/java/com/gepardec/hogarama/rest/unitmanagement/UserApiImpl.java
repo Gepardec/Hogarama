@@ -3,16 +3,15 @@ package com.gepardec.hogarama.rest.unitmanagement;
 import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 import com.gepardec.hogarama.domain.unitmanagement.service.UserProfileService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.UserDto;
-import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
+import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineUser;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 
-@DetermineOwner
+@DetermineUser
 public class UserApiImpl implements UserApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserApiImpl.class);
@@ -21,7 +20,7 @@ public class UserApiImpl implements UserApi {
     private UserProfileService userProfileService;
 
     @Override
-    public Response getUser(SecurityContext securityContext) {
+    public Response getUser() {
         LOG.info("Get user data. Currently dummy data.");
         // provide temporary dummy response for frontend
         UserDto userDto = new UserDto();

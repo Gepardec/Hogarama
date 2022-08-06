@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import javax.enterprise.context.Dependent;
 
-import com.gepardec.hogarama.domain.unitmanagement.entity.Owner;
+import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.QSensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -18,10 +18,10 @@ public class SensorDAO extends BaseDAO<Sensor> {
         return Sensor.class;
     }
 
-    public List<Sensor> getAllSensorsForOwner(Owner owner) {
+    public List<Sensor> getAllSensorsForUser(User user) {
         JPAQuery<Sensor> query = new JPAQuery<>(entityManager);
         QSensor sensor = QSensor.sensor;
-        return query.select(sensor).from(sensor).where(sensor.unit.owner.id.eq(owner.getId())).fetch();
+        return query.select(sensor).from(sensor).where(sensor.unit.user.id.eq(user.getId())).fetch();
     }
 
     public Optional<Sensor> getByDeviceId(String deviceId) {

@@ -3,7 +3,7 @@ package com.gepardec.hogarama.rest.unitmanagement;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
 import com.gepardec.hogarama.domain.unitmanagement.service.ActorService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.ActorDto;
-import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
+import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineUser;
 import com.gepardec.hogarama.rest.unitmanagement.translator.ActorDtoTranslator;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 @SuppressWarnings("unused")
-@DetermineOwner
+@DetermineUser
 public class ActorApiImpl implements ActorApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActorApiImpl.class);
@@ -27,15 +27,15 @@ public class ActorApiImpl implements ActorApi {
     private ActorDtoTranslator translator;
 
     @Override
-    public Response getForOwner(SecurityContext securityContext) {
-        LOG.info("Get actors for current owner.");
-        List<ActorDto> dtoList = translator.toDtoList(service.getAllActorsForOwner());
+    public Response getForUser() {
+        LOG.info("Get actors for current user.");
+        List<ActorDto> dtoList = translator.toDtoList(service.getAllActorsForUser());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override
     @Transactional
-    public Response create(SecurityContext securityContext, ActorDto actorDto) {
+    public Response create(ActorDto actorDto) {
         LOG.info("Create actor.");
         Actor actor = translator.fromDto(actorDto);
         service.createActor(actor);
@@ -45,7 +45,7 @@ public class ActorApiImpl implements ActorApi {
 
     @Override
     @Transactional
-    public Response update(String id, SecurityContext securityContext, ActorDto actorDto) {
+    public Response update(String id, ActorDto actorDto) {
         LOG.info("Updating actor with id {}.", id);
         Actor actor = translator.fromDto(actorDto);
 
@@ -62,7 +62,7 @@ public class ActorApiImpl implements ActorApi {
 
     @Override
     @Transactional
-    public Response delete(String id, SecurityContext securityContext) {
+    public Response delete(String id) {
         LOG.info("Deleting actor with id {}.", id);
         if (id == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();

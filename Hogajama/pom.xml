@@ -17,6 +17,8 @@
         <module>raspberry-pi-mocks</module>
 		<module>hogajama-angular-frontend</module>
 		<module>hogajama-rs</module>
+        <module>hogajama-security-dummy</module>
+		<module>hogajama-security-keycloak</module>
 	</modules>
 
 	<properties>
@@ -30,6 +32,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- DEPENDENCY VERSIONS-->
+
+		<wildfly.version>26.0.0.Final</wildfly.version>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -64,8 +68,7 @@
 		<com.google.guava.version>31.1-jre</com.google.guava.version>
 		<org.assertj.version>3.15.0</org.assertj.version>
         <io.smallrye.reactive.version>3.0.0</io.smallrye.reactive.version>
-        <org.keycloak.version>18.0.0</org.keycloak.version>
-        
+
 	</properties>
 
 	<dependencies>
@@ -100,6 +103,11 @@
 			<dependency>
 				<groupId>com.gepardec.hogajama</groupId>
 				<artifactId>hogajama-interfaces-frontend</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gepardec.hogajama</groupId>
+				<artifactId>hogajama-interfaces-security</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -156,6 +164,15 @@
 				<groupId>org.mongodb.morphia</groupId>
 				<artifactId>morphia</artifactId>
 				<version>${mongodb.morphia.version}</version>
+			</dependency>
+
+			<!-- Microprofile -->
+			<dependency>
+				<groupId>org.wildfly.bom</groupId>
+				<artifactId>wildfly-microprofile</artifactId>
+				<version>${wildfly.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 			<!-- TESTING -->

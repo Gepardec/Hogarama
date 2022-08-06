@@ -3,7 +3,7 @@ package com.gepardec.hogarama.rest.unitmanagement;
 import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.unitmanagement.service.RuleService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.RuleDto;
-import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineOwner;
+import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineUser;
 import com.gepardec.hogarama.rest.unitmanagement.translator.RuleDtoTranslator;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 @SuppressWarnings("unused")
-@DetermineOwner
+@DetermineUser
 public class RuleApiImpl implements RuleApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(RuleApiImpl.class);
@@ -27,15 +27,15 @@ public class RuleApiImpl implements RuleApi {
     private RuleDtoTranslator translator;
 
     @Override
-    public Response getForOwner(SecurityContext securityContext) {
-        LOG.info("Get rules for current owner.");
-        List<RuleDto> dtoList = translator.toDtoList(service.getAllRulesForOwner());
+    public Response getForUser() {
+        LOG.info("Get rules for current user.");
+        List<RuleDto> dtoList = translator.toDtoList(service.getAllRulesForUser());
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override
     @Transactional
-    public Response create(SecurityContext securityContext, RuleDto ruleDto) {
+    public Response create(RuleDto ruleDto) {
         LOG.info("Create rule.");
         LowWaterWateringRule rule = translator.fromDto(ruleDto);
         service.createRule(rule);
@@ -45,7 +45,7 @@ public class RuleApiImpl implements RuleApi {
 
     @Override
     @Transactional
-    public Response update(String id, SecurityContext securityContext, RuleDto ruleDto) {
+    public Response update(String id, RuleDto ruleDto) {
         LOG.info("Updating rule with id {}.", id);
         LowWaterWateringRule rule = translator.fromDto(ruleDto);
 
@@ -62,7 +62,7 @@ public class RuleApiImpl implements RuleApi {
 
     @Override
     @Transactional
-    public Response delete(String id, SecurityContext securityContext) {
+    public Response delete(String id) {
         LOG.info("Deleting rule with id {}.", id);
         if (id == null) {
             return new BaseResponse<>(HttpStatus.SC_BAD_REQUEST).createRestResponse();

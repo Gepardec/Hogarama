@@ -22,7 +22,7 @@ spec:
     dockerStrategy:
       from:
         kind: ImageStreamTag
-        name: 'wildfly:23.0.2.Final'
+        name: 'wildfly:26.1.1.Final'
       envFrom:
         - configMapRef:
             name: hogajama-config
