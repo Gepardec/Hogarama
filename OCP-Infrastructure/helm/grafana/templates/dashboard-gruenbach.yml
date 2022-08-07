@@ -73,7 +73,7 @@ spec:
           "targets": [
             {
               "exemplar": true,
-              "expr": "hogarama_sensor_value{unit_name=\"DEFAULT_UNIT\"}",
+              "expr": "hogarama_sensor_value{unit_name=\"gruenbach\"}",
               "interval": "",
               "legendFormat": "",
               "refId": "A"
