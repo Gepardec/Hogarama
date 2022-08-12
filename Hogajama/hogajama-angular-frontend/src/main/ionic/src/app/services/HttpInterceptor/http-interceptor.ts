@@ -4,12 +4,13 @@ import {Observable, throwError} from 'rxjs';
 import {AuthenticationService} from '../AuthenticationService/authentication.service';
 import {catchError} from 'rxjs/operators';
 import {ToastController} from '@ionic/angular';
+import {DummyUser} from "../DummyUser/dummyuser.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyHttpInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthenticationService, private toastController: ToastController) { }
+  constructor(private auth: AuthenticationService, private toastController: ToastController, private dummyUser: DummyUser) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let authReq = req
@@ -17,6 +18,11 @@ export class MyHttpInterceptor implements HttpInterceptor {
       authReq = req.clone({
         headers: req.headers.set('Authorization', 'Bearer ' + this.auth.getToken())
       });
+    }
+    if (this.dummyUser.isActive()){
+        authReq = req.clone({
+            headers: req.headers.set('Authorization', 'Dummy ' +  btoa(JSON.stringify(this.dummyUser)))
+        });
     }
 
     return next.handle(authReq)

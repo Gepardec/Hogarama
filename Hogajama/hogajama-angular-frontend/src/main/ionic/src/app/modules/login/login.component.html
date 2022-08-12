@@ -1,10 +1,33 @@
 <ion-content class="ion-padding">
-    <div id="btn-container">
+    <div id="btn-container" *ngIf="!dummyUser.isActive()">
         <button mat-raised-button (click)="loginClick()" class="round" *ngIf="!isAuthenticated">
             <span>Login</span>
         </button>
         <button mat-raised-button (click)="logoutClick()" class="round" *ngIf="isAuthenticated">
             <span>Logout</span>
         </button>
+    </div>
+    <div id="dummyuser-container" class="center-container" *ngIf="dummyUser.isActive()">
+        <h1>Dummy User konfigurieren</h1>
+        <br/>
+        <mat-form-field >
+            <mat-label>User name</mat-label>
+            <input matInput placeholder="abcde" type="text" [(ngModel)]="dummyUser.name" name="usename">
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+            <mat-label>eMail</mat-label>
+            <input matInput placeholder="abcde" type="text" [(ngModel)]="dummyUser.email" name="email">
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+            <mat-label>Given name</mat-label>
+            <input matInput placeholder="abcde" type="text" [(ngModel)]="dummyUser.givenName" name="givenName">
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+            <mat-label>Family name</mat-label>
+            <input matInput placeholder="abcde" type="text" [(ngModel)]="dummyUser.familyName" name="familyName">
+        </mat-form-field>
     </div>
 </ion-content>

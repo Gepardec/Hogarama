@@ -46,6 +46,12 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>security-dummy</id>
+            <properties>
+                <frontend.build.environment>dummy</frontend.build.environment>
+            </properties>
+        </profile>
     </profiles>
 
     <build>
