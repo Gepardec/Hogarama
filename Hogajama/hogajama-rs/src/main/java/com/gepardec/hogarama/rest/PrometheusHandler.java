@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.jboss.resteasy.core.providerfactory.ResteasyProviderFactoryImpl;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,8 @@ public class PrometheusHandler {
         
         Summary.Timer requestTimer = Metrics.requestLatency.labels("hogarama_monitoring", "get_metrics").startTimer();
         Metrics.requestsTotal.labels("hogarama_monitoring", "get_metrics").inc();
-        HttpServletRequest request = ResteasyProviderFactory.getContextData(HttpServletRequest.class);
+        ResteasyProviderFactory resteasyProviderFactory = ResteasyProviderFactoryImpl.getInstance();
+        HttpServletRequest request = resteasyProviderFactory.getContextData(HttpServletRequest.class);
         StringWriter writer = new StringWriter();
         TextFormat.write004(writer, prometheusRegistry.filteredMetricFamilySamples(parse(request)));
         logger.info("GET Request {}", request);
