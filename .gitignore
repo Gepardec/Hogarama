@@ -36,3 +36,4 @@ tmp*
 
 # Docker
 Docker-Infrastructure/hogajama/bin/wildfly-23.0.1.Final.zip
+Docker-Infrastructure/hogajama/bin/wildfly-26.1.1.Final.zip

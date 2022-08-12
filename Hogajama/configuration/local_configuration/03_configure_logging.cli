@@ -2,3 +2,4 @@
 /subsystem=logging/logger=com.gepardec.hogarama:add(level=DEBUG)
 /subsystem=logging/logger=org.hibernate.SQL:add(level=DEBUG)
 /subsystem=logging/logger=org.hibernate.SQL:write-attribute(name=level, value=INFO)
+/subsystem=logging/logger=org.wildfly.security:add(level=TRACE)

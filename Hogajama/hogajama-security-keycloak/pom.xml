@@ -20,9 +20,9 @@
             <artifactId>hogajama-interfaces-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-core</artifactId>
-            <version>${org.keycloak.version}</version>
+            <groupId>org.eclipse.microprofile.jwt</groupId>
+            <artifactId>microprofile-jwt-auth-api</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 
 @DetermineUser
 public class UserApiImpl implements UserApi {
@@ -21,7 +20,7 @@ public class UserApiImpl implements UserApi {
     private UserProfileService userProfileService;
 
     @Override
-    public Response getUser(SecurityContext securityContext) {
+    public Response getUser() {
         LOG.info("Get user data. Currently dummy data.");
         // provide temporary dummy response for frontend
         UserDto userDto = new UserDto();
