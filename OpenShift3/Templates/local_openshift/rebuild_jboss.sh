@@ -1,6 +1,6 @@
 #!/bin/sh
 
-KEYCLOAK_AUTH_SERVER_URL="https://secure-sso-57-hogarama.cloud.itandtel.at/auth/"
+KEYCLOAK_AUTH_SERVER_URL="https://secure-sso-57-hogarama.cloud.itandtel.at/auth"
 
 BRANCH=$(git branch | grep ^* | cut -d ' ' -f2)
 OPENSHIFT_TOKEN=$(oc whoami -t)

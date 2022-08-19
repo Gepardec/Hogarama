@@ -2,7 +2,7 @@
 
 PRG=`basename $0`
 
-KEYCLOAK_AUTH_SERVER_URL="https://secure-sso-57-hogarama.cloud.itandtel.at/auth/"
+KEYCLOAK_AUTH_SERVER_URL="https://secure-sso-57-hogarama.cloud.itandtel.at/auth"
 DEFAULT_DATA_DIR=/tmp/Hogarama_data
 BRANCH=master
 
