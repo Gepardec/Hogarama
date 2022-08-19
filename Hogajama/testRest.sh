@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "This works only when you switch the KEYCLOAK authentication for BASIC authentication
+echo "This works only when you switch the KEYCLOAK authentication for dummy-security authentication
 
 CURL="curl -v -u testuser:testuser@123"
 URL=http://localhost:8080/hogajama-rs/rest/unitmanagement
