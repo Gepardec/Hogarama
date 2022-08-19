@@ -106,11 +106,6 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.gepardec.hogajama</groupId>
-				<artifactId>hogajama-interfaces-security</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>com.gepardec.hogarama</groupId>
 				<artifactId>hogajama-monitoring</artifactId>
 				<version>${project.version}</version>
