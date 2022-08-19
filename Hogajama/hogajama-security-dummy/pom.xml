@@ -15,10 +15,6 @@
             <groupId>com.gepardec.hogajama</groupId>
             <artifactId>hogajama-domain</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.gepardec.hogajama</groupId>
-            <artifactId>hogajama-interfaces-security</artifactId>
-        </dependency>
     </dependencies>
 
     <properties>

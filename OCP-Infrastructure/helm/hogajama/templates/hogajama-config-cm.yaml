@@ -10,7 +10,6 @@ data:
   POSTGRESQL_DATABASE: {{ .Values.global.postgresql.postgresqlDatabase }}
   POSTGRESQL_USERNAME: {{ .Values.global.postgresql.postgresqlUsername }}
   HOGAJAMA_SENSOR_SOURCE: kafka
-  HOGARAMA_RULES_STORAGE: postgres
   AMQ_URL: "https://amq:8883"
   AMQ_NETTY_HOST: "amq"
   KAFKA_CONNECTION: {{ .Values.hogarama.hogajama.kafka.bootstrapserver }}
