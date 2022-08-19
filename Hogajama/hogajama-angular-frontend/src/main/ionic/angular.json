@@ -71,6 +71,14 @@
             },
             "ci": {
               "progress": false
+            },
+            "dummy": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dummy.ts"
+                }
+              ]
             }
           }
         },
@@ -82,6 +90,9 @@
           "configurations": {
             "production": {
               "browserTarget": "app:build:production"
+            },
+            "dummy": {
+              "browserTarget": "app:build:dummy"
             },
             "ci": {
               "progress": false
@@ -195,6 +206,7 @@
     }
   },
   "cli": {
+    "analytics": false,
     "defaultCollection": "@ionic/angular-toolkit"
   },
   "schematics": {

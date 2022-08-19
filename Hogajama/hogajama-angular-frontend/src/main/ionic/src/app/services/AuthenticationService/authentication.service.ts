@@ -20,6 +20,11 @@ export class AuthenticationService {
                 private toastController: ToastController) {}
 
     public async init(keycloakSettings: KeycloakModel) {
+        if(environment.dummySecurity === true){
+            await this.presentNotification('Attention! Dummy security active. Do not use it in production.')
+            this._isAuthenticated.next(true);
+            return;
+        }
         const kcUrl = keycloakSettings.authServerUrl;
         if (!kcUrl) {
             await this.presentError('Failed to initialize Keycloak! ', 'URL is not defined')
@@ -141,6 +146,15 @@ export class AuthenticationService {
             message: text + errorMessage,
             duration: 4000,
             color: 'danger'
+        });
+        await toast.present();
+    }
+
+    async presentNotification(text: string) {
+
+        const toast = await this.toastController.create({
+            message: text,
+            duration: 5000,
         });
         await toast.present();
     }
