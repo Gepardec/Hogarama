@@ -63,10 +63,10 @@ export class AppComponent {
     }
 
     const loading = await this.loadingController.create({
-      message: 'Initialize Keycloak...'
+      message: 'Initialize Security...'
     });
-    this.rs.keycloak.getByBearer()
-      .then((keycloak) => this.authService.init(keycloak))
+    this.rs.clientConfig.getByBearer()
+      .then((config) => this.authService.init(config))
       .finally(() => {
         loading.dismiss()
         this.router.initialNavigation()

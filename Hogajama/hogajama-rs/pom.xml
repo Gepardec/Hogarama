@@ -183,17 +183,17 @@
 			</build>
 		</profile>
 		<profile>
-			<id>security-keycloak</id>
+			<id>security-jwt</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<property>
 					<name>env.HOGAJAMA_MODULE_SECURITY</name>
-					<value>KEYCLOAK</value>
+					<value>JWT</value>
 				</property>
 			</activation>
 			<dependencies>
 				<dependency>
-					<artifactId>hogajama-security-keycloak</artifactId>
+					<artifactId>hogajama-security-jwt</artifactId>
 					<groupId>com.gepardec.hogajama</groupId>
 					<version>0.0.1-SNAPSHOT</version>
 				</dependency>

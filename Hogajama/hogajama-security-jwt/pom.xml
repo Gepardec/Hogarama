@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>hogajama-security-keycloak</artifactId>
+    <artifactId>hogajama-security-jwt</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.gepardec.hogajama</groupId>

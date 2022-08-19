@@ -4,7 +4,7 @@ import Keycloak, {KeycloakError} from 'keycloak-js';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {PlatformInfoService} from '../PlatformInfoService/platform-info.service';
-import {KeycloakModel} from '../../shared/models/KeycloakModel';
+import {ClientConfigModel} from '../../shared/models/ClientConfigModel';
 
 @Injectable({
     providedIn: 'root'
@@ -19,23 +19,23 @@ export class AuthenticationService {
     constructor(private platformInfo: PlatformInfoService,
                 private toastController: ToastController) {}
 
-    public async init(keycloakSettings: KeycloakModel) {
+    public async init(clientConfig: ClientConfigModel) {
         if(environment.dummySecurity === true){
             await this.presentNotification('Attention! Dummy security active. Do not use it in production.')
             this._isAuthenticated.next(true);
             return;
         }
-        const kcUrl = keycloakSettings.authServerUrl;
+        const kcUrl = clientConfig.authServerUrl;
         if (!kcUrl) {
             await this.presentError('Failed to initialize Keycloak! ', 'URL is not defined')
             return;
         }
-        const kcRealm = keycloakSettings.realm;
+        const kcRealm = clientConfig.realm;
         if (!kcRealm) {
             await this.presentError('Failed to initialize Keycloak! ', 'Realm is not defined')
             return;
         }
-        const kcClientIdFrontend = keycloakSettings.clientIdFrontend;
+        const kcClientIdFrontend = clientConfig.clientIdFrontend;
         if (!kcClientIdFrontend) {
             await this.presentError('Failed to initialize Keycloak! ', 'Client ID is not defined')
             return;

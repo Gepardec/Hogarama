@@ -18,7 +18,7 @@
 		<module>hogajama-angular-frontend</module>
 		<module>hogajama-rs</module>
         <module>hogajama-security-dummy</module>
-		<module>hogajama-security-keycloak</module>
+		<module>hogajama-security-jwt</module>
 	</modules>
 
 	<properties>
