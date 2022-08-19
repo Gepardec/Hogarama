@@ -1,4 +1,4 @@
-export interface KeycloakModel {
+export interface ClientConfigModel {
     authServerUrl: string;
     realm: string;
     clientIdFrontend: string;

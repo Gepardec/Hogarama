@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.rest.unitmanagement.dto;
 
-public class KeycloakDto {
+public class ClientConfig {
 
     private String authServerUrl;
     private String realm;
