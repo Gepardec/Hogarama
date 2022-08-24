@@ -1,4 +1,4 @@
-FROM --platform=amd64 registry.redhat.io/amq7/amq-broker:7.8-31.1652306076
+FROM registry.redhat.io/amq7/amq-broker:7.8-31.1652306076
 
 USER root
 COPY 01_create_and_run_broker.sh /
@@ -7,5 +7,4 @@ CMD ["/01_create_and_run_broker.sh"]
 
 USER 185
 EXPOSE 5671 5672 1883 8161 9876 61613 61612 61616 61617 7800 8888
-
 ENTRYPOINT ["/bin/sh"]

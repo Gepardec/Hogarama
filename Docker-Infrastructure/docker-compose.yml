@@ -24,7 +24,6 @@ services:
   amq:
     container_name: amq
     hostname: amq
-    platform: linux/amd64
     restart: unless-stopped
     build:
       context: amq
