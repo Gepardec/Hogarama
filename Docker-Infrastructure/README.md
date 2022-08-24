@@ -65,7 +65,8 @@ MongoDB is running on port `5432`. Used to save management data that is visible 
 
 ## Wildfly (Hogajma)
 
-Wildfly server is running in port `8080` and is configured as the production instance.
+Wildfly server is running on port `8080` and is configured as the production instance.
+It is necessery to move all `war` files into the [deployments](hogajama/deployments) folder!
 
 ### Local ENV file
 Have a look at the [hogarama_local.env](hogajama/local_env/hogarama_local.env) file, this is the configuration of your local hogajama.

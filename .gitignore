@@ -35,4 +35,4 @@ OCP-Infrastructure/docker/kafka-connector/my-plugins/*
 tmp*
 
 # Docker
-/Docker-Infrastructure/hogajama/deployments/*.war
+/Docker-Infrastructure/hogajama/deployments/*.war*
