@@ -5,4 +5,6 @@ COPY 01_create_and_run_broker.sh /
 RUN chmod +x /01_create_and_run_broker.sh
 CMD ["/01_create_and_run_broker.sh"]
 
+USER 185
+EXPOSE 5671 5672 1883 8161 9876 61613 61612 61616 61617 7800 8888
 ENTRYPOINT ["/bin/sh"]
