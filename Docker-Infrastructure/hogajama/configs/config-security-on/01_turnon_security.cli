@@ -1,8 +1,0 @@
-if (outcome == success) of /deployment-overlay=overlay1:remove
-    echo removed deployment-overlay
-end-if
-
-if (outcome == success) of /system-property=hogajama.nosecurity:remove
-    echo removed system-property hogajama.nosecurity
-end-if
-/system-property=hogajama.nosecurity:add(value=false)
