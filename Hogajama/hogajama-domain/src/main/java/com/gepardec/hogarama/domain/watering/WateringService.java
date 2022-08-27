@@ -79,9 +79,6 @@ public class WateringService {
 
         	actorSvc.sendActorMessage(location, config.getActorName(), dur);
         }
-        else {
-            log.debug("Don't water {}", config.getActorName());
-        }
     }
 
 	private WateringRule getConfig(String sensorName) {

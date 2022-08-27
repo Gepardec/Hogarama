@@ -17,10 +17,11 @@ public class WateringStrategy {
     private int waterDuration(WateringRule config, double avg) {
         if ( avg < config.getLowWater() ) {
             int dur = config.getWaterDuration();
-            log.info("water " + config.getActorName() + " for " + dur + " because water value " + avg + " < " + config.getLowWater());
+            log.info("water " + config.getActorName() + " for " + dur + " because average water value " + avg + " < " + config.getLowWater());
 			return dur;
 		}
-		else return 0;
+        log.debug("Don't water " + config.getActorName() + " because average water value " + avg + " not < " + config.getLowWater());
+        return 0;
     }
 
 
