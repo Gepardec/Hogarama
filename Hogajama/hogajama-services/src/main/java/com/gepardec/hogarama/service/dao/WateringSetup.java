@@ -11,7 +11,6 @@ import com.gepardec.hogarama.annotations.PostgresDAO;
 import com.gepardec.hogarama.domain.unitmanagement.dao.PostgresWateringRuleDAO;
 import com.gepardec.hogarama.domain.watering.WateringRuleDAO;
 
-//@Priority(Interceptor.Priority.APPLICATION)
 public class WateringSetup {
 
     private static final Logger LOG = LoggerFactory.getLogger(WateringSetup.class);
@@ -24,11 +23,17 @@ public class WateringSetup {
 
     @Produces
     WateringRuleDAO createWateringRuleDao() {
-        if ( System.getProperty("hogarama.rules.storage", "mongo").contentEquals("postgres")) {
+        switch (System.getProperty("hogarama.rules.storage", "postgres")) {
+        case "postgres":
             LOG.debug("Produce PostgresWateringRuleDAO");
             return postgresDAO;
+        case "mongo":
+            LOG.debug("Produce MongoWateringRuleDAO");
+            return mongoDAO;
+        default:
+            throw new RuntimeException(System.getProperty("hogarama.rules.storage", "postgres")
+                    + " is not valid for the System Property hogarama.rules.storage."
+                    + " Allowed values are 'postgres' or 'mongo'.");
         }
-        LOG.debug("Produce MongoWateringRuleDAO");
-        return mongoDAO;
     }
 }
