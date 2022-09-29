@@ -2,9 +2,10 @@
 global:
   timezone: "Europe/Vienna"
   postgresql:
-    postgresqlDatabase: {{ POSTGRESQL_DATABASE }}
-    postgresqlUsername: {{ POSTGRESQL_USERNAME }}
-    postgresqlPassword: {{ POSTGRESQL_PASSWORD}}
+    auth:
+        database: {{ POSTGRESQL_DATABASE }}
+        username: {{ POSTGRESQL_USERNAME }}
+        password: {{ POSTGRESQL_PASSWORD}}
 keycloak:
   client:
     secret: {{ KEYCLOAK_OPERATOR_CLIENT_SECRET }}
@@ -74,12 +75,14 @@ hogarama:
       storage:
           size: {{ PROMETHEUS_STORAGE_SIZE | default("32Gi") }}
 postgresql:
-  image:
-    tag: 11.7.0
   persistence:
     size: 1Gi
-  securityContext:
-    enabled: false  
+  primary:
+    ## Disable security context is needed to run on OpenShift
+    containerSecurityContext:
+      enabled: false
+    podSecurityContext:
+      enabled: false
   resources: 
     requests:
       memory: 256Mi

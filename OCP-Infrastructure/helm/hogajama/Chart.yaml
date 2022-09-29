@@ -3,5 +3,5 @@ version: 0.0.1
 
 dependencies:
   - name: postgresql
-    version: 8.6.4
+    version: 11.9.1
     repository: "@bitnami"

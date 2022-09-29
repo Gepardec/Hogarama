@@ -38,7 +38,7 @@ items:
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
-                key: postgresql-password
+                key: password
                 name: helm-hogajama-postgresql
           - name: AMQ_USER
             valueFrom:
