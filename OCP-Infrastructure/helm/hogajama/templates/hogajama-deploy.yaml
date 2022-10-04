@@ -21,11 +21,32 @@ items:
     strategy: {}
     template:
       metadata:
-        annotations:
-        creationTimestamp: null
         labels:
           deployment: hogajama
       spec:
+        initContainers:
+        - name: upd-kafka-jks
+          imagePullPolicy: IfNotPresent
+          image: 'openjdk:11.0.16'
+          command:
+            - keytool
+          args:
+            - '-import'
+            - '-trustcacerts'
+            - '-alias'
+            - root
+            - '-file'
+            - /certs/ca.crt
+            - '-keystore'
+            - /kafka/kafka-truststore.jks
+            - '-noprompt'
+            - '-storepass'
+            - password
+          volumeMounts:
+            - name: kafka-certs
+              mountPath: /certs
+            - name: certificates
+              mountPath: /kafka
         containers:
         - image: ' '
           name: hogajama-run
@@ -34,6 +55,9 @@ items:
             protocol: TCP
           - containerPort: 9990
             protocol: TCP
+          volumeMounts:
+            - name: certificates
+              mountPath: /opt/jboss/wildfly/standalone/configuration/certs
           env:
           - name: POSTGRESQL_PASSWORD
             valueFrom:
@@ -72,3 +96,10 @@ items:
             limits:
               memory: 1Gi
               cpu: "1"
+        volumes:
+        - name: certificates
+          emptyDir: { }
+        - name: kafka-certs
+          secret:
+            secretName: gepardec-kafka-cluster-cluster-ca-cert
+            defaultMode: 420
