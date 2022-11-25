@@ -1,0 +1,3 @@
+# Aktivieren von JSON-Logging, für einfacheres Parsen auf OpenShift. Siehe https://access.redhat.com/solutions/3318531
+/subsystem=logging/json-formatter=JSON:add(pretty-print=false, exception-output-type=formatted)
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name=named-formatter,value=JSON)
