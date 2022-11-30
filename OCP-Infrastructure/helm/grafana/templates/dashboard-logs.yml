@@ -1,0 +1,113 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: hogarama
+    dashboard: application
+  name: dashboard-logs
+  finalizers: []
+spec:
+  json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 4,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P5897D7B40533B99C"
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 15,
+            "x": 0,
+            "y": 0
+          },
+          "id": 2,
+          "options": {
+            "dedupStrategy": "none",
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": false,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "pluginVersion": "9.2.4",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P5897D7B40533B99C"
+              },
+              "editorMode": "builder",
+              "expr": "{kubernetes_container_name=\"hogajama-run\"} | json | line_format `{{ .message }}` | json | line_format `{{.timestamp}} {{.level}} {{.loggerName}}: {{.message}}`",
+              "hide": false,
+              "queryType": "range",
+              "refId": "A"
+            }
+          ],
+          "title": "Habarama Log",
+          "transformations": [
+            {
+              "id": "extractFields",
+              "options": {
+                "replace": false,
+                "source": "labels"
+              }
+            },
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {}
+              }
+            }
+          ],
+          "type": "logs"
+        }
+      ],
+      "refresh": "",
+      "schemaVersion": 37,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "Hogarama Logs",
+      "uid": "ERfc3sO4k",
+      "version": 5,
+      "weekStart": ""
+    }
