@@ -1,0 +1,2 @@
+/extension=org.wildfly.extension.microprofile.metrics-smallrye:add
+/subsystem=microprofile-metrics-smallrye:add(exposed-subsystems=["*"], prefix=${wildfly.metrics.prefix:wildfly}, security-enabled=false)
