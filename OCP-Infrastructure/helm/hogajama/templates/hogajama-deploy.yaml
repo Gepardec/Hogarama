@@ -55,6 +55,12 @@ items:
             protocol: TCP
           - containerPort: 9990
             protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9990
+            initialDelaySeconds: 100
+            periodSeconds: 10
           volumeMounts:
             - name: certificates
               mountPath: /opt/jboss/wildfly/standalone/configuration/certs
