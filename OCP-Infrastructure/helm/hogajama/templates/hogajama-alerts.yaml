@@ -17,3 +17,5 @@ spec:
               Stunde Messdauer)! Vermutlich ein Fehler in der Kommunikation mit
               den Habarama Clients.
           expr: 'sum(changes(hogarama_sensor_value[1h]))==0'
+          labels:
+            severity: critical
