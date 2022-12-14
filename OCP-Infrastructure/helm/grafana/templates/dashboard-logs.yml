@@ -68,7 +68,7 @@ spec:
                 "uid": "P5897D7B40533B99C"
               },
               "editorMode": "builder",
-              "expr": "{kubernetes_container_name=\"hogajama-run\"} | json | line_format `{{ .message }}` | json | line_format `{{.timestamp}} {{.level}} {{.loggerName}}: {{.message}}`",
+              "expr": "{kubernetes_container_name=\"hogajama-run\"} | json | line_format `{{ .message }}` | json | line_format `{{.timestamp}} {{.level}} {{.loggerName}}: {{.message}} {{.stackTrace}}`",
               "hide": false,
               "queryType": "range",
               "refId": "A"
