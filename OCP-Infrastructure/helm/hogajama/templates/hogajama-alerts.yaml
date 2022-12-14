@@ -1,22 +1,8 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  creationTimestamp: '2022-12-12T12:00:39Z'
-  generation: 1
-  managedFields:
-    - apiVersion: monitoring.coreos.com/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:spec':
-          .: {}
-          'f:groups': {}
-      manager: Mozilla
-      operation: Update
-      time: '2022-12-12T12:00:39Z'
   name: hogajama-alerts
   namespace: hogarama
-  resourceVersion: '241431567'
-  uid: 8332bfaa-6e7c-468c-8777-8da74c15c1ff
 spec:
   groups:
     - name: alerts-sensor
