@@ -9,9 +9,11 @@ spec:
       rules:
         - alert: hogarama-no-sensor
           annotations:
-            description: Der Sensor von Hogarama hat für 10min keine Werte zurückgeliefert!
-            summary: Der Sensor hat einen Fehler
-          expr: 'changes(hogarama_sensor_value[10m])==0'
-          for: 2m
-          labels:
-            severity: critical
+            description: >-
+              Alle Sensoren von Hogarama haben für 1h keine Werte
+              zurückgeliefert!
+            summary: >-
+              Von den Sensoren wurden keine neuen Sensordaten empfangen (Eine
+              Stunde Messdauer)! Vermutlich ein Fehler in der Kommunikation mit
+              den Habarama Clients.
+          expr: 'sum(changes(hogarama_sensor_value[1h]))==0'
