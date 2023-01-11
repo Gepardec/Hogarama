@@ -12,29 +12,39 @@ spec:
         "list": [
           {
             "builtIn": 1,
-            "datasource": "-- Grafana --",
+            "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+            },
             "enable": true,
             "hide": true,
             "iconColor": "rgba(0, 211, 255, 1)",
             "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
             "type": "dashboard"
           }
         ]
       },
       "editable": true,
-      "gnetId": null,
+      "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 4,
+      "id": 2,
       "links": [],
+      "liveNow": false,
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -62,7 +72,7 @@ spec:
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.15",
+          "pluginVersion": "9.3.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -72,6 +82,10 @@ spec:
           "steppedLine": false,
           "targets": [
             {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
               "exemplar": true,
               "expr": "hogarama_sensor_value{unit_name=\"gruenbach\"}",
               "interval": "",
@@ -80,9 +94,7 @@ spec:
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Feuchtigkeit",
           "tooltip": {
             "shared": true,
@@ -91,33 +103,24 @@ spec:
           },
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
           "yaxes": [
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         },
         {
@@ -125,9 +128,9 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -155,7 +158,7 @@ spec:
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.15",
+          "pluginVersion": "9.3.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -165,6 +168,10 @@ spec:
           "steppedLine": false,
           "targets": [
             {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
               "exemplar": true,
               "expr": "hogarama_watering_events_fired{actor_name=\"Pumpe Gruenbach\"}",
               "interval": "",
@@ -182,37 +189,28 @@ spec:
           },
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
           "yaxes": [
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         }
       ],
-      "schemaVersion": 27,
+      "schemaVersion": 37,
       "style": "dark",
       "tags": [],
       "templating": {
@@ -226,5 +224,6 @@ spec:
       "timezone": "",
       "title": "Grünbach",
       "uid": "sROxSQe7z",
-      "version": 3
+      "version": 89,
+      "weekStart": ""
     }
