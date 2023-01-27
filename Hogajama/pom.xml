@@ -19,7 +19,8 @@
 		<module>hogajama-rs</module>
         <module>hogajama-security-dummy</module>
 		<module>hogajama-security-jwt</module>
-	</modules>
+        <module>hogajama-messaging</module>
+    </modules>
 
 	<properties>
 		<sonar.projectKey>Gepardec_Hogarama</sonar.projectKey>
