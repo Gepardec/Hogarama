@@ -19,5 +19,12 @@
         <module>hogajama-messaging-mdb</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.gepardec.hogajama</groupId>
+            <artifactId>hogajama-domain</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>
