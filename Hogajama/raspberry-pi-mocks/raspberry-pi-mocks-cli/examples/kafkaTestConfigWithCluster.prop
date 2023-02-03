@@ -1,0 +1,6 @@
+brokerHost=https://gepardec-kafka-cluster-kafka-bootstrap-hogarama.apps.steppe.gepaplexx.com:443
+brokerUser=mq_habarama
+brokerPassword=mq_habarama_pass
+brokerTopic=erhardhabarama
+securityProtocol=SSL
+sslTruststoreLocation=/Users/esiegl/Documents/Develop/haba/standalone/configuration/certs/kafka-truststore.jks

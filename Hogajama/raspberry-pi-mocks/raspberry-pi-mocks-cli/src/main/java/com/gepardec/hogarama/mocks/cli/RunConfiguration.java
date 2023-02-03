@@ -17,31 +17,41 @@ public class RunConfiguration {
     
     public static final Logger LOGGER = LoggerFactory.getLogger(RunConfiguration.class);
     
-	public static final String BROKER = "broker";
-	public static final String BROKER_HOST = "brokerHost";
-	public static final String BROKER_USERNAME = "brokerUsername";
-	public static final String BROKER_PASSWORD = "brokerPassword";
-	public static final String BROKER_TOPIC = "brokerTopic";
-	public static final String PATH_TO_TEST_DATA = "testData";
-	public static final String DELAY_MS = "delayMs";
-	public static final String PATH_TO_CONFIG = "configuration";
+    public static final String BROKER = "broker";
+    public static final String BROKER_HOST = "brokerHost";
+    public static final String BROKER_USERNAME = "brokerUsername";
+    public static final String BROKER_PASSWORD = "brokerPassword";
+    public static final String BROKER_TOPIC = "brokerTopic";
+    public static final String PATH_TO_TEST_DATA = "testData";
+    public static final String DELAY_MS = "delayMs";
+    public static final String PATH_TO_CONFIG = "configuration";
+	
+    // Options for Kafka
+    public static final String SECURITY_PROTOCOL = "securityProtocol";
+    public static final String SSL_TRUSTSTORE_LOCATION = "sslTruststoreLocation";
+    public static final String SSL_TRUSTSTORE_PASSWORD = "sslTruststorePassword";
 
-    private String broker;
-    private String host;
-	private String user;
-	private String password;
-	private String topic;
-	private long delayMs;
-	private List<String> mockMessages;
     private CommandLine cliArguments;
     private Properties properties;
 
-	public RunConfiguration(CommandLine cliArguments, Properties properties) {
+    private String broker;
+    private String host;
+    private String user;
+    private String password;
+    private String topic;
+    private long delayMs;
+    private List<String> mockMessages;
+    
+    // For Kafka
+    private String securityProtocol;
+    private String sslTruststoreLocation;
+    private String sslTruststorePassword;
+
+    public RunConfiguration(CommandLine cliArguments, Properties properties) {
  
-	    
-	    this.cliArguments = cliArguments;
-	    this.properties = properties;
-	    
+        this.cliArguments = cliArguments;
+        this.properties = properties;
+        
         broker = configParam(BROKER, "amq");
         host = configParam(BROKER_HOST, "https://broker-amq-mqtt-ssl-hogarama.10.0.75.2.nip.io");
         user = configParam(BROKER_USERNAME, "mq_habarama");
@@ -50,6 +60,11 @@ public class RunConfiguration {
         delayMs = Long.parseLong(configParam(DELAY_MS, "3000"));
 
         mockMessages = getTestMessages();
+
+        securityProtocol = configParam(SECURITY_PROTOCOL, "PLAINTEXT");
+        sslTruststoreLocation = configParam(SSL_TRUSTSTORE_LOCATION, "");
+        sslTruststorePassword = configParam(SSL_TRUSTSTORE_PASSWORD, "password");
+
     }
 
     public String getBroker() {
@@ -60,29 +75,41 @@ public class RunConfiguration {
         return host;
     }
 
-	public String getUser() {
-		return user;
-	}
+    public String getUser() {
+        return user;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getTopic() {
-		return topic;
-	}
+    public String getTopic() {
+        return topic;
+    }
 
-	public long getDelayMs() {
-		return delayMs;
-	}
+    public long getDelayMs() {
+        return delayMs;
+    }
 
-	public List<String> getMockMessages() {
-		return mockMessages;
-	}
-	
-	public boolean useKafka() {
-	    return "kafka".equals(broker);
-	}
+    public List<String> getMockMessages() {
+        return mockMessages;
+    }
+    
+    public boolean useKafka() {
+        return "kafka".equals(broker);
+    }
+
+   public String getSecurityProtocol() {
+        return securityProtocol;
+    }
+
+   public String getSslTruststoreLocation() {
+       return sslTruststoreLocation;
+   }
+
+   public String getSslTruststorePassword() {
+       return sslTruststorePassword;
+   }
 
     private List<String> getTestMessages() {
 
@@ -117,12 +144,21 @@ public class RunConfiguration {
     public void print() {
 
         LOGGER.info("=================== Hogarama Mock Cli Config =================");
-        LOGGER.info("Broker: " + getBroker());
-        LOGGER.info("Host: " + getHost());
-        LOGGER.info("User: " + getUser());
-        LOGGER.info("Password: " + getPassword());
-        LOGGER.info("Topic: " + getTopic());
-        LOGGER.info("Delay ms: " + getDelayMs() + System.lineSeparator());
+        print(BROKER, getBroker());
+        print(BROKER_HOST, getHost());
+        print(BROKER_USERNAME, getUser());
+        print(BROKER_PASSWORD, getPassword());
+        print(BROKER_TOPIC, getTopic());
+        print(DELAY_MS, getDelayMs());
+        
+        LOGGER.info("For Kafka");
+        print(SECURITY_PROTOCOL, getSecurityProtocol());
+        print(SSL_TRUSTSTORE_LOCATION, getSslTruststoreLocation());
+        LOGGER.info(System.lineSeparator());
+    }
+
+    private void print(String key, Object value) {
+        LOGGER.info(key + "=" + value);        
     }
 
 

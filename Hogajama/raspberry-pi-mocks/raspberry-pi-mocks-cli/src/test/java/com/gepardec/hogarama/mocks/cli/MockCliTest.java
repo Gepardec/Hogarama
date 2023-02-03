@@ -39,6 +39,7 @@ public class MockCliTest {
         String properties = "brokerHost=url" + System.lineSeparator() + 
                 "brokerUsername=user" + System.lineSeparator() + 
                 "brokerPassword=pwd" + System.lineSeparator() +  
+                "sslTruststoreLocation=/x/truststore.jks" + System.lineSeparator() +
                 "brokerTopic=topic";
         String propsFile = writeToTempFile("props.props", properties);
         String messagesFile = writeToTempFile("messages.json", "{1},{2}");
@@ -47,6 +48,7 @@ public class MockCliTest {
         RunConfiguration runConfiguration = MockCli.createRunConfigurationFromArguments(args);
         
         assertEquals("url", runConfiguration.getHost());
+        assertEquals("/x/truststore.jks", runConfiguration.getSslTruststoreLocation());
         assertTrue(runConfiguration.useKafka());
         
     }

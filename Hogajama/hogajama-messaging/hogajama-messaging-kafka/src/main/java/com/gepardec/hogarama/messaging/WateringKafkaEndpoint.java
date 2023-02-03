@@ -25,6 +25,10 @@ public class WateringKafkaEndpoint {
     @Transactional
     @Incoming("habarama-in")
     public void onMessage(String message) {
+        if (!config.useKafkaWatering()) {
+            log.debug("Ignore message because useKafkaWatering is turned of");
+            return;
+        }
         log.info("Receive message from habarama-in: " + message);
         try {
 
