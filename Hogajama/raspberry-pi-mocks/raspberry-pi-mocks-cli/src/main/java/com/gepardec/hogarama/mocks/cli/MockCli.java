@@ -21,14 +21,10 @@ public class MockCli {
 
     public static void main(String[] args) throws InterruptedException {
 
-        CommandLine cliArguments = parseCliArguments(args);
-
-        boolean useKafka = "kafka".equals(cliArguments.getOptionValue(RunConfiguration.BROKER));
-
         RunConfiguration runConfiguration = createRunConfigurationFromArguments(args);
-        printRunConfiguration(runConfiguration);
+        runConfiguration.print();
 
-        if(useKafka) {
+        if(runConfiguration.useKafka()) {
             KafkaClient.execute(runConfiguration);
         } else {
             MqttClient.execute(runConfiguration);
@@ -40,23 +36,8 @@ public class MockCli {
     protected static RunConfiguration createRunConfigurationFromArguments(String[] args) {
 
         CommandLine cliArguments = parseCliArguments(args);
-        List<String> testMessages = getTestMessages(cliArguments);
         Properties properties = loadProperties(cliArguments.getOptionValue(RunConfiguration.PATH_TO_CONFIG));
-        long delayMs = Long.parseLong(getConfigParam(RunConfiguration.DELAY_MS, "3000", cliArguments, properties));
-        String host = getConfigParam(RunConfiguration.BROKER_HOST,
-                "https://broker-amq-mqtt-ssl-hogarama.10.0.75.2.nip.io", cliArguments, properties);
-        String user = getConfigParam(RunConfiguration.BROKER_USERNAME, "mq_habarama", cliArguments, properties);
-        String password = getConfigParam(RunConfiguration.BROKER_PASSWORD, "mq_habarama_pass", cliArguments,
-                properties);
-        String topic = getConfigParam(RunConfiguration.BROKER_TOPIC, "habarama", cliArguments, properties);
-
-        RunConfiguration configuration = new RunConfiguration();
-        configuration.setDelayMs(delayMs);
-        configuration.setHost(host);
-        configuration.setPassword(password);
-        configuration.setTopic(topic);
-        configuration.setUser(user);
-        configuration.setMockMessages(testMessages);
+        RunConfiguration configuration = new RunConfiguration(cliArguments, properties);
 
         return configuration;
     }
@@ -103,25 +84,6 @@ public class MockCli {
         }
     }
 
-    private static List<String> getTestMessages(CommandLine cliArguments) {
-
-        try {
-            String pathToTestData = cliArguments.getOptionValue(RunConfiguration.PATH_TO_TEST_DATA);
-            String content = new String(Files.readAllBytes(Paths.get(pathToTestData)));
-            List<String> messages = new ArrayList<>();
-            Matcher m = Pattern.compile("\\{[^\\{\\}]*\\}").matcher(content);
-            while (m.find()) {
-                messages.add(m.group());
-            }
-            return messages;
-
-        } catch (IOException e) {
-            LOGGER.error("Exception occured while getting test messages", e);
-            System.exit(1);
-            return null;
-        }
-    }
-
     private static Properties loadProperties(String filepath) {
 
         Properties prop = new Properties();
@@ -148,28 +110,6 @@ public class MockCli {
             }
         }
 
-    }
-
-    private static String getConfigParam(String paramName, String defaultValue, CommandLine cli,
-            Properties properties) {
-
-        if (cli.hasOption(paramName)) {
-            return cli.getOptionValue(paramName);
-        } else if (properties.containsKey(paramName)) {
-            return properties.getProperty(paramName);
-        } else {
-            return defaultValue;
-        }
-    }
-
-    private static void printRunConfiguration(RunConfiguration configuration) {
-
-        LOGGER.info("=================== Hogarama Mock Cli Config =================");
-        LOGGER.info("Host: " + configuration.getHost());
-        LOGGER.info("User: " + configuration.getUser());
-        LOGGER.info("Password: " + configuration.getPassword());
-        LOGGER.info("Topic: " + configuration.getTopic());
-        LOGGER.info("Delay ms: " + configuration.getDelayMs() + System.lineSeparator());
     }
 
     private static void printHelp(Options options) {
