@@ -108,8 +108,9 @@ public class WateringService {
 	}
 
 	public void processSensorData(SensorData sensorData) {
+	    log.info("Receive sensorData: " + sensorData);
 		SensorData normalizedSensorData = sensorNormalizer.normalize(sensorData);
-		sensorDataDAO.save(sensorData);
+		sensorDataDAO.save(normalizedSensorData);
 		sendMetrics(normalizedSensorData);
 
 		checkDataAndPerformWatering(normalizedSensorData);
