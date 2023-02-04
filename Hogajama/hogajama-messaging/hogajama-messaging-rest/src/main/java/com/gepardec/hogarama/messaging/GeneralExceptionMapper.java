@@ -19,6 +19,9 @@ public class GeneralExceptionMapper implements ExceptionMapper<Exception> {
         UUID uuid = UUID.randomUUID();
         LOGGER.error("Unexpected exception occurred {}: {}", uuid, ExceptionUtils.getStackTrace(e));
         Throwable rootCause = ExceptionUtils.getRootCause(e);
+        if ( null == rootCause ){
+            rootCause = e;
+        }
         String responseMessage = String.format("Unexpected exception of type %s occurred %s (ref %s)", rootCause.getClass().getName(), rootCause.getMessage(), uuid);
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseMessage).build();
     }
