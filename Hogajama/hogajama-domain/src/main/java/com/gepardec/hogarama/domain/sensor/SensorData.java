@@ -128,6 +128,9 @@ public class SensorData {
 				.build();
 	}
 
-
-	
+    @Override
+    public String toString() {
+        return "SensorData [id=" + id + ", time=" + time + ", sensorName=" + sensorName + ", type=" + type + ", value="
+                + value + ", location=" + location + ", version=" + version + "]";
+    }	
 }

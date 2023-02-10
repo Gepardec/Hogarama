@@ -1,15 +1,15 @@
 package com.gepardec.hogarama.testdata;
 
-import static com.gepardec.hogarama.domain.DateUtils.toDate;
-import static com.gepardec.hogarama.domain.DateUtils.toLocalDateTime;
+import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.domain.watering.WateringService;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gepardec.hogarama.domain.sensor.SensorData;
-import com.gepardec.hogarama.domain.watering.WateringService;
+import static com.gepardec.hogarama.domain.DateUtils.toDate;
+import static com.gepardec.hogarama.domain.DateUtils.toLocalDateTime;
 
 public class TestDataProducer {
 
@@ -61,7 +61,7 @@ public class TestDataProducer {
 
     public void waterAll(WateringService watering) {
         for (SensorData sensorData : data) {
-            watering.water(sensorData);
+			watering.processSensorData(sensorData);
         }  
     }	
 

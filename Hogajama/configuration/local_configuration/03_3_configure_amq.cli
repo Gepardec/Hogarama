@@ -8,10 +8,8 @@ batch
     class=javax.naming.InitialContext, \
     module=org.apache.activemq.artemis, \
     environment=[\
-        java.naming.factory.initial=org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory, \
-        topic.habarama=habarama \
+        java.naming.factory.initial=org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory \
 ])
-/subsystem=naming/binding=java\:\/topic\/habarama:add(lookup=java:global/remoteContext/habarama,binding-type=lookup)
 
 /subsystem=ee/service=default-bindings/:write-attribute(name=jms-connection-factory, value=java:jboss/RemoteJms)
 /subsystem=ejb3/:write-attribute(name=default-resource-adapter-name, value="${ejb.resource-adapter-name:activemq-ext}")

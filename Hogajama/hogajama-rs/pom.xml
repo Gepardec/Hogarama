@@ -199,5 +199,54 @@
 				</dependency>
 			</dependencies>
 		</profile>
+		<profile>
+			<id>messaging-mdb</id>
+			<activation>
+				<property>
+					<name>env.HOGAJAMA_MESSAGING</name>
+					<value>MDB</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<artifactId>hogajama-messaging-mdb</artifactId>
+					<groupId>com.gepardec.hogajama</groupId>
+					<version>0.0.1-SNAPSHOT</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>messaging-kafka</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env.HOGAJAMA_MESSAGING</name>
+					<value>KAFKA</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<artifactId>hogajama-messaging-kafka</artifactId>
+					<groupId>com.gepardec.hogajama</groupId>
+					<version>0.0.1-SNAPSHOT</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>messaging-rest</id>
+			<activation>
+				<property>
+					<name>env.HOGAJAMA_MESSAGING</name>
+					<value>REST</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<artifactId>hogajama-messaging-rest</artifactId>
+					<groupId>com.gepardec.hogajama</groupId>
+					<version>0.0.1-SNAPSHOT</version>
+				</dependency>
+			</dependencies>
+		</profile>
 	</profiles>
 </project>

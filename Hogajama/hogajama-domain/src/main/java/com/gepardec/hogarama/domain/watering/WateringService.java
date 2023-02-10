@@ -1,7 +1,10 @@
 package com.gepardec.hogarama.domain.watering;
 
-import javax.inject.Inject;
-
+import com.gepardec.hogarama.domain.metrics.Metrics;
+import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
+import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
+import com.gepardec.hogarama.domain.sensor.SensorProperties;
 import com.gepardec.hogarama.domain.unitmanagement.cache.ActorCache;
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
@@ -9,10 +12,7 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
-import com.gepardec.hogarama.domain.sensor.SensorData;
-
+import javax.inject.Inject;
 import java.util.Optional;
 
 public class WateringService {
@@ -37,6 +37,9 @@ public class WateringService {
 	public WateringRuleDAO configDao;
 
 	@Inject
+	SensorNormalizer sensorNormalizer;
+
+	@Inject
 	public ActorControlService actorSvc;
 
 	@Inject
@@ -53,8 +56,9 @@ public class WateringService {
 	public WateringService() {
 	}
 
-	protected WateringService(SensorDataDAO sensorDataDAO, ActorControlService actorSvc, WateringStrategy watering, WateringRuleDAO configDao, ActorCache actorCache, SensorCache sensorCache) {
+	protected WateringService(SensorDataDAO sensorDataDAO, SensorNormalizer normalizer, ActorControlService actorSvc, WateringStrategy watering, WateringRuleDAO configDao, ActorCache actorCache, SensorCache sensorCache) {
 		this.sensorDataDAO = sensorDataDAO;
+		this.sensorNormalizer = normalizer;
 		this.actorSvc = actorSvc;
 		this.watering = watering;
 		this.configDao = configDao;
@@ -83,19 +87,38 @@ public class WateringService {
 
 	private WateringRule getConfig(String sensorName) {
 	    WateringRule wconfig = configDao.getBySensorName(sensorName);
-		if ( null != wconfig ) {
+		if (null != wconfig) {
 			return wconfig;
 		}
-		
+
 		wconfig = configDao.createWateringRule(sensorName, sensorName,
 				Config.DEFAULT.lowWater, Config.DEFAULT.waterDuration);
 		configDao.save(wconfig);
 		return wconfig;
 	}
 
-    public void water(SensorData sensorData) {
-        WateringRule config = getConfig(sensorData.getSensorName());
-        invokeActorIfNeeded(config, watering.computeWateringDuration(config, sensorData.getValue()), sensorData.getLocation());
-    }
+	private void sendMetrics(SensorData sensorData) {
+		SensorProperties sensorProps = new SensorProperties(sensorData, sensorCache);
+		Metrics.sensorValues.labels(
+				sensorProps.getSensorName(),
+				sensorProps.getDeviceId(),
+				sensorProps.getUnitName()
+		).set(sensorData.getValue());
+
+	}
+
+	public void processSensorData(SensorData sensorData) {
+	    log.info("Receive sensorData: " + sensorData);
+		SensorData normalizedSensorData = sensorNormalizer.normalize(sensorData);
+		sensorDataDAO.save(normalizedSensorData);
+		sendMetrics(normalizedSensorData);
+
+		checkDataAndPerformWatering(normalizedSensorData);
+	}
+
+	private void checkDataAndPerformWatering(SensorData normalizedSensorData) {
+		WateringRule config = getConfig(normalizedSensorData.getSensorName());
+		invokeActorIfNeeded(config, watering.computeWateringDuration(config, normalizedSensorData.getValue()), normalizedSensorData.getLocation());
+	}
 
 }
