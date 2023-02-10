@@ -1,5 +1,9 @@
 package com.gepardec.hogarama.mocks.cli;
 
+import org.apache.commons.cli.CommandLine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,10 +12,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.cli.CommandLine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class RunConfiguration {
     
@@ -25,11 +25,14 @@ public class RunConfiguration {
     public static final String PATH_TO_TEST_DATA = "testData";
     public static final String DELAY_MS = "delayMs";
     public static final String PATH_TO_CONFIG = "configuration";
-	
+
     // Options for Kafka
     public static final String SECURITY_PROTOCOL = "securityProtocol";
     public static final String SSL_TRUSTSTORE_LOCATION = "sslTruststoreLocation";
     public static final String SSL_TRUSTSTORE_PASSWORD = "sslTruststorePassword";
+
+    // Options for Rest-Endpoint-URL
+    public static final String DUMMY_MESSAGING_REST_ENDPOINT_URL = "dummyMessagingRestEndpointUrl";
 
     private CommandLine cliArguments;
     private Properties properties;
@@ -41,17 +44,20 @@ public class RunConfiguration {
     private String topic;
     private long delayMs;
     private List<String> mockMessages;
-    
+
     // For Kafka
     private String securityProtocol;
     private String sslTruststoreLocation;
     private String sslTruststorePassword;
 
+    // For Dummy Messaging REST Url
+    private String dummyMessagingRestEndpointUrl;
+
     public RunConfiguration(CommandLine cliArguments, Properties properties) {
- 
+
         this.cliArguments = cliArguments;
         this.properties = properties;
-        
+
         broker = configParam(BROKER, "amq");
         host = configParam(BROKER_HOST, "https://broker-amq-mqtt-ssl-hogarama.10.0.75.2.nip.io");
         user = configParam(BROKER_USERNAME, "mq_habarama");
@@ -64,6 +70,8 @@ public class RunConfiguration {
         securityProtocol = configParam(SECURITY_PROTOCOL, "PLAINTEXT");
         sslTruststoreLocation = configParam(SSL_TRUSTSTORE_LOCATION, "");
         sslTruststorePassword = configParam(SSL_TRUSTSTORE_PASSWORD, "password");
+
+        dummyMessagingRestEndpointUrl = configParam(DUMMY_MESSAGING_REST_ENDPOINT_URL, "http://localhost:8080/hogajama-rs/rest/messaging/sensorData");
 
     }
 
@@ -101,15 +109,19 @@ public class RunConfiguration {
 
    public String getSecurityProtocol() {
         return securityProtocol;
+   }
+
+    public String getSslTruststoreLocation() {
+        return sslTruststoreLocation;
     }
 
-   public String getSslTruststoreLocation() {
-       return sslTruststoreLocation;
-   }
+    public String getSslTruststorePassword() {
+        return sslTruststorePassword;
+    }
 
-   public String getSslTruststorePassword() {
-       return sslTruststorePassword;
-   }
+    public String getDummyMessagingRestEndpointUrl() {
+        return dummyMessagingRestEndpointUrl;
+    }
 
     private List<String> getTestMessages() {
 
@@ -150,10 +162,14 @@ public class RunConfiguration {
         print(BROKER_PASSWORD, getPassword());
         print(BROKER_TOPIC, getTopic());
         print(DELAY_MS, getDelayMs());
-        
+
         LOGGER.info("For Kafka");
         print(SECURITY_PROTOCOL, getSecurityProtocol());
         print(SSL_TRUSTSTORE_LOCATION, getSslTruststoreLocation());
+        LOGGER.info(System.lineSeparator());
+
+        LOGGER.info("For Rest");
+        print(DUMMY_MESSAGING_REST_ENDPOINT_URL, getDummyMessagingRestEndpointUrl());
         LOGGER.info(System.lineSeparator());
     }
 

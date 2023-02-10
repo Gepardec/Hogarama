@@ -1,10 +1,7 @@
 package com.gepardec.hogarama.mocks.cli;
 
 import org.apache.kafka.clients.CommonClientConfigs;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.config.SslConfigs;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -15,11 +12,9 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.kafka.clients.producer.ProducerConfig;
-
 public class KafkaClient {
 
-  public static final Logger LOGGER = LoggerFactory.getLogger(MockCli.class);
+  public static final Logger LOGGER = LoggerFactory.getLogger(KafkaClient.class);
 
   public static void execute(RunConfiguration runConfiguration) throws InterruptedException {
 

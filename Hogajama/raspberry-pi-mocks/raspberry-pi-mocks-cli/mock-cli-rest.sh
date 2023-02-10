@@ -1,8 +1,8 @@
-curl --header "Content-Type: application/json" http://localhost:8080/hogajama-rs/rest/messaging/sensorData -d \
-'{
-    "sensorName" : "Pflanze",
-    "type" : "sparkfun",
-    "value" : 700,
-    "location" : "Wien",
-    "version" : 0
-}'
+#!/bin/sh
+
+DIR=`dirname $0`
+DIR=${DIR:=./}
+
+DATA=$DIR/examples
+
+java -jar $DIR/target/hogarama-mock-cli.jar -b rest -t $DATA/testData_small.json -c $DATA/restTestConfig.prop --delayMs 5000

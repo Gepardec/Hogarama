@@ -7,13 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MockCli {
 
@@ -24,10 +18,14 @@ public class MockCli {
         RunConfiguration runConfiguration = createRunConfigurationFromArguments(args);
         runConfiguration.print();
 
-        if(runConfiguration.useKafka()) {
+        if (runConfiguration.getBroker().equals("kafka")) {
             KafkaClient.execute(runConfiguration);
-        } else {
+        } else if (runConfiguration.getBroker().equals("amq")) {
             MqttClient.execute(runConfiguration);
+        } else if (runConfiguration.getBroker().equals("rest")) {
+            RestClient.execute(runConfiguration);
+        } else {
+            LOGGER.error("Broker {} not supported", runConfiguration.getBroker());
         }
 
         LOGGER.info(System.lineSeparator() + "=================== Hogarama Mock Cli Finished =================");
@@ -61,7 +59,7 @@ public class MockCli {
         options.addOption(new Option("topic", RunConfiguration.BROKER_TOPIC, true,
                 "Topic name. Overrides the parameter in configuration file."));
         options.addOption(new Option("b", RunConfiguration.BROKER, true,
-            "Broker to use: amq (default) or kafka"));
+                "Broker to use: amq (default), kafka or rest"));
         return options;
     }
 

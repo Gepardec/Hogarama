@@ -1,15 +1,14 @@
 package com.gepardec.hogarama.mocks.cli;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MockCliTest {
     @Test
@@ -29,8 +28,8 @@ public class MockCliTest {
         assertEquals("pwd", runConfiguration.getPassword());
         assertEquals("topic", runConfiguration.getTopic());
         assertEquals(3000L, runConfiguration.getDelayMs());
-        assertTrue(Arrays.equals(new String[] {"{1}", "{2}"}, runConfiguration.getMockMessages().toArray()));
-        assertFalse(runConfiguration.useKafka());
+        assertTrue(Arrays.equals(new String[]{"{1}", "{2}"}, runConfiguration.getMockMessages().toArray()));
+        assertEquals("amq", runConfiguration.getBroker());
         
     }
     
@@ -38,26 +37,39 @@ public class MockCliTest {
     public void testCreateRunConfigurationForKafka() throws Exception {
         String properties = "brokerHost=url" + System.lineSeparator() + 
                 "brokerUsername=user" + System.lineSeparator() + 
-                "brokerPassword=pwd" + System.lineSeparator() +  
+                "brokerPassword=pwd" + System.lineSeparator() +
                 "sslTruststoreLocation=/x/truststore.jks" + System.lineSeparator() +
                 "brokerTopic=topic";
         String propsFile = writeToTempFile("props.props", properties);
         String messagesFile = writeToTempFile("messages.json", "{1},{2}");
-        
-        String [] args = new String[] {"-t", messagesFile, "-c", propsFile, "-b", "kafka", "--delayMs", "3000"};
+
+        String[] args = new String[]{"-t", messagesFile, "-c", propsFile, "-b", "kafka", "--delayMs", "3000"};
         RunConfiguration runConfiguration = MockCli.createRunConfigurationFromArguments(args);
-        
+
         assertEquals("url", runConfiguration.getHost());
         assertEquals("/x/truststore.jks", runConfiguration.getSslTruststoreLocation());
-        assertTrue(runConfiguration.useKafka());
-        
+        assertEquals("kafka", runConfiguration.getBroker());
+
     }
-    
-	private static final String writeToTempFile(String filename, String content) throws IOException {
-		File tempFile = File.createTempFile(filename, "");
-		FileOutputStream tempFileOutputStream = new FileOutputStream(tempFile);
-		tempFileOutputStream.write(content.getBytes());
-		tempFileOutputStream.close();
-		return tempFile.getAbsolutePath();
-	}
+
+    @Test
+    public void testCreateRunConfigurationForRest() throws Exception {
+        String properties = "dummyMessagingRestEndpointUrl=testUrl";
+        String propsFile = writeToTempFile("props.props", properties);
+        String messagesFile = writeToTempFile("messages.json", "{1},{2}");
+
+        String[] args = new String[]{"-t", messagesFile, "-c", propsFile, "-b", "rest", "--delayMs", "3000"};
+        RunConfiguration runConfiguration = MockCli.createRunConfigurationFromArguments(args);
+
+        assertEquals("testUrl", runConfiguration.getDummyMessagingRestEndpointUrl());
+        assertEquals("rest", runConfiguration.getBroker());
+    }
+
+    private static final String writeToTempFile(String filename, String content) throws IOException {
+        File tempFile = File.createTempFile(filename, "");
+        FileOutputStream tempFileOutputStream = new FileOutputStream(tempFile);
+        tempFileOutputStream.write(content.getBytes());
+        tempFileOutputStream.close();
+        return tempFile.getAbsolutePath();
+    }
 }
