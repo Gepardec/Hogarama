@@ -25,7 +25,7 @@ public class SensorDataMessagingEndpointImpl implements SensorDataMessagingEndpo
             LOGGER.info("Ongoing sensor data {}", json);
             wateringService.processSensorData(sensorData);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RestMessagingException(e);
         }
         return Response.ok().build();
     }
