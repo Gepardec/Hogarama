@@ -18,14 +18,18 @@ public class MockCli {
         RunConfiguration runConfiguration = createRunConfigurationFromArguments(args);
         runConfiguration.print();
 
-        if (runConfiguration.getBroker().equals("kafka")) {
-            KafkaClient.execute(runConfiguration);
-        } else if (runConfiguration.getBroker().equals("amq")) {
-            MqttClient.execute(runConfiguration);
-        } else if (runConfiguration.getBroker().equals("rest")) {
-            RestClient.execute(runConfiguration);
-        } else {
-            LOGGER.error("Broker {} not supported", runConfiguration.getBroker());
+        switch (runConfiguration.getBroker()) {
+            case "kafka":
+                KafkaClient.execute(runConfiguration);
+                break;
+            case "amq":
+                MqttClient.execute(runConfiguration);
+                break;
+            case "rest":
+                RestClient.execute(runConfiguration);
+                break;
+            default:
+                LOGGER.error("Broker {} not supported", runConfiguration.getBroker());
         }
 
         LOGGER.info(System.lineSeparator() + "=================== Hogarama Mock Cli Finished =================");

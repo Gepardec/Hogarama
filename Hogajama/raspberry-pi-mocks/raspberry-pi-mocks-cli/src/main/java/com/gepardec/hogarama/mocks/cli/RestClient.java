@@ -54,14 +54,13 @@ public class RestClient {
     }
 
     private static String getResponseString(InputStream inputStream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-        while ((inputLine = reader.readLine()) != null) {
-            response.append(inputLine);
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = reader.readLine()) != null) {
+                response.append(inputLine);
+            }
+            return response.toString();
         }
-        reader.close();
-
-        return response.toString();
     }
 }
