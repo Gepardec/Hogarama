@@ -1040,20 +1040,24 @@ spec:
       "refresh": "",
       "schemaVersion": 37,
       "style": "dark",
-      "tags": [],
+      "tags": [
+        "Ansprechperson: Erhard Siegl",
+        "Applikation: Hogarama",
+        "Themengebiet: Externe Applikation"
+      ],
       "templating": {
         "list": [
           {
             "current": {
-              "selected": false,
-              "text": "gepardec-sso-service-metrics",
-              "value": "gepardec-sso-service-metrics"
+              "selected": true,
+              "text": "keycloak-monitoring",
+              "value": "keycloak-monitoring"
             },
             "datasource": {
               "type": "prometheus",
               "uid": "prometheus"
             },
-            "definition": "label_values(base_gc_total, job)",
+            "definition": "label_values(base_gc_total{namespace=\"hogarama\"}, job)",
             "hide": 0,
             "includeAll": false,
             "label": "ServiceID",
@@ -1061,7 +1065,7 @@ spec:
             "name": "serviceID",
             "options": [],
             "query": {
-              "query": "label_values(base_gc_total, job)",
+              "query": "label_values(base_gc_total{namespace=\"hogarama\"}, job)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 1,
@@ -1135,6 +1139,6 @@ spec:
       "timezone": "",
       "title": "Hogarama MicroProfile Java Metrics",
       "uid": "TkcxbEtWz",
-      "version": 2,
+      "version": 57,
       "weekStart": ""
     }
