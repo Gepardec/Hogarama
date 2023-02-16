@@ -36,7 +36,7 @@ spec:
       "fiscalYearStartMonth": 0,
       "gnetId": 12853,
       "graphTooltip": 0,
-      "id": 18,
+      "id": 39,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -114,8 +114,10 @@ spec:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "up{job=\"$serviceID\", instance=\"$instance\"}",
-              "range": true,
+              "exemplar": false,
+              "expr": "up{job=\"$serviceID\", pod=~\"$pod\"}",
+              "instant": true,
+              "range": false,
               "refId": "A"
             }
           ],
@@ -192,7 +194,8 @@ spec:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "base_jvm_uptime_seconds{instance=\"$instance\", job=\"$serviceID\"}",
+              "expr": "base_jvm_uptime_seconds{pod=~\"$pod\", job=\"$serviceID\"}",
+              "legendFormat": " ",
               "range": true,
               "refId": "A"
             }
@@ -258,8 +261,8 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "editorMode": "code",
-              "expr": "rate(base_gc_total{instance=\"$instance\", job=\"$serviceID\"}[5m])",
+              "editorMode": "builder",
+              "expr": "rate(base_gc_total{job=~\"$serviceID\", pod=~\"$pod\"}[5m])",
               "intervalFactor": 2,
               "legendFormat": "{{ name }}",
               "range": true,
@@ -356,7 +359,7 @@ spec:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "rate(base_gc_time_total_seconds{instance=\"$instance\", job=\"$serviceID\"}[5m])",
+              "expr": "rate(base_gc_time_total_seconds{pod=~\"$pod\", job=\"$serviceID\"}[5m])",
               "legendFormat": "{{ name }}",
               "range": true,
               "refId": "A"
@@ -451,7 +454,7 @@ spec:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "vendor_system_cpu_load{instance=\"$instance\",job=\"$serviceID\"}",
+              "expr": "base_cpu_systemLoadAverage{pod=~\"$pod\",job=\"$serviceID\"}",
               "intervalFactor": 2,
               "legendFormat": "CPU load",
               "range": true,
@@ -548,9 +551,11 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "base_memory_usedHeap_bytes{instance=\"$instance\",job=\"$serviceID\"}",
+              "editorMode": "code",
+              "expr": "base_memory_usedHeap_bytes{pod=~\"$pod\",job=\"$serviceID\"}",
               "intervalFactor": 2,
               "legendFormat": "Used Heap",
+              "range": true,
               "refId": "A"
             },
             {
@@ -558,7 +563,7 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "base_memory_committedHeap_bytes{instance=\"$instance\", job=\"$serviceID\"}",
+              "expr": "base_memory_committedHeap_bytes{pod=~\"$pod\", job=\"$serviceID\"}",
               "intervalFactor": 2,
               "legendFormat": "Commited Heap",
               "refId": "C"
@@ -568,7 +573,7 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "base_memory_maxHeap_bytes{instance=\"$instance\", job=\"$serviceID\"}",
+              "expr": "base_memory_maxHeap_bytes{pod=~\"$pod\", job=\"$serviceID\"}",
               "intervalFactor": 2,
               "legendFormat": "Max Heap",
               "refId": "B"
@@ -662,9 +667,11 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "base_thread_count{instance=\"$instance\",job=\"$serviceID\"}",
+              "editorMode": "code",
+              "expr": "base_thread_count{pod=~\"$pod\",job=\"$serviceID\"}",
               "intervalFactor": 2,
               "legendFormat": "Thread Count",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -758,9 +765,11 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "base_memory_usedNonHeap_bytes{instance=\"$instance\",job=\"$serviceID\"}",
+              "editorMode": "code",
+              "expr": "base_memory_usedNonHeap_bytes{pod=~\"$pod\",job=\"$serviceID\"}",
               "intervalFactor": 2,
               "legendFormat": "Used Non Heap",
+              "range": true,
               "refId": "A"
             },
             {
@@ -768,7 +777,7 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "base_memory_committedNonHeap_bytes{instance=\"$instance\",job=\"$serviceID\"}",
+              "expr": "base_memory_committedNonHeap_bytes{pod=~\"$pod\",job=\"$serviceID\"}",
               "intervalFactor": 2,
               "legendFormat": "Commited Non Heap",
               "refId": "B"
@@ -873,7 +882,9 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "base_classloader_loadedClasses_count{instance=\"$instance\", job=\"$serviceID\"}",
+              "editorMode": "code",
+              "expr": "base_classloader_loadedClasses_count{pod=~\"$pod\", job=\"$serviceID\"}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -950,7 +961,7 @@ spec:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "base_classloader_loadedClasses_total{instance=\"$instance\", job=\"$serviceID\"}",
+              "expr": "base_classloader_loadedClasses_total{pod=~\"$pod\", job=\"$serviceID\"}",
               "range": true,
               "refId": "A"
             }
@@ -1028,7 +1039,7 @@ spec:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "base_classloader_unloadedClasses_total{instance=\"$instance\", job=\"$serviceID\"}",
+              "expr": "base_classloader_unloadedClasses_total{pod=~\"$pod\", job=\"$serviceID\"}",
               "range": true,
               "refId": "A"
             }
@@ -1037,7 +1048,7 @@ spec:
           "type": "stat"
         }
       ],
-      "refresh": "",
+      "refresh": false,
       "schemaVersion": 37,
       "style": "dark",
       "tags": [
@@ -1050,8 +1061,8 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": "keycloak-monitoring",
-              "value": "keycloak-monitoring"
+              "text": "hogajama-admin",
+              "value": "hogajama-admin"
             },
             "datasource": {
               "type": "prometheus",
@@ -1077,26 +1088,27 @@ spec:
             "type": "query"
           },
           {
+            "allValue": ".+",
             "current": {
               "selected": false,
-              "text": "10.131.0.40:8443",
-              "value": "10.131.0.40:8443"
+              "text": "All",
+              "value": "$__all"
             },
             "datasource": {
               "type": "prometheus",
               "uid": "prometheus"
             },
-            "definition": "label_values(base_gc_total{job=\"$serviceID\"}, instance)",
+            "definition": "label_values(base_gc_total{job=\"$serviceID\"}, pod)",
             "hide": 0,
-            "includeAll": false,
-            "multi": false,
-            "name": "instance",
+            "includeAll": true,
+            "multi": true,
+            "name": "pod",
             "options": [],
             "query": {
-              "query": "label_values(base_gc_total{job=\"$serviceID\"}, instance)",
+              "query": "label_values(base_gc_total{job=\"$serviceID\"}, pod)",
               "refId": "StandardVariableQuery"
             },
-            "refresh": 1,
+            "refresh": 2,
             "regex": "",
             "skipUrlSync": false,
             "sort": 0,
@@ -1108,7 +1120,7 @@ spec:
         ]
       },
       "time": {
-        "from": "now-6h",
+        "from": "now-7d",
         "to": "now"
       },
       "timepicker": {
@@ -1138,7 +1150,7 @@ spec:
       },
       "timezone": "",
       "title": "Hogarama MicroProfile Java Metrics",
-      "uid": "TkcxbEtWz",
-      "version": 57,
+      "uid": "hogarama-java-system-metrics",
+      "version": 2,
       "weekStart": ""
     }

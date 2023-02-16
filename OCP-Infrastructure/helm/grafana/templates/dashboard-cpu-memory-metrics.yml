@@ -104,8 +104,11 @@ spec:
           "id": 4,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "last",
+                "max"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
             },
@@ -122,7 +125,8 @@ spec:
               },
               "editorMode": "builder",
               "expr": "sum(pod:container_cpu_usage:sum{namespace=\"$namespace\", pod=~\"$pod\"})",
-              "legendFormat": "__auto",
+              "format": "time_series",
+              "legendFormat": "Sum",
               "range": true,
               "refId": "A"
             }
@@ -183,7 +187,8 @@ spec:
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "decmbytes"
             },
             "overrides": []
           },
@@ -196,8 +201,12 @@ spec:
           "id": 8,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "last",
+                "min",
+                "max"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
             },
@@ -212,9 +221,11 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "editorMode": "builder",
-              "expr": "sum(container_memory_working_set_bytes{namespace=\"$namespace\", pod=~\"$pod\", container=~\".+\"})",
-              "legendFormat": "__auto",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum(container_memory_working_set_bytes{namespace=\"$namespace\", pod=~\"$pod\", container=~\".+\"})/1000000",
+              "format": "time_series",
+              "legendFormat": "Sum",
               "range": true,
               "refId": "A"
             }
@@ -289,8 +300,11 @@ spec:
           "id": 2,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "last",
+                "max"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
             },
@@ -307,7 +321,8 @@ spec:
               },
               "editorMode": "builder",
               "expr": "pod:container_cpu_usage:sum{pod=~\"$pod\", namespace=\"$namespace\"}",
-              "legendFormat": "__auto",
+              "format": "time_series",
+              "legendFormat": "{{pod}}",
               "range": true,
               "refId": "A"
             }
@@ -368,7 +383,8 @@ spec:
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "decmbytes"
             },
             "overrides": []
           },
@@ -381,8 +397,12 @@ spec:
           "id": 6,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "last",
+                "min",
+                "max"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
             },
@@ -397,9 +417,10 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "editorMode": "builder",
-              "expr": "container_memory_working_set_bytes{namespace=\"$namespace\", pod=~\"$pod\", image=~\".+\"}",
-              "legendFormat": "__auto",
+              "editorMode": "code",
+              "expr": "container_memory_working_set_bytes{namespace=\"$namespace\", pod=~\"$pod\", image=~\".+\"}/1000000",
+              "format": "time_series",
+              "legendFormat": "{{pod}}",
               "range": true,
               "refId": "A"
             }
@@ -441,14 +462,16 @@ spec:
             "current": {
               "selected": true,
               "text": [
-                "hogajama-79c785c5d9-vqpv5",
+                "hogajama-5768cccdc6-trqtq",
                 "hogajama-69587cbfc7-p6xwk",
-                "hogajama-5768cccdc6-trqtq"
+                "hogajama-79c785c5d9-vqpv5",
+                "hogajama-7cfcf4cd79-bqgrd"
               ],
               "value": [
-                "hogajama-79c785c5d9-vqpv5",
+                "hogajama-5768cccdc6-trqtq",
                 "hogajama-69587cbfc7-p6xwk",
-                "hogajama-5768cccdc6-trqtq"
+                "hogajama-79c785c5d9-vqpv5",
+                "hogajama-7cfcf4cd79-bqgrd"
               ]
             },
             "datasource": {
@@ -481,6 +504,6 @@ spec:
       "timezone": "",
       "title": "Hogarama CPU and Memory usage",
       "uid": "hogarama-cpu-memory",
-      "version": 9,
+      "version": 16468,
       "weekStart": ""
     }

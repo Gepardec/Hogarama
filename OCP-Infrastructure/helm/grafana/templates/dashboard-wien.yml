@@ -34,95 +34,109 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 4,
+      "id": 9,
       "links": [],
       "liveNow": false,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "fill": 1,
-          "fillGradient": 0,
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 0,
             "y": 0
           },
-          "hiddenSeries": false,
           "id": 2,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "last",
+                "min",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
           "pluginVersion": "9.3.1",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
           "targets": [
             {
               "datasource": {
                 "type": "prometheus",
                 "uid": "prometheus"
               },
+              "editorMode": "code",
               "exemplar": true,
               "expr": "hogarama_sensor_value{unit_name=\"Wien\"}",
               "interval": "",
-              "legendFormat": "",
+              "legendFormat": "{{device_id}}",
+              "range": true,
               "refId": "A"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "Feuchtigkeit",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
           "aliasColors": {},
@@ -173,10 +187,12 @@ spec:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
+              "editorMode": "code",
               "exemplar": true,
               "expr": "hogarama_watering_events_fired{actor_name=\"Pumpe Büro Wien\"}",
               "interval": "",
-              "legendFormat": "",
+              "legendFormat": "{{actor_name}}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -213,7 +229,11 @@ spec:
       ],
       "schemaVersion": 37,
       "style": "dark",
-      "tags": [],
+      "tags": [
+        "Ansprechperson: Erhard Siegl",
+        "Applikation: Hogarama",
+        "Themengebiet: Externe Applikation"
+      ],
       "templating": {
         "list": []
       },
@@ -224,7 +244,7 @@ spec:
       "timepicker": {},
       "timezone": "",
       "title": "Büro Wien",
-      "uid": "6aaba87fbfc940fcd1e11624fdbb1b967c048c07",
-      "version": 89,
+      "uid": "hogarama-dashboard-wien",
+      "version": 57,
       "weekStart": ""
     }
