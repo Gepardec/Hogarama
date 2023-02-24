@@ -1,0 +1,2 @@
+/extension=org.wildfly.extension.microprofile.openapi-smallrye:add
+/subsystem=microprofile-openapi-smallrye:add()

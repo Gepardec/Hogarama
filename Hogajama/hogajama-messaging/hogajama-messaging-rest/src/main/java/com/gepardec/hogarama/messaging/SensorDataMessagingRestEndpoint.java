@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 @Path("/messaging/sensorData")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.TEXT_PLAIN)
-public interface SensorDataMessagingEndpoint {
+public interface SensorDataMessagingRestEndpoint {
 
     @POST
     Response putMessage(SensorData sensorData);
