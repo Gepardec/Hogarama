@@ -14,9 +14,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RunConfiguration {
-    
+
     public static final Logger LOGGER = LoggerFactory.getLogger(RunConfiguration.class);
-    
+
     public static final String BROKER = "broker";
     public static final String BROKER_HOST = "brokerHost";
     public static final String BROKER_USERNAME = "brokerUsername";
@@ -105,7 +105,7 @@ public class RunConfiguration {
 
     public String getSecurityProtocol() {
         return securityProtocol;
-   }
+    }
 
     public String getSslTruststoreLocation() {
         return sslTruststoreLocation;
@@ -170,7 +170,7 @@ public class RunConfiguration {
     }
 
     private void print(String key, Object value) {
-        LOGGER.info(key + "=" + value);        
+        LOGGER.info(key + "=" + value);
     }
 
 
