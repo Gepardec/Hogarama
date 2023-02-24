@@ -22,9 +22,9 @@ import java.io.IOException;
                 @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
         }
 )
-public class WateringMDB implements MessageListener {
+public class SensorDataMDB implements MessageListener {
 
-    private static final Logger log = LoggerFactory.getLogger(WateringMDB.class);
+    private static final Logger log = LoggerFactory.getLogger(SensorDataMDB.class);
 
     @Inject
     WateringService wateringSvc;

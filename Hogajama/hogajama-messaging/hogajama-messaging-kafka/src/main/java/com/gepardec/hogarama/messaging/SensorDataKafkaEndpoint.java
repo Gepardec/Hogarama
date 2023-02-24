@@ -15,9 +15,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 @ApplicationScoped
-public class WateringKafkaEndpoint {
+public class SensorDataKafkaEndpoint {
 
-    private static final Logger log = LoggerFactory.getLogger(WateringKafkaEndpoint.class);
+    private static final Logger log = LoggerFactory.getLogger(SensorDataKafkaEndpoint.class);
 
     @Inject
     WateringService wateringSvc;

@@ -102,12 +102,8 @@ public class RunConfiguration {
     public List<String> getMockMessages() {
         return mockMessages;
     }
-    
-    public boolean useKafka() {
-        return "kafka".equals(broker);
-    }
 
-   public String getSecurityProtocol() {
+    public String getSecurityProtocol() {
         return securityProtocol;
    }
 

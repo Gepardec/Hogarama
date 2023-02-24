@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
-public class SensorDataMessagingEndpointImpl implements SensorDataMessagingEndpoint {
+public class SensorDataMessagingRestEndpointImpl implements SensorDataMessagingRestEndpoint {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SensorDataMessagingEndpointImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SensorDataMessagingRestEndpointImpl.class);
 
     @Inject
     WateringService wateringService;
