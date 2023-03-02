@@ -5,6 +5,7 @@ metadata:
     app: hogarama
     dashboard: application
   name: dashboard-logs
+  namespace: {{ .Release.Namespace }}
   finalizers: []
 spec:
   json: |
@@ -96,7 +97,11 @@ spec:
       "refresh": false,
       "schemaVersion": 37,
       "style": "dark",
-      "tags": [],
+      "tags": [
+        "Ansprechperson: Erhard Siegl",
+        "Applikation: Hogarama",
+        "Themengebiet: Externe Applikation"
+      ],    
       "templating": {
         "list": [
           {
@@ -176,7 +181,7 @@ spec:
       "timepicker": {},
       "timezone": "",
       "title": "Hogarama Logs",
-      "uid": "ERfc3sO4k",
+      "uid": "hogarama-logs-{{ .Release.Namespace }}",
       "version": 39,
       "weekStart": ""
     }

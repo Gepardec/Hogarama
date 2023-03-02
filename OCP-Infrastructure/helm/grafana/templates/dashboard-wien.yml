@@ -5,6 +5,7 @@ metadata:
     app: hogarama
     dashboard: application
   name: dashboard-wien
+  namespace: {{ .Release.Namespace }}
   finalizers: []
 spec:
   json: |
@@ -130,7 +131,7 @@ spec:
               "exemplar": true,
               "expr": "hogarama_sensor_value{unit_name=\"Wien\"}",
               "interval": "",
-              "legendFormat": "{{device_id}}",
+              "legendFormat": {{`"{{device_id}}"`}},
               "range": true,
               "refId": "A"
             }
@@ -191,7 +192,7 @@ spec:
               "exemplar": true,
               "expr": "hogarama_watering_events_fired{actor_name=\"Pumpe Büro Wien\"}",
               "interval": "",
-              "legendFormat": "{{actor_name}}",
+              "legendFormat": {{`"{{actor_name}}"`}},
               "range": true,
               "refId": "A"
             }
@@ -244,7 +245,7 @@ spec:
       "timepicker": {},
       "timezone": "",
       "title": "Büro Wien",
-      "uid": "hogarama-dashboard-wien",
+      "uid": "dashboard-wien-{{ .Release.Namespace }}",
       "version": 57,
       "weekStart": ""
     }

@@ -3,7 +3,8 @@ kind: GrafanaDashboard
 metadata:
   labels:
     dashboard: application
-  name: grafana-dashboard
+  name: dashboard-gruenbach
+  namespace: {{ .Release.Namespace }}
   finalizers: []
 spec:
   json: |
@@ -212,7 +213,11 @@ spec:
       ],
       "schemaVersion": 37,
       "style": "dark",
-      "tags": [],
+      "tags": [
+        "Ansprechperson: Erhard Siegl",
+        "Applikation: Hogarama",
+        "Themengebiet: Externe Applikation"
+      ],
       "templating": {
         "list": []
       },
@@ -223,7 +228,7 @@ spec:
       "timepicker": {},
       "timezone": "",
       "title": "Grünbach",
-      "uid": "sROxSQe7z",
+      "uid": "gruenbach-{{ .Release.Namespace }}",
       "version": 89,
       "weekStart": ""
     }

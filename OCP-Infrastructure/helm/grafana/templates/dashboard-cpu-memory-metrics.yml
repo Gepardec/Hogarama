@@ -5,6 +5,7 @@ metadata:
     app: hogarama
     dashboard: application
   name: hogarama-cpu-memory
+  namespace: {{ .Release.Namespace }}
   finalizers: []
 spec:
   json: |
@@ -322,7 +323,7 @@ spec:
               "editorMode": "builder",
               "expr": "pod:container_cpu_usage:sum{pod=~\"$pod\", namespace=\"$namespace\"}",
               "format": "time_series",
-              "legendFormat": "{{pod}}",
+              "legendFormat": {{`"{{pod}}"`}},
               "range": true,
               "refId": "A"
             }
@@ -420,7 +421,7 @@ spec:
               "editorMode": "code",
               "expr": "container_memory_working_set_bytes{namespace=\"$namespace\", pod=~\"$pod\", image=~\".+\"}/1000000",
               "format": "time_series",
-              "legendFormat": "{{pod}}",
+              "legendFormat": {{`"{{pod}}"`}},
               "range": true,
               "refId": "A"
             }
@@ -503,7 +504,7 @@ spec:
       "timepicker": {},
       "timezone": "",
       "title": "Hogarama CPU and Memory usage",
-      "uid": "hogarama-cpu-memory",
+      "uid": "hogarama-cpu-memory-{{ .Release.Namespace }}",
       "version": 16468,
       "weekStart": ""
     }

@@ -5,6 +5,7 @@ metadata:
     app: hogarama
     dashboard: application
   name: java-system-metrics
+  namespace: {{ .Release.Namespace }}
   finalizers: []
 spec:
   json: |
@@ -264,7 +265,7 @@ spec:
               "editorMode": "builder",
               "expr": "rate(base_gc_total{job=~\"$serviceID\", pod=~\"$pod\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "{{ name }}",
+              "legendFormat": {{`"{{ name }}"`}},
               "range": true,
               "refId": "A"
             }
@@ -360,7 +361,7 @@ spec:
               },
               "editorMode": "code",
               "expr": "rate(base_gc_time_total_seconds{pod=~\"$pod\", job=\"$serviceID\"}[5m])",
-              "legendFormat": "{{ name }}",
+              "legendFormat": {{`"{{ name }}"`}},
               "range": true,
               "refId": "A"
             }
@@ -1061,6 +1062,28 @@ spec:
           {
             "current": {
               "selected": true,
+              "text": "hogarama",
+              "value": "hogarama"
+            },
+            "definition": "label_values(base_gc_total{namespace=~\"hogarama.*\"}, namespace)",
+            "hide": 0,
+            "includeAll": false,
+            "multi": false,
+            "name": "namespace",
+            "options": [],
+            "query": {
+              "query": "label_values(base_gc_total{namespace=~\"hogarama.*\"}, namespace)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "type": "query"
+          },
+          {
+            "current": {
+              "selected": true,
               "text": "hogajama-admin",
               "value": "hogajama-admin"
             },
@@ -1068,7 +1091,7 @@ spec:
               "type": "prometheus",
               "uid": "prometheus"
             },
-            "definition": "label_values(base_gc_total{namespace=\"hogarama\"}, job)",
+            "definition": "label_values(base_gc_total{namespace=\"$namespace\"}, job)",
             "hide": 0,
             "includeAll": false,
             "label": "ServiceID",
@@ -1076,7 +1099,7 @@ spec:
             "name": "serviceID",
             "options": [],
             "query": {
-              "query": "label_values(base_gc_total{namespace=\"hogarama\"}, job)",
+              "query": "label_values(base_gc_total{namespace=\"$namespace\"}, job)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 1,
@@ -1090,9 +1113,13 @@ spec:
           {
             "allValue": ".+",
             "current": {
-              "selected": false,
-              "text": "All",
-              "value": "$__all"
+              "selected": true,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
@@ -1149,8 +1176,8 @@ spec:
         ]
       },
       "timezone": "",
-      "title": "Hogarama MicroProfile Java Metrics",
-      "uid": "hogarama-java-system-metrics",
+      "title": "MicroProfile Java Metrics",
+      "uid": "java-system-metrics-{{ .Release.Namespace }}",
       "version": 2,
       "weekStart": ""
     }
