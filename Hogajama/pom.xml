@@ -44,6 +44,7 @@
 		<ch.qos.logback.version>1.2.11</ch.qos.logback.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<org.apache.commons.version>4.4</org.apache.commons.version>
+		<org.apache.commons.io.version>2.11.0</org.apache.commons.io.version>
 		<prometheus.io.version>0.6.0</prometheus.io.version>
 		<org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
 		<junit.version>4.13.1</junit.version>
@@ -102,11 +103,6 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.gepardec.hogajama</groupId>
-				<artifactId>hogajama-interfaces-frontend</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>com.gepardec.hogarama</groupId>
 				<artifactId>hogajama-monitoring</artifactId>
 				<version>${project.version}</version>
@@ -155,6 +151,12 @@
 				<artifactId>commons-collections4</artifactId>
 				<version>${org.apache.commons.version}</version>
 			</dependency>
+			<dependency>
+	  			<groupId>commons-io</groupId>
+	  			<artifactId>commons-io</artifactId>
+				<version>${org.apache.commons.io.version}</version>
+			</dependency>
+
 			<!-- MongoDB Driver -->
 			<dependency>
 				<groupId>org.mongodb.morphia</groupId>

@@ -11,7 +11,6 @@
 	<packaging>pom</packaging>
 	
 	<modules>
-		<module>hogajama-interfaces-frontend</module>
 		<module>hogajama-interfaces-rs</module>
 	</modules>
 </project>

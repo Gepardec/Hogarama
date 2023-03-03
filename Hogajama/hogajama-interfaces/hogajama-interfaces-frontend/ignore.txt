@@ -1,9 +1,0 @@
-**/src/**
-**/README.md
-**/build.gradle
-**/pom.xml
-**/settings.gradle
-**/git_push.sh
-**/mocha.opts
-**/docs/**
-**/test/**
