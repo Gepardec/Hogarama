@@ -34,7 +34,7 @@ spec:
       },
       "editable": true,
       "fiscalYearStartMonth": 0,
-      "graphTooltip": 0,
+      "graphTooltip": 1,
       "id": 37,
       "links": [],
       "liveNow": false,
