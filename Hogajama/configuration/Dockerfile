@@ -2,7 +2,7 @@ FROM hogarama-build-artefacts as artefacts
 WORKDIR /deployments
 RUN echo Hello
 
-FROM quay.io/wildfly/wildfly:23.0.2.Final
+FROM quay.io/wildfly/wildfly:26.1.1.Final
 
 ARG SETUP=/tmp/setup
 ARG ENV_FILE

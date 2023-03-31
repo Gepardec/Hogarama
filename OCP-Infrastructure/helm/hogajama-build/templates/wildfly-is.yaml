@@ -1,0 +1,98 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: wildfly
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly:23.0.2.Final
+    generation: 2
+    importPolicy: {}
+    name: 23.0.2.Final
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly:24.0.0.Final
+    generation: 2
+    importPolicy: {}
+    name: 24.0.0.Final
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly:25.0.0.Final
+    generation: 2
+    importPolicy: {}
+    name: 25.0.0.Final
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly:25.0.1.Final
+    generation: 2
+    importPolicy: {}
+    name: 25.0.1.Final
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly:26.0.0.Final
+    generation: 2
+    importPolicy: {}
+    name: 26.0.0.Final
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly:26.0.1.Final
+    generation: 2
+    importPolicy: {}
+    name: 26.0.1.Final
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly:26.1.0.Final
+    generation: 2
+    importPolicy: {}
+    name: 26.1.0.Final
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly:26.1.1.Final
+    generation: 4
+    importPolicy: {}
+    name: 26.1.1.Final
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly:26.1.1.Final-2
+    generation: 4
+    importPolicy: {}
+    name: 26.1.1.Final-2
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly:latest
+    generation: 3
+    importPolicy: {}
+    name: latest
+    referencePolicy:
+      type: Source

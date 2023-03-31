@@ -1,5 +1,5 @@
 #!/bin/sh
 
-for n in hogajama mongodb amq keycloak grafana; do
+for n in amq mongodb keycloakx hogajama; do
   ( cd $n && ./install.sh )
 done
