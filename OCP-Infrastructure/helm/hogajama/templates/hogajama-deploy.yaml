@@ -65,7 +65,6 @@ items:
             httpGet:
               path: /health
               port: 9990
-            initialDelaySeconds: 5
             periodSeconds: 10
           startupProbe:
             httpGet:
