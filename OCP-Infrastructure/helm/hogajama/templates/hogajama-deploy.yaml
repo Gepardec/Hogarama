@@ -55,18 +55,25 @@ items:
             protocol: TCP
           - containerPort: 9990
             protocol: TCP
+          #Probes to check for liveness, readiness and if startup is done
           livenessProbe:
             httpGet:
               path: /health
               port: 9990
-            initialDelaySeconds: 100
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
               port: 9990
-            initialDelaySeconds: 100
+            initialDelaySeconds: 5
             periodSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 9990
+            failureThreshold: 20
+            periodSeconds: 10
+
           volumeMounts:
             - name: certificates
               mountPath: /opt/jboss/wildfly/standalone/configuration/certs
