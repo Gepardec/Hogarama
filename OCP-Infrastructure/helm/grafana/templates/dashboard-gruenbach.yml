@@ -1,12 +1,15 @@
-apiVersion: integreatly.org/v1alpha1
+apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  labels:
-    dashboard: application
   name: dashboard-gruenbach
   namespace: {{ .Release.Namespace }}
   finalizers: []
 spec:
+  folder: Hogarama
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      monitoring.gepardec.com/system: "true"
   json: |
     {
       "annotations": {
@@ -229,6 +232,5 @@ spec:
       "timezone": "",
       "title": "Grünbach",
       "uid": "gruenbach-{{ .Release.Namespace }}",
-      "version": 89,
       "weekStart": ""
     }

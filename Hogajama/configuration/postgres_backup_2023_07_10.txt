@@ -1,0 +1,508 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.5
+-- Dumped by pg_dump version 14.5
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: hogajama; Type: SCHEMA; Schema: -; Owner: hogajama
+--
+
+CREATE SCHEMA hogajama;
+
+
+ALTER SCHEMA hogajama OWNER TO hogajama;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: actor; Type: TABLE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE TABLE hogajama.actor (
+    id bigint NOT NULL,
+    device_id character varying(255) NOT NULL,
+    name character varying(255),
+    unit_id bigint NOT NULL,
+    queue_name character varying(255)
+);
+
+
+ALTER TABLE hogajama.actor OWNER TO hogajama;
+
+--
+-- Name: flyway_schema_history; Type: TABLE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE TABLE hogajama.flyway_schema_history (
+    installed_rank integer NOT NULL,
+    version character varying(50),
+    description character varying(200) NOT NULL,
+    type character varying(20) NOT NULL,
+    script character varying(1000) NOT NULL,
+    checksum integer,
+    installed_by character varying(100) NOT NULL,
+    installed_on timestamp without time zone DEFAULT now() NOT NULL,
+    execution_time integer NOT NULL,
+    success boolean NOT NULL
+);
+
+
+ALTER TABLE hogajama.flyway_schema_history OWNER TO hogajama;
+
+--
+-- Name: low_water_watering_rule; Type: TABLE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE TABLE hogajama.low_water_watering_rule (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    description character varying(255),
+    sensor_id bigint NOT NULL,
+    actor_id bigint NOT NULL,
+    water_duration integer NOT NULL,
+    low_water double precision NOT NULL,
+    unit_id bigint NOT NULL
+);
+
+
+ALTER TABLE hogajama.low_water_watering_rule OWNER TO hogajama;
+
+--
+-- Name: sensor; Type: TABLE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE TABLE hogajama.sensor (
+    id bigint NOT NULL,
+    device_id character varying(255) NOT NULL,
+    name character varying(255),
+    sensor_type_id bigint NOT NULL,
+    unit_id bigint NOT NULL
+);
+
+
+ALTER TABLE hogajama.sensor OWNER TO hogajama;
+
+--
+-- Name: sensor_type; Type: TABLE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE TABLE hogajama.sensor_type (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE hogajama.sensor_type OWNER TO hogajama;
+
+--
+-- Name: seq_actor_id; Type: SEQUENCE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE SEQUENCE hogajama.seq_actor_id
+    START WITH 1
+    INCREMENT BY 50
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE hogajama.seq_actor_id OWNER TO hogajama;
+
+--
+-- Name: seq_rule_id; Type: SEQUENCE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE SEQUENCE hogajama.seq_rule_id
+    START WITH 1
+    INCREMENT BY 50
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE hogajama.seq_rule_id OWNER TO hogajama;
+
+--
+-- Name: seq_sensor_id; Type: SEQUENCE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE SEQUENCE hogajama.seq_sensor_id
+    START WITH 1
+    INCREMENT BY 50
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE hogajama.seq_sensor_id OWNER TO hogajama;
+
+--
+-- Name: seq_sensor_type_id; Type: SEQUENCE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE SEQUENCE hogajama.seq_sensor_type_id
+    START WITH 1
+    INCREMENT BY 50
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE hogajama.seq_sensor_type_id OWNER TO hogajama;
+
+--
+-- Name: seq_unit_id; Type: SEQUENCE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE SEQUENCE hogajama.seq_unit_id
+    START WITH 1
+    INCREMENT BY 50
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE hogajama.seq_unit_id OWNER TO hogajama;
+
+--
+-- Name: seq_user_id; Type: SEQUENCE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE SEQUENCE hogajama.seq_user_id
+    START WITH 1
+    INCREMENT BY 50
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE hogajama.seq_user_id OWNER TO hogajama;
+
+--
+-- Name: unit; Type: TABLE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE TABLE hogajama.unit (
+    id bigint NOT NULL,
+    description character varying(255),
+    is_default boolean DEFAULT false NOT NULL,
+    name character varying(255),
+    user_id bigint NOT NULL
+);
+
+
+ALTER TABLE hogajama.unit OWNER TO hogajama;
+
+--
+-- Name: user; Type: TABLE; Schema: hogajama; Owner: hogajama
+--
+
+CREATE TABLE hogajama."user" (
+    id bigint NOT NULL,
+    key character varying(255) NOT NULL
+);
+
+
+ALTER TABLE hogajama."user" OWNER TO hogajama;
+
+--
+-- Data for Name: actor; Type: TABLE DATA; Schema: hogajama; Owner: hogajama
+--
+
+COPY hogajama.actor (id, device_id, name, unit_id, queue_name) FROM stdin;
+2	a_gb01	Pumpe Gruenbach	6	\N
+1	GruenerGepard	Pumpe Büro Wien	5	\N
+\.
+
+
+--
+-- Data for Name: flyway_schema_history; Type: TABLE DATA; Schema: hogajama; Owner: hogajama
+--
+
+COPY hogajama.flyway_schema_history (installed_rank, version, description, type, script, checksum, installed_by, installed_on, execution_time, success) FROM stdin;
+0	\N	<< Flyway Schema Creation >>	SCHEMA	"hogajama"	\N	hogajama	2022-09-29 11:59:05.341097	0	t
+1	1.1	Inital DDL Setup	SQL	V1_1__Inital_DDL_Setup.sql	-701004921	hogajama	2022-09-29 11:59:05.430434	628	t
+2	1.2	Set ssoUserId unique	SQL	V1_2__Set_ssoUserId_unique.sql	1980327693	hogajama	2022-09-29 11:59:06.106327	62	t
+3	1.3	Insert Sensor Type	SQL	V1_3__Insert_Sensor_Type.sql	-759451103	hogajama	2022-09-29 11:59:06.241465	4	t
+4	1.4	Insert Sensor Type	SQL	V1_4__Insert_Sensor_Type.sql	-1100072894	hogajama	2022-09-29 11:59:06.29914	3	t
+5	1.5	Add Actor	SQL	V1_5__Add_Actor.sql	755235280	hogajama	2022-09-29 11:59:06.333626	159	t
+6	1.6	Add WateringRule	SQL	V1_6__Add_WateringRule.sql	-1771278379	hogajama	2022-09-29 11:59:06.533981	114	t
+7	1.7	Refactor User table	SQL	V1_7__Refactor_User_table.sql	984445955	hogajama	2022-09-29 11:59:06.690101	3	t
+\.
+
+
+--
+-- Data for Name: low_water_watering_rule; Type: TABLE DATA; Schema: hogajama; Owner: hogajama
+--
+
+COPY hogajama.low_water_watering_rule (id, name, description, sensor_id, actor_id, water_duration, low_water, unit_id) FROM stdin;
+1	Wien	Gepardec Büro Wien	1	1	20	0.6	5
+2	Gruenbach	Bewässerung Grünbach	4	2	600	0.6	6
+\.
+
+
+--
+-- Data for Name: sensor; Type: TABLE DATA; Schema: hogajama; Owner: hogajama
+--
+
+COPY hogajama.sensor (id, device_id, name, sensor_type_id, unit_id) FROM stdin;
+1	verspielterGepard	Pflanze Wien	6	5
+2	s_gb01	Kl. Ahorn	6	6
+3	s_gb02	Langer Ahorn	6	6
+4	s_gb03	Slim Ash	6	6
+5	s_gb04	Sequoia	6	6
+\.
+
+
+--
+-- Data for Name: sensor_type; Type: TABLE DATA; Schema: hogajama; Owner: hogajama
+--
+
+COPY hogajama.sensor_type (id, name) FROM stdin;
+1	IDENTITY
+2	LINEAR100
+3	LINEAR1024
+4	INVERSE_LINEAR1024
+5	Chinese Water Sensor
+6	sparkfun
+\.
+
+
+--
+-- Data for Name: unit; Type: TABLE DATA; Schema: hogajama; Owner: hogajama
+--
+
+COPY hogajama.unit (id, description, is_default, name, user_id) FROM stdin;
+1	Automatically created default unit.	t	DEFAULT_UNIT	2
+3	Automatically created default unit.	t	DEFAULT_UNIT	3
+5	Gepardec Büro Wien	f	Wien	3
+6	Bewässerung Grünbach	f	gruenbach	3
+52	Automatically created default unit.	t	DEFAULT_UNIT	52
+\.
+
+
+--
+-- Data for Name: user; Type: TABLE DATA; Schema: hogajama; Owner: hogajama
+--
+
+COPY hogajama."user" (id, key) FROM stdin;
+2	christian.salmhofer@gepardec.com
+3	jamal@gepard.com
+52	andreas.novak@gepardec.com
+\.
+
+
+--
+-- Name: seq_actor_id; Type: SEQUENCE SET; Schema: hogajama; Owner: hogajama
+--
+
+SELECT pg_catalog.setval('hogajama.seq_actor_id', 51, true);
+
+
+--
+-- Name: seq_rule_id; Type: SEQUENCE SET; Schema: hogajama; Owner: hogajama
+--
+
+SELECT pg_catalog.setval('hogajama.seq_rule_id', 51, true);
+
+
+--
+-- Name: seq_sensor_id; Type: SEQUENCE SET; Schema: hogajama; Owner: hogajama
+--
+
+SELECT pg_catalog.setval('hogajama.seq_sensor_id', 51, true);
+
+
+--
+-- Name: seq_sensor_type_id; Type: SEQUENCE SET; Schema: hogajama; Owner: hogajama
+--
+
+SELECT pg_catalog.setval('hogajama.seq_sensor_type_id', 1, false);
+
+
+--
+-- Name: seq_unit_id; Type: SEQUENCE SET; Schema: hogajama; Owner: hogajama
+--
+
+SELECT pg_catalog.setval('hogajama.seq_unit_id', 101, true);
+
+
+--
+-- Name: seq_user_id; Type: SEQUENCE SET; Schema: hogajama; Owner: hogajama
+--
+
+SELECT pg_catalog.setval('hogajama.seq_user_id', 101, true);
+
+
+--
+-- Name: flyway_schema_history flyway_schema_history_pk; Type: CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.flyway_schema_history
+    ADD CONSTRAINT flyway_schema_history_pk PRIMARY KEY (installed_rank);
+
+
+--
+-- Name: actor pk_actor; Type: CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.actor
+    ADD CONSTRAINT pk_actor PRIMARY KEY (id);
+
+
+--
+-- Name: user pk_owner; Type: CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama."user"
+    ADD CONSTRAINT pk_owner PRIMARY KEY (id);
+
+
+--
+-- Name: sensor pk_sensor; Type: CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.sensor
+    ADD CONSTRAINT pk_sensor PRIMARY KEY (id);
+
+
+--
+-- Name: sensor_type pk_sensor_type; Type: CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.sensor_type
+    ADD CONSTRAINT pk_sensor_type PRIMARY KEY (id);
+
+
+--
+-- Name: unit pk_unit; Type: CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.unit
+    ADD CONSTRAINT pk_unit PRIMARY KEY (id);
+
+
+--
+-- Name: low_water_watering_rule pk_watering_rule; Type: CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.low_water_watering_rule
+    ADD CONSTRAINT pk_watering_rule PRIMARY KEY (id);
+
+
+--
+-- Name: actor pui_actor_device_id; Type: CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.actor
+    ADD CONSTRAINT pui_actor_device_id UNIQUE (device_id);
+
+
+--
+-- Name: user pui_owner_sso_user_id; Type: CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama."user"
+    ADD CONSTRAINT pui_owner_sso_user_id UNIQUE (key);
+
+
+--
+-- Name: sensor pui_sensor_device_id; Type: CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.sensor
+    ADD CONSTRAINT pui_sensor_device_id UNIQUE (device_id);
+
+
+--
+-- Name: flyway_schema_history_s_idx; Type: INDEX; Schema: hogajama; Owner: hogajama
+--
+
+CREATE INDEX flyway_schema_history_s_idx ON hogajama.flyway_schema_history USING btree (success);
+
+
+--
+-- Name: low_water_watering_rule fk_actor; Type: FK CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.low_water_watering_rule
+    ADD CONSTRAINT fk_actor FOREIGN KEY (actor_id) REFERENCES hogajama.actor(id);
+
+
+--
+-- Name: actor fk_actor_unit; Type: FK CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.actor
+    ADD CONSTRAINT fk_actor_unit FOREIGN KEY (unit_id) REFERENCES hogajama.unit(id);
+
+
+--
+-- Name: low_water_watering_rule fk_actor_unit; Type: FK CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.low_water_watering_rule
+    ADD CONSTRAINT fk_actor_unit FOREIGN KEY (unit_id) REFERENCES hogajama.unit(id);
+
+
+--
+-- Name: low_water_watering_rule fk_sensor; Type: FK CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.low_water_watering_rule
+    ADD CONSTRAINT fk_sensor FOREIGN KEY (sensor_id) REFERENCES hogajama.sensor(id);
+
+
+--
+-- Name: sensor fk_sensor_sensor_type; Type: FK CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.sensor
+    ADD CONSTRAINT fk_sensor_sensor_type FOREIGN KEY (sensor_type_id) REFERENCES hogajama.sensor_type(id);
+
+
+--
+-- Name: sensor fk_sensor_unit; Type: FK CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.sensor
+    ADD CONSTRAINT fk_sensor_unit FOREIGN KEY (unit_id) REFERENCES hogajama.unit(id);
+
+
+--
+-- Name: unit fk_unit_owner; Type: FK CONSTRAINT; Schema: hogajama; Owner: hogajama
+--
+
+ALTER TABLE ONLY hogajama.unit
+    ADD CONSTRAINT fk_unit_owner FOREIGN KEY (user_id) REFERENCES hogajama."user"(id);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: hogajama
+--
+
+REVOKE ALL ON SCHEMA public FROM postgres;
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+GRANT ALL ON SCHEMA public TO hogajama;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
