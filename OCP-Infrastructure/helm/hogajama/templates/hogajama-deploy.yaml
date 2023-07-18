@@ -71,7 +71,7 @@ items:
               path: /health
               port: 9990
             failureThreshold: 20
-            periodSeconds: 10
+            periodSeconds: 20
 
           volumeMounts:
             - name: certificates
