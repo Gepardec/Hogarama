@@ -3,15 +3,20 @@ package com.gepardec.hogarama.domain.watering;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.enterprise.context.ApplicationScoped;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@ApplicationScoped
 public class WateringStrategy {
     private static final Logger log = LoggerFactory.getLogger(WateringStrategy.class);
  
+    // Application scoped cache is not ideal, for now its good enough.
     private Map<String, Double> cache = new HashMap<String, Double>();
 	
 	public WateringStrategy() {
+	    log.info("Initializing WateringStrategy");
 	}
 	
     private int waterDuration(WateringRule config, double avg) {
