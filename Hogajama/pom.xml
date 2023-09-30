@@ -23,6 +23,10 @@
     </modules>
 
 	<properties>
+	    <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+	
 		<sonar.projectKey>Gepardec_Hogarama</sonar.projectKey>
         <sonar.organization>gepardec-1</sonar.organization>
 		<sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
@@ -36,8 +40,6 @@
 
 		<wildfly.version>26.0.0.Final</wildfly.version>
 
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
 		<org.json.version>20200518</org.json.version>
 		<commons-cli.version>1.4</commons-cli.version>
 		<org.fusesource.mqtt-client.version>1.12</org.fusesource.mqtt-client.version>
@@ -109,6 +111,11 @@
 			</dependency>
 
 			<!-- Externe -->
+	        <dependency>
+	            <groupId>org.gepardec</groupId>
+	            <artifactId>structured-logging</artifactId>
+	            <version>0.0.1-SNAPSHOT</version>
+	        </dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>

@@ -1,6 +1,8 @@
 package com.gepardec.hogarama.domain.sensor;
 
-import org.slf4j.Logger;
+import org.gepardec.slog.SLogged;
+import org.gepardec.slog.SLogger;
+import org.gepardec.slog.level.SLogInfo;
 
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -11,12 +13,13 @@ import java.util.List;
 
 @Startup
 @Singleton
+@SLogged
 public class SensorNamesCache {
 
 	private static final int TEN_SECONDS = 10000;
 
     @Inject
-	private Logger log;
+    private SLogger logger;
 	
 	@Inject
 	private SensorDataDAO habaramaDao;
@@ -26,8 +29,11 @@ public class SensorNamesCache {
     private long cacheTime = 0;
 	
 	public synchronized void loadSensorsFromDB() {
+	    
+	    SensorNamesCacheLog log = logger.add(new SensorNamesCacheLog());
+	    
         if(isStale()) {
-            log.info("Load the sensorNames from the database");
+            log.setLoadSensorNames(true);
             sensorNames.clear();
             sensorNames = habaramaDao.getAllSensors();
             cacheTime = (new Date()).getTime();
@@ -44,5 +50,17 @@ public class SensorNamesCache {
     private boolean isStale() {
         return sensorNames.isEmpty() || ((new Date()).getTime() - cacheTime) > TEN_SECONDS ;
     }
+    
+    @SLogInfo
+    private class SensorNamesCacheLog {
+        private boolean loadSensorNames;
 
+        public boolean isLoadSensorNames() {
+            return loadSensorNames;
+        }
+
+        public void setLoadSensorNames(boolean loadSensorNames) {
+            this.loadSensorNames = loadSensorNames;
+        }
+    }
 }

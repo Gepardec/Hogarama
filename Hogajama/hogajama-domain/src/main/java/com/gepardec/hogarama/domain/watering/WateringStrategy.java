@@ -4,33 +4,55 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
+import org.gepardec.slog.SLogged;
+import org.gepardec.slog.SLogger;
+import org.gepardec.slog.level.SLogInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.gepardec.hogarama.domain.sensor.SensorData;
+
 @ApplicationScoped
 public class WateringStrategy {
-    private static final Logger log = LoggerFactory.getLogger(WateringStrategy.class);
+    
+    @Inject
+    private SLogger logger;
+
  
     // Application scoped cache is not ideal, for now its good enough.
     private Map<String, Double> cache = new HashMap<String, Double>();
+
+
+    private WateringStrategyLog log;
 	
 	public WateringStrategy() {
-	    log.info("Initializing WateringStrategy");
+	    logger.info("Initializing WateringStrategy");
 	}
 	
+    public WateringStrategy(SLogger logger) {
+        this.logger = logger;
+    }
+
     private int waterDuration(WateringRule config, double avg) {
+        log.setConfig(config);
+         log.setMoistureValue(avg);
+        
         if ( avg < config.getLowWater() ) {
+            log.setWater(true);
             int dur = config.getWaterDuration();
-            log.info("water " + config.getActorName() + " for " + dur + " because average water value " + avg + " < " + config.getLowWater());
 			return dur;
 		}
-        log.debug("Don't water " + config.getActorName() + " because average water value " + avg + " not < " + config.getLowWater());
+        log.setWater(false);
         return 0;
     }
 
 
+    @SLogged
     public int computeWateringDuration(WateringRule config, double value) {
+        log = logger.add(new WateringStrategyLog());
+        
         double avg = computeAverage(getCachedValue(config), value);
         updateCache(config, avg);
         return waterDuration(config,avg);
@@ -50,6 +72,39 @@ public class WateringStrategy {
     private void updateCache(WateringRule config, double avg) {
         cache.put(config.getSensorName(), avg);
         
+    }
+    
+    @SLogInfo
+    private class WateringStrategyLog {
+        private boolean water;
+        private double duration;
+        private WateringRule config;
+        private double moistureValue;
+        
+        public boolean isWater() {
+            return water;
+        }
+        public void setWater(boolean water) {
+            this.water = water;
+        }
+        public double getDuration() {
+            return duration;
+        }
+        public void setDuration(double duration) {
+            this.duration = duration;
+        }
+        public WateringRule getConfig() {
+            return config;
+        }
+        public void setConfig(WateringRule config) {
+            this.config = config;
+        }
+        public double getMoistureValue() {
+            return moistureValue;
+        }
+        public void setMoistureValue(double moistureValue) {
+            this.moistureValue = moistureValue;
+        }        
     }
 	
 }

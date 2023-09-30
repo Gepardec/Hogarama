@@ -22,6 +22,10 @@ import java.util.Optional;
 import static com.gepardec.hogarama.domain.DateUtils.toDate;
 import static org.junit.Assert.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.gepardec.slog.SLogger;
+
 public class WateringServiceTest {
 
     private static final String SENSOR_DEVICE_ID = "SensorDeviceId";
@@ -37,6 +41,8 @@ public class WateringServiceTest {
     private MockActorControlService actorSvc;
     private InMemoryWateringConfigDAO wateringConfigDao;
     private TestDataProducer data;
+    
+    private static Logger logger = LogManager.getLogger(WateringServiceTest.class);
 
     @Before
     public void setUp() {
@@ -74,7 +80,7 @@ public class WateringServiceTest {
 
         DummySensorDAO sensorDao = new DummySensorDAO(data.getData());
 
-        watering = new WateringService(sensorDao, sensorNormalizer, actorSvc, new WateringStrategy(), wateringConfigDao, actorCache, sensorCache);
+        watering = new WateringService(sensorDao, sensorNormalizer, actorSvc, new WateringStrategy(new SLogger(logger)), wateringConfigDao, actorCache, sensorCache, new SLogger(logger));
 
     }
 

@@ -29,6 +29,10 @@
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
 		</dependency>
+        <dependency>
+            <groupId>org.gepardec</groupId>
+            <artifactId>structured-logging</artifactId>
+        </dependency>
 		<!-- Exposition servlet -->
 		<dependency>
 			<groupId>io.prometheus</groupId>

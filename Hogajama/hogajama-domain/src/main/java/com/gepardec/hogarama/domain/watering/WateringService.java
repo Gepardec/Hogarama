@@ -9,12 +9,16 @@ import com.gepardec.hogarama.domain.unitmanagement.cache.ActorCache;
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+
+import org.gepardec.slog.SLogged;
+import org.gepardec.slog.SLogger;
+import org.gepardec.slog.level.SLogInfo;
+
 import java.util.Optional;
 
+@SLogged
 public class WateringService {
 
 	public enum Config{
@@ -51,12 +55,13 @@ public class WateringService {
 	@Inject
 	private SensorCache sensorCache;
 
-    private static final Logger log = LoggerFactory.getLogger(WateringService.class);
+	@Inject
+    private SLogger logger;
 
 	public WateringService() {
 	}
 
-	protected WateringService(SensorDataDAO sensorDataDAO, SensorNormalizer normalizer, ActorControlService actorSvc, WateringStrategy watering, WateringRuleDAO configDao, ActorCache actorCache, SensorCache sensorCache) {
+	protected WateringService(SensorDataDAO sensorDataDAO, SensorNormalizer normalizer, ActorControlService actorSvc, WateringStrategy watering, WateringRuleDAO configDao, ActorCache actorCache, SensorCache sensorCache, SLogger logger) {
 		this.sensorDataDAO = sensorDataDAO;
 		this.sensorNormalizer = normalizer;
 		this.actorSvc = actorSvc;
@@ -64,6 +69,7 @@ public class WateringService {
 		this.configDao = configDao;
 		this.actorCache = actorCache;
 		this.sensorCache = sensorCache;
+		this.logger = logger;
 	}
 
     private void invokeActorIfNeeded(WateringRule config, int dur, String location) {
@@ -108,7 +114,9 @@ public class WateringService {
 	}
 
 	public void processSensorData(SensorData sensorData) {
-	    log.info("Receive sensorData: " + sensorData);
+	    WateringServiceLog log = logger.add(new WateringServiceLog());
+	    
+	    log.setReceivedSensorData(sensorData);
 		SensorData normalizedSensorData = sensorNormalizer.normalize(sensorData);
 		sensorDataDAO.save(normalizedSensorData);
 		sendMetrics(normalizedSensorData);
@@ -120,5 +128,19 @@ public class WateringService {
 		WateringRule config = getConfig(normalizedSensorData.getSensorName());
 		invokeActorIfNeeded(config, watering.computeWateringDuration(config, normalizedSensorData.getValue()), normalizedSensorData.getLocation());
 	}
+
+    @SLogInfo
+    private class WateringServiceLog {
+        private SensorData receivedSensorData;
+
+        public SensorData getReceivedSensorData() {
+            return receivedSensorData;
+        }
+
+        public void setReceivedSensorData(SensorData receivedSensorData) {
+            this.receivedSensorData = receivedSensorData;
+        }
+
+    }
 
 }
