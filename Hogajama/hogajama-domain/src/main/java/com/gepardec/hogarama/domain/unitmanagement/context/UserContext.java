@@ -5,7 +5,7 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class UserContext {

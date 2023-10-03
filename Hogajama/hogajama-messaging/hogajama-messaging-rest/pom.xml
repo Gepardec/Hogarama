@@ -10,5 +10,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>hogajama-messaging-rest</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+    </dependencies>
 
 </project>

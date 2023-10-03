@@ -101,6 +101,30 @@
 			<version>${version.thorntail}</version>
 		</dependency>
 		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.enterprise</groupId>
+			<artifactId>jakarta.enterprise.cdi-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.websocket</groupId>
+			<artifactId>jakarta.websocket-api</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+		  <groupId>jakarta.websocket</groupId>
+		  <artifactId>jakarta.websocket-client-api</artifactId>
+		  <version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>io.thorntail</groupId>
 			<artifactId>jaxrs</artifactId>
 			<version>${version.thorntail}</version>

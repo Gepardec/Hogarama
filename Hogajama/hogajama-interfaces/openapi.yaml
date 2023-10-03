@@ -1,0 +1,260 @@
+openapi: 3.0.0
+hogajama:
+  swagger: {}
+info:
+  version: 1.0.0
+  title: Hogarama
+  description: A swagger-2.0 API-specification for Hogarama
+  termsOfService: http://helloreverb.com/terms/
+  contact:
+    name: Gepardec IT Services GmbH
+    email: office@gepardec.com
+    url: http://www.gepardec.com/
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+paths:
+  /sensor:
+    get:
+      description: Returns all sensor-names
+      operationId: getAllSensors
+      responses:
+        "200":
+          description: sensor names response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorModel"
+  /sensor/allData:
+    get:
+      description: Returns all sensors
+      operationId: getAllData({maxNumber})
+      parameters:
+        - in: query
+          name: maxNumber
+          required: false
+          description: Maximum number of sensor data entries
+          schema:
+            type: integer
+        - in: query
+          name: sensor
+          required: false
+          description: Sensorname for which data should be shown
+          schema:
+            type: string
+        - in: query
+          name: from
+          required: false
+          description: Start (date, time) from where data entries should be shown
+          schema:
+            type: string
+            format: string
+        - in: query
+          name: to
+          required: false
+          description: End (date, time) from where data entries should be shown
+          schema:
+            type: string
+            format: string
+        - in: query
+          name: onlyDataFromToday
+          required: true
+          description: True, we show only the data from today.
+          schema:
+            type: boolean
+            format: boolean
+      responses:
+        "200":
+          description: sensor data response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/sensorData"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorModel"
+  /sensor/allWateringData:
+    get:
+      description: Returns all Watering Data
+      operationId: getAllWateringData({maxNumber})
+      parameters:
+        - in: query
+          name: maxNumber
+          required: false
+          description: Maximum number of watering data entries
+          schema:
+            type: integer
+        - in: query
+          name: sensor
+          required: false
+          description: Sensorname for which data should be shown
+          schema:
+            type: string
+        - in: query
+          name: from
+          required: false
+          description: Start (date, time) from where data entries should be shown
+          schema:
+            type: string
+            format: string
+        - in: query
+          name: to
+          required: false
+          description: End (date, time) from where data entries should be shown
+          schema:
+            type: string
+            format: string
+        - in: query
+          name: onlyDataFromToday
+          required: true
+          description: True, we show only the data from today.
+          schema:
+            type: boolean
+            format: boolean
+      responses:
+        "200":
+          description: watering data response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/wateringData"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorModel"
+  /sensor/location:
+    get:
+      description: Return the location by sensorName
+      operationId: getLocationBySensorName
+      parameters:
+        - in: query
+          name: sensorName
+          required: true
+          description: Name of the sensor
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Location of the sensor
+          content:
+            text/plain:
+              schema:
+                type: string
+  /actor:
+    get:
+      description: sends data to AMQ-topic to activate pump of specific Habarama-unit
+      operationId: sendActorMessage
+      parameters:
+        - in: query
+          name: location
+          required: true
+          description: location of the sensor
+          schema:
+            type: string
+        - in: query
+          name: actorName
+          required: true
+          description: Name of the actor
+          schema:
+            type: string
+        - in: query
+          name: duration
+          required: true
+          description: duration of actor activation
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: message sent successfully
+          type: array
+          items:
+            type: string
+        default:
+          description: unexpected error
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/errorModel"
+servers:
+  - url: http://localhost/hogajama-rs/rest
+components:
+  schemas:
+    sensorData:
+      type: object
+      required:
+        - id
+        - time
+        - sensorName
+        - type
+        - value
+        - location
+        - version
+      properties:
+        id:
+          type: string
+        time:
+          type: string
+          format: date
+        sensorName:
+          type: string
+        type:
+          type: string
+        value:
+          type: number
+          format: double
+        location:
+          type: string
+        version:
+          type: string
+    wateringData:
+      type: object
+      required:
+        - id
+        - time
+        - name
+        - location
+        - duration
+        - value
+      properties:
+        id:
+          type: string
+        time:
+          type: string
+          format: date
+        name:
+          type: string
+        location:
+          type: string
+        duration:
+          type: integer
+        value:
+          type: number
+          format: double
+    errorModel:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

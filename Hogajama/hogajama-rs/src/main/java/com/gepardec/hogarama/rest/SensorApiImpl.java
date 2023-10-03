@@ -7,11 +7,11 @@ import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.rest.mapper.SensorMapper;
 import com.gepardec.hogarama.rest.util.DateUtil;
 
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

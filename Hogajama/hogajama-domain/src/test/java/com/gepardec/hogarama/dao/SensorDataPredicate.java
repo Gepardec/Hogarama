@@ -3,7 +3,7 @@ package com.gepardec.hogarama.dao;
 import java.util.Date;
 import java.util.function.Predicate;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import com.gepardec.hogarama.domain.sensor.SensorData;
 

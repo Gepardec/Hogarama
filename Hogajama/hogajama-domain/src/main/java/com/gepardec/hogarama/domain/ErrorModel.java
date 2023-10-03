@@ -2,14 +2,14 @@ package com.gepardec.hogarama.domain;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaResteasyEapServerCodegen", date = "2017-05-26T10:41:51.293+02:00")
+@jakarta.annotation.Generated(value = "io.swagger.codegen.languages.JavaResteasyEapServerCodegen", date = "2017-05-26T10:41:51.293+02:00")
 public class ErrorModel   {
   
   private Integer code = null;

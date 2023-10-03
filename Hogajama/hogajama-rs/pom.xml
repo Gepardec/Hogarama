@@ -27,13 +27,47 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
+			<artifactId>mapstruct</artifactId>
+			<!-- use mapstruct-jdk8 for Java 8 or higher -->
 		</dependency>
 		<!-- Exposition servlet -->
 		<dependency>
 			<groupId>io.prometheus</groupId>
 			<artifactId>simpleclient_servlet</artifactId>
 			<version>${prometheus.io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.enterprise</groupId>
+			<artifactId>jakarta.enterprise.cdi-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.inject</groupId>
+			<artifactId>jakarta.inject-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.interceptor</groupId>
+			<artifactId>jakarta.interceptor-api</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>5.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.transaction</groupId>
+			<artifactId>jakarta.transaction-api</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>

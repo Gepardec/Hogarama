@@ -2,7 +2,7 @@ package com.gepardec.hogarama.service.dao;
 
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;

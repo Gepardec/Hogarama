@@ -3,7 +3,7 @@ package com.gepardec.hogarama.domain.watering;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

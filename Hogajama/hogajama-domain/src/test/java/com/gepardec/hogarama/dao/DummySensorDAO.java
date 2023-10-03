@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 
 import org.apache.commons.collections4.CollectionUtils;
 

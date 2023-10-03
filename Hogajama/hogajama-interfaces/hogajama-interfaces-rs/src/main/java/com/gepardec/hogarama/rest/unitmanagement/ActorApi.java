@@ -2,9 +2,9 @@ package com.gepardec.hogarama.rest.unitmanagement;
 
 import com.gepardec.hogarama.rest.unitmanagement.dto.ActorDto;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/unitmanagement/actor")
 @Consumes(MediaType.APPLICATION_JSON)

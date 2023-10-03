@@ -17,7 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Collections;
 import java.util.Optional;
 
-import javax.enterprise.event.Event;
+import jakarta.enterprise.event.Event;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SensorServiceTest {

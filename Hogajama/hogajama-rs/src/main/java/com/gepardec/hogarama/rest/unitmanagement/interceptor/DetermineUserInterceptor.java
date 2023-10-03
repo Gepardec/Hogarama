@@ -9,11 +9,11 @@ import com.gepardec.hogarama.security.UserProfileResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
-import javax.interceptor.InvocationContext;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.inject.Inject;
+import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.Interceptor;
+import jakarta.interceptor.InvocationContext;
+import jakarta.ws.rs.core.SecurityContext;
 import java.util.Arrays;
 import java.util.Optional;
 

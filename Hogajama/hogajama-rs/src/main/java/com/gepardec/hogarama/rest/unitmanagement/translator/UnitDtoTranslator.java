@@ -4,7 +4,7 @@ import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.rest.unitmanagement.dto.UnitDto;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class UnitDtoTranslator implements Translator<UnitDto, Unit> {
 

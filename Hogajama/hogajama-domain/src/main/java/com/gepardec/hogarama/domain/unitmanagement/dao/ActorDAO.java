@@ -5,7 +5,7 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.QActor;
 import com.querydsl.jpa.impl.JPAQuery;
 
-import javax.enterprise.context.Dependent;
+import jakarta.enterprise.context.Dependent;
 import java.util.List;
 import java.util.Optional;
 

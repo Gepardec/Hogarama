@@ -6,7 +6,7 @@ import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class JwtUserProfileResolver implements UserProfileResolver {
 

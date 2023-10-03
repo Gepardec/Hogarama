@@ -27,6 +27,44 @@
 			<artifactId>swagger-annotations</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.ejb</groupId>
+			<artifactId>jakarta.ejb-api</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.enterprise</groupId>
+			<artifactId>jakarta.enterprise.cdi-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.inject</groupId>
+			<artifactId>jakarta.inject-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.transaction</groupId>
+			<artifactId>jakarta.transaction-api</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>${org.apache.commons.version}</version>
@@ -45,6 +83,7 @@
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 			<version>${com.querydsl.version}</version>
+			<classifier>jakarta</classifier>
 		</dependency>
  		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -106,6 +145,7 @@
 						<groupId>com.querydsl</groupId>
 						<artifactId>querydsl-apt</artifactId>
 						<version>${com.querydsl.version}</version>
+						<classifier>jakarta</classifier>
 					</dependency>
 				</dependencies>
 			</plugin>
