@@ -18,7 +18,7 @@ import java.io.IOException;
 @MessageDriven(
         activationConfig = {
                 @ActivationConfigProperty(propertyName = "destination", propertyValue = "habarama::watering"),
-                @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+                @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "jakarta.jms.Queue"),
                 @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
         }
 )
