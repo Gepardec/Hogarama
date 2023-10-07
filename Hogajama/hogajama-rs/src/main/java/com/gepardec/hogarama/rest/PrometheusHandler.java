@@ -29,7 +29,7 @@ import jakarta.annotation.PostConstruct;
 
 @Path("/metrics")
 //@GZIP
-@ApplicationScoped
+//@ApplicationScoped
 public class PrometheusHandler {
     private static final Logger logger = LoggerFactory.getLogger(PrometheusHandler.class);
 

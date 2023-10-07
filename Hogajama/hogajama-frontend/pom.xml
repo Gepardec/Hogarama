@@ -31,6 +31,7 @@
 							<targetPath>WEB-INF</targetPath>
 						</resource>
 					</webResources>
+                    <webXml>${basedir}/src/main/webapp/WEB-INF/default-web.xml</webXml>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -63,5 +64,25 @@
 				</plugins>
 			</build>
 		</profile>
+		  <profile>
+            <id>security-dummy</id>
+            <activation>
+                <property>
+                    <name>env.HOGAJAMA_MODULE_SECURITY</name>
+                    <value>DUMMY</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <webXml>${basedir}/src/main/webapp/WEB-INF/dummy-web.xml</webXml>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 	</profiles>
 </project>

@@ -33,7 +33,7 @@
 		<!-- Exposition servlet -->
 		<dependency>
 			<groupId>io.prometheus</groupId>
-			<artifactId>simpleclient_servlet</artifactId>
+			<artifactId>simpleclient_servlet_jakarta</artifactId>
 			<version>${prometheus.io.version}</version>
 		</dependency>
 		<dependency>
@@ -214,7 +214,7 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<configuration>
-							<webXml>src/main/resources/config/dummy_security/web.xml</webXml>
+							<webXml>${basedir}/src/main/webapp/WEB-INF/dummy-web.xml</webXml>
 						</configuration>
 					</plugin>
 				</plugins>
