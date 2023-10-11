@@ -109,20 +109,20 @@ data:
             - manage-account
     clients:
       - id: hogarama
-        clientId: xxxxxxxxx
+        clientId: xxxxxxxx
         name: ''
         description: ''
-        rootUrl: https://app-hogarama.apps.exoscale-ch-gva-2-0.appuio.cloud/
+        rootUrl: https://app-hogarama.apps.c-gepa-play.gepa.vshnmanaged.net/
         adminUrl: ''
-        baseUrl: https://app-hogarama.apps.exoscale-ch-gva-2-0.appuio.cloud/
+        baseUrl: https://app-hogarama.apps.c-gepa-play.gepa.vshnmanaged.net/
         surrogateAuthRequired: false
         enabled: true
         alwaysDisplayInConsole: false
         clientAuthenticatorType: client-secret
-        secret: xxxxxxxxxxx
+        secret: xxxxxxxx
         redirectUris:
-        - http://app-hogarama.apps.exoscale-ch-gva-2-0.appuio.cloud/*
-        - https://app-hogarama.apps.exoscale-ch-gva-2-0.appuio.cloud/*
+        - http://app-hogarama.apps.c-gepa-play.gepa.vshnmanaged.net/*
+        - https://app-hogarama.apps.c-gepa-play.gepa.vshnmanaged.net/*
         webOrigins:
         - "*"
         notBefore: 0
@@ -138,7 +138,7 @@ data:
         attributes:
           oidc.ciba.grant.enabled: 'false'
           backchannel.logout.session.required: 'true'
-          post.logout.redirect.uris: https://app-hogarama.apps.exoscale-ch-gva-2-0.appuio.cloud/*
+          post.logout.redirect.uris: https://app-hogarama.apps.c-gepa-play.gepa.vshnmanaged.net/*
           display.on.consent.screen: 'false'
           oauth2.device.authorization.grant.enabled: 'false'
           backchannel.logout.revoke.offline.tokens: 'false'
@@ -154,10 +154,10 @@ data:
           configure: true
           manage: true
       - id: hogarama-frontend
-        clientId: hogarama-frontend
+        clientId: xxxxxxxx
         name: hogarama-frontend
         description: ''
-        rootUrl: https://app-hogarama.apps.exoscale-ch-gva-2-0.appuio.cloud/
+        rootUrl: https://app-hogarama.apps.c-gepa-play.gepa.vshnmanaged.net/
         adminUrl: ''
         baseUrl: ''
         surrogateAuthRequired: false
@@ -165,7 +165,7 @@ data:
         alwaysDisplayInConsole: false
         clientAuthenticatorType: public
         redirectUris:
-        - https://app-hogarama.apps.exoscale-ch-gva-2-0.appuio.cloud/*
+        - https://app-hogarama.apps.c-gepa-play.gepa.vshnmanaged.net/*
         webOrigins:
         - "*"
         notBefore: 0
@@ -254,7 +254,7 @@ data:
         config:
           alias: google
           clientSecret: '**********'
-          clientId: 441948363499-83ukue98nntbv2hjdfo2ai3eo9nbq455.apps.googleusercontent.com
+          clientId: xxxxxxxx
     resetCredentialsFlow: reset credentials
     clientAuthenticationFlow: clients
     dockerAuthenticationFlow: docker auth

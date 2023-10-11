@@ -10,8 +10,7 @@ customLivenessProbe:
       - '--head'
       - '--fail'
       - '--silent'
-      - '--insecure'
-      - 'https://127.0.0.1:8443/health/live'
+      - 'http://127.0.0.1:8080/health/live'
   timeoutSeconds: 10
   periodSeconds: 20
   successThreshold: 1
@@ -23,15 +22,14 @@ customReadinessProbe:
       - '--head'
       - '--fail'
       - '--silent'
-      - '--insecure'
-      - 'https://127.0.0.1:8443/health/ready'
+      - 'http://127.0.0.1:8080/health/ready'
   timeoutSeconds: 10
   periodSeconds: 20
   successThreshold: 1
   failureThreshold: 5
 extraEnvVars:
   - name: KC_HOSTNAME
-    value: hogarama-sso.apps.exoscale-ch-gva-2-0.appuio.cloud
+    value: hogarama-sso.apps.c-gepa-play.gepa.vshnmanaged.net
   - name: KC_DB
     value: postgres
   - name: KC_DB_URL_HOST
@@ -55,47 +53,35 @@ extraEnvVars:
         name: hogarama-sso-keycloak
         key: admin-password
         optional: false
-  - name: KC_HTTPS_CERTIFICATE_FILE
-    value: /opt/bitnami/keycloak/certs/tls.crt
-  - name: KC_HTTPS_CERTIFICATE_KEY_FILE
-    value: /opt/bitnami/keycloak/certs/tls.key
   - name: KC_PROXY
-    value: passthrough
+    value: edge
 podSecurityContext:
   enabled: false
 containerSecurityContext:
-  enabled: false  
+  enabled: false
 
 service:
   type: ClusterIP
   http:
-    enabled: false
+    enabled: true
   ports:
-    https: 8443
+    http: 8080
 
 ingress:
   enabled: true
-  hostname: hogarama-sso.apps.exoscale-ch-gva-2-0.appuio.cloud
+  hostname: hogarama-sso.apps.c-gepa-play.gepa.vshnmanaged.net
   tls: true
-  servicePort: https
+  servicePort: http
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-    route.openshift.io/termination: passthrough
     cert-manager.io/cluster-issuer: letsencrypt-production
   path: ""
-
-tls:
-  enabled: true
-  existingSecret: hogarama-sso.apps.exoscale-ch-gva-2-0.appuio.cloud-tls
 
 resources:
   limits:
     memory: 600Mi
-  requests: 
+  requests:
     memory: 256Mi
     cpu: 50m
-
-production: true
 
 postgresql:
   primary:
@@ -118,18 +104,16 @@ keycloakConfigCli:
   podSecurityContext:
     enabled: false
   containerSecurityContext:
-    enabled: false  
+    enabled: false
   resources:
     limits:
       memory: 600Mi
-    requests: 
+    requests:
       memory: 256Mi
       cpu: 50m
   extraEnvVars:
     - name: KEYCLOAK_URL
-      value: https://hogarama-sso-keycloak:8443
-    - name: KEYCLOAK_SSLVERIFY
-      value: "false"
+      value: http://hogarama-sso-keycloak:8080
     - name: IMPORT_FILES
       value: "/config/*"
     - name: KEYCLOAK_CONNECTTIMEOUT
@@ -145,8 +129,9 @@ keycloakConfigCli:
     - name: IMPORT_VALIDATE
       value: "true"
     - name: IMPORT_CACHE_ENABLED
-      value: "false"      
+      value: "false"
   command:
     - java
     - '-jar'
     - /app/keycloak-config-cli.jar
+
