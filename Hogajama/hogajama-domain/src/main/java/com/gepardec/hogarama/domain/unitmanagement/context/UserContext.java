@@ -19,7 +19,7 @@ public class UserContext {
         return user;
     }
 
-    public void getUser(User user) {
+    public void setUser(User user) {
         LOG.debug("Set user with id {} and key {}.", user.getId(), user.getKey());
         this.user = user;
     }

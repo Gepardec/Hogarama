@@ -13,9 +13,6 @@ import jakarta.inject.Inject;
 import jakarta.interceptor.AroundInvoke;
 import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
-import jakarta.ws.rs.core.SecurityContext;
-import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * Intercepts all requests annotated with {@link DetermineUser} and extracts logged in user
@@ -41,22 +38,21 @@ public class DetermineUserInterceptor {
         UserProfile userProfile = userProfileResolver.resolveUserProfile();
         userContext.setUserProfile(userProfile);
 
-        Optional<User> optionalUser = service.getRegisteredUser(userProfile.getEmail());
-        User user = optionalUser.orElseGet(() -> registerUserAndHandleDuplicates(userProfile.getEmail()));
-        userContext.getUser(user);
+        User user = service.getRegisteredUser(userProfile.getEmail())
+                .orElseGet(() -> synchronizedRegisterUser(userProfile.getEmail()));
+        userContext.setUser(user);
 
         return ctx.proceed();
     }
 
-    private User registerUserAndHandleDuplicates(String userKey) {
-        try {
-            return service.register(userKey);
-        } catch (Exception e) {
-            if (e.getCause().getMessage().contains("ConstraintViolationException")) {
-                LOG.warn("Tried to register user twice.");
-                return service.getRegisteredUser(userKey).orElse(null);
+    private User synchronizedRegisterUser(String userKey) {
+        synchronized (UserService.class) {
+            LOG.debug("In synchronizedRegisterUser");
+            try {
+                return service.getOrRegister(userKey);
+            } finally {
+                LOG.debug("Out of synchronizedRegisterUser");
             }
-            throw e;
         }
     }
 }
