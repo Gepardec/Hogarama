@@ -36,14 +36,14 @@ public class OpenaiService {
             long ts = System.currentTimeMillis();
             ChatCompletions chatCompletions = client.getChatCompletions(MODEL_ID, chatCompletionsOptions);
             ts = System.currentTimeMillis() - ts;
-            LOGGER.debug(String.format("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt()));
+            LOGGER.debug(String.format("Model ID=%s is created at %s.", chatCompletions.getId(), chatCompletions.getCreatedAt()));
             if (chatCompletions.getChoices().isEmpty()) {
                 dialog.addMessage(Message.createAssistantMessage("Something went wrong. OpenAI has returned empty result"));
                 return dialog;
             }
             ChatChoice choice = chatCompletions.getChoices().get(0);
             ChatMessage message = choice.getMessage();
-            LOGGER.debug(String.format("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole()));
+            LOGGER.debug(String.format("Index: %d, Chat Role: %s.", choice.getIndex(), message.getRole()));
             LOGGER.debug("Message:" + message.getContent());
 
             CompletionsUsage usage = chatCompletions.getUsage();
