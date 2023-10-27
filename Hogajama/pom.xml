@@ -98,6 +98,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.gepardec.hogajama</groupId>
+				<artifactId>hogajama-ai</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gepardec.hogajama</groupId>
 				<artifactId>hogajama-services</artifactId>
 				<version>${project.version}</version>
 			</dependency>

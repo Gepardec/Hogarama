@@ -4,15 +4,17 @@ import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.*;
 import com.azure.core.credential.KeyCredential;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Ignore
 public class TestOpenAiApiClient {
 
-    public static final String OPEN_AI_API_KEY = Optional.ofNullable(System.getenv("OPEN_AI_API_KEY")).orElse(System.getProperty("openai.api.key"));
+    public static final String OPEN_AI_API_KEY = Optional.ofNullable(System.getenv("OPENAI_API_KEY")).orElse(System.getProperty("openai.api.key"));
     String modelId = "gpt-3.5-turbo";
 
     OpenAIClient client = new OpenAIClientBuilder()

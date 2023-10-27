@@ -26,6 +26,10 @@
 			<artifactId>hogajama-services</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.gepardec.hogajama</groupId>
+			<artifactId>hogajama-ai</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<!-- use mapstruct-jdk8 for Java 8 or higher -->
