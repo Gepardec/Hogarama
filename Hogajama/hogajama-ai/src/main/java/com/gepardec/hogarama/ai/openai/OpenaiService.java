@@ -29,9 +29,10 @@ public class OpenaiService {
                 .buildClient();
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(dialog.toOpenaiMessages());
+        chatCompletionsOptions.setTemperature(0.1);
 
         try {
-            LOGGER.debug("Sending request to OpenAI");
+            LOGGER.debug("Sending request to OpenAI : " + dialog.toString());
             long ts = System.currentTimeMillis();
             ChatCompletions chatCompletions = client.getChatCompletions(MODEL_ID, chatCompletionsOptions);
             ts = System.currentTimeMillis() - ts;
@@ -58,7 +59,6 @@ public class OpenaiService {
             dialog.addMessage(Message.createAssistantMessage("Something went wrong. Ask your admin, what was the problem. This is the reference id: " + id));
             return dialog;
         }
-
     }
 
 }

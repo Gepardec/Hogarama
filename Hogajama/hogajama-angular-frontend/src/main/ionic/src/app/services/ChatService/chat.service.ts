@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {HogaramaBackendService} from "../HogaramaBackendService/hogarama-backend.service";
 
 export class MessageAction {
     constructor(
@@ -74,33 +75,49 @@ export class Dialog {
     }
 }
 
+@Injectable({
+    providedIn: 'root'
+})
 export class AIRestService {
-    constructor() {
+    constructor(private backend: HogaramaBackendService) {
     }
 
     async chat(dialog: Dialog) {
-        await delay(1000);
-        if (dialog.getLastMessage().content === 'act') {
-            // simulate answer with action
-            dialog.addMessage(Message.createAssistantMessage(JSON.stringify({
-                type: 'confirmation',
-                description: 'delete the rule',
-                params: {
-                    confirmReply: 'The action \'delete the rule\' has been performed.',
-                    abortReply: 'You aborted the action \'delete the rule\'',
-                }
+        try {
+            const message = await this.backend.chat.chat(dialog.messages.map(m => ({
+                role: m.role.toUpperCase(),
+                content: m.content || ''  // Assuming content should default to an empty string if undefined
             })));
-
-            // if the last message is json string, then it is an action
-            if (dialog.getLastMessage().content && dialog.getLastMessage().content.startsWith('{')) {
-                const action = JSON.parse(dialog.getLastMessage().content);
-                dialog.getLastMessage().action = new MessageAction('You are about to perform the action: ' + action.description,
-                    action.params.confirmReply,
-                    action.params.abortReply);
+            if(message.role.toLowerCase() === 'assistant') {
+                dialog.addMessage(Message.createAssistantMessage(message.content));
+            } else {
+                dialog.addMessage(Message.createAssistantMessage('Ups, something went wrong. Returned message has type ' + message.role + ' and content ' + message.content + '.'));
             }
-        } else {
-            dialog.addMessage(Message.createAssistantMessage('Hello! You wrote: ' + dialog.getLastMessage().content + '.'));
+        } catch (e) {
+            dialog.addMessage(Message.createAssistantMessage('Ups, something went wrong. Exception occured ' + e));
         }
+
+        // if (dialog.getLastMessage().content === 'act') {
+        //     // simulate answer with action
+        //     dialog.addMessage(Message.createAssistantMessage(JSON.stringify({
+        //         type: 'confirmation',
+        //         description: 'delete the rule',
+        //         params: {
+        //             confirmReply: 'The action \'delete the rule\' has been performed.',
+        //             abortReply: 'You aborted the action \'delete the rule\'',
+        //         }
+        //     })));
+        //
+        //     // if the last message is json string, then it is an action
+        //     if (dialog.getLastMessage().content && dialog.getLastMessage().content.startsWith('{')) {
+        //         const action = JSON.parse(dialog.getLastMessage().content);
+        //         dialog.getLastMessage().action = new MessageAction('You are about to perform the action: ' + action.description,
+        //             action.params.confirmReply,
+        //             action.params.abortReply);
+        //     }
+        // } else {
+        //     dialog.addMessage(Message.createAssistantMessage('Hello! You wrote: ' + dialog.getLastMessage().content + '.'));
+        // }
     }
 }
 
@@ -110,14 +127,13 @@ export class AIRestService {
 export class ChatService {
 
     dialog: Dialog = new Dialog([]);
-    aiChatService: AIRestService = new AIRestService();
 
     async say(message: string) {
         this.dialog.messages.push(Message.createUserMessage(message));
         await this.aiChatService.chat(this.dialog);
     }
 
-    constructor() {
+    constructor(private aiChatService: AIRestService) {
     }
 }
 

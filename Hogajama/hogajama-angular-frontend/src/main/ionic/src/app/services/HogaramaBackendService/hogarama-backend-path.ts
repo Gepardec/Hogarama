@@ -35,6 +35,11 @@ export class HogaramaBackendPath<responseType> {
       firstValueFrom(this.http.put<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`, data))
     );
   }
+  public chat(data: responseType[]): Promise<responseType> {
+    return this.mapPromiseResult(
+        firstValueFrom(this.http.post<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}`, data))
+    );
+  }
   public patch(id: string|number, data: responseType): Promise<responseType> {
     return this.mapPromiseResult(
       firstValueFrom(this.http.patch<WrappedDto<responseType>>(`${HogaramaBackendPath.baseUrl}/${this.pathUrl}/${id}`, data))
