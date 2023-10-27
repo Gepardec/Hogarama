@@ -1,0 +1,137 @@
+image:
+  registry: ghcr.io
+  repository: gepaplexx-demos/gepardec-sso
+  tag: 20.0.3-gepardec-1.0.0
+
+customLivenessProbe:
+  exec:
+    command:
+      - curl
+      - '--head'
+      - '--fail'
+      - '--silent'
+      - 'http://127.0.0.1:8080/health/live'
+  timeoutSeconds: 10
+  periodSeconds: 20
+  successThreshold: 1
+  failureThreshold: 5
+customReadinessProbe:
+  exec:
+    command:
+      - curl
+      - '--head'
+      - '--fail'
+      - '--silent'
+      - 'http://127.0.0.1:8080/health/ready'
+  timeoutSeconds: 10
+  periodSeconds: 20
+  successThreshold: 1
+  failureThreshold: 5
+extraEnvVars:
+  - name: KC_HOSTNAME
+    value: hogarama-sso.apps.c-gepa-play.gepa.vshnmanaged.net
+  - name: KC_DB
+    value: postgres
+  - name: KC_DB_URL_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: hogarama-sso-keycloak-env-vars
+        key: KEYCLOAK_DATABASE_HOST
+  - name: KC_DB_USERNAME
+    valueFrom:
+      configMapKeyRef:
+        name: hogarama-sso-keycloak-env-vars
+        key: KEYCLOAK_DATABASE_USER
+  - name: KC_DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: hogarama-sso-postgresql
+        key: password
+  - name: KEYCLOAK_ADMIN_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: hogarama-sso-keycloak
+        key: admin-password
+        optional: false
+  - name: KC_PROXY
+    value: edge
+podSecurityContext:
+  enabled: false
+containerSecurityContext:
+  enabled: false
+
+service:
+  type: ClusterIP
+  http:
+    enabled: true
+  ports:
+    http: 8080
+
+ingress:
+  enabled: true
+  hostname: hogarama-sso.apps.c-gepa-play.gepa.vshnmanaged.net
+  tls: true
+  servicePort: http
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  path: ""
+
+resources:
+  limits:
+    memory: 600Mi
+  requests:
+    memory: 256Mi
+    cpu: 50m
+
+postgresql:
+  primary:
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
+  backup:
+    enabled: false
+  auth:
+    database: keycloak
+
+keycloakConfigCli:
+  enabled: true
+  existingConfigmap: keycloak-config
+  image:
+    registry: docker.io
+    repository: adorsys/keycloak-config-cli
+    tag: 5.5.0-20.0.1
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  resources:
+    limits:
+      memory: 600Mi
+    requests:
+      memory: 256Mi
+      cpu: 50m
+  extraEnvVars:
+    - name: KEYCLOAK_URL
+      value: http://hogarama-sso-keycloak:8080
+    - name: IMPORT_FILES
+      value: "/config/*"
+    - name: KEYCLOAK_CONNECTTIMEOUT
+      value: "10s"
+    - name: KEYCLOAK_READTIMEOUT
+      value: "10s"
+    - name: KEYCLOAK_AVAILABILITYCHECK_ENABLED
+      value: "true"
+    - name: KEYCLOAK_AVAILABILITYCHECK_TIMEOUT
+      value: "120s"
+    - name: IMPORT_VARSUBSTITUTION_ENABLED
+      value: "true"
+    - name: IMPORT_VALIDATE
+      value: "true"
+    - name: IMPORT_CACHE_ENABLED
+      value: "false"
+  command:
+    - java
+    - '-jar'
+    - /app/keycloak-config-cli.jar
+

@@ -1,4 +1,3 @@
-**/src/**
 **/README.md
 **/build.gradle
 **/pom.xml

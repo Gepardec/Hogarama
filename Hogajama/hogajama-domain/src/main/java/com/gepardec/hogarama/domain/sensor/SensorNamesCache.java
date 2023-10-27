@@ -1,10 +1,11 @@
 package com.gepardec.hogarama.domain.sensor;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.inject.Inject;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,8 +16,7 @@ public class SensorNamesCache {
 
 	private static final int TEN_SECONDS = 10000;
 
-    @Inject
-	private Logger log;
+    private static final Logger log = LoggerFactory.getLogger(SensorNamesCache.class);
 	
 	@Inject
 	private SensorDataDAO habaramaDao;

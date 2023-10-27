@@ -3,7 +3,7 @@ package com.gepardec.hogarama.domain.unitmanagement.dao;
 import java.util.List;
 import java.util.Optional;
 
-import javax.enterprise.context.Dependent;
+import jakarta.enterprise.context.Dependent;
 
 import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.QSensor;

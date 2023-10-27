@@ -30,12 +30,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${ch.qos.logback.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.fusesource.mqtt-client</groupId>
 			<artifactId>mqtt-client</artifactId>
 			<version>${org.fusesource.mqtt-client.version}</version>

@@ -24,29 +24,29 @@ items:
         labels:
           deployment: hogajama
       spec:
-        initContainers:
-        - name: upd-kafka-jks
-          imagePullPolicy: IfNotPresent
-          image: 'openjdk:11.0.16'
-          command:
-            - keytool
-          args:
-            - '-import'
-            - '-trustcacerts'
-            - '-alias'
-            - root
-            - '-file'
-            - /certs/ca.crt
-            - '-keystore'
-            - /kafka/kafka-truststore.jks
-            - '-noprompt'
-            - '-storepass'
-            - password
-          volumeMounts:
-            - name: kafka-certs
-              mountPath: /certs
-            - name: certificates
-              mountPath: /kafka
+#        initContainers:
+#        - name: upd-kafka-jks
+#          imagePullPolicy: IfNotPresent
+#          image: 'openjdk:11.0.16'
+#          command:
+#            - keytool
+#          args:
+#            - '-import'
+#            - '-trustcacerts'
+#            - '-alias'
+#            - root
+#            - '-file'
+#            - /certs/ca.crt
+#            - '-keystore'
+#            - /kafka/kafka-truststore.jks
+#            - '-noprompt'
+#            - '-storepass'
+#            - password
+#          volumeMounts:
+#            - name: kafka-certs
+#              mountPath: /certs
+#            - name: certificates
+#              mountPath: /kafka
         containers:
         - image: ' '
           name: hogajama-run
@@ -55,12 +55,24 @@ items:
             protocol: TCP
           - containerPort: 9990
             protocol: TCP
+          #Probes to check for liveness, readiness and if startup is done
           livenessProbe:
             httpGet:
               path: /health
               port: 9990
-            initialDelaySeconds: 100
             periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 9990
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 9990
+            failureThreshold: 20
+            periodSeconds: 20
+
           volumeMounts:
             - name: certificates
               mountPath: /opt/jboss/wildfly/standalone/configuration/certs
@@ -81,15 +93,9 @@ items:
                 key: AMQ_PASSWORD
                 name: amq-credentials
           - name: KEYCLOAK_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                name: keycloak-client-secret-hogarama-client
-                key: CLIENT_ID
+            value: hogarama
           - name: KEYCLOAK_CREDENTIALS_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: keycloak-client-secret-hogarama-client
-                key: CLIENT_SECRET
+            value: 12360720-0484-40da-9459-34ce53121677
           envFrom:
             - configMapRef:
                 name: hogajama-config
@@ -98,7 +104,7 @@ items:
           resources:
             requests:
               memory: 0.5Gi
-              cpu: "200m"
+              cpu: "20m"
             limits:
               memory: 1Gi
               cpu: "1"
@@ -106,6 +112,7 @@ items:
         - name: certificates
           emptyDir: { }
         - name: kafka-certs
-          secret:
-            secretName: gepardec-kafka-cluster-cluster-ca-cert
-            defaultMode: 420
+          emptyDir: { }
+#          secret:
+#            secretName: gepardec-kafka-cluster-cluster-ca-cert
+#            defaultMode: 420

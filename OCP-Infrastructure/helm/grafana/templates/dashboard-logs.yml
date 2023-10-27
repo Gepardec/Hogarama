@@ -1,13 +1,17 @@
-apiVersion: integreatly.org/v1alpha1
+apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   labels:
     app: hogarama
-    dashboard: application
   name: dashboard-logs
   namespace: {{ .Release.Namespace }}
   finalizers: []
 spec:
+  folder: Hogarama
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      monitoring.gepardec.com/system: "true"
   json: |
     {
       "annotations": {
@@ -182,6 +186,5 @@ spec:
       "timezone": "",
       "title": "Hogarama Logs",
       "uid": "hogarama-logs-{{ .Release.Namespace }}",
-      "version": 39,
       "weekStart": ""
     }

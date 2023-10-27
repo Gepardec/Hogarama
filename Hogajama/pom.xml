@@ -34,10 +34,13 @@
 
 		<!-- DEPENDENCY VERSIONS-->
 
-		<wildfly.version>26.0.0.Final</wildfly.version>
+		<wildfly.version>28.0.1.Final</wildfly.version>
+	    <version.wildfly.bom>28.0.1.Final</version.wildfly.bom>
+		
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+				
 		<org.json.version>20200518</org.json.version>
 		<commons-cli.version>1.4</commons-cli.version>
 		<org.fusesource.mqtt-client.version>1.12</org.fusesource.mqtt-client.version>
@@ -45,7 +48,7 @@
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<org.apache.commons.version>4.4</org.apache.commons.version>
 		<org.apache.commons.io.version>2.11.0</org.apache.commons.io.version>
-		<prometheus.io.version>0.6.0</prometheus.io.version>
+		<prometheus.io.version>0.16.0</prometheus.io.version>
 		<org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
 		<junit.version>4.13.1</junit.version>
         <org.jboss.resteasy.version>4.5.9.Final</org.jboss.resteasy.version>
@@ -109,6 +112,13 @@
 			</dependency>
 
 			<!-- Externe -->
+            <dependency>
+                <groupId>org.wildfly.bom</groupId>
+                <artifactId>wildfly-ee-with-tools</artifactId>
+                <version>${version.wildfly.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -232,45 +242,11 @@
 					<groupId>io.swagger</groupId>
 					<artifactId>swagger-codegen-maven-plugin</artifactId>
 					<version>${swagger-codegen-maven-plugin.version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-							<configuration>
-								<inputSpec>${project.parent.basedir}/src/main/swagger/hogajama.swagger.yaml</inputSpec>
-                                <language>java</language>
-								<generateSupportingFiles>false</generateSupportingFiles>
-								<ignoreFileOverride>${project.basedir}/ignore.txt</ignoreFileOverride>
-								<configOptions>
-									<sourceFolder>/</sourceFolder>
-									<packageName>com.gepardec.hogarama.rest</packageName>
-									<groupId>com.gepardec</groupId>
-									<apiPackage>com.gepardec.hogarama.rest</apiPackage>
-									<modelPackage>com.gepardec.hogarama.rest</modelPackage>
-								</configOptions>
-							</configuration>
-						</execution>
-					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
 					<version>${build-helper-maven-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>add-source</id>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>add-source</goal>
-							</goals>
-							<configuration>
-								<sources>
-									<source>${project.build.directory}/generated-sources/swagger</source>
-								</sources>
-							</configuration>
-						</execution>
-					</executions>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->

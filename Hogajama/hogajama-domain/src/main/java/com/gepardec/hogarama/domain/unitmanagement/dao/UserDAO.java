@@ -6,7 +6,7 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.QUser;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.jpa.impl.JPAQuery;
 
-import javax.enterprise.context.Dependent;
+import jakarta.enterprise.context.Dependent;
 import java.util.Optional;
 
 @Dependent

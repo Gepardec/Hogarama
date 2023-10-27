@@ -23,6 +23,10 @@ const routes: Routes = [
       .then(m => m.TestingPlaygroundPageModule)
   },
   {
+    path: 'chat',
+    loadChildren: () => import('./modules/chat/chat.module').then(m => m.ChatModule)
+  },
+  {
     path: 'add-plant',
     loadChildren: () => import('./modules/add-plant/add-plant.module')
       .then(m => m.AddPlantPageModule)

@@ -3,7 +3,7 @@ package com.gepardec.hogarama.service;
 import java.util.Date;
 import java.util.Optional;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.json.JSONObject;
 import org.mongodb.morphia.Datastore;

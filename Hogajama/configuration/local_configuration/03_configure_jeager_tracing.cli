@@ -1,5 +1,0 @@
-# Disable Tracing, since it causes WARNings
-/subsystem=microprofile-opentracing-smallrye/jaeger-tracer=jaeger:write-attribute( \
-  name=sampler-param, \
-  value=0 \
-)

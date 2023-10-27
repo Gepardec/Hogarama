@@ -3,7 +3,7 @@ package com.gepardec.hogarama.domain.unitmanagement.entity;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.google.common.base.Preconditions;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

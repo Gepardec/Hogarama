@@ -27,6 +27,11 @@ export class AppComponent {
       title: 'Testing',
       url: '/playground',
       icon: 'bug'
+    },
+    {
+      title: 'Chat',
+      url: '/chat',
+      icon: 'chatbox-ellipses-outline'
     }
   ];
 

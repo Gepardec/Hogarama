@@ -5,9 +5,10 @@ import com.gepardec.hogarama.security.UserProfileResolver;
 import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import jakarta.enterprise.inject.Default;
+import jakarta.inject.Inject;
 
-import javax.inject.Inject;
-
+@Default
 public class JwtUserProfileResolver implements UserProfileResolver {
 
     @Inject

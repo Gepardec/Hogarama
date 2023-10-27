@@ -1,0 +1,31 @@
+.invisible {
+  display: none;
+}
+.disabled {
+  display: none;
+}
+.hidden {
+  display: none !important;
+}
+.assistant .mat-card{
+  background-color: #eee;
+}
+.mat-card {
+  padding-top: 12px; padding-left: 35px;
+}
+.myIcon {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+}
+
+.assistant .person {
+  display: none;
+}
+.user .openai {
+  display: none;
+}
+
+.confirmation-panel.mat-card {
+  background: white;
+}
