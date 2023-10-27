@@ -22,10 +22,7 @@ spec:
     dockerStrategy:
       from:
         kind: ImageStreamTag
-        name: 'wildfly:26.1.1.Final'
-      envFrom:
-        - configMapRef:
-            name: hogajama-config
+        name: 'wildfly:29.0.1.Final-jdk11'
   postCommit: {}
   source:
     type: Dockerfile
@@ -33,6 +30,7 @@ spec:
       FROM jboss/wildfly
       COPY artefacts/deployments   /opt/jboss/wildfly/setup
       USER 0
+      RUN yum -y install unzip
       RUN chmod 775 /opt/jboss/wildfly/setup/local_configuration && \
           env KAFKA_TOPIC_PREFIX="" /opt/jboss/wildfly/setup/configure_ocp_jboss.sh 
       RUN chgrp -R 0 /opt/jboss/wildfly && chmod g=u /opt/jboss/wildfly
