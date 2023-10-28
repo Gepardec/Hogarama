@@ -177,7 +177,7 @@ spec:
                 "uid": "prometheus"
               },
               "exemplar": true,
-              "expr": "hogarama_watering_events_fired{actor_name=\"Pumpe Gruenbach\"}",
+              "expr": "hogarama_watering_events_fired_total{actor_name=\"Pumpe Gruenbach\"}",
               "interval": "",
               "legendFormat": "",
               "refId": "A"
