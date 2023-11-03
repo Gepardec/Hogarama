@@ -20,6 +20,7 @@
         <module>hogajama-security-dummy</module>
 		<module>hogajama-security-jwt</module>
         <module>hogajama-messaging</module>
+		<module>hogajama-ai</module>
     </modules>
 
 	<properties>
@@ -93,6 +94,11 @@
 			<dependency>
 				<groupId>com.gepardec.hogajama</groupId>
 				<artifactId>hogajama-domain</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gepardec.hogajama</groupId>
+				<artifactId>hogajama-ai</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
