@@ -73,6 +73,11 @@ export class Dialog {
     getLastMessage() {
         return this.messages[this.messages.length - 1];
     }
+
+    clearMessages() {
+        // clear all messages without creating a new array
+        this.messages.splice(0, this.messages.length);
+    }
 }
 
 @Injectable({
