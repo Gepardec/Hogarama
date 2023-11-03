@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.rest.unitmanagement.interceptor;
+package com.gepardec.hogarama.domain.unitmanagement.context;
 
 import jakarta.interceptor.InterceptorBinding;
 import java.lang.annotation.Inherited;

@@ -1,7 +1,6 @@
-package com.gepardec.hogarama.rest.unitmanagement.interceptor;
+package com.gepardec.hogarama.domain.unitmanagement.context;
 
 
-import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 import com.gepardec.hogarama.domain.unitmanagement.service.UserService;

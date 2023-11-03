@@ -3,7 +3,7 @@ package com.gepardec.hogarama.rest.unitmanagement;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.service.SensorService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.SensorDto;
-import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineUser;
+import com.gepardec.hogarama.domain.unitmanagement.context.DetermineUser;
 import com.gepardec.hogarama.rest.unitmanagement.translator.SensorDtoTranslator;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
+
 import java.util.List;
 
 @SuppressWarnings("unused")
