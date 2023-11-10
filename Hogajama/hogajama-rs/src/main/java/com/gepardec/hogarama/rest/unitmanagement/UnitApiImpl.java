@@ -3,7 +3,7 @@ package com.gepardec.hogarama.rest.unitmanagement;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.domain.unitmanagement.service.UnitService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.UnitDto;
-import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineUser;
+import com.gepardec.hogarama.domain.unitmanagement.context.DetermineUser;
 import com.gepardec.hogarama.rest.unitmanagement.translator.UnitDtoTranslator;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;

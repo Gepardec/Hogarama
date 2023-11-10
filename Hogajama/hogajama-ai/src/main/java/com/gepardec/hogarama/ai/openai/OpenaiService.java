@@ -21,7 +21,7 @@ public class OpenaiService {
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenaiService.class);
 
     private static final String OPEN_AI_API_KEY = Optional.ofNullable(System.getenv("OPENAI_API_KEY")).orElse(System.getProperty("openai.api.key"));
-    private static final String MODEL_ID = "gpt-3.5-turbo";
+    private static final String MODEL_ID = "gpt-4-1106-preview";
 
     public Dialog chat(Dialog dialog) {
         OpenAIClient client = new OpenAIClientBuilder()

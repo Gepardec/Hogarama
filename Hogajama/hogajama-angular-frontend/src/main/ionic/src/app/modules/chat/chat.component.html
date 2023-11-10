@@ -46,6 +46,7 @@
                       (keydown)="onKeydown($event)"></textarea>
         </mat-form-field>
         <div style="float: right;">
+            <button  mat-raised-button color="warn" (click)="clearMessages()" style="margin-right: 1em;" [class.invisible]="progress">Clear chat</button>
             <button  mat-raised-button color="primary" (click)="sendMessage()" [class.invisible]="progress">Send</button>
             <mat-progress-spinner style="float: right;" [class.invisible]="!progress" diameter="30" mode="indeterminate" ></mat-progress-spinner>
         </div >

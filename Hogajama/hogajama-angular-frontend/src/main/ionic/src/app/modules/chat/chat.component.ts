@@ -44,6 +44,10 @@ export class ChatComponent {
     }
   }
 
+  async clearMessages() {
+    this.chat.dialog.clearMessages();
+  }
+
   abort(message: Message) {
     console.log('Abort. Original JSON was ' + message.content);
     message.applyAbort();
