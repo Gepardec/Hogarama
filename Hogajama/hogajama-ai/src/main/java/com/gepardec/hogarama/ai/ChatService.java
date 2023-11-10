@@ -65,7 +65,7 @@ public class ChatService {
         if (allRulesForUser.isEmpty()) {
             rules.append("No rules found for this user.");
         } else {
-            rules.append("id\tname\tdescription\tsensorId\tactorId\tunitId\twaterDuration (in ms)\tlowWater (the sensor value, when the actor should be activated)");
+            rules.append("id\tname\tdescription\tsensorId\tactorId\tunitId\twaterDuration (in seconds)\tlowWater (the sensor value, when the actor should be activated)");
             for (LowWaterWateringRule lowWaterWateringRule : allRulesForUser) {
                 rules.append(String.format("%n%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", lowWaterWateringRule.getId(), lowWaterWateringRule.getName(), lowWaterWateringRule.getDescription(), lowWaterWateringRule.getSensor().getId(), lowWaterWateringRule.getActor().getId(), lowWaterWateringRule.getUnit().getId(), lowWaterWateringRule.getWaterDuration(), lowWaterWateringRule.getLowWater()));
             }
