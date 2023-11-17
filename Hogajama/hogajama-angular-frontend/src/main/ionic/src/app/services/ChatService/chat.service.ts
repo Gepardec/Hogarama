@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
-import {HogaramaBackendService} from "../HogaramaBackendService/hogarama-backend.service";
+import {HogaramaBackendService} from '../HogaramaBackendService/hogarama-backend.service';
 
 export class MessageAction {
     constructor(
         public text: string | undefined,
         public confirmReply: string | undefined,
         public abortReply: string | undefined,
+        public operation: string | undefined,
+        public dto: any | undefined
     ) {
     }
 
@@ -39,8 +41,18 @@ export class Message {
     applyConfirm() {
         if (this.action !== undefined) {
             this.content = this.action.confirmReply;
+            const action = this.action;
             this.action = undefined;
             this.decision = 'confirmed';
+            return action;
+        }
+    }
+
+    error(error: string) {
+        if (this.action !== undefined) {
+            this.content = error;
+            this.action = undefined;
+            this.decision = 'aborted';
         }
     }
 
@@ -91,10 +103,15 @@ export class AIRestService {
         try {
             const message = await this.backend.chat.chat(dialog.messages.map(m => ({
                 role: m.role.toUpperCase(),
-                content: m.content || ''  // Assuming content should default to an empty string if undefined
+                content: m.content || '',  // Assuming content should default to an empty string if undefined
+                action: undefined
             })));
             if(message.role.toLowerCase() === 'assistant') {
-                dialog.addMessage(Message.createAssistantMessage(message.content));
+                const answerMessage = Message.createAssistantMessage(message.content);
+                if(message.action !== undefined) {
+                    answerMessage.action = message.action;
+                }
+                dialog.addMessage(answerMessage);
             } else {
                 dialog.addMessage(Message.createAssistantMessage('Ups, something went wrong. Returned message has type ' + message.role + ' and content ' + message.content + '.'));
             }

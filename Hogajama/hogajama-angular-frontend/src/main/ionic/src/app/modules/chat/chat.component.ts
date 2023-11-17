@@ -1,5 +1,6 @@
 import {Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
 import {ChatService, Message} from 'src/app/services/ChatService/chat.service';
+import {HogaramaBackendService} from "../../services/HogaramaBackendService/hogarama-backend.service";
 
 @Component({
   selector: 'app-chat',
@@ -16,7 +17,7 @@ export class ChatComponent {
 
   @Output() newMessage = new EventEmitter<string>();
 
-  constructor(private chat: ChatService) {
+  constructor(private chat: ChatService, private backend: HogaramaBackendService) {
     this.messages = chat.dialog.messages;
   }
 
@@ -49,13 +50,26 @@ export class ChatComponent {
   }
 
   abort(message: Message) {
-    console.log('Abort. Original JSON was ' + message.content);
+    console.log('Abort. Original JSON was ' + message.action);
     message.applyAbort();
   }
 
-  confirm(message: Message) {
-    console.log('Confirm. Original JSON was ' + message.content);
-    message.applyConfirm();
+  async confirm(message: Message) {
+    console.log('Confirm. Original JSON was ' + JSON.stringify(message.action));
+    if(message.action.operation === 'change_rule') {
+        const rule = message.action.dto;
+        if(rule) {
+            try {
+              const actionResult = await this.backend.rules.patch(rule.id, rule);
+              console.log(actionResult);
+              message.applyConfirm();
+              return;
+            } catch (e) {
+              message.error('Something went wrong during confirmation.');
+            }
+
+        }
+    }
   }
 
   protected readonly JSON = JSON;
