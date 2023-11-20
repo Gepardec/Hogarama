@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 

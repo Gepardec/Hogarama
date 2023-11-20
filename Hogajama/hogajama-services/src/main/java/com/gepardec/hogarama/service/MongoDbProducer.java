@@ -2,8 +2,8 @@ package com.gepardec.hogarama.service;
 
 import java.util.Arrays;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
 
 import org.bson.Document;
 import org.mongodb.morphia.Datastore;

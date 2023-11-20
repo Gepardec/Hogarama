@@ -2,6 +2,13 @@
 {
     "sensorName" : "Pflanze",
     "type" : "wasser",
+    "value" : 15.3,
+    "location" : "Wien",
+    "version" : 0
+},
+{
+    "sensorName" : "Pflanze",
+    "type" : "wasser",
     "value" : 55.3,
     "location" : "Wien",
     "version" : 0

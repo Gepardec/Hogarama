@@ -8,8 +8,8 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 import java.util.Date;
 import java.util.List;
 

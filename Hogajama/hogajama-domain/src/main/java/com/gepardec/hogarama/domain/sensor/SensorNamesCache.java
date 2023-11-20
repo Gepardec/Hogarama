@@ -4,9 +4,9 @@ import org.gepardec.slog.SLogged;
 import org.gepardec.slog.SLogger;
 import org.gepardec.slog.level.SLogInfo;
 
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.inject.Inject;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

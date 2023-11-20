@@ -32,7 +32,7 @@ spec:
     sourceStrategy:
       env:
       - name: MAVEN_ARGS
-        value: -Pocp -Dfrontend.build.environment=prod -Psecurity-jwt -Pmessaging-kafka
+        value: -Pocp -Dfrontend.build.environment=prod -Psecurity-jwt,messaging-mdb
       - name: XDG_CACHE_HOME
         value: /deployments/Hogajama/target/
       from:

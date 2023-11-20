@@ -90,6 +90,14 @@ spec:
   - annotations: null
     from:
       kind: DockerImage
+      name: quay.io/wildfly/wildfly:29.0.1.Final-jdk11
+    importPolicy: {}
+    name: 29.0.1.Final-jdk11
+    referencePolicy:
+      type: Source
+  - annotations: null
+    from:
+      kind: DockerImage
       name: quay.io/wildfly/wildfly:latest
     generation: 3
     importPolicy: {}

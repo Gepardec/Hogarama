@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 import com.gepardec.hogarama.security.UserProfileResolver;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Optional;
 

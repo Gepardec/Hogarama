@@ -9,11 +9,13 @@ import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.ws.rs.core.Response;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
 import java.util.List;
 
+@Path("/unitmanagement/unit")
 @DetermineUser
 public class UnitApiImpl implements UnitApi {
 

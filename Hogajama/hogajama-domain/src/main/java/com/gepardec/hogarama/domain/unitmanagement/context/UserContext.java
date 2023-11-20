@@ -5,7 +5,7 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class UserContext {
@@ -19,7 +19,7 @@ public class UserContext {
         return user;
     }
 
-    public void getUser(User user) {
+    public void setUser(User user) {
         LOG.debug("Set user with id {} and key {}.", user.getId(), user.getKey());
         this.user = user;
     }

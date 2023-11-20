@@ -2,9 +2,9 @@ package com.gepardec.hogarama.domain.unitmanagement.service;
 
 import java.util.List;
 
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
-import javax.ws.rs.NotFoundException;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;

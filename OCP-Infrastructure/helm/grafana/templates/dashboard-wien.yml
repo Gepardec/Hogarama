@@ -194,7 +194,7 @@ spec:
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "hogarama_watering_events_fired{actor_name=\"Pumpe Büro Wien\"}",
+              "expr": "hogarama_watering_events_fired_total{actor_name=\"Pumpe Büro Wien\"}",
               "interval": "",
               "legendFormat": {{`"{{actor_name}}"`}},
               "range": true,

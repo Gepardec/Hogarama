@@ -4,9 +4,9 @@ import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.UnitDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
-import javax.ws.rs.NotFoundException;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import java.util.List;
 
 public class UnitService {

@@ -3,7 +3,7 @@ package com.gepardec.hogarama.domain.unitmanagement.dao;
 import java.util.List;
 import java.util.Optional;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ public class PostgresWateringRuleDAO extends BaseDAO<LowWaterWateringRule> imple
 	public WateringRule getBySensorName(String sensorName) {
         LOG.debug("getBySensorName " + sensorName);
 		List<LowWaterWateringRule> configs = 
-		        entityManager.createQuery("from LowWaterWateringRule r where r.sensor.deviceId=:sensorName")
+		        entityManager.createQuery("select r from LowWaterWateringRule r where r.sensor.deviceId=:sensorName")
 		        .setParameter("sensorName", sensorName)
 		        .getResultList();
 		if (configs.isEmpty()){

@@ -3,8 +3,9 @@ package com.gepardec.hogarama.domain.watering;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.gepardec.slog.SLogged;
 import org.gepardec.slog.SLogger;
@@ -28,13 +29,17 @@ public class WateringStrategy {
     private WateringStrategyLog log;
 	
 	public WateringStrategy() {
-	    logger.info("Initializing WateringStrategy");
 	}
 	
     public WateringStrategy(SLogger logger) {
         this.logger = logger;
     }
 
+    @PostConstruct
+    public void postConstruct() {
+        logger.info("Initialized WateringStrategy");        
+    }
+    
     private int waterDuration(WateringRule config, double avg) {
         log.setConfig(config);
          log.setMoistureValue(avg);
@@ -42,9 +47,11 @@ public class WateringStrategy {
         if ( avg < config.getLowWater() ) {
             log.setWater(true);
             int dur = config.getWaterDuration();
+            log.setDuration(dur);
 			return dur;
 		}
         log.setWater(false);
+        log.setDuration(0);
         return 0;
     }
 
@@ -75,7 +82,7 @@ public class WateringStrategy {
     }
     
     @SLogInfo
-    private class WateringStrategyLog {
+    public class WateringStrategyLog {
         private boolean water;
         private double duration;
         private WateringRule config;

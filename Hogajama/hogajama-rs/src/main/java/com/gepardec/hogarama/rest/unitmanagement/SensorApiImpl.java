@@ -9,13 +9,15 @@ import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import java.util.List;
 
 @SuppressWarnings("unused")
+@Path("/unitmanagement/sensor")
 @DetermineUser
 public class SensorApiImpl implements SensorApi {
 

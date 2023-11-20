@@ -1,0 +1,187 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: hogarama
+    dashboard: application
+  name: dashboard-logs
+  namespace: {{ .Release.Namespace }}
+  finalizers: []
+spec:
+  json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 1,
+      "id": 3,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "logging-application"
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 23,
+            "x": 0,
+            "y": 0
+          },
+          "id": 2,
+          "options": {
+            "dedupStrategy": "none",
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": false,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "pluginVersion": "9.2.4",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "logging-application"
+              },
+              "editorMode": "builder",
+              "expr": "{kubernetes_container_name=\"hogajama-run\"} |~ `$Level` |~ `$Search` | json | line_format `{{ .message }}` | json | line_format `{{.timestamp}} {{.level}} {{.loggerName}}: {{.message}}`",
+              "hide": false,
+              "queryType": "range",
+              "refId": "A"
+            }
+          ],
+          "title": "Habarama Log",
+          "transformations": [
+            {
+              "id": "extractFields",
+              "options": {
+                "replace": false,
+                "source": "labels"
+              }
+            },
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {}
+              }
+            }
+          ],
+          "type": "logs"
+        }
+      ],
+      "refresh": false,
+      "schemaVersion": 37,
+      "style": "dark",
+      "tags": [
+        "Ansprechperson: Erhard Siegl",
+        "Applikation: Hogarama",
+        "Themengebiet: Externe Applikation"
+      ],    
+      "templating": {
+        "list": [
+          {
+            "current": {
+              "selected": false,
+              "text": "ERROR",
+              "value": "ERROR"
+            },
+            "description": "Log Level",
+            "hide": 0,
+            "includeAll": true,
+            "multi": false,
+            "name": "Level",
+            "options": [
+              {
+                "selected": false,
+                "text": "All",
+                "value": "$__all"
+              },
+              {
+                "selected": false,
+                "text": "ERROR",
+                "value": "ERROR"
+              },
+              {
+                "selected": true,
+                "text": "WARN",
+                "value": "WARN"
+              },
+              {
+                "selected": false,
+                "text": "INFO",
+                "value": "INFO"
+              },
+              {
+                "selected": false,
+                "text": "DEBUG",
+                "value": "DEBUG"
+              },
+              {
+                "selected": false,
+                "text": "TRACE",
+                "value": "TRACE"
+              }
+            ],
+            "query": "ERROR,WARN,INFO,DEBUG,TRACE",
+            "queryValue": "",
+            "skipUrlSync": false,
+            "type": "custom"
+          },
+          {
+            "current": {
+              "selected": false,
+              "text": ".*",
+              "value": ".*"
+            },
+            "description": "Search Expression",
+            "hide": 0,
+            "name": "Search",
+            "options": [
+              {
+                "selected": true,
+                "text": ".*",
+                "value": ".*"
+              }
+            ],
+            "query": ".*",
+            "skipUrlSync": false,
+            "type": "textbox"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "Hogarama Logs",
+      "uid": "hogarama-logs-{{ .Release.Namespace }}",
+      "version": 39,
+      "weekStart": ""
+    }

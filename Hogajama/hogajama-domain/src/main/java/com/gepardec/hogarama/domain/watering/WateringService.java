@@ -10,12 +10,11 @@ import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 
-import javax.inject.Inject;
-
 import org.gepardec.slog.SLogged;
 import org.gepardec.slog.SLogger;
 import org.gepardec.slog.level.SLogInfo;
 
+import jakarta.inject.Inject;
 import java.util.Optional;
 
 @SLogged

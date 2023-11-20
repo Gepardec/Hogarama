@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.enterprise.event.Event;
+import jakarta.enterprise.event.Event;
 import java.util.Collections;
 import java.util.Optional;
 

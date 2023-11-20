@@ -12,31 +12,68 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-annotations</artifactId>
-		</dependency>
+		  <groupId>jakarta.annotation</groupId>
+		  <artifactId>jakarta.annotation-api</artifactId>
+		</dependency>		
 		<dependency>
+		  <groupId>jakarta.validation</groupId>
+		  <artifactId>jakarta.validation-api</artifactId>
+		</dependency>
+        <dependency>
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-jaxrs</artifactId>
 			<version>${swagger-jaxrs.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>io.swagger</groupId>
-				<artifactId>swagger-codegen-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<configuration>
-							<language>jaxrs-resteasy-eap</language>
-						</configuration>
-					</execution>
-				</executions>
+			    <groupId>org.openapitools</groupId>
+			    <artifactId>openapi-generator-maven-plugin</artifactId>
+			    <version>6.4.0</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>generate</goal>
+			            </goals>
+			            <configuration>
+			                <configHelp>false</configHelp>
+			                <configOptions>
+			                    <useJakartaEe>true</useJakartaEe>
+			                </configOptions>
+			                <inputSpec>
+			                    ${project.parent.basedir}/src/main/openapi/openapi.yaml
+			                </inputSpec>
+			                <ignoreFileOverride>${project.basedir}/ignore.txt</ignoreFileOverride>
+			                <generateSupportingFiles>false</generateSupportingFiles>
+			                <generatorName>jaxrs-resteasy-eap</generatorName>
+			                <apiPackage>com.gepardec.hogarama.rest</apiPackage>
+			                <modelPackage>com.gepardec.hogarama.rest</modelPackage>
+			            </configuration>
+			        </execution>
+			    </executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/openapi</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
 			</plugin>
 		</plugins>
 	</build>
