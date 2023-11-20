@@ -1,0 +1,5 @@
+/subsystem=logging/pattern-formatter=RAW_FORMAT:add(pattern="%s%n")
+/subsystem=logging/json-formatter=JSON:add(pretty-print=false)
+/subsystem=logging/console-handler=CONSOLE_RAW:add(named-formatter=RAW_FORMAT)
+/subsystem=logging/logger=stderr:add(use-parent-handlers=false, handlers=[CONSOLE_RAW])
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name=named-formatter, value=JSON)
