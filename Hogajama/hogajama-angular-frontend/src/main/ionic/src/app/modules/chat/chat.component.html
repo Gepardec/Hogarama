@@ -20,7 +20,7 @@
         </g>
       </svg>
                 <mat-card-content  [innerText]="message.content" [class.invisible]="message.action !== undefined && message.action != null"></mat-card-content>
-                <mat-card-content  [innerText]="(message.action === undefined || message.action == null) ? '' : message.action.text" [class.invisible]="message.action === undefined || message.action == null"></mat-card-content>
+                <mat-card-content [innerText]="(message.action === undefined || message.action == null) ? '' : message.action.messageToUser" [class.invisible]="message.action === undefined || message.action == null"></mat-card-content>
                 <mat-card-actions style="margin-bottom: 0; padding:0;" align="right" [class.hidden]="(message.action == undefined || message.action == null)">
                     <button mat-stroked-button color="warn" (click)="abort(message)">Abort</button>
                     <button mat-stroked-button color="primary" (click)="confirm(message)">Confirm</button>

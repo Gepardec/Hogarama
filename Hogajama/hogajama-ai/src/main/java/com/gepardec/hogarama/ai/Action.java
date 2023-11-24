@@ -1,18 +1,18 @@
 package com.gepardec.hogarama.ai;
 
 public class Action {
-    private String text;
+    private String messageToUser;
     private String confirmReply;
     private String abortReply;
     private String operation;
     private Object dto;
 
-    public String getText() {
-        return text;
+    public String getMessageToUser() {
+        return messageToUser;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setMessageToUser(String messageToUser) {
+        this.messageToUser = messageToUser;
     }
 
     public String getConfirmReply() {

@@ -3,7 +3,7 @@ import {HogaramaBackendService} from '../HogaramaBackendService/hogarama-backend
 
 export class MessageAction {
     constructor(
-        public text: string | undefined,
+        public messageToUser: string | undefined,
         public confirmReply: string | undefined,
         public abortReply: string | undefined,
         public operation: string | undefined,

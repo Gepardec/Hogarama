@@ -19,7 +19,7 @@ public class ChatResource {
     @Path("/")
     @Consumes("application/json")
     @Produces("application/json")
-    public Response ping(List<Message> messages) {
+    public Response chat(List<Message> messages) {
         Dialog dialog = chatService.chat(messages.toArray(new Message[0]));
         return Response.ok(dialog.getLastMessage()).build();
     }

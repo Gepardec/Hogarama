@@ -2,6 +2,7 @@ package com.gepardec.hogarama.domain.unitmanagement.service;
 
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.RuleDAO;
+import com.gepardec.hogarama.domain.unitmanagement.entity.EntityNotFoundException;
 import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 
 import jakarta.enterprise.event.Event;
@@ -41,6 +42,11 @@ public class RuleService {
 
     public List<LowWaterWateringRule> getAllRulesForUser() {
         return dao.getAllRulesForUser(userContext.getUser());
+    }
+
+    public LowWaterWateringRule getRuleById(Long ruleId) {
+        return dao.getById(ruleId)
+                .orElseThrow(() -> new EntityNotFoundException(ruleId, LowWaterWateringRule.class));
     }
 
 }

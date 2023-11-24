@@ -23,7 +23,7 @@ public class OpenaiService {
     private static final String OPEN_AI_API_KEY = Optional.ofNullable(System.getenv("OPENAI_API_KEY")).orElse(System.getProperty("openai.api.key"));
     private static final String MODEL_ID = "gpt-4-1106-preview";
 
-    public Dialog chat(Dialog dialog, List<Function> functions) {
+    public Dialog chat(Dialog dialog, List<OpenaiFunction> functions) {
         OpenAIClient client = new OpenAIClientBuilder()
                 .credential(new KeyCredential(OPEN_AI_API_KEY))
                 .buildClient();

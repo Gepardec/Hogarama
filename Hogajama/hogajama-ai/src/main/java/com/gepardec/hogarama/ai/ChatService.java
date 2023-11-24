@@ -1,12 +1,10 @@
 package com.gepardec.hogarama.ai;
 
+import com.gepardec.hogarama.ai.openai.OpenaiFunction;
 import com.gepardec.hogarama.ai.openai.OpenaiService;
 import com.gepardec.hogarama.domain.unitmanagement.context.DetermineUser;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
-import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
+import com.gepardec.hogarama.domain.unitmanagement.entity.*;
 import com.gepardec.hogarama.domain.unitmanagement.service.ActorService;
 import com.gepardec.hogarama.domain.unitmanagement.service.RuleService;
 import com.gepardec.hogarama.domain.unitmanagement.service.SensorService;
@@ -22,7 +20,7 @@ import java.util.*;
 @DetermineUser
 public class ChatService {
 
-    public static final String FUNCTION_CHANGE_RULE = "change_rule";
+    public static final String OPERATION_CHANGE_RULE = "change_rule";
     @Inject
     private OpenaiService openaiService;
 
@@ -45,7 +43,7 @@ public class ChatService {
         String systemMessage = buildSystemMessage();
         Dialog dialog = new Dialog(systemMessage);
         dialog.addMessages(messages);
-        List<Function> functions = buildFunctions();
+        List<OpenaiFunction> functions = createFunctionDefinitions();
         return prepareActions(openaiService.chat(dialog, functions));
     }
 
@@ -130,10 +128,10 @@ public class ChatService {
         return content.toString();
     }
 
-    private List<Function> buildFunctions() {
-        List<Function> functions = new ArrayList<>();
-        Function function = new Function();
-        function.setName(FUNCTION_CHANGE_RULE);
+    private List<OpenaiFunction> createFunctionDefinitions() {
+        List<OpenaiFunction> functions = new ArrayList<>();
+        OpenaiFunction function = new OpenaiFunction();
+        function.setName(OpenaiFunction.FUNCTION_CHANGE_RULE);
         function.setDescription("Performs action requested by the user if the user wants to modify a single existing rule.");
         function.setParameters(JsonParser.parseJsonToMap(readFile("change_rule.json")));
         functions.add(function);
@@ -141,7 +139,7 @@ public class ChatService {
     }
 
     private Dialog prepareActions(Dialog dialog) {
-        if (dialog.getLastMessage().getAction() != null && "change_rule".equals(dialog.getLastMessage().getAction().getOperation())) {
+        if (dialog.getLastMessage().getAction() != null && OPERATION_CHANGE_RULE.equals(dialog.getLastMessage().getAction().getOperation())) {
             Message msg = dialog.getLastMessage();
             String parametersJson = msg.getContent();
 
@@ -156,10 +154,12 @@ public class ChatService {
             long sensorId = (Integer) stringObjectMap.get("sensorId");
             long actorId = (Integer) stringObjectMap.get("actorId");
 
-            Long unitId = ruleService.getAllRulesForUser().stream().filter(r -> Objects.equals(r.getId(), ruleId)).map(r -> r.getUnit().getId()).findFirst().orElse(null);
-            if (unitId == null) {
+            Long unitId;
+            try {
+                unitId = ruleService.getRuleById(ruleId).getUnit().getId();
+            } catch (EntityNotFoundException e) {
                 msg.setAction(null);
-                msg.setContent("Error occured: No rule found with the given id.");
+                msg.setContent(e.getMessage());
                 return dialog;
             }
 
@@ -169,8 +169,8 @@ public class ChatService {
             Action action = new Action();
             action.setAbortReply("You have aborted the action.");
             action.setConfirmReply("You have confirmed the action.");
-            action.setText(messageToUser);
-            action.setOperation("change_rule");
+            action.setMessageToUser(messageToUser);
+            action.setOperation(OPERATION_CHANGE_RULE);
             RuleDto dto = new RuleDto();
             dto.setId(ruleId);
             dto.setName(ruleName);

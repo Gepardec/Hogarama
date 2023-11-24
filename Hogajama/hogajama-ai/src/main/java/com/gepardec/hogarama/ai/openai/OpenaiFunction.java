@@ -1,6 +1,7 @@
-package com.gepardec.hogarama.ai;
+package com.gepardec.hogarama.ai.openai;
 
-public class Function {
+public class OpenaiFunction {
+    public static final String FUNCTION_CHANGE_RULE = "change_rule";
     private String name;
     private String description;
     private Object parameters;

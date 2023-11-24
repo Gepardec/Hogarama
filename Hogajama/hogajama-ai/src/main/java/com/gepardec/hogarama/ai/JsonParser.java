@@ -21,7 +21,7 @@ public class JsonParser {
             jsonMap = objectMapper.readValue(jsonString, new TypeReference<Map<String, Object>>() {
             });
         } catch (Exception e) {
-            LOGGER.error("Error at parsing json to map: " + e.getMessage());
+            LOGGER.error("Error at parsing jsonString >" + jsonString + "< to map!" , e);
         }
         return jsonMap;
     }
