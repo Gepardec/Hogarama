@@ -7,6 +7,7 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,7 @@ import jakarta.transaction.Transactional.TxType;
 import java.util.Optional;
 
 @RequestScoped
+@Transactional
 public class UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);

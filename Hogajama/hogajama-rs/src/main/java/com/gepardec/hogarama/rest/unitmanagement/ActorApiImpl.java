@@ -19,6 +19,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Path("/unitmanagement/actor")
 @DetermineUser
+@Transactional
 public class ActorApiImpl implements ActorApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActorApiImpl.class);
@@ -36,7 +37,6 @@ public class ActorApiImpl implements ActorApi {
     }
 
     @Override
-    @Transactional
     public Response create(ActorDto actorDto) {
         LOG.info("Create actor.");
         Actor actor = translator.fromDto(actorDto);
@@ -46,7 +46,6 @@ public class ActorApiImpl implements ActorApi {
     }
 
     @Override
-    @Transactional
     public Response update(String id, ActorDto actorDto) {
         LOG.info("Updating actor with id {}.", id);
         Actor actor = translator.fromDto(actorDto);
@@ -63,7 +62,6 @@ public class ActorApiImpl implements ActorApi {
     }
 
     @Override
-    @Transactional
     public Response delete(String id) {
         LOG.info("Deleting actor with id {}.", id);
         if (id == null) {

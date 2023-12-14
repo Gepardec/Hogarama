@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Sensor implements Serializable, Owned {
 
@@ -24,6 +26,7 @@ public class Sensor implements Serializable, Owned {
     @Column(name = "device_id", unique = true)
     private String deviceId;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "unit_id")
     private Unit unit;

@@ -1,0 +1,3 @@
+[submodule "Hogajama/structured-logging"]
+	path = Hogajama/structured-logging
+	url = git@github.com:Gepardec/structured-logging.git

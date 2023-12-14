@@ -1,5 +1,7 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.google.common.base.Preconditions;
 
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,6 +26,7 @@ public class User implements Serializable {
     @Column(name = "key")
     private String key;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Unit> unitList;
 
@@ -45,7 +49,7 @@ public class User implements Serializable {
     public List<Unit> getUnitList() {
         return unitList;
     }
-
+    
     public void setUnitList(List<Unit> unitList) {
         this.unitList = unitList;
     }
@@ -61,7 +65,7 @@ public class User implements Serializable {
     public void addUnit(Unit unit) {
         Preconditions.checkNotNull(unit, "Unit must not be null.");
 
-        if (getUnitList() == null) {
+        if (unitList == null) {
             unitList = new ArrayList<>();
         }
 
@@ -80,4 +84,5 @@ public class User implements Serializable {
     public int hashCode() {
         return Objects.hash(id, key);
     }
+
 }

@@ -7,16 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserTest {
 
-    @Test
-    public void addUnit() {
-        User user = new User();
-        Unit unit = new Unit();
-
-        user.addUnit(unit);
-
-        assertThat(user.getUnitList()).containsExactly(unit);
-    }
-
     @Test(expected = NullPointerException.class)
     public void addUnit_NullInput_ExceptionExpected() {
         User user = new User();

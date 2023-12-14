@@ -19,6 +19,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Path("/unitmanagement/rule")
 @DetermineUser
+@Transactional
 public class RuleApiImpl implements RuleApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(RuleApiImpl.class);
@@ -36,7 +37,6 @@ public class RuleApiImpl implements RuleApi {
     }
 
     @Override
-    @Transactional
     public Response create(RuleDto ruleDto) {
         LOG.info("Create rule.");
         LowWaterWateringRule rule = translator.fromDto(ruleDto);
@@ -46,7 +46,6 @@ public class RuleApiImpl implements RuleApi {
     }
 
     @Override
-    @Transactional
     public Response update(String id, RuleDto ruleDto) {
         LOG.info("Updating rule with id {}.", id);
         LowWaterWateringRule rule = translator.fromDto(ruleDto);
@@ -63,7 +62,6 @@ public class RuleApiImpl implements RuleApi {
     }
 
     @Override
-    @Transactional
     public Response delete(String id) {
         LOG.info("Deleting rule with id {}.", id);
         if (id == null) {

@@ -1,6 +1,8 @@
 package com.gepardec.hogarama.rest.unitmanagement;
 
+import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
+import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.service.SensorService;
 import com.gepardec.hogarama.rest.unitmanagement.dto.SensorDto;
 import com.gepardec.hogarama.rest.unitmanagement.interceptor.DetermineUser;
@@ -16,9 +18,12 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import java.util.List;
 
+import javax.ejb.Stateless;
+
 @SuppressWarnings("unused")
 @Path("/unitmanagement/sensor")
 @DetermineUser
+@Transactional
 public class SensorApiImpl implements SensorApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(SensorApiImpl.class);
@@ -28,15 +33,18 @@ public class SensorApiImpl implements SensorApi {
     @Inject
     private SensorDtoTranslator translator;
 
+    @Inject
+    private UserContext userContext;
+
     @Override
     public Response getForUser() {
         LOG.info("Get sensors for current user.");
         List<SensorDto> dtoList = translator.toDtoList(service.getAllSensorsForUser());
+        User user = userContext.getUser();
         return new BaseResponse<>(dtoList, HttpStatus.SC_OK).createRestResponse();
     }
 
     @Override
-    @Transactional
     public Response create(SensorDto sensorDto) {
         LOG.info("Create sensor.");
         Sensor sensor = translator.fromDto(sensorDto);
@@ -46,7 +54,6 @@ public class SensorApiImpl implements SensorApi {
     }
 
     @Override
-    @Transactional
     public Response update(String id, SensorDto sensorDto) {
         LOG.info("Updating sensor with id {}.", id);
         Sensor sensor = translator.fromDto(sensorDto);
@@ -63,7 +70,6 @@ public class SensorApiImpl implements SensorApi {
     }
 
     @Override
-    @Transactional
     public Response delete(String id) {
         LOG.info("Deleting sensor with id {}.", id);
         if (id == null) {

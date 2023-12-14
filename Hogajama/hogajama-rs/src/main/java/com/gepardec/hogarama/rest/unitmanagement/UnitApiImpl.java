@@ -17,6 +17,7 @@ import java.util.List;
 
 @Path("/unitmanagement/unit")
 @DetermineUser
+@Transactional
 public class UnitApiImpl implements UnitApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(UnitApiImpl.class);
@@ -34,7 +35,6 @@ public class UnitApiImpl implements UnitApi {
     }
 
     @Override
-    @Transactional
     public Response create(UnitDto unitDto) {
         LOG.info("Create new unit {}", unitDto);
         Unit unit = translator.fromDto(unitDto);
@@ -44,7 +44,6 @@ public class UnitApiImpl implements UnitApi {
     }
 
     @Override
-    @Transactional
     public Response update(String id, UnitDto unitDto) {
         LOG.info("Updating unit {}.", unitDto);
         Unit unit = translator.fromDto(unitDto);
@@ -61,7 +60,6 @@ public class UnitApiImpl implements UnitApi {
     }
 
     @Override
-    @Transactional
     public Response delete(String id) {
         LOG.info("Deleting unit with id {}.", id);
         if (id == null) {

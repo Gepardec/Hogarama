@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Unit implements Serializable {
 
@@ -22,13 +26,16 @@ public class Unit implements Serializable {
     @Column(columnDefinition = "boolean default false", name = "is_default", nullable = false)
     private Boolean defaultUnit;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "unit")
     private List<Sensor> sensorList;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "unit")
     private List<Actor> actorList;
 
