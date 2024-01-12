@@ -47,8 +47,7 @@
 		<ch.qos.logback.version>1.2.11</ch.qos.logback.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<org.apache.commons.version>4.4</org.apache.commons.version>
-        <org.apache.commons.io.version>2.11.0</org.apache.commons.io.version>
-        <org.apache.commons.lang3.version>3.14.0</org.apache.commons.lang3.version>
+		<org.apache.commons.io.version>2.11.0</org.apache.commons.io.version>
 		<prometheus.io.version>0.16.0</prometheus.io.version>
 		<org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
 		<junit.version>4.13.1</junit.version>
@@ -62,7 +61,6 @@
 		<swagger-annotations.version>1.5.13</swagger-annotations.version>
 		<swagger-jaxrs.version>1.6.6</swagger-jaxrs.version>
 		<mongodb.morphia.version>1.3.2</mongodb.morphia.version>
-		<org.mockito.version>1.9.5</org.mockito.version>
 		<org.apache.cxf.version>2.7.18</org.apache.cxf.version>
 		<maven-war-plugin.version>3.2.0</maven-war-plugin.version>
 		<swagger-codegen-maven-plugin.version>2.2.2</swagger-codegen-maven-plugin.version>
@@ -163,11 +161,6 @@
 				<version>${org.apache.commons.version}</version>
 			</dependency>
 			<dependency>
-			    <groupId>org.apache.commons</groupId>
-			    <artifactId>commons-lang3</artifactId>
-			    <version>${org.apache.commons.lang3.version}</version>
-			</dependency>
-			<dependency>
 	  			<groupId>commons-io</groupId>
 	  			<artifactId>commons-io</artifactId>
 				<version>${org.apache.commons.io.version}</version>
@@ -190,12 +183,6 @@
 			</dependency>
 
 			<!-- TESTING -->
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
-				<version>${org.mockito.version}</version>
-				<scope>test</scope>
-			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
@@ -330,23 +317,23 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.openrewrite.maven</groupId>
-				<artifactId>rewrite-maven-plugin</artifactId>
-				<version>5.17.1</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.openrewrite.recipe</groupId>
-						<artifactId>rewrite-migrate-java</artifactId>
-						<version>2.5.0</version>
-					</dependency>
-					<dependency>
-						<groupId>org.openrewrite.recipe</groupId>
-						<artifactId>rewrite-testing-frameworks</artifactId>
-						<version>2.1.5</version>
-					</dependency>
-				</dependencies>
-			</plugin>
+            <plugin>
+              <groupId>org.openrewrite.maven</groupId>
+              <artifactId>rewrite-maven-plugin</artifactId>
+              <version>5.17.1</version>
+              <dependencies>
+                <dependency>
+                  <groupId>org.openrewrite.recipe</groupId>
+                  <artifactId>rewrite-migrate-java</artifactId>
+                  <version>2.5.0</version>
+                </dependency>
+                    <dependency>
+                       <groupId>org.openrewrite.recipe</groupId>
+                       <artifactId>rewrite-testing-frameworks</artifactId>
+                       <version>2.1.5</version>
+                     </dependency>
+              </dependencies>
+            </plugin>
 		</plugins>
 	</build>
 </project>
