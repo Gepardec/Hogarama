@@ -45,11 +45,12 @@ public class MqttClientTest {
             throw new RuntimeException(e);
         }
 
-		when(mockMQTT.blockingConnection()).thenReturn(mockBlockingConnection);
 	}
 	
 	@Test
 	public void testBasicRun() throws Exception {
+        when(mockMQTT.blockingConnection()).thenReturn(mockBlockingConnection);
+        
 		mqttClient.connectAndPublish("testmsg");
 		verify(mockBlockingConnection, times(1)).connect();
 		verify(mockBlockingConnection, times(1)).publish("testtopic", "testmsg".getBytes(), QoS.AT_LEAST_ONCE, false);
@@ -58,6 +59,8 @@ public class MqttClientTest {
 	
 	@Test
 	public void testMultipleMessages() throws Exception {
+        when(mockMQTT.blockingConnection()).thenReturn(mockBlockingConnection);
+        
 		List<String> messages = new ArrayList<>();
 		messages.add("msg1");
 		messages.add("msg2");

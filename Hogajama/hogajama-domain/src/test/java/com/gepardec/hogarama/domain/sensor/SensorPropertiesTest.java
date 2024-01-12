@@ -25,8 +25,8 @@ public class SensorPropertiesTest {
 
     @BeforeEach
     public void setUpMethod() throws Exception {
-        Mockito.when(sensorCache.getByDeviceId(DEVICE_ID_NOTFOUND)).thenReturn(Optional.empty());
-        Mockito.when(sensorCache.getByDeviceId(DEVICE_GRUENER_GEPARD)).thenReturn(TestSensors.sensorGruenerGepard());
+        Mockito.lenient().when(sensorCache.getByDeviceId(DEVICE_ID_NOTFOUND)).thenReturn(Optional.empty());
+        Mockito.lenient().when(sensorCache.getByDeviceId(DEVICE_GRUENER_GEPARD)).thenReturn(TestSensors.sensorGruenerGepard());
     }
 
     @Test

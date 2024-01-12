@@ -28,11 +28,6 @@ public class SensorDataListNormalizerTest {
     private SensorNormalizer sn;
 
     
-	@BeforeEach
-	public void setUpMethod() throws Exception {
-        Mockito.when(sensorCache.getByDeviceId(DEVICE_ID)).thenReturn(Optional.empty());
-	}
-
 	@Test
 	public void emptyListReturnsEmptyList() {
 		List<SensorData> data = sn.normalize(Collections.emptyList());
@@ -41,6 +36,7 @@ public class SensorDataListNormalizerTest {
 
 	@Test
 	public void testFullList() throws Exception {
+        Mockito.when(sensorCache.getByDeviceId(DEVICE_ID)).thenReturn(Optional.empty());
 		SensorNormalizerTest.checkNormalised(
 				sn.normalize(SensorNormalizerTest.getDataList()));
 	}

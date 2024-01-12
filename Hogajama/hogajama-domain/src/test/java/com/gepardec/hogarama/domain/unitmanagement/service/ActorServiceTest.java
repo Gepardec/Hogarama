@@ -40,7 +40,7 @@ public class ActorServiceTest {
     @BeforeEach
     public void setUp() {
         user = newUser();
-        Mockito.when(userContext.getUser()).thenReturn(user);
+        Mockito.lenient().when(userContext.getUser()).thenReturn(user);
     }
 
     @Test
