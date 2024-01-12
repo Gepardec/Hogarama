@@ -47,7 +47,8 @@
 		<ch.qos.logback.version>1.2.11</ch.qos.logback.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<org.apache.commons.version>4.4</org.apache.commons.version>
-		<org.apache.commons.io.version>2.11.0</org.apache.commons.io.version>
+        <org.apache.commons.io.version>2.11.0</org.apache.commons.io.version>
+        <org.apache.commons.lang3.version>3.14.0</org.apache.commons.lang3.version>
 		<prometheus.io.version>0.16.0</prometheus.io.version>
 		<org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
 		<junit.version>4.13.1</junit.version>
@@ -114,7 +115,7 @@
 			<!-- Externe -->
             <dependency>
                 <groupId>org.wildfly.bom</groupId>
-                <artifactId>wildfly-ee-with-tools</artifactId>
+                <artifactId>wildfly-ee</artifactId>
                 <version>${version.wildfly.bom}</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -160,6 +161,11 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-collections4</artifactId>
 				<version>${org.apache.commons.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-lang3</artifactId>
+			    <version>${org.apache.commons.lang3.version}</version>
 			</dependency>
 			<dependency>
 	  			<groupId>commons-io</groupId>
