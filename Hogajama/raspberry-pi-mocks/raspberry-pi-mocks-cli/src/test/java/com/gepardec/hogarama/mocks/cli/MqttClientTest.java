@@ -5,9 +5,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.fusesource.mqtt.client.BlockingConnection;
 import org.fusesource.mqtt.client.MQTT;
 import org.fusesource.mqtt.client.QoS;
@@ -15,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.internal.util.reflection.Whitebox;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,7 +38,13 @@ public class MqttClientTest {
 				withPassword("testpwd").
 				withTopic("testtopic").
 				build();
-		Whitebox.setInternalState(mqttClient, "mqtt", mockMQTT);
+	    final Field f = FieldUtils.getField(mqttClient.getClass(), "mqtt", true);
+	    try {
+            f.set(mqttClient, mockMQTT);
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
 		when(mockMQTT.blockingConnection()).thenReturn(mockBlockingConnection);
 	}
 	
