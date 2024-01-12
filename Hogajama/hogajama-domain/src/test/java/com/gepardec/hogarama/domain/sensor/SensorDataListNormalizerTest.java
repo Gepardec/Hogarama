@@ -1,22 +1,22 @@
 package com.gepardec.hogarama.domain.sensor;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@ExtendWith(MockitoExtension.class)
 public class SensorDataListNormalizerTest {
 
     private static final String DEVICE_ID = "My Plant";
@@ -28,7 +28,7 @@ public class SensorDataListNormalizerTest {
     private SensorNormalizer sn;
 
     
-	@Before
+	@BeforeEach
 	public void setUpMethod() throws Exception {
         Mockito.when(sensorCache.getByDeviceId(DEVICE_ID)).thenReturn(Optional.empty());
 	}

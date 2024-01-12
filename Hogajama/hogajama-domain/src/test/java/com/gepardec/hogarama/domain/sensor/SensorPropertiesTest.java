@@ -6,17 +6,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.testdata.TestSensors;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SensorPropertiesTest {
 
     private static final String DEVICE_ID_NOTFOUND = "SomeSensor";
@@ -24,7 +23,7 @@ public class SensorPropertiesTest {
     @Mock
     private SensorCache sensorCache;
 
-    @Before
+    @BeforeEach
     public void setUpMethod() throws Exception {
         Mockito.when(sensorCache.getByDeviceId(DEVICE_ID_NOTFOUND)).thenReturn(Optional.empty());
         Mockito.when(sensorCache.getByDeviceId(DEVICE_GRUENER_GEPARD)).thenReturn(TestSensors.sensorGruenerGepard());

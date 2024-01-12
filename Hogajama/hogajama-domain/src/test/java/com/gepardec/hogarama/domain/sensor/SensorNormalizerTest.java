@@ -1,6 +1,6 @@
 package com.gepardec.hogarama.domain.sensor;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
@@ -12,14 +12,11 @@ import java.util.Optional;
 
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
-@RunWith(Parameterized.class)
 public class SensorNormalizerTest {
 
 	private static final String LINEAR1024 = "LINEAR1024";
@@ -32,7 +29,6 @@ public class SensorNormalizerTest {
 
 	SensorCache sensorCache;
 
-	@Parameters
 	public static Collection<Object[]> data() {
 		Object[][] data = new Object[][] {
 
@@ -47,24 +43,26 @@ public class SensorNormalizerTest {
 		return Arrays.asList(data);
 	}
 
-	public SensorNormalizerTest(Double expectedValue, String type, Double value) {
+    public void initSensorNormalizerTest(Double expectedValue, String type, Double value) {
 		super();
 		this.expectedValue = expectedValue;
 		this.type = type;
 		this.value = value;
 	}
 
-	@Before
+	@BeforeEach
 	public void setUpMethod() throws Exception {
 		sn = new SensorNormalizer();
 		sensorCache = mock(SensorCache.class);
 		Mockito.when(sensorCache.getByDeviceId(DEVICE_ID)).thenReturn(Optional.empty());
 		sn.setSensorCache(sensorCache);
 	}
-	
-	
-	@Test
-	public void testNormalize() throws Exception {
+
+
+    @MethodSource("data")
+    @ParameterizedTest
+    public void testNormalize(Double expectedValue, String type, Double value) throws Exception {
+        initSensorNormalizerTest(expectedValue, type, value);
 		assertEquals(expectedValue, normalized(type, value), PRECISION);
 	}
 
@@ -79,7 +77,7 @@ public class SensorNormalizerTest {
 	static public void checkNormalised(List<SensorData> sensorData) {
 		int index = 0;
 		for (Object[] objects : data()) {
-			assertEquals("Index " + index, objects[0], sensorData.get(index).getValue());
+			assertEquals(objects[0], sensorData.get(index).getValue(), "Index " + index);
 			index++;
 		}
 	}

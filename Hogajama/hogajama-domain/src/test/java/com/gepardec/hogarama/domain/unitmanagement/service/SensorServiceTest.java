@@ -1,25 +1,27 @@
 package com.gepardec.hogarama.domain.unitmanagement.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.Optional;
 
 import jakarta.enterprise.event.Event;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SensorServiceTest {
 
     private static final Long SENSOR_ID = 3537L;
@@ -39,7 +41,7 @@ public class SensorServiceTest {
     private Unit unit;
     private User user;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         user = newUser();
         Mockito.when(userContext.getUser()).thenReturn(user);
@@ -55,11 +57,13 @@ public class SensorServiceTest {
         Mockito.verifyNoMoreInteractions(dao);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void createSensor_UnitDoesntBelongToUser() {
-        Sensor sensor = newSensorWithNotBelongingUnit();
+        assertThrows(TechnicalException.class, () -> {
+            Sensor sensor = newSensorWithNotBelongingUnit();
 
-        service.createSensor(sensor);
+            service.createSensor(sensor);
+        });
     }
 
     @Test
@@ -84,12 +88,14 @@ public class SensorServiceTest {
         Mockito.verify(sensorChanged).fire(sensor);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void updateSensor_UnitDoesntBelongToUser() {
-        Sensor sensor = newSensorWithNotBelongingUnit();
+        assertThrows(TechnicalException.class, () -> {
+            Sensor sensor = newSensorWithNotBelongingUnit();
 
-        service.updateSensor(sensor);
-        Mockito.verifyNoMoreInteractions(sensorChanged);
+            service.updateSensor(sensor);
+            Mockito.verifyNoMoreInteractions(sensorChanged);
+        });
     }
 
     @Test
