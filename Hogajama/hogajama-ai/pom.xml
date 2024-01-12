@@ -66,6 +66,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.gepardec.hogajama</groupId>
+            <artifactId>hogajama-interfaces-rs</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

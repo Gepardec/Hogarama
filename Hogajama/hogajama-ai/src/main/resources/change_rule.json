@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "properties": {
+    "ruleId": {
+      "type": "number",
+      "description": "The unique identifier for the rule."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the rule."
+    },
+    "messageToUser": {
+      "type": "string",
+      "description": "Assistant message to user like 'you are about to change the rule...'. the message must contain parameter values that are being changed"
+    },
+    "description": {
+      "type": "string",
+      "description": "A detailed description of the rule."
+    },
+    "duration": {
+      "type": "integer",
+      "description": "The duration in seconds for which the rule is applicable.",
+      "minimum": 0
+    },
+    "lowWater": {
+      "type": "number",
+      "description": "A double value between 0 and 1 representing the low water threshold.",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "sensorId": {
+      "type": "number",
+      "description": "The identifier of the sensor associated with the rule."
+    },
+    "actorId": {
+      "type": "number",
+      "description": "The identifier of the actor associated with the rule."
+    }
+  },
+  "required": ["ruleId", "name", "messageToUser", "duration", "description", "lowWater", "sensorId", "actorId"]
+}

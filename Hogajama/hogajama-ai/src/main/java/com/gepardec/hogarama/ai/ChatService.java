@@ -1,28 +1,26 @@
 package com.gepardec.hogarama.ai;
 
+import com.gepardec.hogarama.ai.openai.OpenaiFunction;
 import com.gepardec.hogarama.ai.openai.OpenaiService;
 import com.gepardec.hogarama.domain.unitmanagement.context.DetermineUser;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
-import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
-import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
+import com.gepardec.hogarama.domain.unitmanagement.entity.*;
 import com.gepardec.hogarama.domain.unitmanagement.service.ActorService;
 import com.gepardec.hogarama.domain.unitmanagement.service.RuleService;
 import com.gepardec.hogarama.domain.unitmanagement.service.SensorService;
 import com.gepardec.hogarama.domain.unitmanagement.service.UnitService;
+import com.gepardec.hogarama.rest.unitmanagement.dto.RuleDto;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 
 @RequestScoped
 @DetermineUser
 public class ChatService {
 
+    public static final String OPERATION_CHANGE_RULE = "change_rule";
     @Inject
     private OpenaiService openaiService;
 
@@ -45,7 +43,8 @@ public class ChatService {
         String systemMessage = buildSystemMessage();
         Dialog dialog = new Dialog(systemMessage);
         dialog.addMessages(messages);
-        return openaiService.chat(dialog);
+        List<OpenaiFunction> functions = createFunctionDefinitions();
+        return prepareActions(openaiService.chat(dialog, functions));
     }
 
     private String buildSystemMessage() {
@@ -129,4 +128,65 @@ public class ChatService {
         return content.toString();
     }
 
+    private List<OpenaiFunction> createFunctionDefinitions() {
+        List<OpenaiFunction> functions = new ArrayList<>();
+        OpenaiFunction function = new OpenaiFunction();
+        function.setName(OpenaiFunction.FUNCTION_CHANGE_RULE);
+        function.setDescription("Performs action requested by the user if the user wants to modify a single existing rule.");
+        function.setParameters(JsonParser.parseJsonToMap(readFile("change_rule.json")));
+        functions.add(function);
+        return functions;
+    }
+
+    private Dialog prepareActions(Dialog dialog) {
+        if (dialog.getLastMessage().getAction() != null && OPERATION_CHANGE_RULE.equals(dialog.getLastMessage().getAction().getOperation())) {
+            Message msg = dialog.getLastMessage();
+            String parametersJson = msg.getContent();
+
+            Map<String, Object> stringObjectMap = JsonParser.parseJsonToMap(parametersJson);
+
+            long ruleId = (Integer) stringObjectMap.get("ruleId");
+            String ruleName = (String) stringObjectMap.get("name");
+            String messageToUser = (String) stringObjectMap.get("messageToUser");
+            String ruleDescription = (String) stringObjectMap.get("description");
+            int duration = (Integer) stringObjectMap.get("duration");
+            double lowWater = (Double) stringObjectMap.get("lowWater");
+            long sensorId = (Integer) stringObjectMap.get("sensorId");
+            long actorId = (Integer) stringObjectMap.get("actorId");
+
+            Long unitId;
+            try {
+                unitId = ruleService.getRuleById(ruleId).getUnit().getId();
+            } catch (EntityNotFoundException e) {
+                msg.setAction(null);
+                msg.setContent(e.getMessage());
+                return dialog;
+            }
+
+            //extend user message with the key-values, one per line
+            messageToUser += String.format("%n%nChanged rule:%nruleId: %s%nname: %s%ndescription: %s%nduration: %s%nlowWater: %s%nsensorId: %s%nactorId: %s%n", ruleId, ruleName, ruleDescription, duration, lowWater, sensorId, actorId);
+
+            Action action = new Action();
+            action.setAbortReply("You have aborted the action.");
+            action.setConfirmReply("You have confirmed the action.");
+            action.setMessageToUser(messageToUser);
+            action.setOperation(OPERATION_CHANGE_RULE);
+            RuleDto dto = new RuleDto();
+            dto.setId(ruleId);
+            dto.setName(ruleName);
+            dto.setDescription(ruleDescription);
+            dto.setActorId(actorId);
+            dto.setLowWater(lowWater);
+            dto.setSensorId(sensorId);
+            dto.setUnitId(unitId);
+            dto.setWaterDuration(duration);
+            action.setDto(dto);
+            msg.setAction(action);
+            msg.setContent(null);
+
+            return dialog;
+        }
+
+        return dialog;
+    }
 }
