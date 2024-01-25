@@ -56,7 +56,6 @@
 
 		<project.version>0.0.2-SNAPSHOT</project.version>
 		<org.slf4j.version>1.7.25</org.slf4j.version>
-		<javax.javaee-api.version>7.0</javax.javaee-api.version>
 		<jackson-core.version>2.13.2</jackson-core.version>
 		<jackson-databind.version>2.13.4.2</jackson-databind.version>
 		<swagger-annotations.version>1.5.13</swagger-annotations.version>
@@ -115,16 +114,22 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>jakarta.websocket</groupId>
+                <artifactId>jakarta.websocket-client-api</artifactId>
+                <version>2.2.0-M1</version><!--  Das von Red Hat liegt nicht im Maven Central -->
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.websocket</groupId>
+                <artifactId>jakarta.websocket-api</artifactId>
+                <version>2.2.0-M1</version><!--  Das von Red Hat liegt nicht im Maven Central -->
+                <scope>provided</scope>
+            </dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${org.slf4j.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax</groupId>
-				<artifactId>javaee-api</artifactId>
-				<version>${javax.javaee-api.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
