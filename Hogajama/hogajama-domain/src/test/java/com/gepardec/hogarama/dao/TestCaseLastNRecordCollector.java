@@ -1,13 +1,13 @@
 package com.gepardec.hogarama.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestCaseLastNRecordCollector {
 
@@ -15,7 +15,7 @@ public class TestCaseLastNRecordCollector {
 	private LastNRecordCollector<String> collector = new LastNRecordCollector<>((MAX_NUM / 2));
 	private List<String> list;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		list = new ArrayList<>();
 		for (int i = 0; i < MAX_NUM; i++) {

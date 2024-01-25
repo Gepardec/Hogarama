@@ -1,15 +1,14 @@
 package com.gepardec.hogarama.testdata;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 
 public class DummyDataTest {
@@ -17,7 +16,7 @@ public class DummyDataTest {
 	private Calendar calendar;
 	private List<SensorData> sensors;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		calendar = new GregorianCalendar();
 		sensors = DummyData.getDummySensorData(2, 2, true);

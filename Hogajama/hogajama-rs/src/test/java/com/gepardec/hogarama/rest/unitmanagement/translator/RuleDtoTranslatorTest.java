@@ -8,18 +8,19 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.rest.unitmanagement.dto.RuleDto;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RuleDtoTranslatorTest {
 
     private static final long RULE_ID = 1338L;
@@ -44,9 +45,11 @@ public class RuleDtoTranslatorTest {
     @InjectMocks
     private RuleDtoTranslator translator;
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void toDto_NullInput_ExceptionExpected() {
-        translator.toDto(null);
+        assertThrows(NullPointerException.class, () -> {
+            translator.toDto(null);
+        });
     }
 
     @Test
@@ -74,9 +77,11 @@ public class RuleDtoTranslatorTest {
         assertThat(result.getLowWater()).isEqualTo(LOW_WATER);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void fromDto_NullInput_ExceptionExpected() {
-        translator.fromDto(null);
+        assertThrows(NullPointerException.class, () -> {
+            translator.fromDto(null);
+        });
     }
 
     @Test

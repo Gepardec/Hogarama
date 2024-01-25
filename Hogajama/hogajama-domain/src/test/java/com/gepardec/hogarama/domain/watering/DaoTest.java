@@ -1,16 +1,16 @@
 package com.gepardec.hogarama.domain.watering;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DaoTest  {
 
 	private InMemoryWateringConfigDAO dao = new InMemoryWateringConfigDAO();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		dao.setUpForTest();
 	}

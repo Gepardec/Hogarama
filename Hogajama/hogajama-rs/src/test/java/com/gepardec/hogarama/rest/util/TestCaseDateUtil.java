@@ -1,15 +1,12 @@
 package com.gepardec.hogarama.rest.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import jakarta.ws.rs.WebApplicationException;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TestCaseDateUtil {
 
@@ -41,7 +38,7 @@ public class TestCaseDateUtil {
 		String input = "bad input";
 		try {
 			DateUtil.getDateTimeFromString(input);
-			assertFalse("WebApplicationException was not thrown.", false);
+			assertFalse(false, "WebApplicationException was not thrown.");
 		} catch (WebApplicationException e) {
 			assertTrue(true);
 		}
@@ -61,7 +58,7 @@ public class TestCaseDateUtil {
 	public void testDateUtilTimeNOKHour() {
 		try {
 			DateUtil.getTime(99, 0, 0);
-			assertTrue("IllegalArgumentException was not thrown.", false);
+			assertTrue(false, "IllegalArgumentException was not thrown.");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -71,7 +68,7 @@ public class TestCaseDateUtil {
 	public void testDateUtilTimeNOKMin() {
 		try {
 			DateUtil.getTime(0, 99, 0);
-			assertTrue("IllegalArgumentException was not thrown.", false);
+			assertTrue(false, "IllegalArgumentException was not thrown.");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -81,7 +78,7 @@ public class TestCaseDateUtil {
 	public void testDateUtilTimeNOKSec() {
 		try {
 			DateUtil.getTime(0, 0, 99);
-			assertTrue("IllegalArgumentException was not thrown.", false);
+			assertTrue(false, "IllegalArgumentException was not thrown.");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}

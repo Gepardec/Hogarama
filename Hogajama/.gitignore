@@ -2,3 +2,4 @@ target
 *.log
 tmp*
 *.war
+hogajama-angular-frontend/src/main/ionic/package-lock.json

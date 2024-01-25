@@ -1,12 +1,11 @@
 package com.gepardec.hogarama.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import com.gepardec.hogarama.domain.watering.WateringConfigData;
 import com.gepardec.hogarama.domain.watering.WateringRule;
 import com.gepardec.hogarama.service.dao.MongoWateringRuleDAO;
@@ -15,12 +14,12 @@ public class DaoTest  {
 
 	private MongoWateringRuleDAO dao = new MongoWateringRuleDAO();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		dao.setUpForTest();
 	}
 
-	@Test @Ignore // Das ist eher ein Integrationstest. Man benötigt Mongo-Zugriff
+	@Test @Disabled // Das ist eher ein Integrationstest. Man benötigt Mongo-Zugriff
 	public void test() {
 		WateringConfigData wconf = new WateringConfigData("sensor", "actor", 0.2, 5);
 		dao.save(wconf);
