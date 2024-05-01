@@ -47,7 +47,8 @@
 		<ch.qos.logback.version>1.2.11</ch.qos.logback.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<org.apache.commons.version>4.4</org.apache.commons.version>
-		<org.apache.commons.io.version>2.11.0</org.apache.commons.io.version>
+        <org.apache.commons.io.version>2.11.0</org.apache.commons.io.version>
+        <org.apache.commons.lang3.version>3.14.0</org.apache.commons.lang3.version>
 		<prometheus.io.version>0.16.0</prometheus.io.version>
 		<org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
 		<junit.version>4.13.1</junit.version>
@@ -55,7 +56,6 @@
 
 		<project.version>0.0.2-SNAPSHOT</project.version>
 		<org.slf4j.version>1.7.25</org.slf4j.version>
-		<javax.javaee-api.version>7.0</javax.javaee-api.version>
 		<jackson-core.version>2.13.2</jackson-core.version>
 		<jackson-databind.version>2.13.4.2</jackson-databind.version>
 		<swagger-annotations.version>1.5.13</swagger-annotations.version>
@@ -80,11 +80,6 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${org.slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -114,21 +109,27 @@
 			<!-- Externe -->
             <dependency>
                 <groupId>org.wildfly.bom</groupId>
-                <artifactId>wildfly-ee-with-tools</artifactId>
+                <artifactId>wildfly-ee</artifactId>
                 <version>${version.wildfly.bom}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.websocket</groupId>
+                <artifactId>jakarta.websocket-client-api</artifactId>
+                <version>2.2.0-M1</version><!--  Das von Red Hat liegt nicht im Maven Central -->
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.websocket</groupId>
+                <artifactId>jakarta.websocket-api</artifactId>
+                <version>2.2.0-M1</version><!--  Das von Red Hat liegt nicht im Maven Central -->
+                <scope>provided</scope>
             </dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${org.slf4j.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax</groupId>
-				<artifactId>javaee-api</artifactId>
-				<version>${javax.javaee-api.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -162,10 +163,44 @@
 				<version>${org.apache.commons.version}</version>
 			</dependency>
 			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-lang3</artifactId>
+			    <version>${org.apache.commons.lang3.version}</version>
+			</dependency>
+			<dependency>
 	  			<groupId>commons-io</groupId>
 	  			<artifactId>commons-io</artifactId>
 				<version>${org.apache.commons.io.version}</version>
 			</dependency>
+		    <dependency>
+		      <groupId>io.prometheus</groupId>
+		      <artifactId>simpleclient_servlet_jakarta</artifactId>
+		      <version>${prometheus.io.version}</version>
+		    </dependency>
+	        <dependency>
+	            <groupId>io.prometheus</groupId>
+	            <artifactId>simpleclient_hotspot</artifactId>
+	            <version>${prometheus.io.version}</version>
+	            <scope>compile</scope>
+	        </dependency>
+		    <dependency>
+		      <groupId>org.flywaydb</groupId>
+		      <artifactId>flyway-core</artifactId>
+		      <version>6.3.0</version>
+		    </dependency>
+		    <dependency>
+		        <groupId>io.smallrye.reactive</groupId>
+		        <artifactId>smallrye-reactive-messaging-api</artifactId>
+		        <version>${io.smallrye.reactive.version}</version>
+		        <scope>provided</scope>
+		    </dependency>
+		
+		    <dependency>
+		      <groupId>org.hibernate</groupId>
+		      <artifactId>hibernate-core</artifactId>
+		      <version>5.4.24.Final</version>
+		      <scope>provided</scope>
+		    </dependency>
 
 			<!-- MongoDB Driver -->
 			<dependency>
@@ -202,6 +237,18 @@
 				<version>${org.assertj.version}</version>
 				<scope>test</scope>
 			</dependency>
+		    <dependency>
+		      <groupId>org.junit.jupiter</groupId>
+		      <artifactId>junit-jupiter</artifactId>
+		      <version>5.10.1</version>
+		      <scope>test</scope>
+		    </dependency>
+		    <dependency>
+		      <groupId>org.mockito</groupId>
+		      <artifactId>mockito-junit-jupiter</artifactId>
+		      <version>5.8.0</version>
+		      <scope>test</scope>
+		    </dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -225,6 +272,11 @@
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.7.1</version>
 				</plugin>
+        		<plugin>
+            		<groupId>org.apache.maven.plugins</groupId>
+            		<artifactId>maven-surefire-plugin</artifactId>
+            		<version>3.2.5</version>
+        		</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>

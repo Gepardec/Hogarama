@@ -1,9 +1,10 @@
 package com.gepardec.hogarama.domain.unitmanagement.entity;
 
 import com.gepardec.hogarama.domain.exception.TechnicalException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserTest {
 
@@ -17,24 +18,30 @@ public class UserTest {
         assertThat(user.getUnitList()).containsExactly(unit);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void addUnit_NullInput_ExceptionExpected() {
-        User user = new User();
+        assertThrows(NullPointerException.class, () -> {
+            User user = new User();
 
-        user.addUnit(null);
+            user.addUnit(null);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void getDefaultUnit_EmptyUnitList() {
-        User user = new User();
-        user.getDefaultUnit();
+        assertThrows(NullPointerException.class, () -> {
+            User user = new User();
+            user.getDefaultUnit();
+        });
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void getDefaultUnit_NoDefaultUnitPresent() {
-        User user = new User();
-        user.addUnit(newNonDefaultUnit());
-        user.getDefaultUnit();
+        assertThrows(TechnicalException.class, () -> {
+            User user = new User();
+            user.addUnit(newNonDefaultUnit());
+            user.getDefaultUnit();
+        });
     }
 
     @Test

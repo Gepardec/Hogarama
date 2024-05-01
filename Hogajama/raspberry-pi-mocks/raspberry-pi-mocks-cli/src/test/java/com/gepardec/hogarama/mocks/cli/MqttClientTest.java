@@ -1,24 +1,25 @@
 package com.gepardec.hogarama.mocks.cli;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.fusesource.mqtt.client.BlockingConnection;
 import org.fusesource.mqtt.client.MQTT;
 import org.fusesource.mqtt.client.QoS;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.internal.util.reflection.Whitebox;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class MqttClientTest {
 	
 	@Mock
@@ -29,7 +30,7 @@ public class MqttClientTest {
 	
 	private MqttClient mqttClient;
 	
-	@Before
+	@BeforeEach
 	public void setup() {
 		mqttClient = new MqttClient().
 				withURL("https://testhost:1234/").
@@ -37,12 +38,19 @@ public class MqttClientTest {
 				withPassword("testpwd").
 				withTopic("testtopic").
 				build();
-		Whitebox.setInternalState(mqttClient, "mqtt", mockMQTT);
-		when(mockMQTT.blockingConnection()).thenReturn(mockBlockingConnection);
+	    final Field f = FieldUtils.getField(mqttClient.getClass(), "mqtt", true);
+	    try {
+            f.set(mqttClient, mockMQTT);
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
 	}
 	
 	@Test
 	public void testBasicRun() throws Exception {
+        when(mockMQTT.blockingConnection()).thenReturn(mockBlockingConnection);
+        
 		mqttClient.connectAndPublish("testmsg");
 		verify(mockBlockingConnection, times(1)).connect();
 		verify(mockBlockingConnection, times(1)).publish("testtopic", "testmsg".getBytes(), QoS.AT_LEAST_ONCE, false);
@@ -51,6 +59,8 @@ public class MqttClientTest {
 	
 	@Test
 	public void testMultipleMessages() throws Exception {
+        when(mockMQTT.blockingConnection()).thenReturn(mockBlockingConnection);
+        
 		List<String> messages = new ArrayList<>();
 		messages.add("msg1");
 		messages.add("msg2");

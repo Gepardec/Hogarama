@@ -3,19 +3,18 @@ package com.gepardec.hogarama.rest.unitmanagement.translator;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gepardec.hogarama.domain.unitmanagement.entity.User;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.rest.unitmanagement.dto.UnitDto;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class UnitDtoTranslatorTest {
 
     private static final String EXAMPLE_UNIT = "ExampleUnit";

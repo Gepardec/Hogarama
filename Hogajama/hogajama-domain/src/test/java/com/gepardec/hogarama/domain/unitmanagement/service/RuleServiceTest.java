@@ -1,24 +1,26 @@
 package com.gepardec.hogarama.domain.unitmanagement.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.gepardec.hogarama.domain.exception.TechnicalException;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.RuleDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 import com.gepardec.hogarama.domain.unitmanagement.entity.User;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import jakarta.enterprise.event.Event;
 import java.util.Collections;
 import java.util.Optional;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RuleServiceTest {
 
     private static final Long RULE_ID = 3537L;
@@ -35,10 +37,10 @@ public class RuleServiceTest {
     private Unit unit;
     private User user;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         user = newUser();
-        Mockito.when(userContext.getUser()).thenReturn(user);
+        Mockito.lenient().when(userContext.getUser()).thenReturn(user);
     }
 
     @Test
@@ -51,11 +53,13 @@ public class RuleServiceTest {
         Mockito.verifyNoMoreInteractions(dao);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void createRule_UnitDoesntBelongToUser() {
-        LowWaterWateringRule rule = newRuleWithNotBelongingUnit();
+        assertThrows(TechnicalException.class, () -> {
+            LowWaterWateringRule rule = newRuleWithNotBelongingUnit();
 
-        service.createRule(rule);
+            service.createRule(rule);
+        });
     }
 
     @Test
@@ -78,11 +82,13 @@ public class RuleServiceTest {
         Mockito.verifyNoMoreInteractions(dao);
     }
 
-    @Test(expected = TechnicalException.class)
+    @Test
     public void updateRule_UnitDoesntBelongToUser() {
-        LowWaterWateringRule rule = newRuleWithNotBelongingUnit();
+        assertThrows(TechnicalException.class, () -> {
+            LowWaterWateringRule rule = newRuleWithNotBelongingUnit();
 
-        service.updateRule(rule);
+            service.updateRule(rule);
+        });
     }
 
     @Test
