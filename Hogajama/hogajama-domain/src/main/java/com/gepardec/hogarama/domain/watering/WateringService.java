@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.inject.Inject;
+
+import java.util.Date;
 import java.util.Optional;
 
 public class WateringService {
@@ -81,7 +83,28 @@ public class WateringService {
 					location
 					).set(dur);
 
-        	actorSvc.sendActorMessage(location, config.getActorName(), dur);
+        	sendActorMessage(new WateringData(config.getActorName(), location, dur));
+        }
+    }
+
+    public void sendActorMessage(WateringData data) {
+ 
+        checkParametersOrFail(data);
+
+        sensorDataDAO.saveActorEvent(data);
+        
+        actorSvc.sendActorMessage(data);
+
+    }
+
+    protected void checkParametersOrFail(WateringData data ) {
+        String location = data.getLocation();
+        String actorName = data.getName();
+        Integer duration = data.getDuration();
+        
+        if (location == null || location.isEmpty() || actorName == null || actorName.isEmpty() || duration == null) {
+            Metrics.exceptionsThrown.labels("hogarama_services", "IllegalArgumentException", "ActorServiceImpl.checkParametersOrFail").inc();
+            throw new IllegalArgumentException(String.format("Supplied parameters '%s', '%s', '%s' must not be empty or null", location, actorName, duration));
         }
     }
 

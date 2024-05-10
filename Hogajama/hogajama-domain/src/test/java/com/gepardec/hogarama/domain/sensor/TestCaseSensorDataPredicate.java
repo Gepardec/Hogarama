@@ -8,9 +8,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.gepardec.hogarama.dao.SensorDataPredicate;
-import com.gepardec.hogarama.testdata.DummyData;
 import org.junit.jupiter.api.Test;
+
+import com.gepardec.hogarama.dao.dummydata.DummyData;
+import com.gepardec.hogarama.dao.dummydata.SensorDataPredicate;
 
 public class TestCaseSensorDataPredicate {
 

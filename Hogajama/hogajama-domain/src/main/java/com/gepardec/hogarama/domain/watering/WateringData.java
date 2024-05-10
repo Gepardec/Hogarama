@@ -28,6 +28,10 @@ public class WateringData {
         this.duration = duration;
     }
 
+    public WateringData(String name, String location, Integer duration){
+        this(new Date(), name, location,  duration);
+    }
+
     public WateringData(String id, Date time, String name, String location, Integer duration) {
         this(time, name, location,duration);
         this.id = id;
@@ -102,4 +106,11 @@ public class WateringData {
         result = prime * result + ((duration == null) ? 0 : duration.hashCode());
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "WateringData [id=" + id + ", time=" + time + ", name=" + name + ", location=" + location + ", duration="
+                + duration + "]";
+    }
+    
 }

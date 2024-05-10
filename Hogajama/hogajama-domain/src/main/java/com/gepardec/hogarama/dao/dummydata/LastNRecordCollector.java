@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.dao;
+package com.gepardec.hogarama.dao.dummydata;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

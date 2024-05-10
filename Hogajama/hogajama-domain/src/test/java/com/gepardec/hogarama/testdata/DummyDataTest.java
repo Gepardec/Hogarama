@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.gepardec.hogarama.dao.dummydata.DummyData;
 import com.gepardec.hogarama.domain.sensor.SensorData;
 
 public class DummyDataTest {

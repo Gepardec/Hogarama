@@ -1,4 +1,4 @@
-package com.gepardec.hogarama.testdata;
+package com.gepardec.hogarama.dao.dummydata;
 
 import java.util.ArrayList;
 import java.util.Calendar;

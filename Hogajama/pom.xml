@@ -38,8 +38,8 @@
 	    <version.wildfly.bom>28.0.1.Final</version.wildfly.bom>
 		
 
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 				
 		<org.json.version>20200518</org.json.version>
 		<commons-cli.version>1.4</commons-cli.version>
@@ -335,8 +335,8 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${maven-compiler-plugin.version}</version>
 					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
 					</configuration>
 				</plugin>
 				<plugin>

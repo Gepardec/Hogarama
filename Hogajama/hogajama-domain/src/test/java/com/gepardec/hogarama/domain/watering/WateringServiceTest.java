@@ -1,8 +1,7 @@
 package com.gepardec.hogarama.domain.watering;
 
-import com.gepardec.hogarama.dao.DummySensorDAO;
+import com.gepardec.hogarama.dao.dummydata.DummySensorDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
-import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
 import com.gepardec.hogarama.domain.unitmanagement.cache.ActorCache;
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
@@ -10,6 +9,7 @@ import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Unit;
 import com.gepardec.hogarama.testdata.TestDataProducer;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -42,7 +42,6 @@ public class WateringServiceTest {
     public void setUp() {
         actorCache = Mockito.mock(ActorCache.class);
         sensorCache = Mockito.mock(SensorCache.class);
-        SensorDataDAO sensorDataDAO = Mockito.mock(SensorDataDAO.class);
         sensorNormalizer = Mockito.mock(SensorNormalizer.class);
         Mockito.when(actorCache.getByDeviceId(Mockito.any())).thenReturn(Optional.of(newActor()));
         Mockito.when(sensorCache.getByDeviceId(Mockito.any())).thenReturn(Optional.of(newSensor()));
@@ -192,10 +191,10 @@ public class WateringServiceTest {
         }
 
         @Override
-        public void sendActorMessage(String location, String actorName, Integer duration) {
-            assertEquals(this.location, location);
-            assertEquals(this.actorName, actorName);
-            assertEquals(this.duration, duration);
+        public void sendActorMessage(WateringData actorData) {
+            assertEquals(this.location, actorData.getLocation());
+            assertEquals(this.actorName, actorData.getName());
+            assertEquals(this.duration, actorData.getDuration());
             wasCalled = true;
         }
 

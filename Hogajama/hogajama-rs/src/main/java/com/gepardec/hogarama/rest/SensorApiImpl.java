@@ -29,11 +29,11 @@ public class SensorApiImpl implements SensorApi, Serializable {
 	private WateringDAO wateringDAO;
 
 	@Inject
-	private SensorNamesCache sensorNamesCache;
+	private SensorNamesCache sensorCache;
 
 	@Override
 	public Response getAllSensors(SecurityContext securityContext) {
-		return Response.ok(sensorNamesCache.getSensorNames()).build();
+		return Response.ok(sensorCache.getSensors()).build();
 	}
 	
 
@@ -70,7 +70,7 @@ public class SensorApiImpl implements SensorApi, Serializable {
 
 	@Override
 	public Response getLocationBySensorName(String sensorName, SecurityContext securityContext) {
-		return Response.ok(habaramaDAO.getLocationBySensorName(sensorName)).build();
+		return Response.ok(sensorCache.getLocationBySensorName(sensorName)).build();
 	}
 
 	private Date getTodayStartTime() {

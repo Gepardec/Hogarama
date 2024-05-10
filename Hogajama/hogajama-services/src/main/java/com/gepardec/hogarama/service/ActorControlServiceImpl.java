@@ -1,50 +1,32 @@
 package com.gepardec.hogarama.service;
 
-import java.util.Date;
 import java.util.Optional;
 
-import jakarta.inject.Inject;
-
 import org.json.JSONObject;
-import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
 
-import com.gepardec.hogarama.domain.metrics.Metrics;
 import com.gepardec.hogarama.domain.watering.ActorControlService;
 import com.gepardec.hogarama.domain.watering.WateringData;
 import com.gepardec.hogarama.mocks.cli.MqttClient;
 
-public class ActorControlServiceImpl implements ActorControlService {
+import jakarta.inject.Inject;
 
-    @Inject
-    private Datastore db;
+public class ActorControlServiceImpl implements ActorControlService {
 
     @Inject
     private Logger log;
 
 
     @Override
-    public void sendActorMessage(String location, String actorName, Integer duration) {
+    public void sendActorMessage(WateringData actorData) {
 
-        log.info("sendActorMessage: location: {}, actorName: {}, duration: {}", location, actorName, duration);
-        checkParametersOrFail(location, actorName, duration);
+        log.info("sendActorMessage: {}", actorData.toString());
 
         MqttClient mqttClient = new MqttClient().defaultConnection().
-                withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("actor." + location + "." + actorName)).
+                withTopic(Optional.ofNullable(System.getenv("AMQ_TOPICS")).orElse("actor." + actorData.getLocation() + "." + actorData.getName())).
                 build();
-
-
-        WateringData data = new WateringData(new Date(), actorName, location, duration);
-        db.save(data);
-        JSONObject json = new JSONObject(data);
-        String message = json.toString();
-        mqttClient.connectAndPublish(message);
+        
+        mqttClient.connectAndPublish(new JSONObject(actorData).toString());
     }
 
-    protected void checkParametersOrFail(String location, String actorName, Integer duration) {
-        if (location == null || location.isEmpty() || actorName == null || actorName.isEmpty() || duration == null) {
-            Metrics.exceptionsThrown.labels("hogarama_services", "IllegalArgumentException", "ActorServiceImpl.checkParametersOrFail").inc();
-            throw new IllegalArgumentException(String.format("Supplied parameters '%s', '%s', '%s' must not be empty or null", location, actorName, duration));
-        }
-    }
 }

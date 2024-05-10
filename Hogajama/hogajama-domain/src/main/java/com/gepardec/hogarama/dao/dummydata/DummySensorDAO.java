@@ -1,22 +1,27 @@
-package com.gepardec.hogarama.dao;
+package com.gepardec.hogarama.dao.dummydata;
 
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
+import com.gepardec.hogarama.domain.watering.WateringData;
+import com.gepardec.hogarama.annotations.DummyDAO;
 import com.gepardec.hogarama.domain.sensor.SensorData;
-import com.gepardec.hogarama.testdata.DummyData;
 
 @Named("dummyHabaramaDao")
+@DummyDAO
 @RequestScoped
 public class DummySensorDAO implements SensorDataDAO {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DummySensorDAO.class);
 
     private static final int MAX_NUMBER_OF_SENSORS = 10;
     private static final int MAX_NUMBER_OF_DATA = 10000;
@@ -30,14 +35,6 @@ public class DummySensorDAO implements SensorDataDAO {
     public DummySensorDAO(List<SensorData> sensorDatas) {
         super();
         this.sensorDatas = sensorDatas;
-    }
-
-    @Override
-    public List<String> getAllSensors() {
-        return CollectionUtils.emptyIfNull(sensorDatas)
-                              .stream()
-                              .map(SensorData::getSensorName).distinct()
-                              .collect(Collectors.toList());
     }
 
     @Override
@@ -57,18 +54,13 @@ public class DummySensorDAO implements SensorDataDAO {
     }
 
     @Override
-    public String getLocationBySensorName(String sensorName) {
-        return CollectionUtils.emptyIfNull(sensorDatas)
-                              .stream()
-                              .filter(s -> sensorName.equals(s.getSensorName()))
-                              .map(SensorData::getLocation)
-                              .findFirst()
-                              .orElse(DummyData.UNKNOW_LOCATION);
+    public void save(SensorData data){
+        LOG.info("Don't write SensorData since DummySensorDAO. Data: {}", data);
     }
 
     @Override
-    public void save(SensorData data){
-        return;
+    public void saveActorEvent(WateringData data) {
+        LOG.info("Don't write WateringData  since DummySensorDAO. Data: {}", data);
     }
 
 }

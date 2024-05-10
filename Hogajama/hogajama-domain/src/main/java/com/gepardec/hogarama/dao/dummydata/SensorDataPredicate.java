@@ -1,9 +1,7 @@
-package com.gepardec.hogarama.dao;
+package com.gepardec.hogarama.dao.dummydata;
 
 import java.util.Date;
 import java.util.function.Predicate;
-
-import jakarta.validation.constraints.NotNull;
 
 import com.gepardec.hogarama.domain.sensor.SensorData;
 
@@ -13,7 +11,7 @@ public class SensorDataPredicate implements Predicate<SensorData> {
 	private Date from;
 	private Date to;
 	
-	public SensorDataPredicate(@NotNull String sensorName, Date from, Date to) {
+	public SensorDataPredicate(String sensorName, Date from, Date to) {
 		super();
 		this.sensorName = sensorName;
 		this.from = from;

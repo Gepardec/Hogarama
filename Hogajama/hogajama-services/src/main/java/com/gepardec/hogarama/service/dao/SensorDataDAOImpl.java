@@ -1,50 +1,28 @@
 package com.gepardec.hogarama.service.dao;
 
-import com.gepardec.hogarama.domain.metrics.Metrics;
-import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
-import com.gepardec.hogarama.domain.sensor.SensorData;
-import com.gepardec.hogarama.domain.sensor.SensorNormalizer;
-import com.mongodb.client.DistinctIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoIterable;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
-import org.bson.Document;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
 
+import com.gepardec.hogarama.annotations.MongoDAO;
+import com.gepardec.hogarama.domain.metrics.Metrics;
+import com.gepardec.hogarama.domain.sensor.SensorData;
+import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
+import com.gepardec.hogarama.domain.watering.WateringData;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.NoResultException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
+@MongoDAO
 @ApplicationScoped
 public class SensorDataDAOImpl implements SensorDataDAO {
 
     @Inject
     private Datastore datastore;
-    @Inject
-    private MongoCollection<Document> collection;
-
-    @Inject
-    SensorNormalizer sensorNormalizer;
-
-    @Override
-    public List<String> getAllSensors() {
-
-        DistinctIterable<String> sensors = collection.distinct("sensorName", String.class);
-        Metrics.requestsTotal.labels("hogajama_services", "getAllSensors").inc();
-        return createResultList(sensors);
-    }
-
-    private <T> List<T> createResultList(MongoIterable<T> sourceIterable) {
-
-        List<T> result = new ArrayList<>();
-        sourceIterable.into(result);
-        return result;
-    }
 
     @Override
     public List<SensorData> getAllData(Integer maxNumber, String sensorName, Date from, Date to) {
@@ -55,7 +33,7 @@ public class SensorDataDAOImpl implements SensorDataDAO {
         limitQueryByDate(from, to, query);
 
         FindOptions numberLimitOption = getFindOptionsWithMaxNumber(maxNumber);
-        return sensorNormalizer.normalize(query.asList(numberLimitOption));
+        return query.asList(numberLimitOption);
     }
 
     private void limitQueryBySensor(String sensorName, Query<SensorData> query) {
@@ -84,28 +62,14 @@ public class SensorDataDAOImpl implements SensorDataDAO {
         return findOptions;
     }
 
-    @Override
-    /**
-     * TODO: rewrite query and logic with single result
-     */
-    public String getLocationBySensorName(String sensorName) {
-
-        Metrics.requestsTotal.labels("hogajama_services", "getLocationBySensorName").inc();
-        Query<SensorData> query = datastore.createQuery(SensorData.class).order("-_id");
-        limitQueryBySensor(sensorName, query);
-
-        FindOptions numberLimitOption = getFindOptionsWithMaxNumber(1);
-        List<SensorData> sensors = query.asList(numberLimitOption);
-        if (!sensors.isEmpty()) {
-            return sensors.get(0).getLocation();
-        } else {
-            Metrics.exceptionsThrown.labels("hogarama_services", "NoResultException", "SensorDAOImple.getLocationBySensorName").inc();
-            throw new NoResultException("Could not find location by sensorName");
-        }
-    }
-
     public void save(SensorData data){
         datastore.save(data);
+    }
+
+    @Override
+    public void saveActorEvent(WateringData data) {
+        datastore.save(data);
+        
     }
 
 }
