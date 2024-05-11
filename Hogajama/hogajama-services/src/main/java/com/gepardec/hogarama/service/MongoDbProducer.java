@@ -22,8 +22,7 @@ public class MongoDbProducer {
 	private static final String USER = "hogajama";
 	// You need to define Environment Variable BEFORE Eclipse Start / Login Computer. 
 	// You should define it in .bashrc: export MONGODB_PASSWORD/MONGODB_HOST=xxx
-    private static final char[] PASSWORD = System.getenv("MONGODB_PASSWORD").toCharArray();
-    private static final String HOST = System.getenv("MONGODB_HOST");
+
     private static final int PORT = 27017;
 	private static final String COLLECTION = "habarama";
 	private static MongoClient client;
@@ -45,9 +44,23 @@ public class MongoDbProducer {
 
 	private static MongoClient getClient() {
 		if (client == null) {
-			MongoCredential credential = MongoCredential.createCredential(USER, HOGAJAMA_DB, PASSWORD);
-			client = new MongoClient(new ServerAddress(HOST, PORT), Arrays.asList(credential));
+			MongoCredential credential = MongoCredential.createCredential(USER, HOGAJAMA_DB, password());
+			client = new MongoClient(new ServerAddress(host(), PORT), Arrays.asList(credential));
 		}
 		return client;
 	}
+	
+    private static String host() {
+        String var = System.getenv("MONGODB_HOST");
+        var = null == var || var.isEmpty() ? "mongodb" : var;
+        return var;
+    }
+
+    private static char[] password() {
+        String var = System.getenv("MONGODB_PASSWORD");
+        var = null == var || var.isEmpty() ? "password_not_set" : var;
+        
+        return var.toCharArray();
+    }
+
 }

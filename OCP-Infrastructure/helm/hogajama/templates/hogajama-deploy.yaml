@@ -99,8 +99,8 @@ items:
           envFrom:
             - configMapRef:
                 name: hogajama-config
-            - secretRef:
-                name: mongodb-credentials
+#            - secretRef:
+#                name: mongodb-credentials
           resources:
             requests:
               memory: 0.5Gi
