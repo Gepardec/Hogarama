@@ -1,8 +1,8 @@
 FROM hogarama-build-artefacts as artefacts
 WORKDIR /deployments
-RUN echo Hello building wildfly:29.0.1.Final-jdk11
+RUN echo Hello building wildfly:29.0.1.Final-jdk17
 
-FROM quay.io/wildfly/wildfly:29.0.1.Final-jdk11
+FROM quay.io/wildfly/wildfly:29.0.1.Final-jdk17
 
 ARG SETUP=/tmp/setup
 ARG ENV_FILE
