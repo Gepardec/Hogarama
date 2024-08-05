@@ -2,6 +2,6 @@
 
 # Use e.g: ./install.sh | oc apply -f -
 
-for n in amq mongodb keycloakx hogajama; do
+for n in amq hogajama; do
   ( cd $n && ./install.sh )
 done
