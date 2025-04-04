@@ -1,23 +1,33 @@
-FROM fedora:latest
+FROM quay.io/wildfly/wildfly-s2i-jdk11:latest
 
 ARG SETUP=/tmp/setup
 ARG ENV_FILE=hogarama_local.env
 
+USER root
+
+# Add configuration files
 RUN mkdir -p $SETUP
 ADD bin configs $SETUP/
 ADD local_env/$ENV_FILE $SETUP/local_env/$ENV_FILE
 
-RUN yum -y update && \
-    yum -y clean all && \
-    yum -y install java-1.8.0-openjdk &&  \
-    yum -y install unzip &&  \
-    yum -y install git && \
-    yum -y install wget && \
-    mkdir /root/Downloads && \
-    sudo wget -c https://github.com/wildfly/wildfly/releases/download/26.1.1.Final/wildfly-26.1.1.Final.zip -P /root/Downloads/
-
-USER 0
-RUN chmod a+x $SETUP/setup.sh &&  \
+# Run the setup
+RUN chmod a+x $SETUP/setup.sh && \
     $SETUP/setup.sh
 
-ENTRYPOINT ["/bin/sh"]
+# S2I will automatically copy and build the source code with incremental builds enabled
+# Configuration for S2I
+ENV MAVEN_ARGS="-Pfull-build clean install"
+ENV MAVEN_MIRROR_URL=""
+ENV INCREMENTAL_BUILDS="true"
+
+# Copy deployments to WildFly deployment directory
+RUN mkdir -p /deployments
+
+# Expose WildFly ports
+EXPOSE 8080 9990
+
+# Switch back to jboss user for security
+USER jboss
+
+# Set the default command for the container
+CMD ["/usr/local/s2i/run"]

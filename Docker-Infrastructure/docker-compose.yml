@@ -92,8 +92,12 @@ services:
       - "9990:9990"
     volumes:
       - ./hogajama/local_env:/tmp/setup/local_env
-      - ./hogajama/deployments:/usr/jboss-hogajama/standalone/deployments
-    command: ["-c", "hogajama start && /bin/sh"]
+      - ../Hogajama:/tmp/src:ro
+      - ./hogajama/deployments:/deployments
+    environment:
+      - S2I_SOURCE_DIR=/tmp/src
+      - MAVEN_ARGS_APPEND="-Plocal -DskipTests"
+      - INCREMENTAL_BUILDS=true
     depends_on:
       - amq
       - keycloak

@@ -3,15 +3,20 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Build commands
-
 - Build entire project: `mvn clean install`
 - Run all tests: `mvn clean test`
 - Run a single test: `mvn test -Dtest=TestClassName#testMethodName`
 - Compile without tests: `mvn clean install -DskipTests`
 - Build with full frontend: `mvn clean install -Pfull-build`
 
-## Code style
+## Docker commands
 
+- Start all containers: `cd Docker-Infrastructure && docker-compose up -d`
+- Build and start Hogajama: `cd Docker-Infrastructure && docker-compose up -d --build hogajama`
+- View logs: `cd Docker-Infrastructure && docker-compose logs -f hogajama`
+- Stop all containers: `cd Docker-Infrastructure && docker-compose down`
+
+## Code style
 - Java: Use standard Java conventions with 4-space indentation
 - Java version: JDK 17 (specified in pom.xml)
 - Testing framework: JUnit 5 (Jupiter)
@@ -22,7 +27,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Angular/TypeScript: Follow Angular style guide with 2-space indentation
 
 ## Project structure
-
 - Maven multi-module project
 - Backend: Java EE application with REST services
 - Frontend: Angular/Ionic for UI
