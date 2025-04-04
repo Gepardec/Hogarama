@@ -1,0 +1,470 @@
+= Hogarama Project Overview
+:toc: left
+:toclevels: 3
+:sectnums:
+:source-highlighter: highlightjs
+:imagesdir: ./images
+
+== Introduction
+
+Hogarama (Home and Garden Automation) is a distributed application designed for automated plant watering.
+The system monitors soil moisture levels with sensors connected to Raspberry Pi devices and automatically activates water pumps when plants need watering.
+It was originally created to water office plants at Gepardec.
+
+=== Project Purpose
+
+Hogarama is an internal project from Gepardec to experiment with technologies and showcase OpenShift.
+It's designed as a distributed system with both cloud components and Raspberry Pi hardware.
+
+=== Key Requirements
+
+The application fulfills several key requirements:
+
+1. *Multi-tenant*: The cloud app provides services for multiple tenants
+2. *Scalable*: No practical limit in the number of sensors or tenants
+3. *Flexible data separation*: Tenant data can be separated or analyzed together depending on privacy requirements
+
+== Architecture and Components
+
+[ditaa,"hogarama-architecture",align="center"]
+....
++------------------+      +----------------+      +------------------+
+|  Sensor Network  |      |  Message Bus   |      |  Backend         |
+|  (Raspberry Pi)  +----->|  (AMQ/Kafka)   +----->|  (Hogajama)      |
++------------------+      +----------------+      +---------+--------+
+                                                           |
+                                                           v
++------------------+      +----------------+      +------------------+
+|  Mobile Client   |<-----+  Keycloak      |<-----+  Databases       |
+|  (Angular/Ionic) |      |  (Auth Server) |      |  (Mongo/Postgres)|
++------------------+      +----------------+      +------------------+
+....
+
+=== Main Components
+
+==== Habarama
+
+The sensor client running on Raspberry Pi devices:
+
+* Collects moisture data from sensors
+* Controls water pumps via relays
+* Written in Python
+
+==== Hogajama
+
+The backend server with various modules:
+
+* REST APIs for frontend communication
+* Business logic for watering decisions
+* Data persistence and messaging integration
+* Java EE/Jakarta EE based
+
+==== Frontend
+
+Web and mobile interface:
+
+* Angular/Ionic application
+* User management and monitoring
+* Device configuration
+
+==== Infrastructure
+
+Supporting services:
+
+* Messaging (ActiveMQ/Kafka)
+* Databases (MongoDB/PostgreSQL)
+* Authentication (Keycloak)
+
+=== Modularisation Architecture
+
+Hogarama follows an onion architecture with inversion of control principles to make development simpler:
+
+[ditaa,"hogarama-modular-architecture",align="center"]
+....
+            +--------------------------------------------------------+
+            |                                                        |
+            |                   External Modules                     |
+            |                                                        |
+            +--------------------+--------------------+--------------+
+                                 |                    |
+                                 |                    |
+                                 v                    v
+            +--------------------+--------------------+--------------+
+            |                                                        |
+            |                 Hogajama Domain Core                   |
+            |               (No outbound dependencies)               |
+            |                                                        |
+            +--------------------------------------------------------+
+....
+
+Key principles:
+
+* Core module is `hogajama-domain` with no outbound dependencies
+* Interfaces are defined in the domain module
+* Complex features have optional dummy implementations for development
+* Features are selected at build time via Maven profiles and environment variables
+* Dependency inversion is used via CDI
+
+== Technology Stack
+
+=== Backend (Hogajama)
+
+* *Language*: Java 17
+* *Framework*: Jakarta EE on WildFly
+* *APIs*: JAX-RS REST, MicroProfile
+* *Persistence*: JPA/Hibernate with MongoDB and PostgreSQL
+* *Messaging*: JMS with ActiveMQ, SmallRye Reactive Messaging with Kafka
+* *Build*: Maven
+* *Testing*: JUnit 5 (Jupiter), Mockito
+
+=== Frontend
+
+* *Framework*: Angular 12+ with Ionic
+* *Language*: TypeScript
+* *Styling*: SCSS
+* *Build*: npm/Angular CLI
+
+=== Infrastructure
+
+* *Containerization*: Docker
+* *Orchestration*: Docker Compose (local), OpenShift/Kubernetes (production)
+* *Messaging*: Apache ActiveMQ (MQTT), Kafka
+* *Databases*: MongoDB (sensor data), PostgreSQL (user/management data)
+* *Authentication*: Keycloak
+* *CI/CD*: Jenkins
+
+=== Raspberry Pi Client
+
+* *Language*: Python
+* *Communication*: MQTT to ActiveMQ, REST
+
+== Development Process and Contribution
+
+=== Issue and Ticket Management
+
+Hogarama uses GitHub Issues for task tracking and organization.
+The project follows an agile approach with structured issue management:
+
+==== Issue Structure
+
+Every enhancement, feature, or bug fix must have an associated GitHub issue:
+
+* *Format*: Issues follow a User-Story template: "Als [Rolle] möchte ich [Funktion], damit ich [Nutzen]"
+* *Acceptance Criteria*: Defined as a checklist to determine when an issue is complete
+* *Tasks*: Concrete development tasks are defined during sprint planning by the assigned developer
+
+[source]
+----
+Als <who wants it?> möchte ich <what do you want?> damit ich <why do you want it?>.
+
+**Acceptance Criteria**
+- [ ] Item 1 that should be implemented/working
+- [ ] Item 2 that should be implemented/working
+- [ ] Item 3 that should be implemented/working
+
+**Tasks**
+- [ ] Technical implementation task 1
+- [ ] Technical implementation task 2
+----
+
+==== Issue Workflow
+
+1. *Issue Creation*: Features or bugs are documented as GitHub issues using the template above
+2. *Assignment*: Issues are assigned to developers during weekly planning meetings
+3. *Implementation*: Developer creates a branch with reference to issue number (e.g., `feature/#123-new-feature`)
+4. *Review Process*:
+* Pull Request references the issue number
+* Core team reviews PRs every Friday
+* PR is assigned to specific developer for review
+* Reviewer decides to merge, request changes, or reject
+
+==== CI/CD Integration
+
+Issues and PRs are integrated with the CI/CD pipeline:
+
+* Automated builds triggered on Pull Requests via GitHub Actions
+* SonarCloud analysis for code quality
+* Test execution to validate changes don't break existing functionality
+
+=== Git Commit Guidelines
+
+When contributing to Hogarama, follow these 7 rules for commit messages:
+
+1. Separate subject from body with a blank line
+2. Limit the subject line to 50 characters
+3. Capitalize the subject line
+4. DO NOT end the subject line with a period
+5. Use the imperative mood in the subject line
+6. Wrap the body at 72 characters
+7. Use the body to explain what and why vs. how
+
+Link to issues using the format:
+
+```
+Fix #issue-no° Issue title
+```
+
+=== Development Workflow
+
+1. Create a GitHub issue for the feature
+2. Use the standardized issue template
+3. Name your branch with reference to the issue number
+4. Ensure all tests pass and the CI pipeline succeeds
+5. Submit a pull request referencing the issue
+
+== Getting Started
+
+=== 1. Local Development Setup Options
+
+There are multiple ways to set up a local development environment:
+
+==== Option 1: Docker (Recommended)
+
+The fastest way to start developing is using Docker:
+
+[source,bash]
+----
+# Clone the repository
+git clone https://github.com/Gepardec/Hogarama.git
+cd Hogarama
+
+# Start the containers
+cd Docker-Infrastructure
+docker-compose up -d
+----
+
+This will start:
+
+* MongoDB (port 27017)
+* PostgreSQL (port 5432)
+* ActiveMQ (port 8161 for admin, 1883 for MQTT)
+* Keycloak (port 18080)
+* Hogajama backend (port 8080)
+
+==== Option 2: CodeReady Workspaces
+
+For browser-based development, you can use CodeReady Workspaces on the OpenShift4 Cluster.
+
+==== Option 3: Local WildFly
+
+For WildFly development, you can use port-forwarding to connect to services in OpenShift.
+
+=== 2. Building the Project
+
+[source,bash]
+----
+cd Hogajama
+mvn clean install
+----
+
+For frontend development:
+
+[source,bash]
+----
+cd Hogajama/hogajama-angular-frontend/src/main/ionic
+npm install
+npm run start
+----
+
+=== 3. Running Tests
+
+[source,bash]
+----
+# Run all tests
+mvn test
+
+# Run a specific test
+mvn test -Dtest=TestClassName#testMethodName
+----
+
+== Key Configuration Files
+
+* `/Docker-Infrastructure/docker-compose.yml` - Local deployment setup
+* `/Docker-Infrastructure/hogajama/local_env/hogarama_local.env` - Environment variables
+* `/Hogajama/hogajama-domain/src/main/resources/META-INF/persistence.xml` - JPA configuration
+* `/Hogajama/hogajama-rs/src/main/resources/META-INF/microprofile-config.properties` - Backend config
+
+== Project Structure
+
+[source]
+----
+Hogarama/
+├── Docker-Infrastructure/     # Docker configuration for local development
+├── Habarama/                  # Raspberry Pi sensor client
+│   ├── ansible/               # Deployment scripts for Pi
+│   └── raspberry/             # Hardware specs and schematics
+├── Hogajama/                  # Backend application
+│   ├── hogajama-domain/       # Domain models and business logic
+│   ├── hogajama-rs/           # REST endpoints
+│   ├── hogajama-services/     # Services implementation
+│   ├── hogajama-angular-frontend/ # Angular UI
+│   └── hogajama-messaging/    # Messaging implementation (Kafka/AMQ)
+└── OCP-Infrastructure/        # OpenShift/Kubernetes deployment
+----
+
+== External Interfaces
+
+[ditaa,"hogarama-interfaces",align="center"]
+....
++---------------------------------------------------------------------+
+|                        Hogarama System                               |
++-------------------------+----------------------------+--------------+
+                         |                            |
+                         v                            v
++------------------------+                +--------------------------+
+| MQTT Interface (1883)  |                | REST API (8080)          |
+| - Sensor data ingestion|                | - User management        |
+| - Actor commands       |                | - Device configuration   |
++------------------------+                | - Historical data access |
+                                          +--------------------------+
+....
+
+=== MQTT Topics
+
+* `/sensor/{location}/{sensorName}` - Sensor data publishing
+* `/actor/{location}/{actorName}` - Actor commands
+
+=== REST API Endpoints
+
+* `/hogajama/rest/sensor` - Sensor management
+* `/hogajama/rest/actor` - Actor management
+* `/hogajama/rest/unit` - Unit management
+* `/hogajama/rest/rule` - Watering rule configuration
+
+The REST API can be explored and tested using Swagger UI at: http://localhost:8080/swaggerui
+
+== Data Flow
+
+[ditaa,"hogarama-dataflow",align="center"]
+....
+  +----------------+           +-----------------+          +----------------+
+  | Moisture       |  Measures | Raspberry Pi    |  Sends   | ActiveMQ       |
+  | Sensor         |---------->| Python Client   |--------->| Message Broker |
+  +----------------+           +-----------------+          +------+---------+
+                                                                   |
+                                                                   | Consumes
+                                                                   v
+  +----------------+           +-----------------+          +------+---------+
+  | Water Pump     |  Controls | Actor Control   |  Trigger | Watering       |
+  | Relay          |<----------| Service         |<---------| Rules Engine   |
+  +----------------+           +-----------------+          +----------------+
+                                                                   ^
+                                                                   |
+  +----------------+           +-----------------+                 |
+  | Angular/Ionic  | Configure | REST API        |  Configurations |
+  | Frontend       |---------->| Backend         |-----------------+
+  +----------------+           +-----------------+
+....
+
+== Database Structure
+
+[ditaa,"hogarama-database",align="center"]
+....
+  +-----------------------+        +----------------------+
+  | MongoDB               |        | PostgreSQL           |
+  | (Sensor Data)         |        | (Management Data)    |
+  +-----------------------+        +----------------------+
+  | - SensorData          |        | - Unit               |
+  |   * id                |        |   * id               |
+  |   * time              |        |   * name             |
+  |   * value             |        |   * location         |
+  |   * sensorName        |        | - Sensor             |
+  |   * location          |        |   * id               |
+  +-----------------------+        |   * name             |
+                                   |   * deviceId         |
+                                   |   * unitId           |
+                                   | - Actor              |
+                                   |   * id               |
+                                   |   * name             |
+                                   |   * deviceId         |
+                                   |   * unitId           |
+                                   | - WateringRule       |
+                                   |   * id               |
+                                   |   * threshold        |
+                                   |   * sensorId         |
+                                   |   * actorId          |
+                                   |   * duration         |
+                                   +----------------------+
+....
+
+== Deployment Architecture
+
+[ditaa,"hogarama-deployment",align="center"]
+....
+                   +------------------------------------------+
+                   |  Docker Environment / OpenShift Cluster  |
+                   +------------------------------------------+
+                      |          |          |          |
+  +------------------+  +--------+  +-------+  +-------+
+  |                  |  |           |          |
+  v                  v  v           v          v
++------+        +--------+    +---------+   +--------+
+|      |        |        |    |         |   |        |
+| AMQ  |<------>|Hogajama|<-->|PostgreSQL|  |MongoDB |
+|      |        |        |    |         |   |        |
++------+        +--------+    +---------+   +--------+
+   ^                ^
+   |                |
+   v                v
++------+        +--------+
+|      |        |        |
+|Sensor|        |Keycloak|
+|Client|        |        |
++------+        +--------+
+....
+
+== Next Steps for a New Developer
+
+1. Start the local environment with `docker-compose up -d`
+2. Build the project with `mvn clean install`
+3. Explore the REST APIs through Swagger UI at `http://localhost:8080/hogajama/swaggerui`
+4. Run the frontend with `npm run start` in the ionic directory
+5. Check out existing tests in the hogajama-domain module to understand business logic
+6. Explore the sensor simulation tools in `raspberry-pi-mocks` to test without physical hardware
+
+== Build Commands and Development Workflow
+
+=== Maven Commands
+
+[source,bash]
+----
+# Build entire project
+mvn clean install
+
+# Run all tests
+mvn clean test 
+
+# Run a single test
+mvn test -Dtest=TestClassName#testMethodName
+
+# Compile without tests
+mvn clean install -DskipTests
+
+# Build with full frontend
+mvn clean install -Pfull-build
+----
+
+=== Docker Commands
+
+[source,bash]
+----
+# Start all containers
+docker-compose up -d
+
+# View logs
+docker-compose logs -f [service_name]
+
+# Stop containers
+docker-compose down
+
+# Rebuild a specific container
+docker-compose build hogajama
+----
+
+=== Development Workflow
+
+1. Make code changes
+2. Run tests to verify: `mvn test`
+3. Build the project: `mvn clean install`
+4. Deploy to local container: Mount the updated JAR file to the Hogajama container
+5. Test the changes via the frontend or API endpoints
