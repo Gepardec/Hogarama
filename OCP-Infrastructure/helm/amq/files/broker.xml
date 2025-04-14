@@ -205,7 +205,6 @@ under the License.
          </address>
          <address name="habarama">
             <multicast>
-               <queue name="fluentd"/>
                <queue name="watering"/>
             </multicast>
          </address>
