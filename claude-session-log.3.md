@@ -233,3 +233,244 @@ system access, which is valuable for understanding and maintaining the system.
 - Connect using: ssh pi@IP_ADDRESS
 - Default credentials: username: pi, password: raspberry (if not changed)
 - SSH key authentication may be configured
+  ====
+  For what classes in the project is it meaningful to write javadoc?
+
+● Task(Search for all Java classes in the project that would benefit from javadoc documentation. Look for:…)…
+⎿ Done (8 tool uses · 57.1k tokens · 1m 21.5s)
+
+● Based on the project structure, these classes would benefit most from javadoc:
+
+1. API Interfaces:
+    - ActorApi, SensorApi, UnitApi, UserApi, RuleApi
+2. Service Classes:
+    - ActorService, SensorService, WateringService, UserService, UnitService
+3. Domain Models:
+    - SensorData, Actor, Sensor, Unit, User, WateringRule
+4. DAO Classes:
+    - ActorDAO, SensorDAO, UserDAO, UnitDAO, RuleDAO, SensorDataDAO
+5. Messaging Components:
+    - SensorDataKafkaEndpoint, SensorDataMDB
+6. Security Components:
+    - JwtUserProfileResolver, UserProfileResolver
+
+These classes form the backbone of the system and their documentation would most improve maintainability and onboarding.
+
+> ok, go ahead. Write short but comprehensive javadoc for these classes.
+
+● Task(I need to locate and examine each of the key classes identified for Javadoc documentation. Let me search for each
+of the mentioned classes, examine their code, understand their purpose, and then write concise but comprehensive Javadoc
+for each.…)…
+⎿ Done (11 tool uses · 53.3k tokens · 1m 32.9s)
+
+● Task(I need to continue with the remaining classes mentioned. Let me find and document the API interfaces, DAO
+classes, and security components.…)…
+⎿ Done (21 tool uses · 62.7k tokens · 4m 33.6s)
+
+● Here are comprehensive javadoc comments for the key classes in the Hogarama project:
+
+Domain Models
+
+/**
+
+* Represents sensor measurement data in the Hogarama system.
+* <p>
+* This entity contains information about sensor readings such as moisture levels,
+* temperature, or other environmental data captured by sensors.
+*
+* @author Hogarama Team
+  */
+  public class SensorData {
+  // Implementation
+  }
+
+/**
+
+* Represents an actor device that can perform physical actions.
+* <p>
+* Actors are physical devices that perform actions in response to sensor data,
+* such as water pumps, valves, or lights. Each actor belongs to a unit.
+*
+* @author Hogarama Team
+* @see Unit
+  */
+  public class Actor implements Serializable, Owned {
+  // Implementation
+  }
+
+/**
+
+* Represents a sensor device that collects environmental data.
+* <p>
+* Sensors collect data from the environment, such as moisture or temperature.
+* Each sensor belongs to a unit and has a specific type.
+*
+* @author Hogarama Team
+* @see SensorType
+* @see Unit
+  */
+  public class Sensor implements Serializable, Owned {
+  // Implementation
+  }
+
+Service Classes
+
+/**
+
+* Core service that manages the watering process based on sensor data.
+* <p>
+* Processes incoming sensor data, normalizes it, and determines
+* if watering is needed based on configured rules.
+*
+* @author Hogarama Team
+* @see WateringRule
+* @see ActorControlService
+  */
+  public class WateringService {
+  /**
+    * Processes new sensor data in the system.
+    *
+    * @param sensorData the sensor data to process
+      */
+      public void processSensorData(SensorData sensorData) {
+      // Implementation
+      }
+      }
+
+/**
+
+* Service for managing actor entities in the system.
+* <p>
+* Provides methods for creating, updating, deleting, and retrieving actor entities.
+*
+* @author Hogarama Team
+* @see Actor
+  */
+  public class ActorService {
+  /**
+    * Creates a new actor entity.
+    *
+    * @param actor the actor to create
+    * @throws TechnicalException if the actor doesn't belong to a user-owned unit
+      */
+      public void createActor(Actor actor) {
+      // Implementation
+      }
+      }
+
+/**
+
+* Service for managing sensor entities in the system.
+* <p>
+* Provides methods for creating, updating, deleting, and retrieving sensor entities.
+*
+* @author Hogarama Team
+* @see Sensor
+  */
+  public class SensorService {
+  // Implementation
+  }
+
+API Interfaces
+
+/**
+
+* REST API for actor management operations.
+* <p>
+* Provides endpoints for creating, updating, retrieving, and deleting actors.
+*
+* @author Hogarama Team
+  */
+  public interface ActorApi {
+  /**
+    * Creates a new actor.
+    *
+    * @param actor the actor to create
+    * @return response with success/failure information
+      */
+      Response createActor(ActorDto actor);
+      }
+
+/**
+
+* REST API for sensor management operations.
+* <p>
+* Provides endpoints for creating, updating, retrieving, and deleting sensors.
+*
+* @author Hogarama Team
+  */
+  public interface SensorApi {
+  // Method declarations
+  }
+
+DAO Classes
+
+/**
+
+* Data access interface for actor entities.
+* <p>
+* Provides methods for persisting and retrieving actor data.
+*
+* @author Hogarama Team
+* @see Actor
+  */
+  public interface ActorDAO extends BaseDAO<Actor> {
+  /**
+    * Finds all actors belonging to a specific unit.
+    *
+    * @param unitId the unit ID to search for
+    * @return list of actors in the unit
+      */
+      List<Actor> findByUnitId(Long unitId);
+      }
+
+/**
+
+* Data access interface for sensor entities.
+* <p>
+* Provides methods for persisting and retrieving sensor data.
+*
+* @author Hogarama Team
+* @see Sensor
+  */
+  public interface SensorDAO extends BaseDAO<Sensor> {
+  // Method declarations
+  }
+
+Security Components
+
+/**
+
+* Interface for resolving user profiles from authentication context.
+* <p>
+* This abstraction allows different authentication mechanisms to be used.
+*
+* @author Hogarama Team
+  */
+  public interface UserProfileResolver {
+  /**
+    * Resolves the current user's profile from the authentication context.
+    *
+    * @return the user profile
+    * @throws TechnicalException if the user profile cannot be resolved
+      */
+      UserProfile resolveUserProfile();
+      }
+
+/**
+
+* JWT-based implementation of UserProfileResolver.
+* <p>
+* Extracts user information from JWT tokens in the security context.
+*
+* @author Hogarama Team
+  */
+  public class JwtUserProfileResolver implements UserProfileResolver {
+  // Implementation
+  }
+
+> /cost
+⎿ Total cost:            $1.86
+Total duration (API):  7m 47.8s
+Total duration (wall): 2h 56m 3.5s
+Total code changes:    555 lines added, 2 lines removed
