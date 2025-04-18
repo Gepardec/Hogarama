@@ -2,6 +2,7 @@ package com.gepardec.hogarama.service;
 
 import java.util.Optional;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 
@@ -11,6 +12,7 @@ import com.gepardec.hogarama.mocks.cli.MqttClient;
 
 import jakarta.inject.Inject;
 
+@ApplicationScoped
 public class ActorControlServiceImpl implements ActorControlService {
 
     @Inject

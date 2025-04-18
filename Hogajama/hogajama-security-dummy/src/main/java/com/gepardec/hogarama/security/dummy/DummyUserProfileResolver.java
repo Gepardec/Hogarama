@@ -7,9 +7,11 @@ import com.gepardec.hogarama.security.UserProfileResolver;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.Base64;
 import java.util.Optional;
 
+@ApplicationScoped
 public class DummyUserProfileResolver implements UserProfileResolver {
 
     @Inject

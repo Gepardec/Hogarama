@@ -3,9 +3,11 @@ package com.gepardec.hogarama.domain.unitmanagement.service;
 import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.entity.UserProfile;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.util.Optional;
 
+@ApplicationScoped
 public class UserProfileService {
 
     @Inject

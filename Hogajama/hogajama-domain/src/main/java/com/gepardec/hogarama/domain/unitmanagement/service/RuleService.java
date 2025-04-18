@@ -4,11 +4,13 @@ import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.RuleDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.LowWaterWateringRule;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 import java.util.List;
 
+@ApplicationScoped
 public class RuleService {
 
     @Inject

@@ -1,8 +1,8 @@
 package com.gepardec.hogarama.domain.unitmanagement.dao;
 
 import java.util.List;
-import java.util.Optional;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import org.slf4j.Logger;
@@ -19,6 +19,7 @@ import com.gepardec.hogarama.domain.watering.WateringConfigData;
 import com.gepardec.hogarama.domain.watering.WateringRule;
 import com.gepardec.hogarama.domain.watering.WateringRuleDAO;
 
+@ApplicationScoped
 @PostgresDAO
 public class PostgresWateringRuleDAO extends BaseDAO<LowWaterWateringRule> implements WateringRuleDAO{
 	

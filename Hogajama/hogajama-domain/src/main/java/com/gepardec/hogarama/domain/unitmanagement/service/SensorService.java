@@ -2,6 +2,7 @@ package com.gepardec.hogarama.domain.unitmanagement.service;
 
 import java.util.List;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
@@ -10,6 +11,7 @@ import com.gepardec.hogarama.domain.unitmanagement.context.UserContext;
 import com.gepardec.hogarama.domain.unitmanagement.dao.SensorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
 
+@ApplicationScoped
 public class SensorService {
 
     @Inject

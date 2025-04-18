@@ -2,6 +2,7 @@ package com.gepardec.hogarama.domain.unitmanagement.cache;
 
 import com.gepardec.hogarama.domain.unitmanagement.dao.ActorDAO;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@ApplicationScoped
 public class ActorCache {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActorCache.class);

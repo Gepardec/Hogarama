@@ -1,8 +1,9 @@
 package com.gepardec.hogarama.service.dao;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import com.gepardec.hogarama.domain.sensor.SensorDataDAO;
 import com.gepardec.hogarama.domain.unitmanagement.dao.PostgresWateringRuleDAO;
 import com.gepardec.hogarama.domain.watering.WateringRuleDAO;
 
+@ApplicationScoped
 public class WateringSetup {
 
     private static final Logger LOG = LoggerFactory.getLogger(WateringSetup.class);
@@ -30,7 +32,7 @@ public class WateringSetup {
     @Inject @DummyDAO
     private SensorDataDAO  dummySensorDataDAO;
 
-    @Produces
+    @Produces @ApplicationScoped
     WateringRuleDAO createWateringRuleDao() {
         switch (System.getProperty("hogarama.rules.storage", "postgres")) {
         case "postgres":
@@ -46,7 +48,7 @@ public class WateringSetup {
         }
     }
     
-    @Produces
+    @Produces @Default
     SensorDataDAO createSensorDataDAO() {
         switch (System.getProperty("hogarama.sensordata.storage", "mongo")) {
         case "mongo":

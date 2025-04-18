@@ -2,6 +2,7 @@ package com.gepardec.hogarama.service.dao;
 
 import java.util.List;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import org.mongodb.morphia.Datastore;
@@ -14,13 +15,14 @@ import com.gepardec.hogarama.domain.watering.WateringConfigData;
 import com.gepardec.hogarama.domain.watering.WateringRule;
 import com.gepardec.hogarama.service.MongoDbProducer;
 
+@ApplicationScoped
 @MongoDAO
 public class MongoWateringRuleDAO implements WateringRuleDAO{
 
     private static final Logger LOG = LoggerFactory.getLogger(MongoWateringRuleDAO.class);
 
 	@Inject
-	public Datastore db;
+	private Datastore db;
 
 	public MongoWateringRuleDAO() {
 	}

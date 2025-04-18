@@ -9,6 +9,8 @@ import com.gepardec.hogarama.domain.unitmanagement.cache.ActorCache;
 import com.gepardec.hogarama.domain.unitmanagement.cache.SensorCache;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Actor;
 import com.gepardec.hogarama.domain.unitmanagement.entity.Sensor;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +19,7 @@ import jakarta.inject.Inject;
 import java.util.Date;
 import java.util.Optional;
 
+@Dependent
 public class WateringService {
 
 	public enum Config{
