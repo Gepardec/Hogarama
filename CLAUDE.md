@@ -31,3 +31,57 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Backend: Java EE application with REST services
 - Frontend: Angular/Ionic for UI
 - Messaging: Both Kafka and JMS (AMQ) implementations
+
+## Additional Technical Details
+
+### Project Naming Clarification
+
+- Hogarama: The overall project name (Home and Garden Automation)
+- Habarama: The hardware component (Python on Raspberry Pi)
+- Hogajama: The backend/frontend software component (Java/Angular)
+
+### Sensor Hardware and Troubleshooting
+
+- Hardware Components:
+  - Moisture Sensors: YL-69 (probe) and YL-39 (logic) or SparkFun soil moisture sensors
+  - Analog-to-Digital Converter: MCP3008 chip (Raspberry Pi has no analog inputs)
+  - Controller: Raspberry Pi 3 Model B+
+- Sensor Reading Interpretation:
+  - Values range from 0-1023 (10-bit resolution)
+  - Higher values (800-1023): dry soil
+  - Lower values (0-200): wet soil
+  - Moisture percentage = 1 - (Raw value/1024)
+  - In logs, values like "809" indicate dry soil (~21% moisture)
+
+### Logs and Monitoring
+
+- Raspberry Pi Logs:
+  ```
+  sudo journalctl -u habarama        # View all logs
+  sudo journalctl -u habarama -f     # Follow logs in real-time
+  sudo journalctl -u habarama -n 50  # Show last 50 entries
+  ```
+- Backend System Logs:
+  - JBoss/Wildfly logs: /standalone/log/server.log
+  - Docker logs: docker-compose logs -f hogajama
+  - OpenShift: Access via OpenShift console
+- Database Access:
+  ```
+  mongo -u admin -p *** --authenticationDatabase admin
+  use admin
+  db.habarama.find()  # Shows all sensor data
+  ```
+
+### Ansible's Role
+
+- Automates Raspberry Pi configuration for Habarama
+- Configures network, SSH security, and sensor interface
+- Installs required Python libraries
+- Sets up systemd service for automatic startup
+- Provides reproducible deployment process
+
+### Remote Access to Raspberry Pi
+
+- Connect via SSH: ssh pi@IP_ADDRESS
+- Default credentials: username: pi, password: raspberry (if not changed)
+- SSH key authentication may be configured

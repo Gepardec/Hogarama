@@ -36,3 +36,5 @@ tmp*
 
 # Docker
 /Docker-Infrastructure/hogajama/deployments/*.war*
+
+**/CLAUDE.local.md
