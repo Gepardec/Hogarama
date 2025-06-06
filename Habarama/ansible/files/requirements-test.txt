@@ -1,0 +1,19 @@
+# Test requirements for plant.py
+# These are in addition to the main requirements
+
+# Testing framework
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+
+# For mocking GPIO and hardware interfaces
+mock>=5.0.0
+unittest-mock>=1.5.0
+
+# Main dependencies that would be installed on Raspberry Pi
+paho-mqtt>=1.6.1
+# Note: The following are typically installed on Raspberry Pi
+# but we'll mock them in tests:
+# RPi.GPIO
+# Adafruit-GPIO
+# Adafruit-MCP3008

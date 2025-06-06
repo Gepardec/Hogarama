@@ -85,3 +85,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Connect via SSH: ssh pi@IP_ADDRESS
 - Default credentials: username: pi, password: raspberry (if not changed)
 - SSH key authentication may be configured
+
+### Testing Raspberry Pi Components
+
+- Test files location: `/Habarama/ansible/files/`
+- Main script: `plant.py` (Python 2 - runs on Raspberry Pi)
+- Test files:
+  - `test_plant.py` - Full test suite (requires Python 3 conversion)
+  - `test_plant_standalone.py` - Logic tests that work with Python 2 version
+- Running tests:
+  ```bash
+  cd Habarama/ansible/files
+  python3 -m unittest test_plant_standalone.py -v
+  ```
+- Test coverage includes:
+  - Command-line argument parsing
+  - Actor/sensor initialization
+  - MQTT client functionality
+  - GPIO operations (mocked)
+  - Sensor data formatting
+  - Configuration validation
